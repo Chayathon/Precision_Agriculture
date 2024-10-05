@@ -1,0 +1,121 @@
+
+import React, { useState, useEffect } from 'react'
+import {
+    Table,
+    Thead,
+    Tbody,
+    Tfoot,
+    Tr,
+    Th,
+    Td,
+    TableCaption,
+    TableContainer,
+    Button,
+    ButtonGroup,
+    Flex,
+    FormLabel,
+    Input, InputGroup, InputRightElement, Textarea,
+    Stack,
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogContent,
+    AlertDialogOverlay,
+    AlertDialogCloseButton,
+    useDisclosure,
+  } from "@chakra-ui/react";
+function Modleedit({ isOpen, onClose, cancelRef, id }) {
+    const [show, setShow] = useState(false)
+    const handleClick = () => setShow(!show)
+    const handleSubmit = () => {
+
+    }
+  return (
+    <>
+    <AlertDialog
+                        motionPreset="slideInBottom"
+                        leastDestructiveRef={cancelRef}
+                        onClose={onClose}
+                        isOpen={isOpen}
+                        isCentered
+                      >
+                        <AlertDialogOverlay />
+
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            Edit Data {id}
+                          </AlertDialogHeader>
+                          <AlertDialogCloseButton />
+                          <AlertDialogBody>
+                          <form onSubmit={handleSubmit}>
+           
+                        <Flex gap='4'>
+                            <FormLabel className='mt-2'>ชื่อจริง</FormLabel>
+                            <Input onChange={(e) => setFirstname(e.target.value)} placeholder='ชื่อจริง' size='md' className='w-1' />
+
+                            <FormLabel className='mt-2'>นามสกุล</FormLabel>
+                            <Input onChange={(e) => setLastname(e.target.value)} placeholder='นามสกุล' size='md' />
+                        </Flex>
+                        <Flex>
+                            <FormLabel className='mt-2'>อีเมล</FormLabel>
+                            <Input onChange={(e) => setEmail(e.target.value)} type='email' placeholder='อีเมล' size='md' />
+                            &emsp;
+                            <FormLabel className='mt-2'>เบอร์โทรศัพท์</FormLabel>
+                            <Input onChange={(e) => setTel(e.target.value)} placeholder='เบอร์โทรศัพท์' size='md' />
+                        </Flex>
+                        <br />
+                        <FormLabel className='mt-2'>ที่อยู่</FormLabel>
+                        <Textarea onChange={(e) => setAddress(e.target.value)} placeholder='ที่อยู่' />
+                        <br /><br />
+                        <FormLabel>ชื่อผู้ใช้</FormLabel>
+                        <Input onChange={(e) => setUsername(e.target.value)} placeholder='ชื่อผู้ใช้' size='md' />
+                        <br /><br />
+                        <FormLabel>รหัสผ่าน</FormLabel>
+                        <InputGroup size='md'>
+                            <Input
+                                onChange={(e) => setPassword(e.target.value)}
+                                pr='4.5rem'
+                                type={show ? 'text' : 'password'}
+                                placeholder='รหัสผ่าน'
+                            />
+                            <InputRightElement width='4.5rem'>
+                                <Button h='1.75rem' size='sm' onClick={handleClick}>
+                                    {show ? 'ซ่อน' : 'แสดง'}
+                                </Button>
+                            </InputRightElement>
+                        </InputGroup>
+                        <br />
+                        <FormLabel>ยืนยันรหัสผ่าน</FormLabel>
+                        <InputGroup size='md'>
+                            <Input
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                pr='4.5rem'
+                                type={show ? 'text' : 'password'}
+                                placeholder='ยืนยันรหัสผ่าน'
+                            />
+                            <InputRightElement width='4.5rem'>
+                                <Button h='1.75rem' size='sm' onClick={handleClick}>
+                                    {show ? 'ซ่อน' : 'แสดง'}
+                                </Button>
+                            </InputRightElement>
+                        </InputGroup>
+                        <br />
+                        
+                    </form>    
+                          </AlertDialogBody>
+                          <AlertDialogFooter>
+                            <Button ref={cancelRef} onClick={onClose}>
+                              No
+                            </Button>
+                            <Button colorScheme="red" ml={3}>
+                              Yes
+                            </Button>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+    </>
+  )
+}
+
+export default Modleedit
