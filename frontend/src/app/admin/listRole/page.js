@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Button, ButtonGroup, Stack, Flex, useDisclosure } from "@chakra-ui/react";
 import { TailSpin } from "react-loader-spinner";
 
-import ModalUpdate from "../components/ModalUpdate";
+import Modleedit from "../components/ModalUpdateUser";
 
 function Page() {
     const { isOpen, onOpen, onClose } = useDisclosure();

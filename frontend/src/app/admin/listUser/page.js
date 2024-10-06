@@ -4,13 +4,13 @@ import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Button, ButtonGroup, Stack, Flex, useDisclosure } from "@chakra-ui/react";
 import { TailSpin } from "react-loader-spinner";
-
 import ModalUpdate from "../components/ModalUpdate";
+import ModalDelete from "../components/ModalDelete";
 
 function Page() {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const cancelRef = useRef();
     const [users, setUsers] = useState([]);
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const cancelRef = useRef()
 
     const fetchUser = async (role_id) => {
         try {
@@ -40,42 +40,38 @@ function Page() {
             <Table size='lg'>
                 <Thead>
                     <Tr>
-                        <Th>Firstname</Th>
-                        <Th>Lastname</Th>
-                        <Th>Email</Th>
-                        <Th>Tel</Th>
-                        <Th>Address</Th>
-                        <Th>Username</Th>
-                        <Th>Role</Th>
-                        <Th>Tool</Th>
+                        <Th>ไอดี</Th>
+                        <Th>ชื่อจริง</Th>
+                        <Th>นามสกุล</Th>
+                        <Th>อีเมล</Th>
+                        <Th>เบอร์โทรศัพท์</Th>
+                        <Th>ที่อยู่</Th>
+                        <Th>ชื่อผู้ใช้</Th>
+                        <Th>จัดการ</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
                     {users && users.length > 0 ? (
                         users.map((user) => (
                             <Tr key={user.id}>
+                                <Td>{user.id}</Td>
                                 <Td>{user.firstname}</Td>
                                 <Td>{user.lastname}</Td>
                                 <Td>{user.email}</Td>
                                 <Td>{user.tel}</Td>
                                 <Td>{user.address}</Td>
                                 <Td>{user.username}</Td>
-                                <Td>{user.role.role_name}</Td>
                                 <Td>
-                                    <Stack direction="row" spacing={1}>
-                                    <Button
-                                        colorScheme="teal"
-                                        variant="outline"
-                                        onClick={onOpen}
-                                    >Edit
-                                        <Modleedit isOpen={isOpen} onClose={onClose} cancelRef={cancelRef} id={user.id} />
-                                    </Button>
-                                    
-                                    <Button colorScheme="teal" variant="outline">
-                                        Delete
-                                    </Button>
-                                    S
-                                    </Stack>
+                                    <ButtonGroup size='sm' colorScheme='gray' isAttached>
+                                        <Button onClick={onOpen}>
+                                            แก้ไข
+                                            <ModalUpdate isOpen={isOpen} onClose={onClose} id={user.id} />
+                                        </Button>
+                                        <Button onClick={onOpen}>
+                                            ลบ
+                                            <ModalDelete isOpen={isOpen} onClose={onClose} cancelRef={cancelRef} id={user.id} />
+                                        </Button>
+                                    </ButtonGroup>
                                 </Td>
                             </Tr>
                         ))

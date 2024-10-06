@@ -1,48 +1,49 @@
-
-import React, { useState, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import {
-    Button,
-    ButtonGroup,
-    Flex,
-    FormLabel,
-    Input, InputGroup, InputRightElement, Textarea,
-    Stack,
-    AlertDialog,
-    AlertDialogBody,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogContent,
-    AlertDialogOverlay,
-    AlertDialogCloseButton,
-    useDisclosure,
-  } from "@chakra-ui/react";
+        Flex,
+        FormLabel,
+        Input,
+        InputGroup,
+        InputRightElement,
+        Textarea,
+        Modal,
+        ModalOverlay,
+        ModalContent,
+        ModalHeader,
+        ModalFooter,
+        ModalBody,
+        ModalCloseButton,
+        Button,
+    } from '@chakra-ui/react'
 
-function ModalUpdate({ isOpen, onClose, cancelRef, id }) {
+function ModalUpdate({ isOpen, onClose, id }) {
+    const initialRef = useRef(null)
+    const finalRef = useRef(null)
+
     const [show, setShow] = useState(false)
     const handleClick = () => setShow(!show)
+
     const handleSubmit = () => {
 
     }
 
     return (
         <>
-            <AlertDialog
-                            motionPreset="slideInBottom"
-                            leastDestructiveRef={cancelRef}
-                            onClose={onClose}
-                            isOpen={isOpen}
-                            isCentered
-                          >
-                            <AlertDialogOverlay />
+            <Modal
+                initialFocusRef={initialRef}
+                finalFocusRef={finalRef}
+                size={'xl'}
+                isOpen={isOpen}
+                onClose={onClose}
+            >
 
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                Edit Data {id}
-                              </AlertDialogHeader>
-                              <AlertDialogCloseButton />
-                              <AlertDialogBody>
-                              <form onSubmit={handleSubmit}>
-              
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>แก้ไขข้อมูล {id}</ModalHeader>
+                    <ModalCloseButton />
+
+                    <ModalBody>
+                        <form onSubmit={handleSubmit}>
                             <Flex gap='4'>
                                 <FormLabel className='mt-2'>ชื่อจริง</FormLabel>
                                 <Input onChange={(e) => setFirstname(e.target.value)} placeholder='ชื่อจริง' size='md' className='w-1' />
@@ -79,34 +80,17 @@ function ModalUpdate({ isOpen, onClose, cancelRef, id }) {
                                 </InputRightElement>
                             </InputGroup>
                             <br />
-                            <FormLabel>ยืนยันรหัสผ่าน</FormLabel>
-                            <InputGroup size='md'>
-                                <Input
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    pr='4.5rem'
-                                    type={show ? 'text' : 'password'}
-                                    placeholder='ยืนยันรหัสผ่าน'
-                                />
-                                <InputRightElement width='4.5rem'>
-                                    <Button h='1.75rem' size='sm' onClick={handleClick}>
-                                        {show ? 'ซ่อน' : 'แสดง'}
-                                    </Button>
-                                </InputRightElement>
-                            </InputGroup>
-                            <br />
-                            
-                        </form>    
-                              </AlertDialogBody>
-                              <AlertDialogFooter>
-                                <Button ref={cancelRef} onClick={onClose}>
-                                  No
-                                </Button>
-                                <Button colorScheme="red" ml={3}>
-                                  Yes
-                                </Button>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
+                        </form>
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button colorScheme='blue' mr={3}>
+                            แก้ไข
+                        </Button>
+                        <Button onClick={onClose}>ยกเลิก</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </>
     )
 }
