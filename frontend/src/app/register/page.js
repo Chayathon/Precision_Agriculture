@@ -20,7 +20,7 @@ function Page() {
     const [confirmPassword, setConfirmPassword] = useState("")
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
 
         if(password != confirmPassword) {
             toast.error("รหัสผ่านไม่ตรงกัน!")
@@ -60,8 +60,8 @@ function Page() {
                 return;
             }
         }
-        catch (error) {
-            console.log("Error", error)
+        catch (err) {
+            console.log("Error", err)
         }
     }
 

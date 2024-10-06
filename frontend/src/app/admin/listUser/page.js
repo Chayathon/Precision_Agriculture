@@ -9,8 +9,11 @@ import ModalDelete from "../components/ModalDelete";
 
 function Page() {
     const [users, setUsers] = useState([]);
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const cancelRef = useRef()
+    const [selectedId, setSelectedId] = useState(null);
+
+    const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onClose: onCloseUpdate } = useDisclosure();
+    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
+    const cancelRef = useRef();
 
     const fetchUser = async (role_id) => {
         try {
@@ -63,13 +66,13 @@ function Page() {
                                 <Td>{user.username}</Td>
                                 <Td>
                                     <ButtonGroup size='sm' colorScheme='gray' isAttached>
-                                        <Button onClick={onOpen}>
-                                            แก้ไข
-                                            <ModalUpdate isOpen={isOpen} onClose={onClose} id={user.id} />
+                                        <Button onClick={() => {setSelectedId(user.id); onOpenUpdate();}}>
+                                            แก้ไข {user.id}
+                                            <ModalUpdate isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} />
                                         </Button>
-                                        <Button onClick={onOpen}>
-                                            ลบ
-                                            <ModalDelete isOpen={isOpen} onClose={onClose} cancelRef={cancelRef} id={user.id} />
+                                        <Button onClick={() => {setSelectedId(user.id); onOpenDelete();}}>
+                                            ลบ {user.id}
+                                            <ModalDelete isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} />
                                         </Button>
                                     </ButtonGroup>
                                 </Td>
@@ -85,7 +88,7 @@ function Page() {
                                         color="gray"
                                         ariaLabel="tail-spin-loading"
                                     />
-                                    </Flex>
+                                </Flex>
                             </Td>
                         </Tr>
                     )}

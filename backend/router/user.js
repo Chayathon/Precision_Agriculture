@@ -19,13 +19,29 @@ router.get("/listUser/:role_id", authIsCheck, isAdmin, async (req, res) => {
 
     if (getUser) {
         res.status(200).json({
-            message: "GetUser",
+            message: "Get User",
             resultData: getUser,
         });
     }
 });
 
-router.put("/edituser/:id", async (req, res) => {
+router.get("/getUser/:id", async (req, res) => {
+    const { id } = req.params;
+    const getUser = await prisma.user.findMany({
+        where: {
+            id: Number(id),
+        },
+    });
+
+    if (getUser) {
+        res.status(200).json({
+            message: "GetUser by ID",
+            getUser
+        });
+    }
+});
+
+router.put("/update/:id", async (req, res) => {
     const { id } = req.params;
     const putUser = await prisma.user.update({
         where: { id: Number(id) },

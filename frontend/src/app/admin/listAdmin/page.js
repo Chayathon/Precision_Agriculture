@@ -2,22 +2,16 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Cookies from "js-cookie";
-import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
-    ButtonGroup,
-    Button,
-    useDisclosure } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableContainer, ButtonGroup, Button, useDisclosure } from '@chakra-ui/react';
 import ModalUpdate from '../components/ModalUpdate';
 import ModalDelete from '../components/ModalDelete';
 
 function Page() {
     const [admins, setAdmins] = useState([])
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    
+    const [selectedId, setSelectedId] = useState(null);
+    const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onClose: onCloseUpdate } = useDisclosure();
+    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
     const cancelRef = useRef()
 
     const fetchAdmin = async (role_id) => {
@@ -71,13 +65,13 @@ function Page() {
                                     <Td>{admin.role.role_name}</Td>
                                     <Td>
                                         <ButtonGroup size='sm' colorScheme='gray' isAttached>
-                                            <Button onClick={onOpen}>
+                                            <Button onClick={() => {setSelectedId(user.id); onOpenUpdate();}}>
                                                 แก้ไข
-                                                <ModalUpdate isOpen={isOpen} onClose={onClose} id={admin.id} />
+                                                <ModalUpdate isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} />
                                             </Button>
-                                            <Button onClick={onOpen}>
+                                            <Button onClick={() => {setSelectedId(user.id); onOpenDelete();}}>
                                                 ลบ
-                                                <ModalDelete isOpen={isOpen} onClose={onClose} cancelRef={cancelRef} id={admin.id} />
+                                                <ModalDelete isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} />
                                             </Button>
                                         </ButtonGroup>
                                     </Td>
