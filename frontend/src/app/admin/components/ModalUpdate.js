@@ -16,8 +16,9 @@ import {
         ModalCloseButton,
         Button,
     } from '@chakra-ui/react'
+import { toast } from 'react-toastify'
 
-function ModalUpdateAdmin({ isOpen, onClose, id }) {
+function ModalUpdate({ isOpen, onClose, id }) {
     const initialRef = useRef(null)
     const finalRef = useRef(null)
 
@@ -37,27 +38,20 @@ function ModalUpdateAdmin({ isOpen, onClose, id }) {
             const fetchData = async (id) => {
                 try {
                     const res = await fetch(`http://localhost:4000/api/getUser/${id}`);
-                        const data = await res.json();
-                        
-                        setFirstname(data.firstname)
-                        setLastname(data.lastname)
-                        setEmail(data.email)
-                        setTel(data.tel)
-                        setAddress(data.address)
-                        setUsername(data.username)
-                        setPassword(data.password)
-
-                        console.log(data.firstname)
-                        console.log(data.lastname)
-                        console.log(data.email)
-                        console.log(data.tel)
-                        console.log(data.address)
-                        console.log(data.username)
-                        console.log(data.password)
                         
                     if (!res.ok) {
                         throw new Error("Failed to fetch");
                     }
+
+                    const data = await res.json();
+                    
+                    setFirstname(data.firstname)
+                    setLastname(data.lastname)
+                    setEmail(data.email)
+                    setTel(data.tel)
+                    setAddress(data.address)
+                    setUsername(data.username)
+                    setPassword(data.password)
                 }
                 catch (err) {
                     console.error("Error fetching data: ", err);
@@ -91,6 +85,7 @@ function ModalUpdateAdmin({ isOpen, onClose, id }) {
                 const form = e.target
                 form.reset()
                 toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว")  
+                onClose();
             }
             else {
                 toast.error("แก้ไขข้อมูลล้มเหลว")
@@ -160,7 +155,7 @@ function ModalUpdateAdmin({ isOpen, onClose, id }) {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3}>
+                        <Button type='submit' colorScheme='blue' mr={3}>
                             แก้ไข
                         </Button>
                         <Button onClick={onClose}>ยกเลิก</Button>
@@ -171,4 +166,4 @@ function ModalUpdateAdmin({ isOpen, onClose, id }) {
     )
 }
 
-export default ModalUpdateAdmin
+export default ModalUpdate

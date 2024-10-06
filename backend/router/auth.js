@@ -17,7 +17,10 @@ router.post("/register", async (req, res) => {
 
     const checkUser = await prisma.user.findFirst({
         where: {
-            email: req.body.email,
+            OR : [
+                { email: req.body.email },
+                { username: req.body.username}
+            ]
         },
     });
 

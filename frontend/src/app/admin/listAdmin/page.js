@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Cookies from "js-cookie";
 import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableContainer, ButtonGroup, Button, useDisclosure } from '@chakra-ui/react';
+import { TailSpin } from "react-loader-spinner";
 import ModalUpdate from '../components/ModalUpdate';
 import ModalDelete from '../components/ModalDelete';
 
@@ -65,11 +66,11 @@ function Page() {
                                     <Td>{admin.role.role_name}</Td>
                                     <Td>
                                         <ButtonGroup size='sm' colorScheme='gray' isAttached>
-                                            <Button onClick={() => {setSelectedId(user.id); onOpenUpdate();}}>
+                                            <Button onClick={() => {setSelectedId(admin.id); onOpenUpdate();}}>
                                                 แก้ไข
                                                 <ModalUpdate isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} />
                                             </Button>
-                                            <Button onClick={() => {setSelectedId(user.id); onOpenDelete();}}>
+                                            <Button onClick={() => {setSelectedId(admin.id); onOpenDelete();}}>
                                                 ลบ
                                                 <ModalDelete isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} />
                                             </Button>
@@ -79,7 +80,16 @@ function Page() {
                             ))
                         ) : (
                             <Tr>
-                                <Td>Loading Data...</Td>
+                                <Td colSpan='8' className="text-center">
+                                    <Flex className="justify-center">
+                                        Loading Data... &emsp; <TailSpin
+                                            height="25"
+                                            width="25"
+                                            color="gray"
+                                            ariaLabel="tail-spin-loading"
+                                        />
+                                    </Flex>
+                                </Td>
                             </Tr>
                         )}
                     </Tbody>

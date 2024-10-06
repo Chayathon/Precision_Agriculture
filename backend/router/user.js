@@ -34,10 +34,7 @@ router.get("/getUser/:id", async (req, res) => {
     });
 
     if (getUser) {
-        res.status(200).json({
-            message: "GetUser by ID",
-            getUser
-        });
+        res.json(getUser);
     }
 });
 
