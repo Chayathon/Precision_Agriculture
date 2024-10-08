@@ -9,8 +9,9 @@ import ModalDelete from '../components/ModalDelete';
 
 function Page() {
     const [admins, setAdmins] = useState([])
-    
     const [selectedId, setSelectedId] = useState(null);
+    const [refresh, setRefresh] = useState(false)
+
     const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onClose: onCloseUpdate } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
     const cancelRef = useRef()
@@ -35,7 +36,7 @@ function Page() {
 
     useEffect(() => {
         fetchAdmin(2);
-    }, []);
+    }, [refresh]);
 
     return (
         <>
@@ -68,11 +69,15 @@ function Page() {
                                         <ButtonGroup size='sm' colorScheme='gray' isAttached>
                                             <Button onClick={() => {setSelectedId(admin.id); onOpenUpdate();}}>
                                                 แก้ไข
-                                                <ModalUpdate isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} />
+                                                {isOpenUpdate && (
+                                                    <ModalUpdate isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} setRefresh={setRefresh} />
+                                                )}
                                             </Button>
                                             <Button onClick={() => {setSelectedId(admin.id); onOpenDelete();}}>
                                                 ลบ
-                                                <ModalDelete isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} />
+                                                {isOpenDelete && (
+                                                    <ModalDelete isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} setRefresh={setRefresh} />
+                                                )}
                                             </Button>
                                         </ButtonGroup>
                                     </Td>

@@ -9,8 +9,8 @@ import ModalDelete from "../components/ModalDelete";
 
 function Page() {
     const [users, setUsers] = useState([]);
-    
     const [selectedId, setSelectedId] = useState(null);
+    const [refresh, setRefresh] = useState(false)
 
     const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onClose: onCloseUpdate } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
@@ -23,20 +23,19 @@ function Page() {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
-            if (!res.ok) {
-                throw new Error("Failed to fetch");
+            if (res.ok) {
+                const data = await res.json();
+                setUsers(data.resultData);
+            
             }
-
-            const data = await res.json();
-            setUsers(data.resultData);
         } catch (error) {
             console.error("Error fetching data: ", error);
         }
     };
 
     useEffect(() => {
-        fetchUser(1);
-    }, []);
+        fetchUser(1)
+    }, [refresh])
 
     return (
         <>
@@ -69,11 +68,17 @@ function Page() {
                                     <ButtonGroup size='sm' colorScheme='gray' isAttached>
                                         <Button onClick={() => {setSelectedId(user.id); onOpenUpdate();}}>
                                             แก้ไข {user.id}
-                                            <ModalUpdate isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} />
+                                            {isOpenUpdate && (
+                                                <ModalUpdate isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} setRefresh={setRefresh} />
+                                            )}
+                                            
                                         </Button>
                                         <Button onClick={() => {setSelectedId(user.id); onOpenDelete();}}>
                                             ลบ {user.id}
-                                            <ModalDelete isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} />
+                                            {isOpenDelete && (
+                                                <ModalDelete isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} setRefresh={setRefresh} />
+                                            )}
+                                            
                                         </Button>
                                     </ButtonGroup>
                                 </Td>

@@ -1,17 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import {
-    AlertDialog,
-    AlertDialogBody,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogContent,
-    AlertDialogOverlay,
-    AlertDialogCloseButton,
-    Button
-  } from '@chakra-ui/react'
-  import { toast } from 'react-toastify'
+import { AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from '@chakra-ui/react'
+import { toast } from 'react-toastify'
 
-function ModalDelete({ isOpen, onClose, cancelRef, id }) {
+function ModalDelete({ isOpen, onClose, cancelRef, id, setRefresh }) {
     const [username, setUsername] = useState('')
 
     useEffect(() => {
@@ -25,8 +16,7 @@ function ModalDelete({ isOpen, onClose, cancelRef, id }) {
                     }
 
                     const data = await res.json();
-                    
-                    setUsername(data.username)
+                    setUsername(data.resultData.username)
                 }
                 catch (err) {
                     console.error("Error fetching data: ", err);
@@ -35,7 +25,7 @@ function ModalDelete({ isOpen, onClose, cancelRef, id }) {
 
             fetchData()
         }
-    }, [isOpen, id])
+    }, [isOpen])
 
     const handleSubmit = async () => {
         try{
@@ -46,14 +36,13 @@ function ModalDelete({ isOpen, onClose, cancelRef, id }) {
             if (res.ok) {
                 toast.success("ลบข้อมูลเรียบร้อยแล้ว")  
                 onClose();
-                location.reload();
+                setRefresh(true)
             }
             else {
                 toast.error("ลบข้อมูลล้มเหลว")
                 return;
             }
-        }
-        catch (err) {
+        } catch (err) {
             console.error("Error: ", err);
         }
     }
@@ -72,7 +61,7 @@ function ModalDelete({ isOpen, onClose, cancelRef, id }) {
                         </AlertDialogHeader>
 
                         <AlertDialogBody>
-                            Are you sure? to delete {username}.
+                            ยืนยันที่จะลบข้อมูล <b>{username}</b> ?
                         </AlertDialogBody>
 
                         <AlertDialogFooter>

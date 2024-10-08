@@ -1,24 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Cookies from 'js-cookie'
-import {
-        Flex,
-        FormLabel,
-        Input,
-        InputGroup,
-        InputRightElement,
-        Textarea,
-        Modal,
-        ModalOverlay,
-        ModalContent,
-        ModalHeader,
-        ModalFooter,
-        ModalBody,
-        ModalCloseButton,
-        Button,
-    } from '@chakra-ui/react'
+import { Flex, FormLabel, Input, InputGroup, InputRightElement, Textarea, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Button, } from '@chakra-ui/react'
 import { toast } from 'react-toastify'
 
-function ModalUpdate({ isOpen, onClose, id }) {
+function ModalUpdate({ isOpen, onClose, id, setRefresh }) {
     const initialRef = useRef(null)
     const finalRef = useRef(null)
 
@@ -84,8 +68,10 @@ function ModalUpdate({ isOpen, onClose, id }) {
             if(res.ok) {
                 const form = e.target
                 form.reset()
+
                 toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว")  
                 onClose();
+                setRefresh(true)
             }
             else {
                 toast.error("แก้ไขข้อมูลล้มเหลว")
@@ -151,15 +137,13 @@ function ModalUpdate({ isOpen, onClose, id }) {
                                 </InputRightElement>
                             </InputGroup>
                             <br />
+
+                            <Button type='submit' colorScheme='blue' mr={3}>
+                                แก้ไข
+                            </Button>
+                            <Button onClick={onClose}>ยกเลิก</Button>
                         </form>
                     </ModalBody>
-
-                    <ModalFooter>
-                        <Button type='submit' colorScheme='blue' mr={3}>
-                            แก้ไข
-                        </Button>
-                        <Button onClick={onClose}>ยกเลิก</Button>
-                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </>

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Card, CardHeader, CardBody, Heading, FormLabel, Input, InputGroup, InputRightElement, Textarea, Button, Stack, Flex, Alert, AlertIcon, AlertTitle } from '@chakra-ui/react'
+import { Card, CardHeader, CardBody, Heading, FormLabel, Input, InputGroup, InputRightElement, Textarea, Button, Stack, Flex } from '@chakra-ui/react'
 import { toast } from 'react-toastify'
 
 function Page() {
