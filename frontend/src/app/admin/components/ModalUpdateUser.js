@@ -99,7 +99,7 @@ function ModalUpdate({ isOpen, onClose, id, setRefresh }) {
 
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>แก้ไขข้อมูล {id}</ModalHeader>
+                    <ModalHeader>แก้ไขข้อมูล</ModalHeader>
                     <ModalCloseButton />
 
                     <ModalBody>

@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Button, ButtonGroup, Stack, Flex, useDisclosure } from "@chakra-ui/react";
 import { TailSpin } from "react-loader-spinner";
-import ModalUpdate from "../components/ModalUpdate";
-import ModalDelete from "../components/ModalDelete";
+import ModalUpdate from "../components/ModalUpdateRole";
+import ModalDelete from "../components/ModalDeleteRole";
 
 function Page() {
     const [roles, setRoles] = useState([]);

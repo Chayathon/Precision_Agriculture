@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Button, ButtonGroup, Stack, Flex, useDisclosure } from "@chakra-ui/react";
 import { TailSpin } from "react-loader-spinner";
-import ModalUpdate from "../components/ModalUpdate";
-import ModalDelete from "../components/ModalDelete";
+import ModalUpdate from "../components/ModalUpdateUser";
+import ModalDelete from "../components/ModalDeleteUser";
 
 function Page() {
     const [users, setUsers] = useState([]);
@@ -43,7 +43,6 @@ function Page() {
             <Table size='lg'>
                 <Thead>
                     <Tr>
-                        <Th>ไอดี</Th>
                         <Th>ชื่อจริง</Th>
                         <Th>นามสกุล</Th>
                         <Th>อีเมล</Th>
@@ -57,7 +56,6 @@ function Page() {
                     {users && users.length > 0 ? (
                         users.map((user) => (
                             <Tr key={user.id}>
-                                <Td>{user.id}</Td>
                                 <Td>{user.firstname}</Td>
                                 <Td>{user.lastname}</Td>
                                 <Td>{user.email}</Td>
@@ -67,14 +65,14 @@ function Page() {
                                 <Td>
                                     <ButtonGroup size='sm' colorScheme='gray' isAttached>
                                         <Button onClick={() => {setSelectedId(user.id); onOpenUpdate();}}>
-                                            แก้ไข {user.id}
+                                            แก้ไข
                                             {isOpenUpdate && (
                                                 <ModalUpdate isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} setRefresh={setRefresh} />
                                             )}
                                             
                                         </Button>
                                         <Button onClick={() => {setSelectedId(user.id); onOpenDelete();}}>
-                                            ลบ {user.id}
+                                            ลบ
                                             {isOpenDelete && (
                                                 <ModalDelete isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} setRefresh={setRefresh} />
                                             )}

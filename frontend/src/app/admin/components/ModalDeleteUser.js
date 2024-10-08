@@ -61,7 +61,7 @@ function ModalDelete({ isOpen, onClose, cancelRef, id, setRefresh }) {
                 <AlertDialogOverlay>
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                            ลบข้อมูล {id}
+                            ลบข้อมูล
                         </AlertDialogHeader>
 
                         <AlertDialogBody>
