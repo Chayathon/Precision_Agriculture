@@ -44,8 +44,6 @@ function Page() {
                 
                 toast.success("เข้าสู่ระบบแล้ว")
                 router.push(data.path)
-                // const form = e.target
-                // form.reset()
             }
             else {
                 toast.error("ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง!")

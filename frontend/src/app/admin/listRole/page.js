@@ -4,35 +4,38 @@ import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Button, ButtonGroup, Stack, Flex, useDisclosure } from "@chakra-ui/react";
 import { TailSpin } from "react-loader-spinner";
-
-import Modleedit from "../components/ModalUpdateUser";
+import ModalUpdate from "../components/ModalUpdate";
+import ModalDelete from "../components/ModalDelete";
 
 function Page() {
-    const { isOpen, onOpen, onClose } = useDisclosure();
-    const cancelRef = useRef();
-    const [users, setUsers] = useState([]);
+    const [roles, setRoles] = useState([]);
+    const [selectedId, setSelectedId] = useState(null);
+    const [refresh, setRefresh] = useState(false)
 
-    const fetchRole = async (id) => {
+    const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onClose: onCloseUpdate } = useDisclosure();
+    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
+    const cancelRef = useRef();
+
+    const fetchUser = async (role_id) => {
         try {
             const token = Cookies.get("Token");
-            const res = await fetch(`http://localhost:4000/api/listRole/${id}`, {
+            const res = await fetch(`http://localhost:4000/api/listRole/${role_id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
-            if (!res.ok) {
-                throw new Error("Failed to fetch");
+            if (res.ok) {
+                const data = await res.json();
+                setRoles(data.resultData);
+            
             }
-
-            const data = await res.json();
-            setUsers(data.resultData);
         } catch (error) {
             console.error("Error fetching data: ", error);
         }
     };
 
     useEffect(() => {
-        fetchRole();
-    }, []);
+        fetchUser(1)
+    }, [refresh])
 
     return (
         <>
@@ -40,42 +43,34 @@ function Page() {
             <Table size='lg'>
                 <Thead>
                     <Tr>
-                        <Th>Firstname</Th>
-                        <Th>Lastname</Th>
-                        <Th>Email</Th>
-                        <Th>Tel</Th>
-                        <Th>Address</Th>
-                        <Th>Username</Th>
-                        <Th>Role</Th>
-                        <Th>Tool</Th>
+                        <Th>ไอดี</Th>
+                        <Th>ตำแหน่ง</Th>
+                        <Th>จัดการ</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {users && users.length > 0 ? (
-                        users.map((user) => (
-                            <Tr key={user.id}>
-                                <Td>{user.firstname}</Td>
-                                <Td>{user.lastname}</Td>
-                                <Td>{user.email}</Td>
-                                <Td>{user.tel}</Td>
-                                <Td>{user.address}</Td>
-                                <Td>{user.username}</Td>
-                                <Td>{user.role.role_name}</Td>
+                    {roles && roles.length > 0 ? (
+                        roles.map((role) => (
+                            <Tr key={role.id}>
+                                <Td>{role.id}</Td>
+                                <Td>{role.role_name}</Td>
                                 <Td>
-                                    <Stack direction="row" spacing={1}>
-                                    <Button
-                                        colorScheme="teal"
-                                        variant="outline"
-                                        onClick={onOpen}
-                                    >Edit
-                                        <Modleedit isOpen={isOpen} onClose={onClose} cancelRef={cancelRef} id={user.id} />
-                                    </Button>
-                                    
-                                    <Button colorScheme="teal" variant="outline">
-                                        Delete
-                                    </Button>
-                                    S
-                                    </Stack>
+                                    <ButtonGroup size='sm' colorScheme='gray' isAttached>
+                                        <Button onClick={() => {setSelectedId(role.id); onOpenUpdate();}}>
+                                            แก้ไข {role.id}
+                                            {isOpenUpdate && (
+                                                <ModalUpdate isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} setRefresh={setRefresh} />
+                                            )}
+                                            
+                                        </Button>
+                                        <Button onClick={() => {setSelectedId(role.id); onOpenDelete();}}>
+                                            ลบ {role.id}
+                                            {isOpenDelete && (
+                                                <ModalDelete isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} setRefresh={setRefresh} />
+                                            )}
+                                            
+                                        </Button>
+                                    </ButtonGroup>
                                 </Td>
                             </Tr>
                         ))
@@ -89,7 +84,7 @@ function Page() {
                                         color="gray"
                                         ariaLabel="tail-spin-loading"
                                     />
-                                    </Flex>
+                                </Flex>
                             </Td>
                         </Tr>
                     )}

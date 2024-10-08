@@ -4,19 +4,16 @@ const router = express.Router()
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-router.get('/listRole/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const getRole = await prisma.role.findMany({
-            where: {
-                id: Number(id),
-            },
-        });
+const { authIsCheck, isAdmin } = require("../middleware/auth");
 
-        if (getRole) {
+router.get('/listRole/:role_id', authIsCheck, isAdmin, async (req, res) => {
+    try {
+        const listRole = await prisma.role.findMany();
+
+        if (listRole) {
             res.status(200).json({
                 message: "Get Role",
-                resultData: getRole,
+                resultData: listRole,
             });
         }
     }
