@@ -23,7 +23,7 @@ model user {
   username String
   password String
   role_id Int
-  role role @relation(fields: [role_id], references: [id]) // rename 'author' to 'role' for clarity
+  role role @relation(fields: [role_id], references: [id]) 
 
 }
 

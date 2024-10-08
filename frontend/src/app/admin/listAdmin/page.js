@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Cookies from "js-cookie";
-import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableContainer, ButtonGroup, Button, useDisclosure } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableContainer, ButtonGroup, Button, useDisclosure, Flex } from '@chakra-ui/react';
 import { TailSpin } from "react-loader-spinner";
 import ModalUpdate from '../components/ModalUpdate';
 import ModalDelete from '../components/ModalDelete';
