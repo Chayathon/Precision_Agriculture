@@ -72,6 +72,10 @@ function ModalUpdate({ isOpen, onClose, id, setRefresh }) {
                 toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว")  
                 onClose();
                 setRefresh(true)
+
+                setTimeout(() => {
+                    setRefresh(false)
+                }, 1000)
             }
             else {
                 toast.error("แก้ไขข้อมูลล้มเหลว")

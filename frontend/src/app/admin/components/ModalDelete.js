@@ -37,6 +37,10 @@ function ModalDelete({ isOpen, onClose, cancelRef, id, setRefresh }) {
                 toast.success("ลบข้อมูลเรียบร้อยแล้ว")  
                 onClose();
                 setRefresh(true)
+
+                setTimeout(() => {
+                    setRefresh(false)
+                }, 1000)
             }
             else {
                 toast.error("ลบข้อมูลล้มเหลว")
