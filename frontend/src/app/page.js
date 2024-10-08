@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Cookies from 'js-cookie';
-import { Flex, Card, CardHeader, CardBody, Heading, FormLabel, Input, InputGroup, InputRightElement, Button, Stack, Text, Alert, AlertIcon, AlertTitle } from '@chakra-ui/react'
+import { Flex, Card, CardHeader, CardBody, Heading, FormLabel, Input, InputGroup, InputRightElement, Button, Stack, Text } from '@chakra-ui/react'
 import { toast } from 'react-toastify';
 
 function Page() {
