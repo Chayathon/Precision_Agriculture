@@ -18,20 +18,21 @@ function UserNavbar() {
         router.push('/')
     }
 
-  return (
-    <nav className='bg-[#333] text-white p-5'>
-        <div className='container mx-auto'>
-            <div className='flex justify-between items-center'>
-                <div>
-                    <Text>Precision Agriculture</Text>
+    
+    return (
+        <nav className='bg-[#333] text-white p-5'>
+            <div className='container mx-auto'>
+                <div className='flex justify-between items-center'>
+                    <div>
+                        <Text>Precision Agriculture</Text>
+                    </div>
+                    <ul className='flex'>
+                        <li className='mx-3'><Button onClick={logout}>Log out</Button></li>
+                    </ul>
                 </div>
-                <ul className='flex'>
-                    <li className='mx-3'><Button onClick={logout}>Log out</Button></li>
-                </ul>
             </div>
-        </div>
-    </nav>
-  )
+        </nav>
+    )
 }
 
 export default UserNavbar
