@@ -1,5 +1,4 @@
 import React from 'react'
-import AdminNavbar from './components/Navbar'
 import { Text } from '@chakra-ui/react'
 
 function Page() {
