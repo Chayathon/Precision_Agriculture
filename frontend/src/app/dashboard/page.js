@@ -1,5 +1,4 @@
 import React from 'react'
-import UserNavbar from '../components/navbar'
 import { Text } from '@chakra-ui/react'
 
 function Page() {
