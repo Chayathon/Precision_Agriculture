@@ -7,6 +7,7 @@ const router = express.Router()
 const authIsCheck = async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
+        
         if (!authHeader) {
             return res.status(400).send(
                 'Authorization header missing'
@@ -51,7 +52,7 @@ const isAdmin = async(req, res, next) => {
         if(checkRoleAdmin.role_name != "admin") {
             return res.status(400).send("Access denied")
         }
-
+        
         next()
     } catch(err) {
         console.log(err)

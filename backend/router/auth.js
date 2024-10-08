@@ -7,8 +7,6 @@ const prisma = new PrismaClient();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const { authIsCheck, isAdmin } = require("../middleware/auth");
-
 const keyauth = "lovemymom";
 
 router.post("/register", async (req, res) => {
@@ -41,7 +39,8 @@ router.post("/register", async (req, res) => {
         if (user) {
             res.json("Registered Success");
         }
-    } else {
+    }
+    else {
         res.status(400).json({ error: "User already exists" });
     }
 });
@@ -70,11 +69,11 @@ router.post("/login", async (req, res) => {
             const { id, password, ...rest } = isUser;
             const token = jwt.sign(
                 {
-                data: {
-                    username: isUser.username,
-                    role: isUser.role.role_name,
-                    id: isUser.id,
-                },
+                    data: {
+                        username: isUser.username,
+                        role: isUser.role.role_name,
+                        id: isUser.id,
+                    },
                 },
                 `${keyauth}`,
                 { expiresIn: "24h" }
@@ -86,8 +85,9 @@ router.post("/login", async (req, res) => {
                 resultData: rest,
                 path: rest.role.role_name == "admin" ? "/admin" : "/dashboard",
             });
-        } else {
-        res.status(400).json({
+        }
+        else {
+            res.status(400).json({
                 message: "Password invalid",
             });
         }
