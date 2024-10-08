@@ -8,12 +8,28 @@ const { authIsCheck, isAdmin } = require("../middleware/auth");
 
 router.get("/listUser/:role_id", authIsCheck, isAdmin, async (req, res) => {
     const { role_id } = req.params;
-    const getUser = await prisma.user.findMany({
+    const listUser = await prisma.user.findMany({
         where: {
             role_id: Number(role_id),
         },
         include: {
             role: true,
+        },
+    });
+
+    if (listUser) {
+        res.status(200).json({
+            message: "Get User",
+            resultData: listUser,
+        });
+    }
+});
+
+router.get("/getUser/:id", async (req, res) => {
+    const { id } = req.params;
+    const getUser = await prisma.user.findFirst({
+        where: {
+            id: Number(id),
         },
     });
 
@@ -25,27 +41,16 @@ router.get("/listUser/:role_id", authIsCheck, isAdmin, async (req, res) => {
     }
 });
 
-router.get("/getUser/:id", async (req, res) => {
-    const { id } = req.params;
-    const getUser = await prisma.user.findMany({
-        where: {
-            id: Number(id),
-        },
-    });
-
-    if (getUser) {
-        res.json(getUser);
-    }
-});
-
 router.put("/update/:id", async (req, res) => {
     const { id } = req.params;
     const putUser = await prisma.user.update({
         where: { id: Number(id) },
         data: {
-        username: req.body.username,
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            tel: req.body.tel,
+            address: req.body.address,
         },
     });
     if (putUser) {

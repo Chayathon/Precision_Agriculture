@@ -9,6 +9,7 @@ import ModalDelete from "../components/ModalDelete";
 
 function Page() {
     const [users, setUsers] = useState([]);
+    
     const [selectedId, setSelectedId] = useState(null);
 
     const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onClose: onCloseUpdate } = useDisclosure();

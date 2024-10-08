@@ -25,17 +25,18 @@ function ModalUpdate({ isOpen, onClose, id }) {
     const [show, setShow] = useState(false)
     const handleClick = () => setShow(!show)
 
+   
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
     const [email, setEmail] = useState('')
     const [tel, setTel] = useState('')
     const [address, setAddress] = useState('')
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
 
     useEffect(() => {
         if(isOpen) {
-            const fetchData = async (id) => {
+            const fetchData = async () => {
                 try {
                     const res = await fetch(`http://localhost:4000/api/getUser/${id}`);
                         
@@ -44,40 +45,39 @@ function ModalUpdate({ isOpen, onClose, id }) {
                     }
 
                     const data = await res.json();
-                    
-                    setFirstname(data.firstname)
-                    setLastname(data.lastname)
-                    setEmail(data.email)
-                    setTel(data.tel)
-                    setAddress(data.address)
-                    setUsername(data.username)
-                    setPassword(data.password)
+                    setFirstname(data.resultData.firstname)
+                    setLastname(data.resultData.lastname)
+                    setEmail(data.resultData.email)
+                    setTel(data.resultData.tel)
+                    setAddress(data.resultData.address)
+                    setUsername(data.resultData.username)
+                    setPassword(data.resultData.password)
                 }
                 catch (err) {
                     console.error("Error fetching data: ", err);
                 }
             }
 
-            fetchData(id)
+            fetchData()
         }
-    }, [isOpen, id])
+    }, [isOpen])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if(!firstname || !lastname || !email || !tel || !address || !username || !password) {
+        if(!firstname || !lastname || !email || !tel || !address) {
             toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!")
             return;
         }
 
         try {
-            const res = await fetch(`http://localhost:4000/api/updateAdmin/${id}`, {
+            const res = await fetch(`http://localhost:4000/api/update/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    firstname, lastname, email, tel, address, username, password
+                    firstname, lastname, email, tel, address
                 })
             })
 
@@ -133,16 +133,16 @@ function ModalUpdate({ isOpen, onClose, id }) {
                             <Textarea onChange={(e) => setAddress(e.target.value)} value={address} placeholder='ที่อยู่' />
                             <br /><br />
                             <FormLabel>ชื่อผู้ใช้</FormLabel>
-                            <Input onChange={(e) => setUsername(e.target.value)} value={username} placeholder='ชื่อผู้ใช้' size='md' />
+                            <Input value={username} placeholder='ชื่อผู้ใช้' size='md' disabled />
                             <br /><br />
                             <FormLabel>รหัสผ่าน</FormLabel>
                             <InputGroup size='md'>
                                 <Input
-                                    onChange={(e) => setPassword(e.target.value)}
                                     value={password}
                                     pr='4.5rem'
                                     type={show ? 'text' : 'password'}
                                     placeholder='รหัสผ่าน'
+                                    disabled
                                 />
                                 <InputRightElement width='4.5rem'>
                                     <Button h='1.75rem' size='sm' onClick={handleClick}>
