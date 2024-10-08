@@ -17,6 +17,7 @@ function AdminNavbar() {
         toast.success("ออกจากระบบแล้ว")
         router.push('/')
     }
+    
     return (
         <nav className='bg-[#333] text-white p-5'>
             <div className='container mx-auto'>
