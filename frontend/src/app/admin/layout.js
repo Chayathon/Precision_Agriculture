@@ -7,6 +7,7 @@ export default function AdminLayout({
             <section>
                 {/* Include shared UI here e.g. a header or sidebar */}
                 
+                
                 <AdminNavbar />
                 {children}
             </section>
