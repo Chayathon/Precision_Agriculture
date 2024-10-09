@@ -89,7 +89,7 @@ function ModalUpdate({ isOpen, onClose, id, setRefresh }) {
                     <ModalBody>
                         <form onSubmit={handleSubmit}>
                             <FormLabel>ตำแหน่ง</FormLabel>
-                            <Input value={roleName} placeholder='ตำแหน่ง' size='md' />
+                            <Input onChange={(e) => setRoleName(e.target.value)} value={roleName} placeholder='ตำแหน่ง' size='md' />
 
                             <div className='flex justify-end pt-4 pb-2 '>
                                 <Button type='submit' colorScheme='blue' mr={3}>

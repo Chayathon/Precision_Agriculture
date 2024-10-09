@@ -9,7 +9,7 @@ function ModalDelete({ isOpen, onClose, cancelRef, id, setRefresh }) {
         if(isOpen) {
             const fetchData = async () => {
                 try {
-                    const res = await fetch(`http://localhost:4000/api/getUser/${id}`);
+                    const res = await fetch(`http://localhost:4000/api/getRole/${id}`);
                         
                     if (!res.ok) {
                         throw new Error("Failed to fetch");
