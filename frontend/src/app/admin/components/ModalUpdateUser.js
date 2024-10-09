@@ -9,14 +9,13 @@ function ModalUpdate({ isOpen, onClose, id, setRefresh }) {
     const [show, setShow] = useState(false)
     const handleClick = () => setShow(!show)
 
-   
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
     const [email, setEmail] = useState('')
     const [tel, setTel] = useState('')
     const [address, setAddress] = useState('')
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
 
     useEffect(() => {
         if(isOpen) {
