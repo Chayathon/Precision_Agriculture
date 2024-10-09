@@ -16,12 +16,32 @@ router.get('/listRole/:role_id', authIsCheck, isAdmin, async (req, res) => {
                 resultData: listRole,
             });
         }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Server Error');
     }
-    catch (err) {
-        console.log(err)
-        res.status(500).send('Server Error')
+});
+
+router.get("/getRole/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const getRole = await prisma.role.findFirst({
+            where: {
+                id: Number(id),
+            },
+        });
+
+        if (getRole) {
+            res.status(200).json({
+                message: "Get Role",
+                resultData: getRole,
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Server Error');
     }
-})
+});
 
 router.post('/role', async (req, res) => {
     try {
@@ -30,17 +50,17 @@ router.post('/role', async (req, res) => {
             data: {
                 role_name
             }
-        })
+        });
 
         if(createRole) {
             res.status(200).json({
                 message: 'Role created successfully'
-            })
+            });
         }
     } catch (err) {
-        console.log(err)
-        res.status(500).send('Server Error')
+        console.log(err);
+        res.status(500).send('Server Error');
     }
-})
+});
 
 module.exports = router

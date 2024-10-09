@@ -55,7 +55,7 @@ function ModalUpdate({ isOpen, onClose, id, setRefresh }) {
         }
 
         try {
-            const res = await fetch(`http://localhost:4000/api/update/${id}`, {
+            const res = await fetch(`http://localhost:4000/api/updateUser/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -142,10 +142,12 @@ function ModalUpdate({ isOpen, onClose, id, setRefresh }) {
                             </InputGroup>
                             <br />
 
-                            <Button type='submit' colorScheme='blue' mr={3}>
-                                แก้ไข
-                            </Button>
-                            <Button onClick={onClose}>ยกเลิก</Button>
+                            <div className='flex justify-end pt-4 pb-2 '>
+                                <Button type='submit' colorScheme='blue' mr={3}>
+                                    แก้ไข
+                                </Button>
+                                <Button onClick={onClose}>ยกเลิก</Button>
+                            </div>
                         </form>
                     </ModalBody>
                 </ModalContent>

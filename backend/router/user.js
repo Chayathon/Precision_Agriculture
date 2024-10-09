@@ -41,7 +41,7 @@ router.get("/getUser/:id", async (req, res) => {
     }
 });
 
-router.put("/update/:id", async (req, res) => {
+router.put("/updateUser/:id", async (req, res) => {
     const { id } = req.params;
     const putUser = await prisma.user.update({
         where: { id: Number(id) },
@@ -58,7 +58,7 @@ router.put("/update/:id", async (req, res) => {
     }
 });
 
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/deleteUser/:id", async (req, res) => {
     try {
         const { id } = req.params;
         const delUser = await prisma.user.delete({

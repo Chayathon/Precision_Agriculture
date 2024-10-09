@@ -29,7 +29,7 @@ function ModalDelete({ isOpen, onClose, cancelRef, id, setRefresh }) {
 
     const handleSubmit = async () => {
         try{
-            const res = await fetch(`http://localhost:4000/api/delete/${id}`, {
+            const res = await fetch(`http://localhost:4000/api/deleteUser/${id}`, {
                 method: 'DELETE'
             });
 
@@ -69,12 +69,14 @@ function ModalDelete({ isOpen, onClose, cancelRef, id, setRefresh }) {
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={onClose}>
-                                ยกเลิก
-                            </Button>
-                            <Button colorScheme='red' onClick={handleSubmit} ml={3}>
-                                ลบ
-                            </Button>
+                            <div className='flex justify-end pt-4 pb-2 '>
+                                <Button ref={cancelRef} onClick={onClose}>
+                                    ยกเลิก
+                                </Button>
+                                <Button colorScheme='red' onClick={handleSubmit} ml={3}>
+                                    ลบ
+                                </Button>
+                            </div>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialogOverlay>
