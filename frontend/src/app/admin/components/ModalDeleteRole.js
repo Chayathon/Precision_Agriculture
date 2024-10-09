@@ -17,8 +17,7 @@ function ModalDelete({ isOpen, onClose, cancelRef, id, setRefresh }) {
 
                     const data = await res.json();
                     setRoleName(data.resultData.role_name)
-                }
-                catch (err) {
+                } catch (err) {
                     console.error("Error fetching data: ", err);
                 }
             }
@@ -29,7 +28,7 @@ function ModalDelete({ isOpen, onClose, cancelRef, id, setRefresh }) {
 
     const handleSubmit = async () => {
         try{
-            const res = await fetch(`http://localhost:4000/api/delete/${id}`, {
+            const res = await fetch(`http://localhost:4000/api/deleteRole/${id}`, {
                 method: 'DELETE'
             });
 

@@ -57,14 +57,14 @@ function Page() {
                                 <Td>
                                     <ButtonGroup size='sm' colorScheme='gray' isAttached>
                                         <Button onClick={() => {setSelectedId(role.id); onOpenUpdate();}}>
-                                            แก้ไข {role.id}
+                                            แก้ไข
                                             {isOpenUpdate && (
                                                 <ModalUpdate isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} setRefresh={setRefresh} />
                                             )}
                                             
                                         </Button>
                                         <Button onClick={() => {setSelectedId(role.id); onOpenDelete();}}>
-                                            ลบ {role.id}
+                                            ลบ
                                             {isOpenDelete && (
                                                 <ModalDelete isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} setRefresh={setRefresh} />
                                             )}

@@ -17,8 +17,7 @@ function ModalDelete({ isOpen, onClose, cancelRef, id, setRefresh }) {
 
                     const data = await res.json();
                     setUsername(data.resultData.username)
-                }
-                catch (err) {
+                } catch (err) {
                     console.error("Error fetching data: ", err);
                 }
             }

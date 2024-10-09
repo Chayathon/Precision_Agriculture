@@ -19,9 +19,8 @@ function ModalUpdate({ isOpen, onClose, id, setRefresh }) {
                     }
 
                     const data = await res.json();
-                    setRoleName(data.resultData.role_name)
-                }
-                catch (err) {
+                    setRoleName(data.resultData.role_name);
+                } catch (err) {
                     console.error("Error fetching data: ", err);
                 }
             }
@@ -39,7 +38,7 @@ function ModalUpdate({ isOpen, onClose, id, setRefresh }) {
         }
 
         try {
-            const res = await fetch(`http://localhost:4000/api/update/${id}`, {
+            const res = await fetch(`http://localhost:4000/api/updateRole/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -65,8 +64,7 @@ function ModalUpdate({ isOpen, onClose, id, setRefresh }) {
                 toast.error("แก้ไขข้อมูลล้มเหลว")
                 return;
             }
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
         }
     }

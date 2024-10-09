@@ -35,7 +35,7 @@ router.get("/getUser/:id", async (req, res) => {
 
     if (getUser) {
         res.status(200).json({
-            message: "Get User",
+            message: "Get User by ID",
             resultData: getUser,
         });
     }
@@ -44,7 +44,9 @@ router.get("/getUser/:id", async (req, res) => {
 router.put("/updateUser/:id", async (req, res) => {
     const { id } = req.params;
     const putUser = await prisma.user.update({
-        where: { id: Number(id) },
+        where: {
+                id: Number(id)
+            },
         data: {
             firstname: req.body.firstname,
             lastname: req.body.lastname,
@@ -53,8 +55,11 @@ router.put("/updateUser/:id", async (req, res) => {
             address: req.body.address,
         },
     });
+
     if (putUser) {
-        res.json(putUser);
+        res.status(200).json({
+            message: "User updated successfully",
+        });
     }
 });
 
@@ -68,7 +73,9 @@ router.delete("/deleteUser/:id", async (req, res) => {
         });
 
         if (delUser) {
-            res.json(delUser);
+            res.status(200).json({
+                message: "User Deleted successfully",
+            });
         }
     } catch (err) {
         console.log(err);

@@ -35,8 +35,7 @@ function ModalUpdate({ isOpen, onClose, id, setRefresh }) {
                     setAddress(data.resultData.address)
                     setUsername(data.resultData.username)
                     setPassword(data.resultData.password)
-                }
-                catch (err) {
+                } catch (err) {
                     console.error("Error fetching data: ", err);
                 }
             }
@@ -80,8 +79,7 @@ function ModalUpdate({ isOpen, onClose, id, setRefresh }) {
                 toast.error("แก้ไขข้อมูลล้มเหลว")
                 return;
             }
-        }
-        catch (err) {
+        } catch (err) {
             console.log(err);
         }
     }
