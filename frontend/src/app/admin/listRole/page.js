@@ -16,10 +16,10 @@ function Page() {
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
     const cancelRef = useRef();
 
-    const fetchUser = async (role_id) => {
+    const fetchRole = async () => {
         try {
             const token = Cookies.get("Token");
-            const res = await fetch(`http://localhost:4000/api/listRole/${role_id}`, {
+            const res = await fetch(`http://localhost:4000/api/listRole/`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -34,7 +34,7 @@ function Page() {
     };
 
     useEffect(() => {
-        fetchUser(1)
+        fetchRole()
     }, [refresh])
 
     return (

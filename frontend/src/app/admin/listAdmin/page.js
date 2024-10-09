@@ -41,7 +41,7 @@ function Page() {
     return (
         <>
             <TableContainer>
-                <Table>
+                <Table size='lg'>
                     <Thead>
                         <Tr>
                             <Th>ชื่อจริง</Th>

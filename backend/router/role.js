@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 
 const { authIsCheck, isAdmin } = require("../middleware/auth");
 
-router.get('/listRole/:role_id', authIsCheck, isAdmin, async (req, res) => {
+router.get('/listRole', authIsCheck, isAdmin, async (req, res) => {
     try {
         const listRole = await prisma.role.findMany();
 
@@ -33,7 +33,7 @@ router.get("/getRole/:id", async (req, res) => {
 
         if (getRole) {
             res.status(200).json({
-                message: "Get Role",
+                message: "Get Role by ID",
                 resultData: getRole,
             });
         }
