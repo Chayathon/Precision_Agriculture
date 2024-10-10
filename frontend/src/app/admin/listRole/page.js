@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Button, ButtonGroup, Stack, Flex, useDisclosure } from "@chakra-ui/react";
 import { TailSpin } from "react-loader-spinner";
+import ModalCreateRole from "../components/ModalCreateRole";
 import ModalUpdateRole from "../components/ModalUpdateRole";
 import ModalDeleteRole from "../components/ModalDeleteRole";
 
@@ -12,6 +13,7 @@ function Page() {
     const [selectedId, setSelectedId] = useState(null);
     const [refresh, setRefresh] = useState(false)
 
+    const { isOpen: isOpenCreate, onOpen: onOpenCreate, onClose: onCloseCreate } = useDisclosure();
     const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onClose: onCloseUpdate } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
     const cancelRef = useRef();
@@ -39,58 +41,66 @@ function Page() {
 
     return (
         <>
-        <TableContainer>
-            <Table size='lg'>
-                <Thead>
-                    <Tr>
-                        <Th>ไอดี</Th>
-                        <Th>ตำแหน่ง</Th>
-                        <Th>จัดการ</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {roles && roles.length > 0 ? (
-                        roles.map((role) => (
-                            <Tr key={role.id}>
-                                <Td>{role.id}</Td>
-                                <Td>{role.role_name}</Td>
-                                <Td>
-                                    <ButtonGroup size='sm' colorScheme='gray' isAttached>
-                                        <Button onClick={() => {setSelectedId(role.id); onOpenUpdate();}}>
-                                            แก้ไข
-                                            {isOpenUpdate && (
-                                                <ModalUpdateRole isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} setRefresh={setRefresh} />
-                                            )}
-                                            
-                                        </Button>
-                                        <Button onClick={() => {setSelectedId(role.id); onOpenDelete();}}>
-                                            ลบ
-                                            {isOpenDelete && (
-                                                <ModalDeleteRole isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} setRefresh={setRefresh} />
-                                            )}
-                                            
-                                        </Button>
-                                    </ButtonGroup>
+            <div className="flex justify-end px-4 pt-2">
+                <Button onClick={() => {onOpenCreate()}} colorScheme='green'>
+                    เพิ่ม
+                    {isOpenCreate && (
+                        <ModalCreateRole isOpen={isOpenCreate} onClose={onCloseCreate} setRefresh={setRefresh} />
+                    )}
+                </Button>
+            </div>
+            <TableContainer>
+                <Table size='lg'>
+                    <Thead>
+                        <Tr>
+                            <Th>ไอดี</Th>
+                            <Th>ตำแหน่ง</Th>
+                            <Th>จัดการ</Th>
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {roles && roles.length > 0 ? (
+                            roles.map((role) => (
+                                <Tr key={role.id}>
+                                    <Td>{role.id}</Td>
+                                    <Td>{role.role_name}</Td>
+                                    <Td>
+                                        <ButtonGroup size='sm' colorScheme='gray' isAttached>
+                                            <Button onClick={() => {setSelectedId(role.id); onOpenUpdate();}}>
+                                                แก้ไข
+                                                {isOpenUpdate && (
+                                                    <ModalUpdateRole isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} setRefresh={setRefresh} />
+                                                )}
+                                                
+                                            </Button>
+                                            <Button onClick={() => {setSelectedId(role.id); onOpenDelete();}}>
+                                                ลบ
+                                                {isOpenDelete && (
+                                                    <ModalDeleteRole isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} setRefresh={setRefresh} />
+                                                )}
+                                                
+                                            </Button>
+                                        </ButtonGroup>
+                                    </Td>
+                                </Tr>
+                            ))
+                        ) : (
+                            <Tr>
+                                <Td colSpan='8' className="text-center">
+                                    <Flex className="justify-center">
+                                        Loading Data... &emsp; <TailSpin
+                                            height="25"
+                                            width="25"
+                                            color="gray"
+                                            ariaLabel="tail-spin-loading"
+                                        />
+                                    </Flex>
                                 </Td>
                             </Tr>
-                        ))
-                    ) : (
-                        <Tr>
-                            <Td colSpan='8' className="text-center">
-                                <Flex className="justify-center">
-                                    Loading Data... &emsp; <TailSpin
-                                        height="25"
-                                        width="25"
-                                        color="gray"
-                                        ariaLabel="tail-spin-loading"
-                                    />
-                                </Flex>
-                            </Td>
-                        </Tr>
-                    )}
-                </Tbody>
-            </Table>
-        </TableContainer>
+                        )}
+                    </Tbody>
+                </Table>
+            </TableContainer>
         </>
     );
 }
