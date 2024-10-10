@@ -4,6 +4,8 @@ const router = express.Router()
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
+const bcrypt = require("bcrypt");
+
 const { authIsCheck, isAdmin } = require("../middleware/auth");
 
 router.get("/listAdmin/:role_id", authIsCheck, isAdmin, async (req, res) => {
@@ -25,7 +27,7 @@ router.get("/listAdmin/:role_id", authIsCheck, isAdmin, async (req, res) => {
     }
 });
 
-router.post("/createUser", async (req, res) => {
+router.post("/createAdmin", async (req, res) => {
     const password = req.body.password
     const hashPassword = await bcrypt.hash(password, 10);
 

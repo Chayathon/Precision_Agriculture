@@ -4,14 +4,16 @@ import { useState, useEffect, useRef } from 'react'
 import Cookies from "js-cookie";
 import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableContainer, ButtonGroup, Button, useDisclosure, Flex } from '@chakra-ui/react';
 import { TailSpin } from "react-loader-spinner";
-import ModalUpdate from '../components/ModalUpdateUser';
-import ModalDelete from '../components/ModalDeleteUser';
+import ModalCreateAdmin from '../components/ModalCreateAdmin';
+import ModalUpdateUser from '../components/ModalUpdateUser';
+import ModalDeleteUser from '../components/ModalDeleteUser';
 
 function Page() {
     const [admins, setAdmins] = useState([])
     const [selectedId, setSelectedId] = useState(null);
     const [refresh, setRefresh] = useState(false)
 
+    const { isOpen: isOpenCreate, onOpen: onOpenCreate, onClose: onCloseCreate } = useDisclosure();
     const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onClose: onCloseUpdate } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
     const cancelRef = useRef()
@@ -40,6 +42,14 @@ function Page() {
 
     return (
         <>
+            <div className="flex justify-end px-4 pt-2">
+                <Button onClick={() => {onOpenCreate()}} colorScheme='green'>
+                    เพิ่ม
+                    {isOpenCreate && (
+                        <ModalCreateAdmin isOpen={isOpenCreate} onClose={onCloseCreate} setRefresh={setRefresh} />
+                    )}
+                </Button>
+            </div>
             <TableContainer>
                 <Table size='lg'>
                     <Thead>
@@ -70,13 +80,13 @@ function Page() {
                                             <Button onClick={() => {setSelectedId(admin.id); onOpenUpdate();}}>
                                                 แก้ไข
                                                 {isOpenUpdate && (
-                                                    <ModalUpdate isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} setRefresh={setRefresh} />
+                                                    <ModalUpdateUser isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} setRefresh={setRefresh} />
                                                 )}
                                             </Button>
                                             <Button onClick={() => {setSelectedId(admin.id); onOpenDelete();}}>
                                                 ลบ
                                                 {isOpenDelete && (
-                                                    <ModalDelete isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} setRefresh={setRefresh} />
+                                                    <ModalDeleteUser isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} setRefresh={setRefresh} />
                                                 )}
                                             </Button>
                                         </ButtonGroup>
