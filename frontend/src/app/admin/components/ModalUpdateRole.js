@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Flex, FormLabel, Input, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Button, } from '@chakra-ui/react'
 import { toast } from 'react-toastify'
 
-function ModalUpdate({ isOpen, onClose, id, setRefresh }) {
+function ModalUpdateRole({ isOpen, onClose, id, setRefresh }) {
     const initialRef = useRef(null)
     const finalRef = useRef(null)
 
@@ -103,4 +103,4 @@ function ModalUpdate({ isOpen, onClose, id, setRefresh }) {
     )
 }
 
-export default ModalUpdate
+export default ModalUpdateRole

@@ -4,6 +4,8 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+const bcrypt = require("bcrypt");
+
 const { authIsCheck, isAdmin } = require("../middleware/auth");
 
 router.get("/listUser/:role_id", authIsCheck, isAdmin, async (req, res) => {
@@ -38,6 +40,44 @@ router.get("/getUser/:id", async (req, res) => {
             message: "Get User by ID",
             resultData: getUser,
         });
+    }
+});
+
+router.post("/createUser", async (req, res) => {
+    const password = req.body.password
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    const checkUser = await prisma.user.findFirst({
+        where: {
+            OR : [
+                { email: req.body.email },
+                { username: req.body.username}
+            ]
+        },
+    });
+
+    if (!checkUser) {
+        const user = await prisma.user.create({
+            data: {
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                email: req.body.email,
+                tel: req.body.tel,
+                address: req.body.address,
+                username: req.body.username,
+                password: hashPassword,
+                role_id: 1,
+            },
+        });
+
+        if (user) {
+            res.status(200).json({
+                message: 'User created successfully',
+            })
+        }
+    }
+    else {
+        res.status(400).json({ error: "User already exists" });
     }
 });
 

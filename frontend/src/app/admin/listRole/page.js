@@ -4,8 +4,8 @@ import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Button, ButtonGroup, Stack, Flex, useDisclosure } from "@chakra-ui/react";
 import { TailSpin } from "react-loader-spinner";
-import ModalUpdate from "../components/ModalUpdateRole";
-import ModalDelete from "../components/ModalDeleteRole";
+import ModalUpdateRole from "../components/ModalUpdateRole";
+import ModalDeleteRole from "../components/ModalDeleteRole";
 
 function Page() {
     const [roles, setRoles] = useState([]);
@@ -59,14 +59,14 @@ function Page() {
                                         <Button onClick={() => {setSelectedId(role.id); onOpenUpdate();}}>
                                             แก้ไข
                                             {isOpenUpdate && (
-                                                <ModalUpdate isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} setRefresh={setRefresh} />
+                                                <ModalUpdateRole isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} setRefresh={setRefresh} />
                                             )}
                                             
                                         </Button>
                                         <Button onClick={() => {setSelectedId(role.id); onOpenDelete();}}>
                                             ลบ
                                             {isOpenDelete && (
-                                                <ModalDelete isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} setRefresh={setRefresh} />
+                                                <ModalDeleteRole isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} setRefresh={setRefresh} />
                                             )}
                                             
                                         </Button>

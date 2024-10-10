@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from '@chakra-ui/react'
 import { toast } from 'react-toastify'
 
-function ModalDelete({ isOpen, onClose, cancelRef, id, setRefresh }) {
+function ModalDeleteRole({ isOpen, onClose, cancelRef, id, setRefresh }) {
     const [roleName, setRoleName] = useState('')
 
     useEffect(() => {
@@ -84,4 +84,4 @@ function ModalDelete({ isOpen, onClose, cancelRef, id, setRefresh }) {
     )
 }
 
-export default ModalDelete
+export default ModalDeleteRole
