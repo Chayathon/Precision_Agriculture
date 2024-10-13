@@ -187,12 +187,12 @@ export default function App() {
             onSortChange={setSortDescriptor}
         >
             <TableHeader>
-                <TableColumn>ชื่อจริง</TableColumn>
-                <TableColumn>นามสกุล</TableColumn>
-                <TableColumn>อีเมล</TableColumn>
-                <TableColumn>เบอร์โทรศัพท์</TableColumn>
-                <TableColumn>ที่อยู่</TableColumn>
-                <TableColumn>ชื่อผู้ใช้</TableColumn>
+                <TableColumn allowsSorting>ชื่อจริง</TableColumn>
+                <TableColumn allowsSorting>นามสกุล</TableColumn>
+                <TableColumn allowsSorting>อีเมล</TableColumn>
+                <TableColumn allowsSorting>เบอร์โทรศัพท์</TableColumn>
+                <TableColumn allowsSorting>ที่อยู่</TableColumn>
+                <TableColumn allowsSorting>ชื่อผู้ใช้</TableColumn>
             </TableHeader>
             <TableBody
                 emptyContent={"No users found"}
