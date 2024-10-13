@@ -61,21 +61,6 @@ function AdminNavbar() {
                 </Dropdown>
             </NavbarContent>
         </Navbar>
-
-        // <nav className='bg-[#333] text-white p-5'>
-        //     <div className='container mx-auto'>
-        //         <div className='flex justify-between items-center'>
-        //             <div>
-        //                 <Button onClick={logout}>Log out</Button>
-        //             </div>
-        //             <ul className='flex'>
-        //                 <li className='mx-3'><Link href='/admin/listAdmin'>List Admin</Link></li>
-        //                 <li className='mx-3'><Link href='/admin/listUser'>List User</Link></li>
-        //                 <li className='mx-3'><Link href='/admin/listRole'>List Role</Link></li>
-        //             </ul>
-        //         </div>
-        //     </div>
-        // </nav>
     )
 }
 
