@@ -2,13 +2,14 @@
 
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Card, CardHeader, CardBody, Heading, FormLabel, Input, InputGroup, InputRightElement, Textarea, Button, Stack, Flex } from '@chakra-ui/react'
+import Link from 'next/link';
+import {Card, CardHeader, CardBody, CardFooter, Input, Textarea, Button} from "@nextui-org/react";
 import { toast } from 'react-toastify'
 
 function Page() {
     const router = useRouter()
-    const [show, setShow] = useState(false)
-    const handleClick = () => setShow(!show)
+    const [isVisible, setIsVisible] = useState(false);
+    const toggleVisibility = () => setIsVisible(!isVisible);
 
     const [firstname, setFirstname] = useState("")
     const [lastname, setLastname] = useState("")
@@ -66,70 +67,71 @@ function Page() {
     }
 
     return(
-        <Stack className="w-[100vw] h-[100vh]">
+        <div className="grid w-[100vw] h-[100vh]">
             <Card className="m-auto w-1/2 drop-shadow-2xl bg-blend-darken">
-                <CardHeader>
-                    <Heading size='lg'>สมัครสมาชิก</Heading>
+                <CardHeader className='text-2xl font-bold justify-center'>
+                    สมัครสมาชิก
                 </CardHeader>
                 <CardBody>
                     <form onSubmit={handleSubmit}>
-                        <Flex gap='4'>
-                            <FormLabel className='mt-2'>ชื่อจริง</FormLabel>
-                            <Input onChange={(e) => setFirstname(e.target.value)} placeholder='ชื่อจริง' size='md' className='w-1' />
+                        <div className='flex my-4 gap-4'>
+                            <Input onChange={(e) => setFirstname(e.target.value)} type='text' label='ชื่อจริง' isClearable isRequired />
 
-                            <FormLabel className='mt-2'>นามสกุล</FormLabel>
-                            <Input onChange={(e) => setLastname(e.target.value)} placeholder='นามสกุล' size='md' />
-                        </Flex>
-                        <Flex>
-                            <FormLabel className='mt-2'>อีเมล</FormLabel>
-                            <Input onChange={(e) => setEmail(e.target.value)} type='email' placeholder='อีเมล' size='md' />
-                            &emsp;
-                            <FormLabel className='mt-2'>เบอร์โทรศัพท์</FormLabel>
-                            <Input onChange={(e) => setTel(e.target.value)} placeholder='เบอร์โทรศัพท์' size='md' />
-                        </Flex>
-                        <br />
-                        <FormLabel className='mt-2'>ที่อยู่</FormLabel>
-                        <Textarea onChange={(e) => setAddress(e.target.value)} placeholder='ที่อยู่' />
-                        <br /><br />
-                        <FormLabel>ชื่อผู้ใช้</FormLabel>
-                        <Input onChange={(e) => setUsername(e.target.value)} placeholder='ชื่อผู้ใช้' size='md' />
-                        <br /><br />
-                        <FormLabel>รหัสผ่าน</FormLabel>
-                        <InputGroup size='md'>
+                            <Input onChange={(e) => setLastname(e.target.value)} type='text' label='นามสกุล' isClearable isRequired />
+                        </div>
+                        <div className='flex my-4 gap-4'>
+                            <Input onChange={(e) => setEmail(e.target.value)} type='email' label='อีเมล' isClearable isRequired />
+
+                            <Input onChange={(e) => setTel(e.target.value)} type='text' label='เบอร์โทรศัพท์' maxLength='10' isClearable isRequired />
+                        </div>
+                        <div className='my-4'>
+                            <Textarea onChange={(e) => setAddress(e.target.value)} label='ที่อยู่' isClearable isRequired />
+                        </div>
+                        <div className='my-4'>
+                            <Input onChange={(e) => setUsername(e.target.value)} type='text' label='ชื่อผู้ใช้' isClearable isRequired />
+                        </div>
+                        <div className='my-4'>
                             <Input
                                 onChange={(e) => setPassword(e.target.value)}
-                                pr='4.5rem'
-                                type={show ? 'text' : 'password'}
-                                placeholder='รหัสผ่าน'
+                                label="รหัสผ่าน"
+                                endContent={
+                                    <Button type="button" size="sm" className='bg-gray-300' onClick={toggleVisibility} aria-label="toggle password visibility">
+                                    {isVisible ? (
+                                        'ซ่อน'
+                                    ) : (
+                                        'แสดง'
+                                    )}
+                                    </Button>
+                                }
+                                type={isVisible ? "text" : "password"}
+                                isRequired
                             />
-                            <InputRightElement width='4.5rem'>
-                                <Button h='1.75rem' size='sm' onClick={handleClick}>
-                                    {show ? 'ซ่อน' : 'แสดง'}
-                                </Button>
-                            </InputRightElement>
-                        </InputGroup>
-                        <br />
-                        <FormLabel>ยืนยันรหัสผ่าน</FormLabel>
-                        <InputGroup size='md'>
+                        </div>
+                        <div className='my-4'>
                             <Input
                                 onChange={(e) => setConfirmPassword(e.target.value)}
-                                pr='4.5rem'
-                                type={show ? 'text' : 'password'}
-                                placeholder='ยืนยันรหัสผ่าน'
+                                label="ยืนยันรหัสผ่าน"
+                                endContent={
+                                    <Button type="button" size="sm" className='bg-gray-300' onClick={toggleVisibility} aria-label="toggle password visibility">
+                                    {isVisible ? (
+                                        'ซ่อน'
+                                    ) : (
+                                        'แสดง'
+                                    )}
+                                    </Button>
+                                }
+                                type={isVisible ? "text" : "password"}
+                                isRequired
                             />
-                            <InputRightElement width='4.5rem'>
-                                <Button h='1.75rem' size='sm' onClick={handleClick}>
-                                    {show ? 'ซ่อน' : 'แสดง'}
-                                </Button>
-                            </InputRightElement>
-                        </InputGroup>
-                        <br />
-                        <Button colorScheme='blue' type='submit' className='w-full'>สมัครสมาชิก</Button>
+                        </div>
+                        <Button color='primary' type='submit' className='w-full'>สมัครสมาชิก</Button>
                     </form>
                 </CardBody>
-                    
+                <CardFooter className='flex justify-between'>
+                    <p>มีบัญชีอยู่แล้ว? <Link href='/' className='text-blue-500 hover:underline'>เข้าสู่ระบบ</Link></p>
+                </CardFooter>
             </Card>
-        </Stack>
+        </div>
     )
 }
 

@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 
 function Page() {
     const router = useRouter()
-    const [isVisible, setIsVisible] = React.useState(false);
+    const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
 
     const [username, setUsername] = useState("")
