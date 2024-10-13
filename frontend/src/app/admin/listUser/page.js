@@ -2,41 +2,42 @@
 
 import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
+import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Button, ButtonGroup, Stack, Flex, useDisclosure } from "@chakra-ui/react";
 import { TailSpin } from "react-loader-spinner";
 import ModalCreateUser from "../components/ModalCreateUser";
 import ModalUpdateUser from "../components/ModalUpdateUser";
 import ModalDeleteUser from "../components/ModalDeleteUser";
 
 function Page() {
-    // const [users, setUsers] = useState([]);
-    // const [selectedId, setSelectedId] = useState(null);
-    // const [refresh, setRefresh] = useState(false)
+    const [users, setUsers] = useState([]);
+    const [selectedId, setSelectedId] = useState(null);
+    const [refresh, setRefresh] = useState(false)
 
-    // const { isOpen: isOpenCreate, onOpen: onOpenCreate, onClose: onCloseCreate } = useDisclosure();
-    // const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onClose: onCloseUpdate } = useDisclosure();
-    // const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
-    // const cancelRef = useRef();
+    const { isOpen: isOpenCreate, onOpen: onOpenCreate, onClose: onCloseCreate } = useDisclosure();
+    const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onClose: onCloseUpdate } = useDisclosure();
+    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
+    const cancelRef = useRef();
 
-    // const fetchUser = async (role_id) => {
-    //     try {
-    //         const token = Cookies.get("Token");
-    //         const res = await fetch(`http://localhost:4000/api/listUser/${role_id}`, {
-    //             headers: { Authorization: `Bearer ${token}` },
-    //         });
+    const fetchUser = async (role_id) => {
+        try {
+            const token = Cookies.get("Token");
+            const res = await fetch(`http://localhost:4000/api/listUser/${role_id}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
 
-    //         if (res.ok) {
-    //             const data = await res.json();
-    //             setUsers(data.resultData);
+            if (res.ok) {
+                const data = await res.json();
+                setUsers(data.resultData);
             
-    //         }
-    //     } catch (error) {
-    //         console.error("Error fetching data: ", error);
-    //     }
-    // };
+            }
+        } catch (error) {
+            console.error("Error fetching data: ", error);
+        }
+    };
 
-    // useEffect(() => {
-    //     fetchUser(1)
-    // }, [refresh])
+    useEffect(() => {
+        fetchUser(1)
+    }, [refresh])
 
     return (
         <>
