@@ -1,11 +1,10 @@
 import React from 'react'
-import { Text } from '@chakra-ui/react'
 
 function Page() {
     return (
         <div>
             <div className='flex justify-center py-6'>
-                <Text fontSize='4xl'>Admin Page</Text>
+                <p className='text-4xl font-bold'>Admin Page</p>
             </div>
         </div>
     )

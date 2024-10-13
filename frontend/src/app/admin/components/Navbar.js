@@ -26,17 +26,17 @@ function AdminNavbar() {
 
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <NavbarItem>
-                    <Link href="/admin/listAdmin" color="foreground">
+                    <Link href="/admin/listAdmin">
                         List Admins
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link href="/admin/listUser" aria-current="page" color="secondary">
+                    <Link href="/admin/listUser">
                         List Users
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
-                    <Link href="/admin/listRole" color="foreground">
+                    <Link href="/admin/listRole">
                         List Roles
                     </Link>
                 </NavbarItem>
