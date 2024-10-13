@@ -85,7 +85,7 @@ function Page() {
                             <Input onChange={(e) => setTel(e.target.value)} type='text' label='เบอร์โทรศัพท์' maxLength='10' isClearable isRequired />
                         </div>
                         <div className='my-4'>
-                            <Textarea onChange={(e) => setAddress(e.target.value)} label='ที่อยู่' isClearable isRequired />
+                            <Textarea onChange={(e) => setAddress(e.target.value)} label='ที่อยู่' isRequired />
                         </div>
                         <div className='my-4'>
                             <Input onChange={(e) => setUsername(e.target.value)} type='text' label='ชื่อผู้ใช้' isClearable isRequired />

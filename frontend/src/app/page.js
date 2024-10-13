@@ -63,10 +63,11 @@ function Page() {
                 </CardHeader>
                 <CardBody>
                     <form onSubmit={handleSubmit}>
-                        <Input onChange={(e) => setUsername(e.target.value)} type='text' label='ชื่อผู้ใช้' />
+                        <Input onChange={(e) => setUsername(e.target.value)} type='text' label='ชื่อผู้ใช้' variant='faded' />
                         <Input
                             onChange={(e) => setPassword(e.target.value)}
                             label="รหัสผ่าน"
+                            variant='faded'
                             endContent={
                                 <Button type="button" size="sm" className='bg-gray-300' onClick={toggleVisibility} aria-label="toggle password visibility">
                                 {isVisible ? (
