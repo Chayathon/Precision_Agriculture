@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation'
@@ -9,6 +9,9 @@ import { toast } from 'react-toastify';
 
 function AdminNavbar() {
     const router = useRouter()
+    const [user, setUser] = useState({
+        username : ""
+    })
 
     const logout = () => {
         Cookies.remove('UserData');
@@ -17,6 +20,14 @@ function AdminNavbar() {
         toast.success("ออกจากระบบแล้ว")
         router.push('/')
     }
+
+    useEffect(() => {
+      if(localStorage.getItem('UserData')) {
+        const name = JSON.parse(localStorage.getItem('UserData'))
+        setUser(name.username);
+        // console.log(name.username)
+      }  
+    },[localStorage.getItem('UserData'), user])
     
     return (
         <Navbar className='bg-gray-800 text-white'>
@@ -51,6 +62,8 @@ function AdminNavbar() {
                             size="sm"
                             className="transition-transform"
                         />
+                        {/* {user} */}
+                        {/* {JSON.parse(localStorage.getItem('UserData')).username} */}
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
                         <DropdownItem key="settings">My Settings</DropdownItem>
