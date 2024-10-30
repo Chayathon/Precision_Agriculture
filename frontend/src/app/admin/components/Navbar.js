@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation'
+import Cookies from 'js-cookie';
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
 import { toast } from 'react-toastify';
 
@@ -13,14 +13,6 @@ function AdminNavbar() {
         username : ""
     })
 
-    const logout = () => {
-        Cookies.remove('UserData');
-        Cookies.remove('Token');
-
-        toast.success("ออกจากระบบแล้ว")
-        router.push('/')
-    }
-
     useEffect(() => {
       if(localStorage.getItem('UserData')) {
         const name = JSON.parse(localStorage.getItem('UserData'))
@@ -28,6 +20,14 @@ function AdminNavbar() {
         // console.log(name.username)
       }  
     },[localStorage.getItem('UserData'), user])
+
+    const handleLogout = () => {
+        Cookies.remove('UserData');
+        Cookies.remove('Token');
+
+        toast.success("ออกจากระบบแล้ว")
+        router.push('/')
+    }
     
     return (
         <Navbar className='bg-gray-800 text-white'>
@@ -67,7 +67,7 @@ function AdminNavbar() {
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
                         <DropdownItem key="settings">My Settings</DropdownItem>
-                        <DropdownItem key="logout" color="danger" onClick={logout}>
+                        <DropdownItem key="logout" color="danger" onClick={handleLogout}>
                             Log Out
                         </DropdownItem>
                     </DropdownMenu>
