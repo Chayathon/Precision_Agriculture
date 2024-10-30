@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
-import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination} from "@nextui-org/react";
+import {Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Pagination, getKeyValue} from "@nextui-org/react";
 
 export default function App() {
     const [users, setUsers] = useState([]);
