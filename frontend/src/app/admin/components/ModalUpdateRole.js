@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Flex, FormLabel, Input, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Button, } from '@chakra-ui/react'
+import { Flex, FormLabel, Input, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Button, } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
 function ModalUpdateRole({ isOpen, onClose, id, setRefresh }) {

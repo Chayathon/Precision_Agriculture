@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
-import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Button, ButtonGroup, Stack, Flex, useDisclosure } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Button, ButtonGroup, Stack, Flex, useDisclosure } from "@nextui-org/react";
 import { TailSpin } from "react-loader-spinner";
-import ModalCreateUser from "../components/ModalCreateUser";
-import ModalUpdateUser from "../components/ModalUpdateUser";
-import ModalDeleteUser from "../components/ModalDeleteUser";
+// import ModalCreateUser from "../components/ModalCreateUser";
+// import ModalUpdateUser from "../components/ModalUpdateUser";
+// import ModalDeleteUser from "../components/ModalDeleteUser";
 
 function Page() {
     const [users, setUsers] = useState([]);

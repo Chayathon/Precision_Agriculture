@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from '@chakra-ui/react'
+import { AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
 function ModalDeleteRole({ isOpen, onClose, cancelRef, id, setRefresh }) {
