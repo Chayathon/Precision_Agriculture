@@ -1,11 +1,8 @@
 import React, { useState, useRef } from 'react'
-import { Flex, FormLabel, Input, InputGroup, InputRightElement, Textarea, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Button, } from '@nextui-org/react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
 function ModalCreateRole({ isOpen, onClose, setRefresh }) {
-    const initialRef = useRef(null)
-    const finalRef = useRef(null)
-
     const [roleName, setRoleName] = useState('')
 
     const handleSubmit = async (e) => {
@@ -52,7 +49,39 @@ function ModalCreateRole({ isOpen, onClose, setRefresh }) {
 
     return (
         <>
-            <Modal
+            <Modal 
+                isOpen={isOpen} 
+                onOpenChange={onOpenChange}
+                placement="top-center"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                        <ModalHeader className="flex flex-col gap-1">เพิ่มข้อมูล</ModalHeader>
+                        <ModalBody>
+                            <form onSubmit={handleSubmit}>
+                                <Input
+                                    autoFocus
+                                    label="ตำแหน่ง"
+                                    variant="bordered"
+                                    onChange={(e) => setRoleName(e.target.value)}
+                                />
+                                <ModalFooter>
+                                    <Button variant="flat" onPress={onClose}>
+                                        ยกเลิก
+                                    </Button>
+                                    <Button type='submit' color="primary">
+                                        เพิ่ม
+                                    </Button>
+                                </ModalFooter>
+                            </form>
+                        </ModalBody>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+
+            {/* <Modal
                 initialFocusRef={initialRef}
                 finalFocusRef={finalRef}
                 size={'xl'}
@@ -78,7 +107,7 @@ function ModalCreateRole({ isOpen, onClose, setRefresh }) {
                         </form>
                     </ModalBody>
                 </ModalContent>
-            </Modal>
+            </Modal> */}
         </>
     )
 }

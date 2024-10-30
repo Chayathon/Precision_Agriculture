@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from '@nextui-org/react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
-function ModalDeleteRole({ isOpen, onClose, cancelRef, id, setRefresh }) {
+function ModalDeleteRole({ isOpen, onClose, id, setRefresh }) {
     const [roleName, setRoleName] = useState('')
 
     useEffect(() => {
@@ -52,7 +52,28 @@ function ModalDeleteRole({ isOpen, onClose, cancelRef, id, setRefresh }) {
 
     return (
         <>
-            <AlertDialog
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                {(onClose) => (
+                    <>
+                    <ModalHeader className="flex flex-col gap-1">ลบข้อมูล</ModalHeader>
+                    <ModalBody>
+                        ยืนยันที่จะลบข้อมูล <b>{roleName}</b> ?
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button variant="light" onPress={onClose}>
+                            ยกเลิก
+                        </Button>
+                        <Button color="danger" onPress={handleSubmit}>
+                            ลบ
+                        </Button>
+                    </ModalFooter>
+                    </>
+                )}
+                </ModalContent>
+            </Modal>
+
+            {/* <AlertDialog
                 isOpen={isOpen}
                 leastDestructiveRef={cancelRef}
                 onClose={onClose}
@@ -79,7 +100,7 @@ function ModalDeleteRole({ isOpen, onClose, cancelRef, id, setRefresh }) {
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialogOverlay>
-            </AlertDialog>
+            </AlertDialog> */}
         </>
     )
 }

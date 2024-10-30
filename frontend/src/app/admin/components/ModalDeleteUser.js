@@ -26,7 +26,7 @@ function ModalDeleteUser({ isOpen, onClose, cancelRef, id, setRefresh }) {
         }
     }, [isOpen])
 
-    const handleSubmit = async () => {
+    const handleClick = async () => {
         try{
             const res = await fetch(`http://localhost:4000/api/deleteUser/${id}`, {
                 method: 'DELETE'
@@ -72,7 +72,7 @@ function ModalDeleteUser({ isOpen, onClose, cancelRef, id, setRefresh }) {
                                 <Button ref={cancelRef} onClick={onClose}>
                                     ยกเลิก
                                 </Button>
-                                <Button colorScheme='red' onClick={handleSubmit} ml={3}>
+                                <Button colorScheme='red' onClick={handleClick} ml={3}>
                                     ลบ
                                 </Button>
                             </div>

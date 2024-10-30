@@ -1,13 +1,10 @@
 import React, { useState, useRef } from 'react'
-import { Flex, FormLabel, Input, InputGroup, InputRightElement, Textarea, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Button, } from '@chakra-ui/react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea } from '@chakra-ui/react'
 import { toast } from 'react-toastify'
 
 function ModalCreateAdmin({ isOpen, onClose, setRefresh }) {
-    const initialRef = useRef(null)
-    const finalRef = useRef(null)
-
-    const [show, setShow] = useState(false)
-    const handleClick = () => setShow(!show)
+    const [isVisible, setIsVisible] = useState(false);
+    const toggleVisibility = () => setIsVisible(!isVisible);
 
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
@@ -66,7 +63,84 @@ function ModalCreateAdmin({ isOpen, onClose, setRefresh }) {
 
     return (
         <>
-            <Modal
+            <Modal 
+                isOpen={isOpen} 
+                onOpenChange={onOpenChange}
+                size={"2xl"}
+                placement="top-center"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">เพิ่มข้อมูล</ModalHeader>
+                            <ModalBody>
+                                <form onSubmit={handleSubmit}>
+                                    <div className='flex my-4 gap-4'>
+                                        <Input onChange={(e) => setFirstname(e.target.value)} type='text' label='ชื่อจริง' isClearable isRequired />
+
+                                        <Input onChange={(e) => setLastname(e.target.value)} type='text' label='นามสกุล' isClearable isRequired />
+                                    </div>
+                                    <div className='flex my-4 gap-4'>
+                                        <Input onChange={(e) => setEmail(e.target.value)} type='email' label='อีเมล' isClearable isRequired />
+
+                                        <Input onChange={(e) => setTel(e.target.value)} type='text' label='เบอร์โทรศัพท์' maxLength='10' isClearable isRequired />
+                                    </div>
+                                    <div className='my-4'>
+                                        <Textarea onChange={(e) => setAddress(e.target.value)} label='ที่อยู่' isRequired />
+                                    </div>
+                                    <div className='my-4'>
+                                        <Input onChange={(e) => setUsername(e.target.value)} type='text' label='ชื่อผู้ใช้' isClearable isRequired />
+                                    </div>
+                                    <div className='my-4'>
+                                        <Input
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            label="รหัสผ่าน"
+                                            endContent={
+                                                <Button type="button" size="sm" className='bg-gray-300' onClick={toggleVisibility} aria-label="toggle password visibility">
+                                                {isVisible ? (
+                                                    'ซ่อน'
+                                                ) : (
+                                                    'แสดง'
+                                                )}
+                                                </Button>
+                                            }
+                                            type={isVisible ? "text" : "password"}
+                                            isRequired
+                                        />
+                                    </div>
+                                    <div className='my-4'>
+                                        <Input
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                            label="ยืนยันรหัสผ่าน"
+                                            endContent={
+                                                <Button type="button" size="sm" className='bg-gray-300' onClick={toggleVisibility} aria-label="toggle password visibility">
+                                                {isVisible ? (
+                                                    'ซ่อน'
+                                                ) : (
+                                                    'แสดง'
+                                                )}
+                                                </Button>
+                                            }
+                                            type={isVisible ? "text" : "password"}
+                                            isRequired
+                                        />
+                                    </div>
+                                    <ModalFooter>
+                                        <Button variant="flat" onPress={onClose}>
+                                            ยกเลิก
+                                        </Button>
+                                        <Button color="success" onPress={handleSubmit}>
+                                            เพิ่ม
+                                        </Button>
+                                    </ModalFooter>
+                                </form>
+                            </ModalBody>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+
+            {/* <Modal
                 initialFocusRef={initialRef}
                 finalFocusRef={finalRef}
                 size={'xl'}
@@ -140,7 +214,7 @@ function ModalCreateAdmin({ isOpen, onClose, setRefresh }) {
                         </form>
                     </ModalBody>
                 </ModalContent>
-            </Modal>
+            </Modal> */}
         </>
     )
 }

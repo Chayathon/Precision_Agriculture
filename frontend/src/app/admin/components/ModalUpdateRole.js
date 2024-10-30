@@ -1,11 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Flex, FormLabel, Input, Modal, ModalOverlay, ModalContent, ModalHeader, ModalBody, ModalCloseButton, Button, } from '@nextui-org/react'
+import React, { useState, useEffect } from 'react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
 function ModalUpdateRole({ isOpen, onClose, id, setRefresh }) {
-    const initialRef = useRef(null)
-    const finalRef = useRef(null)
-
     const [roleName, setRoleName] = useState('')
 
     useEffect(() => {
@@ -71,6 +68,39 @@ function ModalUpdateRole({ isOpen, onClose, id, setRefresh }) {
 
     return (
         <>
+            <Modal 
+                isOpen={isOpen} 
+                onOpenChange={onOpenChange}
+                placement="top-center"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                        <ModalHeader className="flex flex-col gap-1">เพิ่มข้อมูล</ModalHeader>
+                        <ModalBody>
+                            <form onSubmit={handleSubmit}>
+                                <Input
+                                    autoFocus
+                                    label="ตำแหน่ง"
+                                    variant="bordered"
+                                    value={roleName}
+                                    onChange={(e) => setRoleName(e.target.value)}
+                                />
+                                <ModalFooter>
+                                    <Button variant="flat" onPress={onClose}>
+                                        ยกเลิก
+                                    </Button>
+                                    <Button type='submit' color="warning">
+                                        แก้ไข
+                                    </Button>
+                                </ModalFooter>
+                            </form>
+                        </ModalBody>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
+
             <Modal
                 initialFocusRef={initialRef}
                 finalFocusRef={finalRef}
