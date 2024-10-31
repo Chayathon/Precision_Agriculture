@@ -14,11 +14,11 @@ function AdminNavbar() {
     })
 
     useEffect(() => {
-      if(localStorage.getItem('UserData')) {
-        const name = JSON.parse(localStorage.getItem('UserData'))
-        setUser(name.username);
-        // console.log(name.username)
-      }  
+        if(localStorage.getItem('UserData')) {
+            const name = JSON.parse(localStorage.getItem('UserData'))
+            setUser(name.username);
+            // console.log(name.username)
+        }  
     },[localStorage.getItem('UserData'), user])
 
     const handleLogout = () => {

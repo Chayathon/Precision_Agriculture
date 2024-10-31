@@ -90,13 +90,13 @@ export default function App() {
 
     const onNextPage = React.useCallback(() => {
         if (page < pages) {
-          setPage(page + 1);
+            setPage(page + 1);
         }
     }, [page, pages]);
 
     const onPreviousPage = React.useCallback(() => {
         if (page > 1) {
-          setPage(page - 1);
+            setPage(page - 1);
         }
     }, [page]);
 
@@ -124,14 +124,14 @@ export default function App() {
         try {
             const token = Cookies.get("Token");
             const res = await fetch(`http://localhost:4000/api/listUser/${role_id}`, {
-              headers: { Authorization: `Bearer ${token}` },
+                headers: { Authorization: `Bearer ${token}` },
             });
 
             if (res.ok) {
-              const data = await res.json();
-              setUsers(data.resultData);
-              setIsLoading(false);
-              setPage(1);
+                const data = await res.json();
+                setUsers(data.resultData);
+                setIsLoading(false);
+                setPage(1);
             }
         } catch (error) {
             console.error("Error fetching data: ", error);
@@ -184,8 +184,8 @@ export default function App() {
             <div className="py-2 px-2 flex justify-between items-center">
                 <span className="w-[30%] text-small text-default-400">
                     {selectedKeys === "all"
-                      ? "All items selected"
-                      : `${selectedKeys.size} of ${filteredItems.length} selected`}
+                    ? "All items selected"
+                    : `${selectedKeys.size} of ${filteredItems.length} selected`}
                 </span>
                 {!isLoading && (
                     <Pagination
