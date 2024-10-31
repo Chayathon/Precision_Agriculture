@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, user } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
-function ModalUpdateUser({ isOpen, onClose, id, setRefresh }) {
+function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
 

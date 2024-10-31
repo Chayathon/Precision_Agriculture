@@ -18,14 +18,25 @@ import {
     Chip,
     User,
     Pagination,
+    useDisclosure
 } from "@nextui-org/react";
 import { FaPlus } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
+import ModalCreateUser from "../components/ModalCreateUser";
+import ModalUpdateUser from "../components/ModalUpdateUser";
+import ModalDeleteUser from "../components/ModalDeleteUser";
 
 export default function App() {
     const [users, setUsers] = React.useState([]);
+
     const [refresh, setRefresh] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(true);
+
+    const [selectedId, setSelectedId] = React.useState(null);
+    const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeCreate } = useDisclosure();
+    const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onOpenChange: onOpenChangeUpdate } = useDisclosure();
+    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onOpenChange: onOpenChangeDelete } = useDisclosure();
+
     const [filterValue, setFilterValue] = React.useState("");
     const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -235,6 +246,7 @@ export default function App() {
                     <TableColumn allowsSorting key="tel">Phone</TableColumn>
                     <TableColumn allowsSorting key="address">Address</TableColumn>
                     <TableColumn allowsSorting key="username">Username</TableColumn>
+                    <TableColumn key="tools">Tools</TableColumn>
                 </TableHeader>
                 <TableBody 
                     isLoading={isLoading}
@@ -250,6 +262,20 @@ export default function App() {
                             <TableCell>{item.tel}</TableCell>
                             <TableCell>{item.address}</TableCell>
                             <TableCell>{item.username}</TableCell>
+                            <TableCell>
+                                <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}}>
+                                    แก้ไข
+                                    {isOpenUpdate && (
+                                        <ModalUpdateUser isOpen={isOpenUpdate} onOpenChange={onOpenChangeUpdate} id={selectedId} setRefresh={setRefresh} />
+                                    )}
+                                </Button>
+                                <Button onPress={() => {setSelectedId(item.id); onOpenDelete();}}>
+                                    ลบ
+                                    {isOpenDelete && (
+                                        <ModalDeleteUser isOpen={isOpenDelete} onOpenChange={onOpenChangeDelete} id={selectedId} setRefresh={setRefresh} />
+                                    )}
+                                </Button>
+                            </TableCell>
                         </TableRow>
                     )}
                 </TableBody>
