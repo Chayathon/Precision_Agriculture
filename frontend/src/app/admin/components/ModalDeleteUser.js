@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { AlertDialog, AlertDialogBody, AlertDialogFooter, AlertDialogHeader, AlertDialogContent, AlertDialogOverlay, Button } from '@nextui-org/react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
-function ModalDeleteUser({ isOpen, onClose, cancelRef, id, setRefresh }) {
+function ModalDeleteUser({ isOpen, onClose, onOpenChange, id, setRefresh }) {
     const [username, setUsername] = useState('')
 
     useEffect(() => {
@@ -52,7 +52,28 @@ function ModalDeleteUser({ isOpen, onClose, cancelRef, id, setRefresh }) {
 
     return (
         <>
-            <AlertDialog
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent>
+                {(onClose) => (
+                    <>
+                    <ModalHeader className="flex flex-col gap-1">ลบข้อมูล</ModalHeader>
+                    <ModalBody>
+                        <p>ยืนยันที่จะลบข้อมูล <b>{username}</b> ?</p>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button variant="light" onPress={onClose}>
+                            ยกเลิก
+                        </Button>
+                        <Button color="danger" onPress={handleClick}>
+                            ลบ
+                        </Button>
+                    </ModalFooter>
+                    </>
+                )}
+                </ModalContent>
+            </Modal>
+
+            {/* <AlertDialog
                 isOpen={isOpen}
                 leastDestructiveRef={cancelRef}
                 onClose={onClose}
@@ -79,7 +100,7 @@ function ModalDeleteUser({ isOpen, onClose, cancelRef, id, setRefresh }) {
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialogOverlay>
-            </AlertDialog>
+            </AlertDialog> */}
         </>
     )
 }

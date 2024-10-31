@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, user } from '@nextui-org/react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Textarea, Button } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
 function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
@@ -87,7 +87,6 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                 isOpen={isOpen} 
                 onOpenChange={onOpenChange}
                 size={"2xl"}
-                placement="top-center"
             >
                 <ModalContent>
                     {(onClose) => (

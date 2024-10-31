@@ -11,12 +11,6 @@ import {
     TableCell,
     Input,
     Button,
-    DropdownTrigger,
-    Dropdown,
-    DropdownMenu,
-    DropdownItem,
-    Chip,
-    User,
     Pagination,
     useDisclosure
 } from "@nextui-org/react";
@@ -157,20 +151,20 @@ export default function App() {
         return (
             <div className="flex flex-col gap-4">
                 <div className="flex justify-between gap-3 items-end">
-                  <Input
-                      isClearable
-                      className="w-full sm:max-w-[44%]"
-                      placeholder="Search by name..."
-                      startContent={<FaSearch />}
-                      value={filterValue}
-                      onClear={() => onClear()}
-                      onValueChange={onSearchChange}
-                  />
-                  <div className="flex gap-3">
-                      <Button color="primary" endContent={<FaPlus />}>
-                          Add New
-                      </Button>
-                  </div>
+                    <Input
+                        isClearable
+                        className="w-full sm:max-w-[44%]"
+                        placeholder="Search by name..."
+                        startContent={<FaSearch />}
+                        value={filterValue}
+                        onClear={() => onClear()}
+                        onValueChange={onSearchChange}
+                    />
+                    <div className="flex gap-3">
+                        <Button onPress={() => {onOpenCreate()}} color="primary" endContent={<FaPlus />}>
+                            Add New
+                        </Button>
+                    </div>
                 </div>
                 <div className="flex justify-between items-center">
                     <span className="text-default-400 text-small">Total {users.length} users</span>
@@ -265,21 +259,25 @@ export default function App() {
                             <TableCell>
                                 <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}}>
                                     แก้ไข
-                                    {isOpenUpdate && (
-                                        <ModalUpdateUser isOpen={isOpenUpdate} onOpenChange={onOpenChangeUpdate} id={selectedId} setRefresh={setRefresh} />
-                                    )}
                                 </Button>
                                 <Button onPress={() => {setSelectedId(item.id); onOpenDelete();}}>
                                     ลบ
-                                    {isOpenDelete && (
-                                        <ModalDeleteUser isOpen={isOpenDelete} onOpenChange={onOpenChangeDelete} id={selectedId} setRefresh={setRefresh} />
-                                    )}
                                 </Button>
                             </TableCell>
                         </TableRow>
                     )}
                 </TableBody>
             </Table>
+            
+            {isOpenCreate && (
+                <ModalCreateUser isOpen={isOpenCreate} onOpenChange={onOpenChangeCreate} setRefresh={setRefresh} />
+            )}
+            {isOpenUpdate && (
+                <ModalUpdateUser isOpen={isOpenUpdate} onOpenChange={onOpenChangeUpdate} id={selectedId} setRefresh={setRefresh} />
+            )}
+            {isOpenDelete && (
+                <ModalDeleteUser isOpen={isOpenDelete} onOpenChange={onOpenChangeDelete} id={selectedId} setRefresh={setRefresh} />
+            )}
         </div>
     );
 }

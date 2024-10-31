@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, } from '@nextui-org/react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
-function ModalCreateUser({ isOpen, onClose, setRefresh }) {
+function ModalCreateUser({ isOpen, onOpenChange, setRefresh }) {
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -68,7 +68,6 @@ function ModalCreateUser({ isOpen, onClose, setRefresh }) {
                 isOpen={isOpen} 
                 onOpenChange={onOpenChange}
                 size={"2xl"}
-                placement="top-center"
             >
                 <ModalContent>
                     {(onClose) => (
