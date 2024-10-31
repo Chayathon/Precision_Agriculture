@@ -10,6 +10,7 @@ import { HiOutlineTrash } from "react-icons/hi2";
 import ModalCreateUser from "../components/ModalCreateUser";
 import ModalUpdateUser from "../components/ModalUpdateUser";
 import ModalDeleteUser from "../components/ModalDeleteUser";
+import ModalMultiDelete from "../components/ModalMultiDelete";
 
 export default function App() {
     const [users, setUsers] = React.useState([]);
@@ -21,6 +22,7 @@ export default function App() {
     const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeCreate } = useDisclosure();
     const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onOpenChange: onOpenChangeUpdate } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onOpenChange: onOpenChangeDelete } = useDisclosure();
+    const { isOpen: isOpenMultiDelete, onOpen: onOpenMultiDelete, onOpenChange: onOpenChangeMultiDelete } = useDisclosure();
 
     const [filterValue, setFilterValue] = React.useState("");
     const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
@@ -47,6 +49,59 @@ export default function App() {
 
         return filteredUsers;
     }, [users, filterValue]);
+
+    // const handleMultiDelete = async () => {
+    //     try {
+    //         const token = Cookies.get("Token");
+    //         const selectedUsers = Array.from(selectedKeys);
+            
+    //         // สร้าง array ของ promises สำหรับการลบแต่ละ user
+    //         const deletePromises = selectedUsers.map(userId => 
+    //             fetch(`http://localhost:4000/api/deleteUser/${userId}`, {
+    //                 method: 'DELETE',
+    //                 headers: { 
+    //                     Authorization: `Bearer ${token}`,
+    //                     'Content-Type': 'application/json'
+    //                 }
+    //             })
+    //         );
+
+    //         // รอให้ทุก request เสร็จสิ้น
+    //         await Promise.all(deletePromises);
+            
+    //         // รีเฟรชข้อมูลและรีเซ็ตการเลือก
+    //         setRefresh(prev => !prev);
+    //         setSelectedKeys(new Set([]));
+    //         onOpenChangeMultiDelete(false);
+            
+    //     } catch (error) {
+    //         console.error("Error deleting users: ", error);
+    //     }
+    // };
+
+    // const ModalMultiDelete = ({ isOpen, onOpenChange }) => {
+    //     return (
+    //         <div
+    //             className={`fixed inset-0 z-50 flex items-center justify-center ${
+    //                 isOpen ? "visible" : "hidden"
+    //             }`}
+    //         >
+    //             <div className="fixed inset-0 bg-black/50"></div>
+    //             <div className="relative bg-white rounded-lg p-6 max-w-md w-full mx-4">
+    //                 <h3 className="text-lg font-semibold mb-4">ยืนยันการลบผู้ใช้</h3>
+    //                 <p>คุณต้องการลบผู้ใช้ที่เลือกจำนวน {selectedKeys.size} รายการใช่หรือไม่?</p>
+    //                 <div className="flex justify-end gap-2 mt-6">
+    //                     <Button color="default" variant="light" onPress={() => onOpenChange(false)}>
+    //                         ยกเลิก
+    //                     </Button>
+    //                     <Button color="danger" onPress={handleMultiDelete}>
+    //                         ลบ
+    //                     </Button>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     );
+    // };
 
     // Calculate pagination
     const pages = Math.ceil(filteredItems.length / rowsPerPage);
@@ -152,6 +207,16 @@ export default function App() {
                         onValueChange={onSearchChange}
                     />
                     <div className="flex gap-3">
+                        {selectedKeys.size > 0 && (
+                            <Button 
+                                onPress={onOpenMultiDelete} 
+                                color="danger" 
+                                variant="flat"
+                                endContent={<HiOutlineTrash />}
+                            >
+                                ลบ {selectedKeys.size} รายการ
+                            </Button>
+                        )}
                         <Button onPress={() => {onOpenCreate()}} color="primary" endContent={<FaPlus />}>
                             เพิ่ม
                         </Button>
@@ -173,7 +238,7 @@ export default function App() {
                 </div>
             </div>
         );
-    }, [filterValue, onRowsPerPageChange, users.length, onSearchChange]);
+    }, [filterValue, onRowsPerPageChange, users.length, onSearchChange, selectedKeys.size]);
 
     const bottomContent = React.useMemo(() => {
         return (
@@ -274,6 +339,9 @@ export default function App() {
             )}
             {isOpenDelete && (
                 <ModalDeleteUser isOpen={isOpenDelete} onOpenChange={onOpenChangeDelete} id={selectedId} setRefresh={setRefresh} />
+            )}
+            {isOpenMultiDelete && (
+                <ModalMultiDelete isOpen={isOpenMultiDelete} onOpenChange={onOpenChangeMultiDelete} selectedKeys={selectedKeys} setRefresh={setRefresh} />
             )}
         </div>
     );

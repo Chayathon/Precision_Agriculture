@@ -1,8 +1,10 @@
 import React from 'react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from '@nextui-org/react'
+import { toast } from 'react-toastify'
 
 function ModalMultiDelete( isOpen, onOpenChange, selectedKeys ) {
-    const [selectedKeys, setSelectedKeys] = React.useState([]);
-    const selectedUsers = Array.from(selectedKeys);
+    // const [selectedKeys, setSelectedKeys] = React.useState([]);
+    const selectedUsers = selectedKeys;
 
     const handleClick = async () => {
         try {
@@ -30,7 +32,7 @@ function ModalMultiDelete( isOpen, onOpenChange, selectedKeys ) {
             <ModalContent>
             {(onClose) => (
                 <>
-                <ModalHeader className="flex flex-col gap-1">ลบข้อมูล</ModalHeader>
+                <ModalHeader className="flex flex-col gap-1">ลบข้อมูล {selectedUsers}</ModalHeader>
                 <ModalBody>
                     <p>ลบ ({selectedKeys.size}) รายการ</p>
                 </ModalBody>
