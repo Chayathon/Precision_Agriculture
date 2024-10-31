@@ -2,20 +2,11 @@
 
 import React from "react";
 import Cookies from "js-cookie";
-import {
-    Table,
-    TableHeader,
-    TableColumn,
-    TableBody,
-    TableRow,
-    TableCell,
-    Input,
-    Button,
-    Pagination,
-    useDisclosure
-} from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure } from "@nextui-org/react";
 import { FaPlus } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
+import { CiEdit } from "react-icons/ci";
+import { HiOutlineTrash } from "react-icons/hi2";
 import ModalCreateUser from "../components/ModalCreateUser";
 import ModalUpdateUser from "../components/ModalUpdateUser";
 import ModalDeleteUser from "../components/ModalDeleteUser";
@@ -33,11 +24,11 @@ export default function App() {
 
     const [filterValue, setFilterValue] = React.useState("");
     const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [page, setPage] = React.useState(1);
     const [sortDescriptor, setSortDescriptor] = React.useState({
-        column: "", // เพิ่ม default value
-        direction: "ascending" // เพิ่ม default value
+        column: "",
+        direction: "ascending"
     });
 
     // Filter items based on search
@@ -154,7 +145,7 @@ export default function App() {
                     <Input
                         isClearable
                         className="w-full sm:max-w-[44%]"
-                        placeholder="Search by name..."
+                        placeholder="ค้นหา..."
                         startContent={<FaSearch />}
                         value={filterValue}
                         onClear={() => onClear()}
@@ -162,21 +153,21 @@ export default function App() {
                     />
                     <div className="flex gap-3">
                         <Button onPress={() => {onOpenCreate()}} color="primary" endContent={<FaPlus />}>
-                            Add New
+                            เพิ่ม
                         </Button>
                     </div>
                 </div>
                 <div className="flex justify-between items-center">
-                    <span className="text-default-400 text-small">Total {users.length} users</span>
+                    <span className="text-default-400 text-small">ทั้งหมด {users.length} รายการ</span>
                     <label className="flex items-center text-default-400 text-small">
-                        Rows per page:
+                        รายการ/หน้า:
                         <select
                             className="bg-transparent outline-none text-default-400 text-small"
                             onChange={onRowsPerPageChange}
                         >
-                            <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="15">15</option>
+                            <option value="20">20</option>
                         </select>
                     </label>
                 </div>
@@ -189,8 +180,8 @@ export default function App() {
             <div className="py-2 px-2 flex justify-between items-center">
                 <span className="w-[30%] text-small text-default-400">
                     {selectedKeys === "all"
-                    ? "All items selected"
-                    : `${selectedKeys.size} of ${filteredItems.length} selected`}
+                    ? "เลือกทั้งหมด"
+                    : `${selectedKeys.size} จาก ${filteredItems.length} กำลังเลือก`}
                 </span>
                 {!isLoading && (
                     <Pagination
@@ -205,10 +196,10 @@ export default function App() {
                 )}
                 <div className="hidden sm:flex w-[30%] justify-end gap-2">
                     <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
-                        Previous
+                        ย้อนกลับ
                     </Button>
                     <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
-                        Next
+                        ถัดไป
                     </Button>
                 </div>
             </div>
@@ -223,7 +214,7 @@ export default function App() {
                 bottomContent={bottomContent}
                 bottomContentPlacement="outside"
                 classNames={{
-                    wrapper: "max-h-[382px]",
+                    wrapper: "max-h-[600px]",
                 }}
                 selectedKeys={selectedKeys}
                 selectionMode="multiple"
@@ -234,18 +225,18 @@ export default function App() {
                 onSortChange={setSortDescriptor}
             >
                 <TableHeader>
-                    <TableColumn allowsSorting key="firstname">First Name</TableColumn>
-                    <TableColumn allowsSorting key="lastname">Last Name</TableColumn>
-                    <TableColumn allowsSorting key="email">Email</TableColumn>
-                    <TableColumn allowsSorting key="tel">Phone</TableColumn>
-                    <TableColumn allowsSorting key="address">Address</TableColumn>
-                    <TableColumn allowsSorting key="username">Username</TableColumn>
-                    <TableColumn key="tools">Tools</TableColumn>
+                    <TableColumn allowsSorting key="firstname">ชื่อจริง</TableColumn>
+                    <TableColumn allowsSorting key="lastname">นามสกุล</TableColumn>
+                    <TableColumn allowsSorting key="email">อีเมล</TableColumn>
+                    <TableColumn allowsSorting key="tel">เบอร์โทรศัพท์</TableColumn>
+                    <TableColumn allowsSorting key="address">ที่อยู่</TableColumn>
+                    <TableColumn allowsSorting key="username">ชื่อผู้ใช้</TableColumn>
+                    <TableColumn key="tools">จัดการ</TableColumn>
                 </TableHeader>
                 <TableBody 
                     isLoading={isLoading}
-                    loadingContent={<div>Loading...</div>}
-                    emptyContent={!isLoading ? "No users found" : null}
+                    loadingContent={<div>กำลังโหลดข้อมูล...</div>}
+                    emptyContent={!isLoading ? "ไม่มีข้อมูล" : null}
                     items={sortedItems}
                 >
                     {(item) => (
@@ -257,12 +248,18 @@ export default function App() {
                             <TableCell>{item.address}</TableCell>
                             <TableCell>{item.username}</TableCell>
                             <TableCell>
-                                <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}}>
-                                    แก้ไข
-                                </Button>
-                                <Button onPress={() => {setSelectedId(item.id); onOpenDelete();}}>
-                                    ลบ
-                                </Button>
+                                <ButtonGroup>
+                                    <Tooltip content="แก้ไข" color="warning">
+                                        <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}} variant="light" size='sm'>
+                                            <CiEdit className="text-xl text-amber-500" />
+                                        </Button>
+                                    </Tooltip>
+                                    <Tooltip content="ลบ" color="danger">
+                                        <Button onPress={() => {setSelectedId(item.id); onOpenDelete();}} variant="light" size='sm'>
+                                            <HiOutlineTrash className="text-xl text-red-500" />
+                                        </Button>
+                                    </Tooltip>
+                                    </ButtonGroup>
                             </TableCell>
                         </TableRow>
                     )}

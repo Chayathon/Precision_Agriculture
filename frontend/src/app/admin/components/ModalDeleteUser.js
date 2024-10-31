@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
-function ModalDeleteUser({ isOpen, onClose, onOpenChange, id, setRefresh }) {
+function ModalDeleteUser({ isOpen, onOpenChange, id, setRefresh }) {
     const [username, setUsername] = useState('')
 
     useEffect(() => {
