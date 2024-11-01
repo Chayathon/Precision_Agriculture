@@ -5,21 +5,19 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
+import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 
 function UserNavbar() {
     const router = useRouter()
-    const [user, setUser] = useState({
-        username : ""
-    })
+    const user = JSON.parse(localStorage.getItem('UserData'))
+    const [username, setUsername] = useState('')
 
     useEffect(() => {
-      if(localStorage.getItem('UserData')) {
-        const name = JSON.parse(localStorage.getItem('UserData'))
-        setUser(name.username);
-        // console.log(name.username)
-      }  
-    },[localStorage.getItem('UserData'), user])
+        if(localStorage.getItem('UserData')) {
+            setUsername(user.username);
+        }
+    }, [user])
 
     const handleLogout = () => {
         Cookies.remove('UserData');
@@ -42,19 +40,20 @@ function UserNavbar() {
             <NavbarContent as="div" justify="end">
                 <Dropdown placement="bottom-end">
                     <DropdownTrigger>
-                        <Avatar
-                            showFallback src='https://images.unsplash.com/broken'
-                            as="button"
-                            size="sm"
-                            className="transition-transform"
-                        />
-                        {/* {user} */}
-                        {/* {JSON.parse(localStorage.getItem('UserData')).username} */}
+                        <div className="flex items-center gap-2 cursor-pointer">
+                            <Avatar
+                                showFallback src='https://images.unsplash.com/broken'
+                                as="button"
+                                size="sm"
+                                className="transition-transform"
+                            />
+                            <b>{username}</b>
+                        </div>
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
                         <DropdownItem key="settings">My Settings</DropdownItem>
                         <DropdownItem key="logout" color="danger" onClick={handleLogout}>
-                            ออกจากระบบ
+                        <p className='flex justify-between'>Log Out <FaArrowRightFromBracket className='text-lg' /></p>
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>

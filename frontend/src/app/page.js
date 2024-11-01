@@ -42,7 +42,7 @@ function Page() {
                 localStorage.setItem("Token", data.token);
                 localStorage.setItem("UserData", JSON.stringify(data.resultData))
                 
-                toast.success("เข้าสู่ระบบแล้ว")
+                toast.success("เข้าสู่ระบบสำเร็จ")
                 router.push(data.path)
             }
             else {

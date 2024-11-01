@@ -1,11 +1,11 @@
 import React from 'react'
-import { Text } from '@chakra-ui/react'
+import { FaHouse } from "react-icons/fa6";
 
 function Page() {
     return (
         <div>
             <div className='flex justify-center py-6'>
-                <Text fontSize='4xl'>Dashboard Page</Text>
+                <FaHouse className='text-4xl' /><p className='text-4xl font-bold'> Dashboard Page</p>
             </div>
         </div>
     )

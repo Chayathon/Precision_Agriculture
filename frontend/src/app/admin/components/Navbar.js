@@ -10,23 +10,20 @@ import { toast } from 'react-toastify';
 
 function AdminNavbar() {
     const router = useRouter()
-    const [user, setUser] = useState({
-        username : ""
-    })
+    const user = JSON.parse(localStorage.getItem('UserData'))
+    const [username, setUsername] = useState('')
 
     useEffect(() => {
         if(localStorage.getItem('UserData')) {
-            const name = JSON.parse(localStorage.getItem('UserData'))
-            setUser(name.username);
-            // console.log(name.username)
+            setUsername(user.username);
         }
-    },[localStorage.getItem('UserData'), user])
+    }, [user])
 
     const handleLogout = () => {
         Cookies.remove('UserData');
         Cookies.remove('Token');
 
-        toast.success("ออกจากระบบแล้ว")
+        toast.success("ออกจากระบบสำเร็จ")
         router.push('/')
     }
     
@@ -57,14 +54,15 @@ function AdminNavbar() {
             <NavbarContent as="div" justify="end">
                 <Dropdown placement="bottom-end">
                     <DropdownTrigger>
-                        <Avatar
-                            showFallback src='https://images.unsplash.com/broken'
-                            as="button"
-                            size="sm"
-                            className="transition-transform"
-                        />
-                        {/* {user} */}
-                        {/* {JSON.parse(localStorage.getItem('UserData')).username} */}
+                        <div className="flex items-center gap-2 cursor-pointer">
+                            <Avatar
+                                showFallback src='https://images.unsplash.com/broken'
+                                as="button"
+                                size="sm"
+                                className="transition-transform"
+                            />
+                            <b>{username}</b>
+                        </div>
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
                         <DropdownItem key="settings">My Settings</DropdownItem>
