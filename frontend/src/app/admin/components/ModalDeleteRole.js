@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
-function ModalDeleteRole({ isOpen, onClose, id, setRefresh }) {
+function ModalDeleteRole({ isOpen, onOpenChange, id, setRefresh }) {
     const [roleName, setRoleName] = useState('')
 
     useEffect(() => {
@@ -34,7 +34,7 @@ function ModalDeleteRole({ isOpen, onClose, id, setRefresh }) {
 
             if (res.ok) {
                 toast.success("ลบข้อมูลเรียบร้อยแล้ว")  
-                onClose();
+                onOpenChange(false);
                 setRefresh(true)
 
                 setTimeout(() => {
@@ -58,7 +58,7 @@ function ModalDeleteRole({ isOpen, onClose, id, setRefresh }) {
                     <>
                     <ModalHeader className="flex flex-col gap-1">ลบข้อมูล</ModalHeader>
                     <ModalBody>
-                        ยืนยันที่จะลบข้อมูล <b>{roleName}</b> ?
+                        <p>ยืนยันที่จะลบตำแหน่ง <b>{roleName}</b> ?</p>
                     </ModalBody>
                     <ModalFooter>
                         <Button variant="light" onPress={onClose}>
@@ -72,35 +72,6 @@ function ModalDeleteRole({ isOpen, onClose, id, setRefresh }) {
                 )}
                 </ModalContent>
             </Modal>
-
-            {/* <AlertDialog
-                isOpen={isOpen}
-                leastDestructiveRef={cancelRef}
-                onClose={onClose}
-            >
-                <AlertDialogOverlay>
-                    <AlertDialogContent>
-                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                            ลบข้อมูล
-                        </AlertDialogHeader>
-
-                        <AlertDialogBody>
-                            ยืนยันที่จะลบข้อมูล <b>{roleName}</b> ?
-                        </AlertDialogBody>
-
-                        <AlertDialogFooter>
-                            <div className='flex justify-end pt-4 pb-2 '>
-                                <Button ref={cancelRef} onClick={onClose}>
-                                    ยกเลิก
-                                </Button>
-                                <Button colorScheme='red' onClick={handleSubmit} ml={3}>
-                                    ลบ
-                                </Button>
-                            </div>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialogOverlay>
-            </AlertDialog> */}
         </>
     )
 }

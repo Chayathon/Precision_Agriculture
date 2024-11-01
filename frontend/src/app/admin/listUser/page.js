@@ -1,6 +1,6 @@
 'use client'
 
-import React from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import Cookies from "js-cookie";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure } from "@nextui-org/react";
 import { FaPlus, FaAngleLeft, FaAngleRight } from "react-icons/fa6";
@@ -10,33 +10,31 @@ import { HiOutlineTrash } from "react-icons/hi2";
 import ModalCreateUser from "../components/ModalCreateUser";
 import ModalUpdateUser from "../components/ModalUpdateUser";
 import ModalDeleteUser from "../components/ModalDeleteUser";
-import ModalMultiDelete from "../components/ModalMultiDelete";
+import ModalMultiDeleteUser from "../components/ModalMultiDeleteUser";
 
-export default function App() {
-    const [users, setUsers] = React.useState([]);
+export default function ListUser() {
+    const [users, setUsers] = useState([]);
 
-    const [refresh, setRefresh] = React.useState(false);
-    const [isLoading, setIsLoading] = React.useState(true);
+    const [refresh, setRefresh] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const [selectedId, setSelectedId] = React.useState(null);
+    const [selectedId, setSelectedId] = useState(null);
     const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeCreate } = useDisclosure();
     const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onOpenChange: onOpenChangeUpdate } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onOpenChange: onOpenChangeDelete } = useDisclosure();
     const { isOpen: isOpenMultiDelete, onOpen: onOpenMultiDelete, onOpenChange: onOpenChangeMultiDelete } = useDisclosure();
 
-    const [filterValue, setFilterValue] = React.useState("");
-    const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const [page, setPage] = React.useState(1);
-    const [sortDescriptor, setSortDescriptor] = React.useState({
+    const [filterValue, setFilterValue] = useState("");
+    const [selectedKeys, setSelectedKeys] = useState(new Set([]));
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [page, setPage] = useState(1);
+    const [sortDescriptor, setSortDescriptor] = useState({
         column: "",
         direction: "ascending"
     });
 
-    console.log(Array.from(selectedKeys))
-
     // Filter items based on search
-    const filteredItems = React.useMemo(() => {
+    const filteredItems = useMemo(() => {
         let filteredUsers = [...users];
 
         if (filterValue) {
@@ -52,62 +50,9 @@ export default function App() {
         return filteredUsers;
     }, [users, filterValue]);
 
-    // const handleMultiDelete = async () => {
-    //     try {
-    //         const token = Cookies.get("Token");
-    //         const selectedUsers = Array.from(selectedKeys);
-            
-    //         // สร้าง array ของ promises สำหรับการลบแต่ละ user
-    //         const deletePromises = selectedUsers.map(userId => 
-    //             fetch(`http://localhost:4000/api/deleteUser/${userId}`, {
-    //                 method: 'DELETE',
-    //                 headers: { 
-    //                     Authorization: `Bearer ${token}`,
-    //                     'Content-Type': 'application/json'
-    //                 }
-    //             })
-    //         );
-
-    //         // รอให้ทุก request เสร็จสิ้น
-    //         await Promise.all(deletePromises);
-            
-    //         // รีเฟรชข้อมูลและรีเซ็ตการเลือก
-    //         setRefresh(prev => !prev);
-    //         setSelectedKeys(new Set([]));
-    //         onOpenChangeMultiDelete(false);
-            
-    //     } catch (error) {
-    //         console.error("Error deleting users: ", error);
-    //     }
-    // };
-
-    // const ModalMultiDelete = ({ isOpen, onOpenChange }) => {
-    //     return (
-    //         <div
-    //             className={`fixed inset-0 z-50 flex items-center justify-center ${
-    //                 isOpen ? "visible" : "hidden"
-    //             }`}
-    //         >
-    //             <div className="fixed inset-0 bg-black/50"></div>
-    //             <div className="relative bg-white rounded-lg p-6 max-w-md w-full mx-4">
-    //                 <h3 className="text-lg font-semibold mb-4">ยืนยันการลบผู้ใช้</h3>
-    //                 <p>คุณต้องการลบผู้ใช้ที่เลือกจำนวน {selectedKeys.size} รายการใช่หรือไม่?</p>
-    //                 <div className="flex justify-end gap-2 mt-6">
-    //                     <Button color="default" variant="light" onPress={() => onOpenChange(false)}>
-    //                         ยกเลิก
-    //                     </Button>
-    //                     <Button color="danger" onPress={handleMultiDelete}>
-    //                         ลบ
-    //                     </Button>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     );
-    // };
-
     // Calculate pagination
     const pages = Math.ceil(filteredItems.length / rowsPerPage);
-    const items = React.useMemo(() => {
+    const items = useMemo(() => {
         const start = (page - 1) * rowsPerPage;
         const end = start + rowsPerPage;
 
@@ -115,7 +60,7 @@ export default function App() {
     }, [page, filteredItems, rowsPerPage]);
 
     // Sort items
-    const sortedItems = React.useMemo(() => {
+    const sortedItems = useMemo(() => {
         if (!sortDescriptor.column) return items;
 
         return [...items].sort((a, b) => {
@@ -141,24 +86,24 @@ export default function App() {
         });
     }, [items, sortDescriptor]);
 
-    const onNextPage = React.useCallback(() => {
+    const onNextPage = useCallback(() => {
         if (page < pages) {
             setPage(page + 1);
         }
     }, [page, pages]);
 
-    const onPreviousPage = React.useCallback(() => {
+    const onPreviousPage = useCallback(() => {
         if (page > 1) {
             setPage(page - 1);
         }
     }, [page]);
 
-    const onRowsPerPageChange = React.useCallback((e) => {
+    const onRowsPerPageChange = useCallback((e) => {
         setRowsPerPage(Number(e.target.value));
         setPage(1);
     }, []);
 
-    const onSearchChange = React.useCallback((value) => {
+    const onSearchChange = useCallback((value) => {
         if (value) {
             setFilterValue(value);
             setPage(1);
@@ -167,7 +112,7 @@ export default function App() {
         }
     }, []);
 
-    const onClear = React.useCallback(() => {
+    const onClear = useCallback(() => {
         setFilterValue("")
         setPage(1)
     }, []);
@@ -191,11 +136,12 @@ export default function App() {
         }
     };
 
-    React.useEffect(() => {
-        fetchUser(1)
+    useEffect(() => {
+        fetchUser(1);
     }, [refresh]);
 
-    const topContent = React.useMemo(() => {
+    // Top content of table
+    const topContent = useMemo(() => {
         return (
             <div className="flex flex-col gap-4">
                 <div className="flex justify-between gap-3 items-end">
@@ -245,7 +191,8 @@ export default function App() {
         );
     }, [filterValue, onRowsPerPageChange, users.length, onSearchChange, selectedKeys.size]);
 
-    const bottomContent = React.useMemo(() => {
+    // Bottom content of table
+    const bottomContent = useMemo(() => {
         return (
             <div className="py-2 px-2 flex justify-between items-center">
                 <span className="w-[30%] text-small text-default-400">
@@ -346,123 +293,16 @@ export default function App() {
                 <ModalDeleteUser isOpen={isOpenDelete} onOpenChange={onOpenChangeDelete} id={selectedId} setRefresh={setRefresh} />
             )}
             {isOpenMultiDelete && (
-                <ModalMultiDelete isOpen={isOpenMultiDelete} onOpenChange={onOpenChangeMultiDelete} selectedKeys={Array.from(selectedKeys)} setRefresh={setRefresh} />
+                <ModalMultiDeleteUser
+                    isOpen={isOpenMultiDelete}
+                    onOpenChange={onOpenChangeMultiDelete}
+                    selectedKeys={Array.from(selectedKeys)}
+                    setRefresh={setRefresh}
+                    deleteSuccess={() => {
+                        setSelectedKeys(new Set());
+                    }}
+                />
             )}
         </div>
     );
 }
-
-// "use client";
-
-// import { useState, useEffect, useRef } from "react";
-// import Cookies from "js-cookie";
-// import { Table, Thead, Tbody, Tfoot, Tr, Th, Td, TableCaption, TableContainer, Button, ButtonGroup, Stack, Flex, useDisclosure } from "@nextui-org/react";
-// import { TailSpin } from "react-loader-spinner";
-// // import ModalCreateUser from "../components/ModalCreateUser";
-// // import ModalUpdateUser from "../components/ModalUpdateUser";
-// // import ModalDeleteUser from "../components/ModalDeleteUser";
-
-// function Page() {
-//     const [users, setUsers] = useState([]);
-//     const [selectedId, setSelectedId] = useState(null);
-//     const [refresh, setRefresh] = useState(false)
-
-//     const { isOpen: isOpenCreate, onOpen: onOpenCreate, onClose: onCloseCreate } = useDisclosure();
-//     const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onClose: onCloseUpdate } = useDisclosure();
-//     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
-//     const cancelRef = useRef();
-
-//     const fetchUser = async (role_id) => {
-//         try {
-//             const token = Cookies.get("Token");
-//             const res = await fetch(`http://localhost:4000/api/listUser/${role_id}`, {
-//                 headers: { Authorization: `Bearer ${token}` },
-//             });
-
-//             if (res.ok) {
-//                 const data = await res.json();
-//                 setUsers(data.resultData);
-            
-//             }
-//         } catch (error) {
-//             console.error("Error fetching data: ", error);
-//         }
-//     };
-
-//     useEffect(() => {
-//         fetchUser(1)
-//     }, [refresh])
-
-//     return (
-//         <>
-//             <div className="flex justify-end px-4 pt-2">
-//                 <Button onClick={() => {onOpenCreate()}} colorScheme='green'>
-//                     เพิ่ม
-//                     {isOpenCreate && (
-//                         <ModalCreateUser isOpen={isOpenCreate} onClose={onCloseCreate} setRefresh={setRefresh} />
-//                     )}
-//                 </Button>
-//             </div>
-//             <TableContainer>
-//                 <Table size='lg'>
-//                     <Thead>
-//                         <Tr>
-//                             <Th>ชื่อจริง</Th>
-//                             <Th>นามสกุล</Th>
-//                             <Th>อีเมล</Th>
-//                             <Th>เบอร์โทรศัพท์</Th>
-//                             <Th>ที่อยู่</Th>
-//                             <Th>ชื่อผู้ใช้</Th>
-//                             <Th>จัดการ</Th>
-//                         </Tr>
-//                     </Thead>
-//                     <Tbody>
-//                         {users && users.length > 0 ? (
-//                             users.map((user) => (
-//                                 <Tr key={user.id}>
-//                                     <Td>{user.firstname}</Td>
-//                                     <Td>{user.lastname}</Td>
-//                                     <Td>{user.email}</Td>
-//                                     <Td>{user.tel}</Td>
-//                                     <Td>{user.address}</Td>
-//                                     <Td>{user.username}</Td>
-//                                     <Td>
-//                                         <ButtonGroup size='sm' colorScheme='gray' isAttached>
-//                                             <Button onClick={() => {setSelectedId(user.id); onOpenUpdate();}}>
-//                                                 แก้ไข
-//                                                 {isOpenUpdate && (
-//                                                     <ModalUpdateUser isOpen={isOpenUpdate} onClose={onCloseUpdate} id={selectedId} setRefresh={setRefresh} />
-//                                                 )}
-//                                             </Button>
-//                                             <Button onClick={() => {setSelectedId(user.id); onOpenDelete();}}>
-//                                                 ลบ
-//                                                 {isOpenDelete && (
-//                                                     <ModalDeleteUser isOpen={isOpenDelete} onClose={onCloseDelete} cancelRef={cancelRef} id={selectedId} setRefresh={setRefresh} />
-//                                                 )}
-//                                             </Button>
-//                                         </ButtonGroup>
-//                                     </Td>
-//                                 </Tr>
-//                             ))
-//                         ) : (
-//                             <Tr>
-//                                 <Td colSpan='8' className="text-center">
-//                                     <Flex className="justify-center">
-//                                         Loading Data... &emsp; <TailSpin
-//                                             height="25"
-//                                             width="25"
-//                                             color="gray"
-//                                             ariaLabel="tail-spin-loading"
-//                                         />
-//                                     </Flex>
-//                                 </Td>
-//                             </Tr>
-//                         )}
-//                     </Tbody>
-//                 </Table>
-//             </TableContainer>
-//         </>
-//     );
-// }
-
-// export default Page;

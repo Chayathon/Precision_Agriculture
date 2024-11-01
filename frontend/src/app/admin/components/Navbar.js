@@ -19,7 +19,7 @@ function AdminNavbar() {
             const name = JSON.parse(localStorage.getItem('UserData'))
             setUser(name.username);
             // console.log(name.username)
-        }  
+        }
     },[localStorage.getItem('UserData'), user])
 
     const handleLogout = () => {

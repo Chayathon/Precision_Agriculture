@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react'
+import { useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
-function ModalCreateRole({ isOpen, onClose, setRefresh }) {
+function ModalCreateRole({ isOpen, onOpenChange, setRefresh }) {
     const [roleName, setRoleName] = useState('')
 
     const handleSubmit = async (e) => {
@@ -29,7 +29,7 @@ function ModalCreateRole({ isOpen, onClose, setRefresh }) {
                 form.reset()
 
                 toast.success("เพิ่มข้อมูลเรียบร้อยแล้ว")
-                onClose();
+                onOpenChange(false);
                 setRefresh(true)
 
                 setTimeout(() => {
@@ -52,7 +52,6 @@ function ModalCreateRole({ isOpen, onClose, setRefresh }) {
             <Modal 
                 isOpen={isOpen} 
                 onOpenChange={onOpenChange}
-                placement="top-center"
             >
                 <ModalContent>
                     {(onClose) => (
@@ -80,34 +79,6 @@ function ModalCreateRole({ isOpen, onClose, setRefresh }) {
                     )}
                 </ModalContent>
             </Modal>
-
-            {/* <Modal
-                initialFocusRef={initialRef}
-                finalFocusRef={finalRef}
-                size={'xl'}
-                isOpen={isOpen}
-                onClose={onClose}
-            >
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>เพิ่มข้อมูล</ModalHeader>
-                    <ModalCloseButton />
-
-                    <ModalBody>
-                        <form onSubmit={handleSubmit}>
-                            <FormLabel>ตำแหน่ง</FormLabel>
-                            <Input onChange={(e) => setRoleName(e.target.value)} placeholder='ตำแหน่ง' size='md' />
-
-                            <div className='flex justify-end pt-4 pb-2 '>
-                                <Button type='submit' colorScheme='green' mr={3}>
-                                    เพิ่ม
-                                </Button>
-                                <Button onClick={onClose}>ยกเลิก</Button>
-                            </div>
-                        </form>
-                    </ModalBody>
-                </ModalContent>
-            </Modal> */}
         </>
     )
 }

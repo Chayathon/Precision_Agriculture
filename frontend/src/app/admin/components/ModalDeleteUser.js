@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
@@ -34,7 +34,7 @@ function ModalDeleteUser({ isOpen, onOpenChange, id, setRefresh }) {
 
             if (res.ok) {
                 toast.success("ลบข้อมูลเรียบร้อยแล้ว")
-                onClose();
+                onOpenChange(false);
                 setRefresh(true)
 
                 setTimeout(() => {
@@ -56,18 +56,18 @@ function ModalDeleteUser({ isOpen, onOpenChange, id, setRefresh }) {
                 <ModalContent>
                 {(onClose) => (
                     <>
-                    <ModalHeader className="flex flex-col gap-1">ลบข้อมูล</ModalHeader>
-                    <ModalBody>
-                        <p>ยืนยันที่จะลบข้อมูล <b>{username}</b> ?</p>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button variant="light" onPress={onClose}>
-                            ยกเลิก
-                        </Button>
-                        <Button color="danger" onPress={handleClick}>
-                            ลบ
-                        </Button>
-                    </ModalFooter>
+                        <ModalHeader className="flex flex-col gap-1">ลบข้อมูล</ModalHeader>
+                        <ModalBody>
+                            <p>ยืนยันที่จะลบข้อมูล <b>{username}</b> ?</p>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button variant="flat" onPress={onClose}>
+                                ยกเลิก
+                            </Button>
+                            <Button color="danger" onPress={handleClick}>
+                                ลบ
+                            </Button>
+                        </ModalFooter>
                     </>
                 )}
                 </ModalContent>

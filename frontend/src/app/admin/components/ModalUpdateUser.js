@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Textarea, Button } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
@@ -94,7 +94,7 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                             <ModalHeader className="flex flex-col gap-1">แก้ไขข้อมูล</ModalHeader>
                             <ModalBody>
                                 <form onSubmit={handleSubmit}>
-                                    <div className='flex my-4 gap-4'>
+                                    <div className='flex mb-4 gap-4'>
                                         <Input onChange={(e) => setFirstname(e.target.value)} type='text' value={firstname} label='ชื่อจริง' isClearable isRequired />
 
                                         <Input onChange={(e) => setLastname(e.target.value)} type='text' value={lastname} label='นามสกุล' isClearable isRequired />
@@ -110,7 +110,7 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                                     <div className='my-4'>
                                         <Input onChange={(e) => setUsername(e.target.value)} type='text' value={username} label='ชื่อผู้ใช้' isClearable isDisabled />
                                     </div>
-                                    <div className='my-4'>
+                                    <div className='mt-4'>
                                         <Input
                                             onChange={(e) => setPassword(e.target.value)}
                                             value={password}
@@ -132,7 +132,7 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                                         <Button variant="flat" onPress={onClose}>
                                             ยกเลิก
                                         </Button>
-                                        <Button type='submit' color="success">
+                                        <Button type='submit' color="warning">
                                             แก้ไข
                                         </Button>
                                     </ModalFooter>
@@ -142,70 +142,6 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                     )}
                 </ModalContent>
             </Modal>
-
-            {/* <Modal
-                initialFocusRef={initialRef}
-                finalFocusRef={finalRef}
-                size={'xl'}
-                isOpen={isOpen}
-                onClose={onClose}
-            >
-
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>แก้ไขข้อมูล</ModalHeader>
-                    <ModalCloseButton />
-
-                    <ModalBody>
-                        <form onSubmit={handleSubmit}>
-                            <Flex gap='4'>
-                                <FormLabel className='mt-2'>ชื่อจริง</FormLabel>
-                                <Input onChange={(e) => setFirstname(e.target.value)} value={firstname} placeholder='ชื่อจริง' size='md' className='w-1' />
-
-                                <FormLabel className='mt-2'>นามสกุล</FormLabel>
-                                <Input onChange={(e) => setLastname(e.target.value)} value={lastname} placeholder='นามสกุล' size='md' />
-                            </Flex>
-                            <Flex>
-                                <FormLabel className='mt-2'>อีเมล</FormLabel>
-                                <Input onChange={(e) => setEmail(e.target.value)} value={email} type='email' placeholder='อีเมล' size='md' />
-                                &emsp;
-                                <FormLabel className='mt-2'>เบอร์โทรศัพท์</FormLabel>
-                                <Input onChange={(e) => setTel(e.target.value)} value={tel} placeholder='เบอร์โทรศัพท์' size='md' />
-                            </Flex>
-                            <br />
-                            <FormLabel className='mt-2'>ที่อยู่</FormLabel>
-                            <Textarea onChange={(e) => setAddress(e.target.value)} value={address} placeholder='ที่อยู่' />
-                            <br /><br />
-                            <FormLabel>ชื่อผู้ใช้</FormLabel>
-                            <Input value={username} placeholder='ชื่อผู้ใช้' size='md' disabled />
-                            <br /><br />
-                            <FormLabel>รหัสผ่าน</FormLabel>
-                            <InputGroup size='md'>
-                                <Input
-                                    value={password}
-                                    pr='4.5rem'
-                                    type={show ? 'text' : 'password'}
-                                    placeholder='รหัสผ่าน'
-                                    disabled
-                                />
-                                <InputRightElement width='4.5rem'>
-                                    <Button h='1.75rem' size='sm' onClick={handleClick}>
-                                        {show ? 'ซ่อน' : 'แสดง'}
-                                    </Button>
-                                </InputRightElement>
-                            </InputGroup>
-                            <br />
-
-                            <div className='flex justify-end pt-4 pb-2 '>
-                                <Button type='submit' colorScheme='blue' mr={3}>
-                                    แก้ไข
-                                </Button>
-                                <Button onClick={onClose}>ยกเลิก</Button>
-                            </div>
-                        </form>
-                    </ModalBody>
-                </ModalContent>
-            </Modal> */}
         </>
     )
 }

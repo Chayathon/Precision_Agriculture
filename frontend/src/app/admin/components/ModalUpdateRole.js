@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, } from '@nextui-org/react'
+import { useState, useEffect } from 'react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
-function ModalUpdateRole({ isOpen, onClose, id, setRefresh }) {
+function ModalUpdateRole({ isOpen, onOpenChange, id, setRefresh }) {
     const [roleName, setRoleName] = useState('')
 
     useEffect(() => {
@@ -50,7 +50,7 @@ function ModalUpdateRole({ isOpen, onClose, id, setRefresh }) {
                 form.reset()
 
                 toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว")  
-                onClose();
+                onOpenChange(false);
                 setRefresh(true)
 
                 setTimeout(() => {
@@ -98,35 +98,6 @@ function ModalUpdateRole({ isOpen, onClose, id, setRefresh }) {
                         </ModalBody>
                         </>
                     )}
-                </ModalContent>
-            </Modal>
-
-            <Modal
-                initialFocusRef={initialRef}
-                finalFocusRef={finalRef}
-                size={'xl'}
-                isOpen={isOpen}
-                onClose={onClose}
-            >
-
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>แก้ไขข้อมูล</ModalHeader>
-                    <ModalCloseButton />
-
-                    <ModalBody>
-                        <form onSubmit={handleSubmit}>
-                            <FormLabel>ตำแหน่ง</FormLabel>
-                            <Input onChange={(e) => setRoleName(e.target.value)} value={roleName} placeholder='ตำแหน่ง' size='md' />
-
-                            <div className='flex justify-end pt-4 pb-2 '>
-                                <Button type='submit' colorScheme='blue' mr={3}>
-                                    แก้ไข
-                                </Button>
-                                <Button onClick={onClose}>ยกเลิก</Button>
-                            </div>
-                        </form>
-                    </ModalBody>
                 </ModalContent>
             </Modal>
         </>
