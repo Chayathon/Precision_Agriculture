@@ -33,7 +33,7 @@ function ModalDeleteUser({ isOpen, onOpenChange, id, setRefresh }) {
             });
 
             if (res.ok) {
-                toast.success("ลบข้อมูลเรียบร้อยแล้ว")  
+                toast.success("ลบข้อมูลเรียบร้อยแล้ว")
                 onClose();
                 setRefresh(true)
 
@@ -72,35 +72,6 @@ function ModalDeleteUser({ isOpen, onOpenChange, id, setRefresh }) {
                 )}
                 </ModalContent>
             </Modal>
-
-            {/* <AlertDialog
-                isOpen={isOpen}
-                leastDestructiveRef={cancelRef}
-                onClose={onClose}
-            >
-                <AlertDialogOverlay>
-                    <AlertDialogContent>
-                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-                            ลบข้อมูล
-                        </AlertDialogHeader>
-
-                        <AlertDialogBody>
-                            ยืนยันที่จะลบข้อมูล <b>{username}</b> ?
-                        </AlertDialogBody>
-
-                        <AlertDialogFooter>
-                            <div className='flex justify-end pt-4 pb-2 '>
-                                <Button ref={cancelRef} onClick={onClose}>
-                                    ยกเลิก
-                                </Button>
-                                <Button colorScheme='red' onClick={handleClick} ml={3}>
-                                    ลบ
-                                </Button>
-                            </div>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialogOverlay>
-            </AlertDialog> */}
         </>
     )
 }

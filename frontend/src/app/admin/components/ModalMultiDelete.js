@@ -2,14 +2,12 @@ import React from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
-function ModalMultiDelete( isOpen, onOpenChange, selectedKeys ) {
-    // const [selectedKeys, setSelectedKeys] = React.useState([]);
-    const selectedUsers = selectedKeys;
-
+function ModalMultiDelete({ isOpen, onOpenChange, selectedKeys, setRefresh }) {
+    console.log(selectedKeys)
     const handleClick = async () => {
         try {
             // สร้าง array ของ promises สำหรับการลบแต่ละ user
-            const deletePromises = selectedUsers.map(userId => 
+            const deletePromises = selectedKeys.map(userId => 
                 fetch(`http://localhost:4000/api/deleteUser/${userId}`, {
                     method: 'DELETE'
                 })
@@ -18,9 +16,23 @@ function ModalMultiDelete( isOpen, onOpenChange, selectedKeys ) {
             // รอให้ทุก request เสร็จสิ้น
             await Promise.all(deletePromises);
             
-            // รีเฟรชข้อมูลและรีเซ็ตการเลือก
-            setRefresh(prev => !prev);
-            onOpenChangeMultiDelete(false);
+            if (deletePromises.ok) {
+                toast.success("ลบข้อมูลเรียบร้อยแล้ว")
+                onOpenChange(false);
+                setRefresh(true)
+
+                setTimeout(() => {
+                    setRefresh(false)
+                }, 1000)
+            }
+            else {
+                toast.error("ลบข้อมูลล้มเหลว")
+                return;
+            }
+            
+            // // รีเฟรชข้อมูลและรีเซ็ตการเลือก
+            // setRefresh(prev => !prev);
+            // onOpenChange(false);
             
         } catch (error) {
             console.error("Error deleting users: ", error);
@@ -32,9 +44,9 @@ function ModalMultiDelete( isOpen, onOpenChange, selectedKeys ) {
             <ModalContent>
             {(onClose) => (
                 <>
-                <ModalHeader className="flex flex-col gap-1">ลบข้อมูล {selectedUsers}</ModalHeader>
+                <ModalHeader className="flex flex-col gap-1">ลบข้อมูล</ModalHeader>
                 <ModalBody>
-                    <p>ลบ ({selectedKeys.size}) รายการ</p>
+                    <p>ยืนยันที่จะลบข้อมูล <b>{selectedKeys.length}</b> รายการ</p>
                 </ModalBody>
                 <ModalFooter>
                     <Button variant="light" onPress={onClose}>

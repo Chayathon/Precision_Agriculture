@@ -44,7 +44,7 @@ function ModalCreateUser({ isOpen, onOpenChange, setRefresh }) {
                 form.reset()
 
                 toast.success("เพิ่มข้อมูลเรียบร้อยแล้ว")
-                onClose();
+                onOpenChange(false);
                 setRefresh(true)
 
                 setTimeout(() => {
@@ -129,7 +129,7 @@ function ModalCreateUser({ isOpen, onOpenChange, setRefresh }) {
                                         <Button variant="flat" onPress={onClose}>
                                             ยกเลิก
                                         </Button>
-                                        <Button color="success" onPress={handleSubmit}>
+                                        <Button type='submit' color="success">
                                             เพิ่ม
                                         </Button>
                                     </ModalFooter>

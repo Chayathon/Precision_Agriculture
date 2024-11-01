@@ -3,7 +3,7 @@
 import React from "react";
 import Cookies from "js-cookie";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure } from "@nextui-org/react";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
 import { HiOutlineTrash } from "react-icons/hi2";
@@ -26,12 +26,14 @@ export default function App() {
 
     const [filterValue, setFilterValue] = React.useState("");
     const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [page, setPage] = React.useState(1);
     const [sortDescriptor, setSortDescriptor] = React.useState({
         column: "",
         direction: "ascending"
     });
+
+    console.log(Array.from(selectedKeys))
 
     // Filter items based on search
     const filteredItems = React.useMemo(() => {
@@ -214,7 +216,7 @@ export default function App() {
                                 variant="flat"
                                 endContent={<HiOutlineTrash />}
                             >
-                                ลบ {selectedKeys.size} รายการ
+                                ลบ ({selectedKeys.size}) รายการ
                             </Button>
                         )}
                         <Button onPress={() => {onOpenCreate()}} color="primary" endContent={<FaPlus />}>
@@ -230,9 +232,12 @@ export default function App() {
                             className="bg-transparent outline-none text-default-400 text-small"
                             onChange={onRowsPerPageChange}
                         >
+                            <option value="5">5</option>
                             <option value="10">10</option>
-                            <option value="15">15</option>
                             <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <option value="50">50</option>
                         </select>
                     </label>
                 </div>
@@ -261,10 +266,10 @@ export default function App() {
                 )}
                 <div className="hidden sm:flex w-[30%] justify-end gap-2">
                     <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onPreviousPage}>
-                        ย้อนกลับ
+                        <FaAngleLeft className="text-lg" /> ย้อนกลับ
                     </Button>
                     <Button isDisabled={pages === 1} size="sm" variant="flat" onPress={onNextPage}>
-                        ถัดไป
+                        ถัดไป <FaAngleRight className="text-lg" />
                     </Button>
                 </div>
             </div>
@@ -324,7 +329,7 @@ export default function App() {
                                             <HiOutlineTrash className="text-xl text-red-500" />
                                         </Button>
                                     </Tooltip>
-                                    </ButtonGroup>
+                                </ButtonGroup>
                             </TableCell>
                         </TableRow>
                     )}
@@ -341,7 +346,7 @@ export default function App() {
                 <ModalDeleteUser isOpen={isOpenDelete} onOpenChange={onOpenChangeDelete} id={selectedId} setRefresh={setRefresh} />
             )}
             {isOpenMultiDelete && (
-                <ModalMultiDelete isOpen={isOpenMultiDelete} onOpenChange={onOpenChangeMultiDelete} selectedKeys={selectedKeys} setRefresh={setRefresh} />
+                <ModalMultiDelete isOpen={isOpenMultiDelete} onOpenChange={onOpenChangeMultiDelete} selectedKeys={Array.from(selectedKeys)} setRefresh={setRefresh} />
             )}
         </div>
     );

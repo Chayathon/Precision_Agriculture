@@ -64,8 +64,8 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                 const form = e.target
                 form.reset()
 
-                toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว")  
-                onClose();
+                toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว")
+                onOpenChange(false);
                 setRefresh(true)
 
                 setTimeout(() => {
@@ -108,7 +108,7 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                                         <Textarea onChange={(e) => setAddress(e.target.value)} value={address} label='ที่อยู่' isRequired />
                                     </div>
                                     <div className='my-4'>
-                                        <Input onChange={(e) => setUsername(e.target.value)} type='text' value={username} label='ชื่อผู้ใช้' isClearable disabled />
+                                        <Input onChange={(e) => setUsername(e.target.value)} type='text' value={username} label='ชื่อผู้ใช้' isClearable isDisabled />
                                     </div>
                                     <div className='my-4'>
                                         <Input
@@ -125,14 +125,14 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                                                 </Button>
                                             }
                                             type={isVisible ? "text" : "password"}
-                                            disabled
+                                            isDisabled
                                         />
                                     </div>
                                     <ModalFooter>
                                         <Button variant="flat" onPress={onClose}>
                                             ยกเลิก
                                         </Button>
-                                        <Button color="success" onPress={handleSubmit}>
+                                        <Button type='submit' color="success">
                                             แก้ไข
                                         </Button>
                                     </ModalFooter>

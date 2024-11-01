@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
+import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 
 function AdminNavbar() {
@@ -68,7 +69,7 @@ function AdminNavbar() {
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
                         <DropdownItem key="settings">My Settings</DropdownItem>
                         <DropdownItem key="logout" color="danger" onClick={handleLogout}>
-                            Log Out
+                            <p className='flex justify-between'>Log Out <FaArrowRightFromBracket className='text-lg' /></p>
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
