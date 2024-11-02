@@ -161,22 +161,11 @@ function UserNavbar() {
                             </Button>
                         </DropdownTrigger>
                     </NavbarItem>
-                    <DropdownMenu
-                        aria-label="Select plant"
-                        className="w-[340px]"
-                        itemClasses={{
-                        base: "gap-4",
-                        }}
-                    >
-                        <DropdownItem
-                            key="corn"
-                        >
+                    <DropdownMenu aria-label="Select plant" variant='flat' className="w-[240px] gap-4">
+                        <DropdownItem key="corn">
                             ข้าวโพดเลี้ยงสัตว์
                         </DropdownItem>
-                        <DropdownItem
-                            key="add"
-                            endContent={<FaCirclePlus className='text-lg' />}
-                        >
+                        <DropdownItem key="add" color="success" endContent={<FaCirclePlus className='text-lg' />}>
                             เพิ่มพืช
                         </DropdownItem>
                     </DropdownMenu>
