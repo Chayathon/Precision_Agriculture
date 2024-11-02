@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
-import { FaArrowRightFromBracket, FaUserGear } from "react-icons/fa6";
+import { FaChevronDown, FaCirclePlus, FaArrowRightFromBracket, FaUserGear } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 
 function UserNavbar() {
@@ -148,7 +148,39 @@ function UserNavbar() {
             </NavbarBrand>
 
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
-
+                <Dropdown>
+                    <NavbarItem>
+                        <DropdownTrigger>
+                            <Button
+                                className="p-0 text-white bg-transparent data-[hover=true]:bg-transparent"
+                                radius="sm"
+                                variant="light"
+                                endContent={<FaChevronDown />}
+                            >
+                                มันสำปะหลัง
+                            </Button>
+                        </DropdownTrigger>
+                    </NavbarItem>
+                    <DropdownMenu
+                        aria-label="Select plant"
+                        className="w-[340px]"
+                        itemClasses={{
+                        base: "gap-4",
+                        }}
+                    >
+                        <DropdownItem
+                            key="corn"
+                        >
+                            ข้าวโพดเลี้ยงสัตว์
+                        </DropdownItem>
+                        <DropdownItem
+                            key="add"
+                            endContent={<FaCirclePlus className='text-lg' />}
+                        >
+                            เพิ่มพืช
+                        </DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
             </NavbarContent>
 
             <NavbarContent as="div" justify="end">
