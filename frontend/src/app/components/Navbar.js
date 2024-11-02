@@ -10,6 +10,8 @@ import { toast } from 'react-toastify';
 
 function UserNavbar() {
     const router = useRouter()
+    const [currentDate, setCurrentDate] = useState('');
+    const [currentTime, setCurrentTime] = useState('');
     const user = JSON.parse(localStorage.getItem('UserData'))
     const [name, setName] = useState('')
     const [id, setId] = useState('')
@@ -26,6 +28,33 @@ function UserNavbar() {
     const [address, setAddress] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+
+    useEffect(() => {
+        const updateDateTime = () => {
+            const now = new Date();
+            
+            const formattedDate = now.toLocaleDateString('th-TH', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            const formattedTime = now.toLocaleTimeString('th-TH', {
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: false
+            });
+            
+            setCurrentDate(formattedDate);
+            setCurrentTime(formattedTime);
+        };
+
+        updateDateTime();
+        const intervalId = setInterval(updateDateTime, 1000); // อัพเดททุกวินาที
+
+        return () => clearInterval(intervalId); // เคลียร์ interval เมื่อ unmount
+    }, []);
 
     useEffect(() => {
         if(localStorage.getItem('UserData')) {
@@ -112,7 +141,10 @@ function UserNavbar() {
     return (
         <Navbar className='bg-gray-800 text-white'>
             <NavbarBrand>
-                <p className="font-bold text-inherit">Precision Agriculture</p>
+                <div className='flex flex-col'>
+                    <div className='text-sm'>{currentDate}</div>
+                    <div className='text-lg font-bold'>{currentTime}</div>
+                </div>
             </NavbarBrand>
 
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
