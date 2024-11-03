@@ -268,7 +268,7 @@ function UserNavbar() {
                                     <Button variant="flat" onPress={onClose}>
                                         ยกเลิก
                                     </Button>
-                                    <Button color="primary" onPress={onClose}>
+                                    <Button type='submit' color="primary">
                                         เพิ่ม
                                     </Button>
                                 </ModalFooter>
