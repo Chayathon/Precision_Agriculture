@@ -133,7 +133,7 @@ function Page() {
     return (
         <div className='m-4'>
             <div className='grid grid-cols-6 gap-4 mb-4'>
-                <Card>
+                <Card className='drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>
                         <p className='text-gray-500'>อายุ (วัน)</p>
                     </CardHeader>
@@ -141,7 +141,7 @@ function Page() {
                         <p className='text-center text-6xl font-bold'>30</p>
                     </CardBody>
                 </Card>
-                <Card>
+                <Card className='drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>
                         <p className='text-gray-500'>อุณหภูมิ (°C)</p>
                     </CardHeader>
@@ -149,7 +149,7 @@ function Page() {
                         <p className='text-center text-6xl font-bold'>28</p>
                     </CardBody>
                 </Card>
-                <Card>
+                <Card className='drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>
                         <p className='text-gray-500'>ความชื้น (%)</p>
                     </CardHeader>
@@ -157,7 +157,7 @@ function Page() {
                         <p className='text-center text-6xl font-bold'>70</p>
                     </CardBody>
                 </Card>
-                <Card>
+                <Card className='drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>
                         <p className='text-gray-500'>ค่าความเป็นกรด-ด่าง (pH)</p>
                     </CardHeader>
@@ -165,7 +165,7 @@ function Page() {
                         <p className='text-center text-6xl font-bold'>5.5</p>
                     </CardBody>
                 </Card>
-                <Card>
+                <Card className='drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>
                         <p className='text-gray-500'>ค่าการนำไฟฟ้า (us/cm)</p>
                     </CardHeader>
@@ -173,7 +173,7 @@ function Page() {
                         <p className='text-center text-6xl font-bold'>1200</p>
                     </CardBody>
                 </Card>
-                <Card>
+                <Card className='drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>
                         <p className='text-gray-500'>ค่าความเข้มแสง (lux)</p>
                     </CardHeader>
@@ -183,61 +183,61 @@ function Page() {
                 </Card>
             </div>
             <div className='grid grid-cols-3 gap-4 mb-4'>
-                <Card>
+                <Card className='drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>
                         <p className='text-gray-500'>ไนโตรเจน (mg/L)</p>
                     </CardHeader>
                     <CardBody>
-                        <p className='text-center text-6xl font-bold'>75</p>
+                        <p className='text-center text-6xl font-bold text-red-500'>75</p>
                     </CardBody>
                 </Card>
-                <Card>
+                <Card className='drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>
                         <p className='text-gray-500'>ฟอสฟอรัส (mg/L)</p>
                     </CardHeader>
                     <CardBody>
-                        <p className='text-center text-6xl font-bold'>40</p>
+                        <p className='text-center text-6xl font-bold text-red-500'>40</p>
                     </CardBody>
                 </Card>
-                <Card>
+                <Card className='drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>
                         <p className='text-gray-500'>โพแทสเซียม (mg/L)</p>
                     </CardHeader>
                     <CardBody>
-                        <p className='text-center text-6xl font-bold'>125</p>
+                        <p className='text-center text-6xl font-bold text-red-500'>125</p>
                     </CardBody>
                 </Card>
             </div>
             <div className='grid grid-cols-2 gap-4'>
-                <Card className='px-4 pb-4'>
+                <Card className='px-4 pb-4 drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>อุณหภูมิ (°C)</CardHeader>
                         <Bar options={options} data={dataTemp} />
                 </Card>
-                <Card className='px-4 pb-4'>
+                <Card className='px-4 pb-4 drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>ความชื้น (%)</CardHeader>
                         <Bar options={options} data={dataMoisture} />
                 </Card>
-                <Card className='px-4 pb-4'>
+                <Card className='px-4 pb-4 drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>ค่าความเป็นกรด-ด่าง (pH)</CardHeader>
                         <Bar options={options} data={dataPH} />
                 </Card>
-                <Card className='px-4 pb-4'>
+                <Card className='px-4 pb-4 drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>ค่าการนำไฟฟ้า (us/cm)</CardHeader>
                         <Bar options={options} data={dataEC} />
                 </Card>
-                <Card className='px-4 pb-4'>
+                <Card className='px-4 pb-4 drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>ค่าความเข้มแสง (lux)</CardHeader>
                         <Bar options={options} data={dataLight} />
                 </Card>
-                <Card className='px-4 pb-4'>
+                <Card className='px-4 pb-4 drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>ไนโตรเจน (mg/L)</CardHeader>
                         <Bar options={options} data={dataNitrogen} />
                 </Card>
-                <Card className='px-4 pb-4'>
+                <Card className='px-4 pb-4 drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>ฟอสฟอรัส (mg/L)</CardHeader>
                         <Bar options={options} data={dataPhosphorus} />
                 </Card>
-                <Card className='px-4 pb-4'>
+                <Card className='px-4 pb-4 drop-shadow-xl'>
                     <CardHeader className='flex justify-center'>โพแทสเซียม (mg/L)</CardHeader>
                         <Bar options={options} data={dataPotassium} />
                 </Card>
