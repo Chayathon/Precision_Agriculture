@@ -63,7 +63,7 @@ function Page() {
                 </CardHeader>
                 <CardBody>
                     <form onSubmit={handleSubmit}>
-                        <Input onChange={(e) => setUsername(e.target.value)} type='text' label='ชื่อผู้ใช้' variant='faded' />
+                        <Input onChange={(e) => setUsername(e.target.value)} type='text' label='ชื่อผู้ใช้' variant='faded' autoFocus />
                         <Input
                             onChange={(e) => setPassword(e.target.value)}
                             label="รหัสผ่าน"

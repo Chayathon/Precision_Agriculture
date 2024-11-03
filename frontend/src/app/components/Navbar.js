@@ -178,7 +178,7 @@ function UserNavbar() {
                         onSelectionChange={setSelectedKeys}
                     >
                         <DropdownItem key="มันสำปะหลัง">มันสำปะหลัง</DropdownItem>
-                        <DropdownItem  key="เพิ่มพืช" color="success" endContent={<FaCirclePlus className='text-lg' />} onPress={onOpenAdd}>
+                        <DropdownItem  key="เพิ่มพืช" color="primary" endContent={<FaCirclePlus className='text-lg' />} onPress={onOpenAdd}>
                             เพิ่มพืช
                         </DropdownItem>
                     </DropdownMenu>
@@ -260,7 +260,7 @@ function UserNavbar() {
                                             </Select>
                                         </div>
                                         <div className='mt-4'>
-                                            <DateInput label={"Birth date"} />
+                                            <DateInput label="วันที่ปลูก" isRequired />
                                         </div>
                                     </form>
                                 </ModalBody>

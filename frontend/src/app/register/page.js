@@ -75,7 +75,7 @@ function Page() {
                 <CardBody>
                     <form onSubmit={handleSubmit}>
                         <div className='flex my-4 gap-4'>
-                            <Input onChange={(e) => setFirstname(e.target.value)} type='text' label='ชื่อจริง' isClearable isRequired />
+                            <Input onChange={(e) => setFirstname(e.target.value)} type='text' label='ชื่อจริง' autoFocus isClearable isRequired />
 
                             <Input onChange={(e) => setLastname(e.target.value)} type='text' label='นามสกุล' isClearable isRequired />
                         </div>
