@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
-import { FaChevronDown, FaCirclePlus, FaArrowRightFromBracket, FaUserGear } from "react-icons/fa6";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Popover, PopoverTrigger, PopoverContent, Badge, Avatar, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure, Divider } from "@nextui-org/react";
+import { FaChevronDown, FaCirclePlus, FaBell, FaUserGear, FaArrowRightFromBracket } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 
 function UserNavbar() {
@@ -162,9 +162,6 @@ function UserNavbar() {
                         </DropdownTrigger>
                     </NavbarItem>
                     <DropdownMenu aria-label="Select plant" variant='flat' className="w-[240px] gap-4">
-                        <DropdownItem key="corn">
-                            ข้าวโพดเลี้ยงสัตว์
-                        </DropdownItem>
                         <DropdownItem key="add" color="success" endContent={<FaCirclePlus className='text-lg' />}>
                             เพิ่มพืช
                         </DropdownItem>
@@ -173,6 +170,24 @@ function UserNavbar() {
             </NavbarContent>
 
             <NavbarContent as="div" justify="end">
+                <Popover placement="bottom-end">
+                    <PopoverTrigger>
+                        <div>
+                        <Badge content="3" size="sm" color="danger">
+                            <FaBell className='text-xl cursor-pointer' />
+                        </Badge>
+                        </div>
+                    </PopoverTrigger>
+                    <PopoverContent className='my-4'>
+                        <div className="px-1 py-4">
+                            <p><b>ไนโตรเจน</b> ต่ำกว่าค่าที่ต้องการ</p>
+                            <Divider className='my-4' />
+                            <p><b>ฟอสฟอรัส</b> ต่ำกว่าค่าที่ต้องการ</p>
+                            <Divider className='my-4' />
+                            <p><b>โพแทสเซียม</b> ต่ำกว่าค่าที่ต้องการ</p>
+                        </div>
+                    </PopoverContent>
+                </Popover>
                 <Dropdown placement="bottom-end">
                     <DropdownTrigger>
                         <div className="flex items-center gap-2 cursor-pointer">
