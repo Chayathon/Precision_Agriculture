@@ -1,22 +1,31 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Popover, PopoverTrigger, PopoverContent, Badge, Avatar, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure, Divider } from "@nextui-org/react";
-import { FaChevronDown, FaCirclePlus, FaBell, FaUserGear, FaArrowRightFromBracket } from "react-icons/fa6";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Select, SelectSection, SelectItem, DateInput, Badge, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
+import { FaCirclePlus, FaBell, FaUserGear, FaArrowRightFromBracket } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 
 function UserNavbar() {
     const router = useRouter()
     const [currentDate, setCurrentDate] = useState('');
     const [currentTime, setCurrentTime] = useState('');
-    const user = JSON.parse(localStorage.getItem('UserData'))
-    const [name, setName] = useState('')
-    const [id, setId] = useState('')
 
-    const {isOpen, onOpen, onOpenChange} = useDisclosure();
+    const [selectedKeys, setSelectedKeys] = useState(new Set(['มันสำปะหลัง']));
+
+    const selectedValue = useMemo(
+        () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
+        [selectedKeys]
+      );
+
+    const [id, setId] = useState('')
+    const [name, setName] = useState('')
+    const [userEmail, setUserEmail] = useState('')
+
+    const { isOpen: isOpenAdd, onOpen: onOpenAdd, onOpenChange: onOpenChangeAdd } = useDisclosure();
+    const { isOpen: isOpenEdit, onOpen: onOpenEdit, onOpenChange: onOpenChangeEdit } = useDisclosure();
 
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
@@ -58,13 +67,16 @@ function UserNavbar() {
 
     useEffect(() => {
         if(localStorage.getItem('UserData')) {
-            setName(user.username);
+            const user = JSON.parse(localStorage.getItem('UserData'))
+            
             setId(user.id);
+            setName(user.username);
+            setUserEmail(user.email);
         }
-    }, [user])
+    }, [localStorage.getItem('UserData')])
 
     useEffect(() => {
-        if(isOpen) {
+        if(isOpenEdit) {
             const fetchData = async () => {
                 try {
                     const res = await fetch(`http://localhost:4000/api/getUser/${id}`);
@@ -88,9 +100,9 @@ function UserNavbar() {
 
             fetchData()
         }
-    }, [isOpen])
+    }, [isOpenEdit])
 
-    const handleSubmit = async (e) => {
+    const handleSubmitEdit = async (e) => {
         e.preventDefault();
 
         if(!firstname || !lastname || !email || !tel || !address) {
@@ -114,7 +126,7 @@ function UserNavbar() {
                 form.reset()
 
                 toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว")
-                onOpenChange(false);
+                onOpenChangeEdit(false);
                 setRefresh(true)
 
                 setTimeout(() => {
@@ -149,20 +161,24 @@ function UserNavbar() {
 
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <Dropdown>
-                    <NavbarItem>
-                        <DropdownTrigger>
-                            <Button
-                                className="p-0 text-white bg-transparent data-[hover=true]:bg-transparent"
-                                radius="sm"
-                                variant="light"
-                                endContent={<FaChevronDown />}
-                            >
-                                มันสำปะหลัง
-                            </Button>
-                        </DropdownTrigger>
-                    </NavbarItem>
-                    <DropdownMenu aria-label="Select plant" variant='flat' className="w-[240px] gap-4">
-                        <DropdownItem key="add" color="success" endContent={<FaCirclePlus className='text-lg' />}>
+                    <DropdownTrigger>
+                        <Button 
+                            variant="bordered" 
+                            className="capitalize"
+                        >
+                            {selectedValue}
+                        </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu 
+                        aria-label="Select plant"
+                        variant="flat"
+                        disallowEmptySelection
+                        selectionMode="single"
+                        selectedKeys={selectedKeys}
+                        onSelectionChange={setSelectedKeys}
+                    >
+                        <DropdownItem key="มันสำปะหลัง">มันสำปะหลัง</DropdownItem>
+                        <DropdownItem  key="เพิ่มพืช" color="success" endContent={<FaCirclePlus className='text-lg' />} onPress={onOpenAdd}>
                             เพิ่มพืช
                         </DropdownItem>
                     </DropdownMenu>
@@ -170,38 +186,52 @@ function UserNavbar() {
             </NavbarContent>
 
             <NavbarContent as="div" justify="end">
-                <Popover placement="bottom-end">
-                    <PopoverTrigger>
+                <Dropdown placement="bottom-end">
+                    <DropdownTrigger>
                         <div>
-                        <Badge content="3" size="sm" color="danger">
-                            <FaBell className='text-xl cursor-pointer' />
-                        </Badge>
+                            <Badge content="3" size="sm" color="danger">
+                                <FaBell className='size-6 cursor-pointer' />
+                            </Badge>
                         </div>
-                    </PopoverTrigger>
-                    <PopoverContent className='my-4'>
-                        <div className="px-1 py-4">
-                            <p><b>ไนโตรเจน</b> ต่ำกว่าค่าที่ต้องการ</p>
-                            <Divider className='my-4' />
-                            <p><b>ฟอสฟอรัส</b> ต่ำกว่าค่าที่ต้องการ</p>
-                            <Divider className='my-4' />
-                            <p><b>โพแทสเซียม</b> ต่ำกว่าค่าที่ต้องการ</p>
-                        </div>
-                    </PopoverContent>
-                </Popover>
+                    </DropdownTrigger>
+                    <DropdownMenu>
+                        <DropdownItem
+                            description="ต่ำกว่าค่าที่ต้องการ"
+                            isReadOnly
+                            showDivider
+                        >
+                            ไนโตรเจน
+                        </DropdownItem>
+                        <DropdownItem
+                            description="ต่ำกว่าค่าที่ต้องการ"
+                            isReadOnly
+                            showDivider
+                        >
+                            ฟอสฟอรัส
+                        </DropdownItem>
+                        <DropdownItem
+                            description="ต่ำกว่าค่าที่ต้องการ"
+                            isReadOnly
+                            showDivider
+                        >
+                            โพแทสเซียม
+                        </DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
                 <Dropdown placement="bottom-end">
                     <DropdownTrigger>
                         <div className="flex items-center gap-2 cursor-pointer">
-                            <Avatar
+                            <User
                                 showFallback src='https://images.unsplash.com/broken'
                                 as="button"
-                                size="sm"
+                                name={name}
+                                description={userEmail}
                                 className="transition-transform"
                             />
-                            <b>{name}</b>
                         </div>
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
-                        <DropdownItem key="settings" onPress={onOpen}>
+                        <DropdownItem key="settings" onPress={onOpenEdit}>
                             <p className='flex justify-between'>แก้ไขโปรไฟล์<FaUserGear className='text-lg' /></p>
                         </DropdownItem>
                         <DropdownItem key="logout" color="danger" onClick={handleLogout}>
@@ -211,8 +241,45 @@ function UserNavbar() {
                 </Dropdown>
 
                 <Modal 
-                    isOpen={isOpen} 
-                    onOpenChange={onOpenChange}
+                    isOpen={isOpenAdd} 
+                    onOpenChange={onOpenChangeAdd}
+                    placement="top-center"
+                >
+                    <ModalContent>
+                        {(onClose) => (
+                            <>
+                                <ModalHeader className="flex flex-col gap-1">เพิ่มพืช</ModalHeader>
+                                <ModalBody>
+                                    <form>
+                                        <div className='mb-4'>
+                                            <Select label="พืช" isRequired>
+                                                <SelectItem key="rice">ข้าว</SelectItem>
+                                                <SelectItem key="corn">ข้าวโพดเลี้ยงสัตว์</SelectItem>
+                                                <SelectItem key="cassava">มันสำปะหลัง</SelectItem>
+                                                <SelectItem key="durian">ทุเรียน</SelectItem>
+                                            </Select>
+                                        </div>
+                                        <div className='mt-4'>
+                                            <DateInput label={"Birth date"} />
+                                        </div>
+                                    </form>
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button variant="flat" onPress={onClose}>
+                                        ยกเลิก
+                                    </Button>
+                                    <Button color="primary" onPress={onClose}>
+                                        เพิ่ม
+                                    </Button>
+                                </ModalFooter>
+                            </>
+                        )}
+                    </ModalContent>
+                </Modal>
+
+                <Modal 
+                    isOpen={isOpenEdit} 
+                    onOpenChange={onOpenChangeEdit}
                     size={"2xl"}
                 >
                     <ModalContent>
@@ -220,7 +287,7 @@ function UserNavbar() {
                             <>
                                 <ModalHeader className="flex flex-col gap-1">แก้ไขข้อมูล</ModalHeader>
                                 <ModalBody>
-                                    <form onSubmit={handleSubmit}>
+                                    <form onSubmit={handleSubmitEdit}>
                                         <div className='flex mb-4 gap-4'>
                                             <Input onChange={(e) => setFirstname(e.target.value)} type='text' value={firstname} label='ชื่อจริง' isClearable isRequired />
 

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
 import { FaArrowRightFromBracket, FaUserGear } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 
@@ -12,9 +12,10 @@ function AdminNavbar() {
     const router = useRouter()
     const [currentDate, setCurrentDate] = useState('');
     const [currentTime, setCurrentTime] = useState('');
-    const user = JSON.parse(localStorage.getItem('UserData'))
-    const [name, setName] = useState('')
+    
     const [id, setId] = useState('')
+    const [name, setName] = useState('')
+    const [userEmail, setUserEmail] = useState('')
 
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
@@ -58,10 +59,13 @@ function AdminNavbar() {
 
     useEffect(() => {
         if(localStorage.getItem('UserData')) {
-            setName(user.username);
+            const user = JSON.parse(localStorage.getItem('UserData'))
+            
             setId(user.id);
+            setName(user.username);
+            setUserEmail(user.email);
         }
-    }, [user])
+    }, [localStorage.getItem('UserData')])
 
     useEffect(() => {
         if(isOpen) {
@@ -169,13 +173,13 @@ function AdminNavbar() {
                 <Dropdown placement="bottom-end">
                     <DropdownTrigger>
                         <div className="flex items-center gap-2 cursor-pointer">
-                            <Avatar
+                            <User
                                 showFallback src='https://images.unsplash.com/broken'
                                 as="button"
-                                size="sm"
+                                name={name}
+                                description={userEmail}
                                 className="transition-transform"
                             />
-                            <b>{name}</b>
                         </div>
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
