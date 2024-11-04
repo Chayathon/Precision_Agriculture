@@ -70,7 +70,7 @@ function Page() {
         datasets: [
             {
                 label: 'ค่าการนำไฟฟ้า',
-                data: [1500, 1400, 1100, 1200, 1450, 1300, 1100, 900, 700],
+                data: [1.5, 1.4, 1.1, 1.2, 1.45, 1.3, 1.1, 0.9, 0.7],
                 backgroundColor: 'rgba(0, 0, 255, 0.5)',
                 borderColor: 'rgba(0, 0, 255, 1)',
                 borderWidth: 2
@@ -167,10 +167,10 @@ function Page() {
                 </Card>
                 <Card className='drop-shadow-xl hover:-translate-y-1 cursor-pointer'>
                     <CardHeader className='flex justify-center'>
-                        <p className='text-gray-500'>ค่าการนำไฟฟ้า (us/cm)</p>
+                        <p className='text-gray-500'>ค่าการนำไฟฟ้า (dS/m)</p>
                     </CardHeader>
                     <CardBody>
-                        <p className='text-center text-6xl font-bold'>1200</p>
+                        <p className='text-center text-6xl font-bold'>1.2</p>
                     </CardBody>
                 </Card>
                 <Card className='drop-shadow-xl hover:-translate-y-1 cursor-pointer'>
@@ -222,7 +222,7 @@ function Page() {
                         <Bar options={options} data={dataPH} />
                 </Card>
                 <Card className='px-4 pb-4 drop-shadow-xl hover:-translate-y-1'>
-                    <CardHeader className='flex justify-center'>ค่าการนำไฟฟ้า (us/cm)</CardHeader>
+                    <CardHeader className='flex justify-center'>ค่าการนำไฟฟ้า (dS/m)</CardHeader>
                         <Bar options={options} data={dataEC} />
                 </Card>
                 <Card className='px-4 pb-4 drop-shadow-xl hover:-translate-y-1'>
