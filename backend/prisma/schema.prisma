@@ -24,11 +24,72 @@ model user {
   password String
   role_id Int
   role role @relation(fields: [role_id], references: [id]) 
-
+  plant plant[]
 }
 
 model role {
   id Int @id @default(autoincrement())
   role_name String
   users user[] // Add this field to represent the one-to-many relationship
+}
+
+model plant {
+  id        Int      @id @default(autoincrement())
+  plantname String
+  plantedAt DateTime
+  user_id   Int
+  user      user     @relation(fields: [user_id], references: [id]) // ความสัมพันธ์ many-to-one กับผู้ใช้
+  nutrients p_nutrient[] // ความสัมพันธ์ one-to-many กับสารอาหาร
+  factors   p_factor[]   // ความสัมพันธ์ one-to-many กับปัจจัยที่เกี่ยวข้อง
+  variables p_variable[] // ความสัมพันธ์ one-to-many กับค่าตัวแปรที่เกี่ยวข้อง
+  plantNeeds plantNeed[] // ความสัมพันธ์ one-to-many กับค่าตัวแปรที่พืชต้องการ
+}
+
+model p_nutrient {
+  id         Int     @id @default(autoincrement())  // รหัสสารอาหาร
+  nitrogen   Float   // ไนโตรเจน
+  phosphorus Float   // ฟอสฟอรัส
+  potassium  Float   // โพแทสเซียม
+  plant_id   Int     // รหัสพืช
+  plant      plant   @relation(fields: [plant_id], references: [id]) // ความสัมพันธ์ many-to-one กับพืช
+
+  plantNeed plantNeed[] @relation("PlantToNutrient")
+}
+
+model p_factor {
+  id            Int     @id @default(autoincrement()) // รหัสปัจจัยที่เกี่ยวข้อง
+  pH            Float   // ความกรด-ด่างของดิน
+  temperature   Float   // อุณหภูมิ
+  humidity      Float   // ความชื้น
+  lightIntensity Float   // ความเข้มแสง
+  salinity      Float   // ความเค็มของดิน
+  plant_id      Int     // รหัสพืช
+  plant         plant   @relation(fields: [plant_id], references: [id]) // ความสัมพันธ์ many-to-one กับพืช
+
+  plantNeed plantNeed[] @relation("PlantToFactor")
+}
+
+model p_variable {
+  id            Int     @id @default(autoincrement()) // รหัสตัวแปรที่รับเข้ามา
+  plant_id      Int     // รหัสพืช
+  plant         plant   @relation(fields: [plant_id], references: [id]) // ความสัมพันธ์ many-to-one กับพืช
+  receivedAt    DateTime // วัน-เดือน-ปี ที่รับเข้า
+  nitrogen      Float   // ไนโตรเจน
+  phosphorus    Float   // ฟอสฟอรัส
+  potassium     Float   // โพแทสเซียม
+  pH            Float   // ความกรด-ด่างของดิน
+  temperature   Float   // อุณหภูมิ
+  humidity      Float   // ความชื้น
+  lightIntensity Float   // ความเข้มแสง
+  salinity      Float   // ความเค็มของดิน
+}
+
+model plantNeed {
+  id           Int    @id @default(autoincrement()) // รหัสตัวแปรที่พืชต้องการ
+  plant_id     Int    // รหัสพืช
+  plant        plant  @relation(fields: [plant_id], references: [id]) // ความสัมพันธ์ many-to-one กับพืช
+  nutrient_id  Int    // รหัสสารอาหาร
+  nutrient     p_nutrient @relation("PlantToNutrient", fields: [nutrient_id], references: [id])
+  factor_id    Int    // รหัสปัจจัยที่เกี่ยวข้อง
+  factor       p_factor @relation("PlantToFactor",fields: [factor_id], references: [id])
 }

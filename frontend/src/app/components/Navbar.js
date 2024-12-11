@@ -185,6 +185,12 @@ function UserNavbar() {
                 </Dropdown>
             </NavbarContent>
 
+            <NavbarItem>
+                    <Link href="/dashboard/listPlant">
+                        ข้อมูลพืช
+                    </Link>
+                </NavbarItem>
+
             <NavbarContent as="div" justify="end">
                 <Dropdown placement="bottom-end">
                     <DropdownTrigger>
