@@ -8,6 +8,9 @@ import { FaSearch } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
 import { HiOutlineTrash } from "react-icons/hi2";
 import ModalCreatePlane from "../../components/ModalCreatePlane";
+import ModalUpdatePlant from "../../components/ModalUpdatePlamt";
+import ModalDeletePlant from "../../components/ModalDeletePlant";
+import ModalMultiDeletePlant from "../../components/ModalMultiDeletePlant";
 
 
 export default function ListPlant() {
@@ -19,6 +22,9 @@ export default function ListPlant() {
 
     const [selectedId, setSelectedId] = useState(null);
     const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeCreate } = useDisclosure();
+    const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onOpenChange: onOpenChangeUpdate } = useDisclosure();
+    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onOpenChange: onOpenChangeDelete } = useDisclosure();
+    const { isOpen: isOpenMultiDelete, onOpen: onOpenMultiDelete, onOpenChange: onOpenChangeMultiDelete } = useDisclosure();
 
     const [filterValue, setFilterValue] = useState("");
     const [selectedKeys, setSelectedKeys] = useState(new Set([]));
@@ -131,9 +137,6 @@ export default function ListPlant() {
     useEffect(() => {
         fetchPlant();
     }, [refresh]);
-
-     // Get userId from cookies
-     const userId = Cookies.get("UserData");
 
       // Top content of table
       const topContent = useMemo(() => {
@@ -273,18 +276,30 @@ export default function ListPlant() {
                     )}
                 
                 </TableBody>
-            </Table>
-
-            
+            </Table> 
 
             {isOpenCreate && (
-                <ModalCreatePlane 
-                isOpen={isOpenCreate} 
-                onOpenChange={onOpenChangeCreate} 
-                setRefresh={setRefresh} 
-                userId={Cookies.get("UserData")} // ส่ง userId จาก Cookies
+                <ModalCreatePlane isOpen={isOpenCreate} onOpenChange={onOpenChangeCreate} setRefresh={setRefresh} userId={Cookies.get("UserData")} />
+            )}
+
+            {isOpenUpdate && (
+                <ModalUpdatePlant isOpen={isOpenUpdate} onOpenChange={onOpenChangeUpdate} id={selectedId} setRefresh={setRefresh} />
+            )}
+            {isOpenDelete && (
+                <ModalDeletePlant isOpen={isOpenDelete} onOpenChange={onOpenChangeDelete} id={selectedId} setRefresh={setRefresh} />
+            )}
+            {isOpenMultiDelete && (
+                <ModalMultiDeletePlant
+                    isOpen={isOpenMultiDelete}
+                    onOpenChange={onOpenChangeMultiDelete}
+                    selectedKeys={Array.from(selectedKeys)}
+                    setRefresh={setRefresh}
+                    deleteSuccess={() => {
+                        setSelectedKeys(new Set());
+            }}
                 />
             )}
+            
         </div>
     );
 
