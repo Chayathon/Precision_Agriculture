@@ -31,8 +31,6 @@ function ModalCreatePlane({ isOpen, onOpenChange, setRefresh }) {
             return;
         }
 
-        console.log("Payload: ", { plantName, plantAt, userId: parsedUserData.id });
-
         try {
             const res = await fetch('http://localhost:4000/api/createPlant', {
                 method: 'POST',
