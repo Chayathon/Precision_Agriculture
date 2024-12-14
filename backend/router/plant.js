@@ -6,7 +6,8 @@ const prisma = new PrismaClient()
 
 const { authIsCheck, isAdmin } = require("../middleware/auth");
 
-router.get('/listPlant', authIsCheck, isAdmin, async (req, res) => {
+
+router.get('/listPlant', async (req, res) => {
     try {
         const listPlant = await prisma.plant.findMany();
 
@@ -40,9 +41,9 @@ router.post('/createPlant', async (req, res) => {
 
         const createPlant = await prisma.plant.create({
             data: {
-                name: plantName,
+                plantname: plantName,
                 plantedAt: plantDate, // บันทึกวันที่
-                userId: userId, // ใช้ userId ที่ได้รับจาก client
+                user_id: userId, // ใช้ userId ที่ได้รับจาก client
             }
         });
 
@@ -56,3 +57,5 @@ router.post('/createPlant', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
+
+module.exports = router

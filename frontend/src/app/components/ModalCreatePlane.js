@@ -94,10 +94,7 @@ function ModalCreatePlane({ isOpen, onOpenChange, setRefresh }) {
                                                 onChange={handleDateChange} // เพิ่มการเรียกฟังก์ชันเมื่อวันที่เปลี่ยน
                                             />
                                         </div>
-                                    </form>
-                                </ModalBody>
-
-                                <ModalFooter>
+                                                                        <ModalFooter>
                                     <Button variant="flat" onPress={onClose}>
                                         ยกเลิก
                                     </Button>
@@ -105,6 +102,10 @@ function ModalCreatePlane({ isOpen, onOpenChange, setRefresh }) {
                                         เพิ่ม
                                     </Button>
                                 </ModalFooter>
+                                    </form>
+                                </ModalBody>
+
+
                         </>
                     )}
                 </ModalContent>

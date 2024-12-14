@@ -34,8 +34,8 @@ export default function ListPlant() {
         let filteredUsers = [...plants];
 
         if (filterValue) {
-            filteredUsers = filteredUsers.filter((role) =>
-                role.role_name?.toLowerCase().includes(filterValue.toLowerCase())
+            filteredUsers = filteredUsers.filter((plant) =>
+                plant.plantname?.toLowerCase().includes(filterValue.toLowerCase())
             );
         }
 
@@ -249,6 +249,28 @@ export default function ListPlant() {
                     emptyContent={!isLoading ? "ไม่มีข้อมูล" : null}
                     items={sortedItems}
                 >
+                     {(item) => (
+                        <TableRow key={item.id}>
+                            <TableCell>{item.id}</TableCell>
+                            <TableCell>{item.plantname}</TableCell>
+                            <TableCell>{item.plantedAt}</TableCell>
+                            <TableCell>{item.user_id }</TableCell>
+                            <TableCell>
+                                <ButtonGroup>
+                                    <Tooltip content="แก้ไข" color="warning">
+                                        <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}} variant="light" size='sm'>
+                                            <CiEdit className="text-xl text-amber-500" />
+                                        </Button>
+                                    </Tooltip>
+                                    <Tooltip content="ลบ" color="danger">
+                                        <Button onPress={() => {setSelectedId(item.id); onOpenDelete();}} variant="light" size='sm'>
+                                            <HiOutlineTrash className="text-xl text-red-500" />
+                                        </Button>
+                                    </Tooltip>
+                                </ButtonGroup>
+                            </TableCell>
+                        </TableRow>
+                    )}
                 
                 </TableBody>
             </Table>
