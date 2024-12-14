@@ -241,9 +241,9 @@ export default function ListPlant() {
             >
                 <TableHeader>
                     <TableColumn allowsSorting key="id">ไอดี</TableColumn>
-                    <TableColumn allowsSorting key="">ชื่อพืช</TableColumn>
-                    <TableColumn allowsSorting key="">วันที่ปลูก</TableColumn>
-                    <TableColumn allowsSorting key="">ผู้เพิ่มพืช</TableColumn>
+                    <TableColumn allowsSorting key="plantname">ชื่อพืช</TableColumn>
+                    <TableColumn allowsSorting key="plantedAt">วันที่ปลูก</TableColumn>
+                    <TableColumn allowsSorting key="user_id ">ผู้เพิ่มพืช</TableColumn>
                     <TableColumn key="tools">จัดการ</TableColumn>
                 </TableHeader>
                 <TableBody 
