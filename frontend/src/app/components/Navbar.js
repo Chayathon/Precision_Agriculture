@@ -13,12 +13,14 @@ function UserNavbar() {
     const [currentDate, setCurrentDate] = useState('');
     const [currentTime, setCurrentTime] = useState('');
 
-    const [selectedKeys, setSelectedKeys] = useState(new Set(['มันสำปะหลัง']));
+    const [plants, setPlants] = useState([]);
+
+    const [selectedKeys, setSelectedKeys] = useState(new Set([plants[0]]));
 
     const selectedValue = useMemo(
         () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
         [selectedKeys]
-      );
+    );
 
     const [id, setId] = useState('')
     const [name, setName] = useState('')
@@ -37,6 +39,16 @@ function UserNavbar() {
     const [address, setAddress] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+
+    useEffect(() => {
+        if(localStorage.getItem('UserData')) {
+            const user = JSON.parse(localStorage.getItem('UserData'))
+            
+            setId(user.id);
+            setName(user.username);
+            setUserEmail(user.email);
+        }
+    }, [localStorage.getItem('UserData')])
 
     useEffect(() => {
         const updateDateTime = () => {
@@ -65,15 +77,29 @@ function UserNavbar() {
         return () => clearInterval(intervalId); // เคลียร์ interval เมื่อ unmount
     }, []);
 
-    useEffect(() => {
-        if(localStorage.getItem('UserData')) {
-            const user = JSON.parse(localStorage.getItem('UserData'))
-            
-            setId(user.id);
-            setName(user.username);
-            setUserEmail(user.email);
+    const fetchPlant = async (id) => {
+        try {
+            const res = await fetch(`http://localhost:4000/api/getPlant/${id}`);
+                
+            if (!res.ok) {
+                throw new Error("Failed to fetch");
+            }
+
+            const data = await res.json();
+            console.log(data.resultData.plantname)
+            setPlants(
+                Array.isArray(data.resultData.plantname) ? data.resultData.plantname : [data.resultData.plantname].filter(Boolean)
+            );
+        } catch (err) {
+            console.error("Error fetching data: ", err);
         }
-    }, [localStorage.getItem('UserData')])
+    }
+
+    useEffect(() => {
+        if(id) {
+            fetchPlant(id);
+        }
+    }, [id]);
 
     useEffect(() => {
         if(isOpenEdit) {
@@ -177,10 +203,12 @@ function UserNavbar() {
                         selectedKeys={selectedKeys}
                         onSelectionChange={setSelectedKeys}
                     >
-                        <DropdownItem key="มันสำปะหลัง">มันสำปะหลัง</DropdownItem>
-                        <DropdownItem  key="เพิ่มพืช" color="primary" endContent={<FaCirclePlus className='text-lg' />} onPress={onOpenAdd}>
+                        {plants.map((item) => (
+                            <DropdownItem key={item}>{item}</DropdownItem>
+                        ))}
+                        {/* <DropdownItem  key="เพิ่มพืช" color="primary" endContent={<FaCirclePlus className='text-lg' />} onPress={onOpenAdd}>
                             เพิ่มพืช
-                        </DropdownItem>
+                        </DropdownItem> */}
                     </DropdownMenu>
                 </Dropdown>
             </NavbarContent>

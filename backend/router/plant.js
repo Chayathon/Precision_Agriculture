@@ -63,7 +63,7 @@ router.get("/getPlant/:id", async (req, res) => {
         const { id } = req.params;
         const getPlant = await prisma.plant.findFirst({
             where: {
-                id: Number(id),
+                user_id: Number(id),
             },
         });
 
