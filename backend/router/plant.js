@@ -61,9 +61,12 @@ router.post('/createPlant', async (req, res) => {
 router.get("/getPlant/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const getPlant = await prisma.plant.findFirst({
+        const getPlant = await prisma.plant.findMany({
             where: {
                 user_id: Number(id),
+            },
+            select: {
+                plantname: true,
             },
         });
 

@@ -15,7 +15,7 @@ function UserNavbar() {
 
     const [plants, setPlants] = useState([]);
 
-    const [selectedKeys, setSelectedKeys] = useState(new Set([plants[0]]));
+    const [selectedKeys, setSelectedKeys] = useState(new Set([]));
 
     const selectedValue = useMemo(
         () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
@@ -77,7 +77,7 @@ function UserNavbar() {
         return () => clearInterval(intervalId); // เคลียร์ interval เมื่อ unmount
     }, []);
 
-    const fetchPlant = async (id) => {
+    const fetchPlantById = async (id) => {
         try {
             const res = await fetch(`http://localhost:4000/api/getPlant/${id}`);
                 
@@ -86,10 +86,7 @@ function UserNavbar() {
             }
 
             const data = await res.json();
-            console.log(data.resultData.plantname)
-            setPlants(
-                Array.isArray(data.resultData.plantname) ? data.resultData.plantname : [data.resultData.plantname].filter(Boolean)
-            );
+            setPlants(data.resultData);
         } catch (err) {
             console.error("Error fetching data: ", err);
         }
@@ -97,7 +94,7 @@ function UserNavbar() {
 
     useEffect(() => {
         if(id) {
-            fetchPlant(id);
+            fetchPlantById(id);
         }
     }, [id]);
 
@@ -204,11 +201,8 @@ function UserNavbar() {
                         onSelectionChange={setSelectedKeys}
                     >
                         {plants.map((item) => (
-                            <DropdownItem key={item}>{item}</DropdownItem>
+                            <DropdownItem key={item.plantname}>{item.plantname}</DropdownItem>
                         ))}
-                        {/* <DropdownItem  key="เพิ่มพืช" color="primary" endContent={<FaCirclePlus className='text-lg' />} onPress={onOpenAdd}>
-                            เพิ่มพืช
-                        </DropdownItem> */}
                     </DropdownMenu>
                 </Dropdown>
             </NavbarContent>
