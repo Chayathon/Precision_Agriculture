@@ -8,7 +8,7 @@ import { FaSearch } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
 import { HiOutlineTrash } from "react-icons/hi2";
 import ModalCreatePlane from "../../components/ModalCreatePlane";
-import ModalUpdatePlant from "../../components/ModalUpdatePlamt";
+import ModalUpdatePlant from "../../components/ModalUpdatePlant";
 import ModalDeletePlant from "../../components/ModalDeletePlant";
 import ModalMultiDeletePlant from "../../components/ModalMultiDeletePlant";
 
