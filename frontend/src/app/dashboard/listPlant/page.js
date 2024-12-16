@@ -116,7 +116,7 @@ export default function ListPlant() {
     }, []);
 
      // Fetch plant data
-     const fetchPlant = async () => {
+    const fetchPlant = async () => {
         try {
             const res = await fetch(`http://localhost:4000/api/listPlant`);
 
