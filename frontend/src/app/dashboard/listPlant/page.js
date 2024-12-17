@@ -7,10 +7,12 @@ import { FaPlus, FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
 import { HiOutlineTrash } from "react-icons/hi2";
+import { CiViewList } from "react-icons/ci";
 import ModalCreatePlane from "../../components/ModalCreatePlane";
 import ModalUpdatePlant from "../../components/ModalUpdatePlant";
 import ModalDeletePlant from "../../components/ModalDeletePlant";
 import ModalMultiDeletePlant from "../../components/ModalMultiDeletePlant";
+import ModalFactor_Nutrient from "../../components/ModalFactor_Nutrient";
 
 
 export default function ListPlant() {
@@ -21,6 +23,7 @@ export default function ListPlant() {
     const [isLoading, setIsLoading] = useState(true);
 
     const [selectedId, setSelectedId] = useState(null);
+    const { isOpen: isOpenFactor_Nutrient, onOpen: onOpenFactor_Nutrient, onOpenChange: onOpenChangeFactor_Nutrient } = useDisclosure();
     const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeCreate } = useDisclosure();
     const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onOpenChange: onOpenChangeUpdate } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onOpenChange: onOpenChangeDelete } = useDisclosure();
@@ -257,6 +260,11 @@ export default function ListPlant() {
                             <TableCell>{item.user_id }</TableCell>
                             <TableCell>
                                 <ButtonGroup>
+                                    <Tooltip content="เพิ่มค่าตัวแปร" color="success">
+                                        <Button onPress={() => {setSelectedId(item.id); onOpenFactor_Nutrient();}} variant="light" size='sm'>
+                                            <CiViewList  className="text-xl text-success-500" />
+                                        </Button>
+                                    </Tooltip>
                                     <Tooltip content="แก้ไข" color="warning">
                                         <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}} variant="light" size='sm'>
                                             <CiEdit className="text-xl text-amber-500" />
@@ -278,7 +286,9 @@ export default function ListPlant() {
             {isOpenCreate && (
                 <ModalCreatePlane isOpen={isOpenCreate} onOpenChange={onOpenChangeCreate} setRefresh={setRefresh} userId={Cookies.get("UserData")} />
             )}
-
+            {isOpenFactor_Nutrient && (
+                <ModalFactor_Nutrient isOpen={isOpenFactor_Nutrient} onOpenChange={onOpenChangeFactor_Nutrient} id={selectedId} setRefresh={setRefresh} />
+            )}
             {isOpenUpdate && (
                 <ModalUpdatePlant isOpen={isOpenUpdate} onOpenChange={onOpenChangeUpdate} id={selectedId} setRefresh={setRefresh} />
             )}

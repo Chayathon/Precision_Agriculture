@@ -78,7 +78,7 @@ function ModalUpdatePlant({ isOpen, onOpenChange, id, setRefresh }) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                        <ModalHeader className="flex flex-col gap-1">เพิ่มข้อมูล</ModalHeader>
+                        <ModalHeader className="flex flex-col gap-1">แก้ไขข้อมูล</ModalHeader>
                         <ModalBody>
                             <form onSubmit={handleSubmit}>
                                 <Input
