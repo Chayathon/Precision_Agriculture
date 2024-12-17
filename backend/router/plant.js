@@ -60,7 +60,7 @@ router.post('/createPlant', async (req, res) => {
 router.get("getPlantUserId/:id", async (req, res) => {
     try {
         const { id } = req.params;
-        const getPlant = await prisma.plant.findMany({
+        const getPlantUserId = await prisma.plant.findMany({
             where: {
                 user_id: Number(id),
             },
@@ -69,10 +69,10 @@ router.get("getPlantUserId/:id", async (req, res) => {
             },
         });
 
-        if (getPlant) {
+        if (getPlantUserId) {
             res.status(200).json({
-                message: "Get Plant by ID",
-                resultData: getPlant,
+                message: "Get Plant by UserID",
+                resultData: getPlantUserId,
             });
         }
     } catch (err) {
@@ -92,7 +92,7 @@ router.get("/getPlant/:id", async (req, res) => {
 
         if (getPlant) {
             res.status(200).json({
-                message: "Plant Plant by ID",
+                message: "Get Plant by ID",
                 resultData: getPlant,
             });
         }
