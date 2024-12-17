@@ -14,7 +14,7 @@ app.use('/api', require('./router/user'))
 app.use('/api', require('./router/admin'))
 app.use('/api', require('./router/role'))
 app.use('/api', require('./router/plant'))
-
+app.use('/api', require('./router/plant_variable'))
 
 
 

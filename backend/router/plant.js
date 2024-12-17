@@ -1,11 +1,8 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 
-const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
-
-const { authIsCheck, isAdmin } = require("../middleware/auth");
-
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 router.get('/listPlant', async (req, res) => {
     try {
@@ -15,6 +12,30 @@ router.get('/listPlant', async (req, res) => {
             res.status(200).json({
                 message: "Get Plant",
                 resultData: listPlant,
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+router.get("/getPlant/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const getPlant = await prisma.plant.findMany({
+            where: {
+                user_id: Number(id),
+            },
+            select: {
+                plantname: true,
+            },
+        });
+
+        if (getPlant) {
+            res.status(200).json({
+                message: "Get Plant by ID",
+                resultData: getPlant,
             });
         }
     } catch (err) {
@@ -50,30 +71,6 @@ router.post('/createPlant', async (req, res) => {
         if (createPlant) {
             res.status(200).json({
                 message: 'เพิ่มข้อมูลพืชเรียบร้อยแล้ว',
-            });
-        }
-    } catch (err) {
-        console.log(err);
-        res.status(500).send('Server Error');
-    }
-});
-
-router.get("/getPlant/:id", async (req, res) => {
-    try {
-        const { id } = req.params;
-        const getPlant = await prisma.plant.findMany({
-            where: {
-                user_id: Number(id),
-            },
-            select: {
-                plantname: true,
-            },
-        });
-
-        if (getPlant) {
-            res.status(200).json({
-                message: "Get Plant by ID",
-                resultData: getPlant,
             });
         }
     } catch (err) {
