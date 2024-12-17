@@ -65,6 +65,7 @@ router.get("/getPlantUserId/:id", async (req, res) => {
                 user_id: Number(id),
             },
             select: {
+                id: true,
                 plantname: true,
             },
         });

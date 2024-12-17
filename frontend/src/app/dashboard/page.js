@@ -531,7 +531,7 @@ import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-function Page() {
+function Dashboard({id}) {
     const [plantData, setPlantData] = useState(null);
 
     const fetchPlantVariables = async (plantId) => {
@@ -549,8 +549,10 @@ function Page() {
     }
 
     useEffect(() => {
-        fetchPlantVariables(3);
-    }, []);
+        if(id) {
+            fetchPlantVariables(id);
+        }
+    }, [id]);
 
     ChartJS.register(
         CategoryScale,
@@ -781,4 +783,4 @@ function Page() {
     )
 }
 
-export default Page
+export default Dashboard

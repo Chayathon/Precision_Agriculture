@@ -7,6 +7,7 @@ import Cookies from 'js-cookie';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Select, SelectSection, SelectItem, DateInput, Badge, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
 import { FaCirclePlus, FaBell, FaUserGear, FaArrowRightFromBracket } from "react-icons/fa6";
 import { toast } from 'react-toastify';
+import Dashboard from '../dashboard/page';
 
 function UserNavbar() {
     const router = useRouter()
@@ -15,11 +16,17 @@ function UserNavbar() {
 
     const [plants, setPlants] = useState([]);
 
+    const [selectedPlantId, setSelectedPlantId] = useState(null);
     const [selectedKeys, setSelectedKeys] = useState(new Set([]));
 
     const selectedValue = useMemo(
-        () => Array.from(selectedKeys).join(", ").replaceAll("_", " "),
-        [selectedKeys]
+        () => {
+            if (selectedKeys.size === 0) return 'เลือกพืช';
+            const selectedPlantId = Array.from(selectedKeys)[0];
+            const selectedPlant = plants.find(item => item.id.toString() === selectedPlantId);
+            return selectedPlant ? selectedPlant.plantname : 'เลือกพืช';
+        },
+        [selectedKeys, plants]
     );
 
     const [id, setId] = useState('')
@@ -99,6 +106,13 @@ function UserNavbar() {
     }, [id]);
 
     useEffect(() => {
+        if (selectedKeys.size > 0) {
+            setSelectedPlantId(Array.from(selectedKeys)[0]);
+            router.push('/dashboard');
+        }
+    }, [selectedKeys]);
+
+    useEffect(() => {
         if(isOpenEdit) {
             const fetchData = async () => {
                 try {
@@ -174,6 +188,7 @@ function UserNavbar() {
     }
 
     return (
+        <>
         <Navbar className='bg-gray-800 text-white'>
             <NavbarBrand>
                 <div className='flex flex-col'>
@@ -201,17 +216,23 @@ function UserNavbar() {
                         onSelectionChange={setSelectedKeys}
                     >
                         {plants.map((item) => (
-                            <DropdownItem key={item.plantname}>{item.plantname}</DropdownItem>
+                            <DropdownItem key={item.id}>{item.plantname}</DropdownItem>
                         ))}
                     </DropdownMenu>
                 </Dropdown>
             </NavbarContent>
 
             <NavbarItem>
-                    <Link href="/dashboard/listPlant">
-                        ข้อมูลพืช
-                    </Link>
-                </NavbarItem>
+                <Link
+                    href="/dashboard/listPlant"
+                    onClick={() => {
+                        setSelectedKeys(new Set([]));
+                        setSelectedPlantId(null);
+                    }}
+                >
+                    ข้อมูลพืช
+                </Link>
+            </NavbarItem>
 
             <NavbarContent as="div" justify="end">
                 <Dropdown placement="bottom-end">
@@ -366,6 +387,8 @@ function UserNavbar() {
                 </Modal>
             </NavbarContent>
         </Navbar>
+        {selectedPlantId && <Dashboard id={selectedPlantId} />}
+        </>
     )
 }
 
