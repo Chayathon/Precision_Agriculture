@@ -57,7 +57,7 @@ router.post('/createPlant', async (req, res) => {
     }
 });
 
-router.get("getPlantUserId/:id", async (req, res) => {
+router.get("/getPlantUserId/:id", async (req, res) => {
     try {
         const { id } = req.params;
         const getPlant = await prisma.plant.findMany({

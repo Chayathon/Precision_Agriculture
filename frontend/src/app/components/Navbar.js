@@ -79,7 +79,7 @@ function UserNavbar() {
 
     const fetchPlantById = async (id) => {
         try {
-            const res = await fetch(`http://localhost:4000/api/getPlant/${id}`);
+            const res = await fetch(`http://localhost:4000/api/getPlantUserId/${id}`);
                 
             if (!res.ok) {
                 throw new Error("Failed to fetch");
