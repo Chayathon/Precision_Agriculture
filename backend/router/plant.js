@@ -57,7 +57,7 @@ router.post('/createPlant', async (req, res) => {
     }
 });
 
-router.get("/getPlant/:id", async (req, res) => {
+router.get("getPlantUserId/:id", async (req, res) => {
     try {
         const { id } = req.params;
         const getPlant = await prisma.plant.findMany({
@@ -81,26 +81,26 @@ router.get("/getPlant/:id", async (req, res) => {
     }
 });
 
-// router.get("/getPlant/:id", async (req, res) => {
-//     try {
-//         const { id } = req.params;
-//         const getPlant = await prisma.plant.findFirst({
-//             where: {
-//                 id: Number(id),
-//             },
-//         });
+router.get("/getPlant/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const getPlant = await prisma.plant.findFirst({
+            where: {
+                id: Number(id),
+            },
+        });
 
-//         if (getPlant) {
-//             res.status(200).json({
-//                 message: "Plant Plant by ID",
-//                 resultData: getPlant,
-//             });
-//         }
-//     } catch (err) {
-//         console.log(err);
-//         res.status(500).send('Server Error');
-//     }
-// });
+        if (getPlant) {
+            res.status(200).json({
+                message: "Plant Plant by ID",
+                resultData: getPlant,
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Server Error');
+    }
+});
 
 router.put('/updatePlant/:id', async (req, res) => {
     try {
