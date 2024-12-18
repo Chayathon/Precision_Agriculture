@@ -8,6 +8,8 @@ import { FaSearch } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
 import { HiOutlineTrash } from "react-icons/hi2";
 import { CiViewList } from "react-icons/ci";
+import moment from "moment";
+import 'moment/locale/th';
 import ModalCreatePlane from "../../components/ModalCreatePlane";
 import ModalUpdatePlant from "../../components/ModalUpdatePlant";
 import ModalDeletePlant from "../../components/ModalDeletePlant";
@@ -138,8 +140,17 @@ export default function ListPlant() {
         fetchPlant();
     }, [refresh]);
 
-      // Top content of table
-      const topContent = useMemo(() => {
+    const convertYear = (dateConvert) => {
+        const date = moment(dateConvert).locale('th');
+
+        // เพิ่ม 543 ปีเข้าไปในปี
+        const buddhistYearDate = date.format('D MMMM') + ' ' + (date.year() + 543);
+
+        return (buddhistYearDate)
+    }
+
+    // Top content of table
+    const topContent = useMemo(() => {
         return (
             <div className="flex flex-col gap-4">
                 <div className="flex justify-between gap-3 items-end">
@@ -256,7 +267,7 @@ export default function ListPlant() {
                         <TableRow key={item.id}>
                             <TableCell>{item.id}</TableCell>
                             <TableCell>{item.plantname}</TableCell>
-                            <TableCell>{item.plantedAt}</TableCell>
+                            <TableCell>{convertYear(item.plantAt)}</TableCell>
                             <TableCell>{item.user_id }</TableCell>
                             <TableCell>
                                 <ButtonGroup>

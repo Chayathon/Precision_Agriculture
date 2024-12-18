@@ -4,8 +4,6 @@ const router = express.Router()
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
-const { authIsCheck, isAdmin } = require("../middleware/auth");
-
 router.get('/listPlant', async (req, res) => {
     try {
         const listPlant = await prisma.plant.findMany();
