@@ -659,7 +659,7 @@ function Dashboard({id}) {
                                 <p className='text-gray-500'>ไนโตรเจน (mg/L)</p>
                             </CardHeader>
                             <CardBody>
-                                <p className='text-center text-6xl font-bold text-red-500'>{plantData.nitrogen}</p>
+                                <p className='text-center text-6xl font-bold'>{plantData.nitrogen}&ensp;|&ensp;80</p>
                             </CardBody>
                         </Card>
                         <Card className='drop-shadow-xl hover:-translate-y-1 cursor-pointer'>
@@ -667,7 +667,7 @@ function Dashboard({id}) {
                                 <p className='text-gray-500'>ฟอสฟอรัส (mg/L)</p>
                             </CardHeader>
                             <CardBody>
-                                <p className='text-center text-6xl font-bold text-red-500'>{plantData.phosphorus}</p>
+                                <p className='text-center text-6xl font-bold'>{plantData.phosphorus}&ensp;|&ensp;80</p>
                             </CardBody>
                         </Card>
                         <Card className='drop-shadow-xl hover:-translate-y-1 cursor-pointer'>
@@ -675,7 +675,7 @@ function Dashboard({id}) {
                                 <p className='text-gray-500'>โพแทสเซียม (mg/L)</p>
                             </CardHeader>
                             <CardBody>
-                                <p className='text-center text-6xl font-bold text-red-500'>{plantData.potassium}</p>
+                                <p className='text-center text-6xl font-bold'>{plantData.potassium}&ensp;|&ensp;80</p>
                             </CardBody>
                         </Card>
                     </div>
