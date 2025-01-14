@@ -208,4 +208,52 @@ router.post('/createNutrient', async (req, res) => {
     }
 });
 
+router.get('/getNutrien/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const Nutrien = await prisma.p_nutrient.findMany({
+            where: {
+                plant_id: Number(id),
+            },
+
+            take: 1,
+        });
+
+        if(Nutrien) {
+            res.status(200).json({
+                message: 'Get Nutrien Variables',
+                resultData: Nutrien,
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+router.get('/getFactor/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const Factor = await prisma.p_factor.findMany({
+            where: {
+                plant_id: Number(id),
+            },
+
+            take: 1,
+        });
+
+        if(Factor) {
+            res.status(200).json({
+                message: 'Get Nutrien Variables',
+                resultData: Factor,
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
 module.exports = router
