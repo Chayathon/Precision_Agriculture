@@ -532,12 +532,13 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  LineElement,  // ลงทะเบียน LineElement
+  PointElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 
 function Dashboard({ id }) {
 
@@ -620,7 +621,8 @@ function Dashboard({ id }) {
   ChartJS.register(
     CategoryScale,
     LinearScale,
-    BarElement,
+    LineElement,  // ลงทะเบียน LineElement
+    PointElement,
     Title,
     Tooltip,
     Legend
@@ -651,24 +653,88 @@ function Dashboard({ id }) {
   const labels = generateTimeLabels();
 
   // Function to generate chart data
-  const createChartData = (label, data, backgroundColor, borderColor) => ({
+  const createChartData = (data) => ({
     labels,
     datasets: [
       {
-        label,
-        data: Array(9).fill(data), // Fill with the actual data value
-        backgroundColor,
-        borderColor,
+        label: "อุณหภูมิ (°C)",
+        data: Array(9).fill(data.temperature),
+        backgroundColor: "rgba(150, 150, 150, 0.5)",
+        borderColor: "rgba(150, 150, 150, 1)",
         borderWidth: 2,
+        fill: false,
+      },
+      {
+        label: "ความชื้น (%)",
+        data: Array(9).fill(data.humidity),
+        backgroundColor: "rgba(0, 229, 255, 0.5)",
+        borderColor: "rgba(0, 229, 255, 1)",
+        borderWidth: 2,
+        fill: false,
+      },
+      {
+        label: "ค่าความเป็นกรด-ด่าง (pH)",
+        data: Array(9).fill(data.pH),
+        backgroundColor: "rgba(255, 131, 0, 0.5)",
+        borderColor: "rgba(255, 131, 0, 1)",
+        borderWidth: 2,
+        fill: false,
+      },
+      {
+        label: "ค่าการนำไฟฟ้า (dS/m)",
+        data: Array(9).fill(data.salinity),
+        backgroundColor: "rgba(0, 0, 255, 0.5)",
+        borderColor: "rgba(0, 0, 255, 1)",
+        borderWidth: 2,
+        fill: false,
+      },
+      {
+        label: "ค่าความเข้มแสง (lux)",
+        data: Array(9).fill(data.lightIntensity),
+        backgroundColor: "rgba(255, 255, 0, 0.5)",
+        borderColor: "rgba(255, 255, 0, 1)",
+        borderWidth: 2,
+        fill: false,
       },
     ],
   });
+
+  const createChartDataNutrient = (data) => ({
+    labels,
+    datasets: [
+      {
+        label: "ไนโตรเจน (mg/L)",
+        data: Array(9).fill(data.nitrogen),
+        backgroundColor: "rgba(150, 0, 255, 0.5)",
+        borderColor: "rgba(150, 0, 255, 1)",
+        borderWidth: 2,
+        fill: false,
+      },
+      {
+        label: "ฟอสฟอรัส (mg/L)",
+        data: Array(9).fill(data.phosphorus),
+        backgroundColor: "rgba(0, 255, 0, 0.5)",
+        borderColor: "rgba(0, 255, 0, 1)",
+        borderWidth: 2,
+        fill: false,
+      },
+      {
+        label: "โพแทสเซียม (mg/L)",
+        data: Array(9).fill(data.potassium),
+        backgroundColor: "rgba(255, 0, 0, 0.5)",
+        borderColor: "rgba(255, 0, 0, 1)",
+        borderWidth: 2,
+        fill: false,
+      },
+    ],
+  });
+  
 
   return (
     <div className="m-4">
       {plantData && nutrienData && factorData && (
         <>
-          <div className="grid grid-cols-6 gap-4 mb-4">
+          <div className="grid grid-cols-3 gap-4 mb-4">
             <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">อายุ (วัน)</p>
@@ -721,7 +787,8 @@ function Dashboard({ id }) {
                 </div>
               </CardBody>
             </Card>
-
+          </div>
+          <div className="grid grid-cols-3 gap-4 mb-4">
             <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">ค่าความเป็นกรด-ด่าง (pH)</p>
@@ -862,21 +929,25 @@ function Dashboard({ id }) {
               <CardHeader className="flex justify-center">
                 อุณหภูมิ (°C)
               </CardHeader>
-              <Bar
+              <Line
                 options={options}
-                data={createChartData(
-                  "อุณหภูมิ",
-                  plantData.temperature,
-                  "rgba(150, 150, 150, 0.5)",
-                  "rgba(150, 150, 150, 1)"
-                )}
+                data={createChartData(plantData)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
               />
             </Card>
             <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
               <CardHeader className="flex justify-center">
+                อุณหภูมิ (°C)
+              </CardHeader>
+              <Line
+                options={options}
+                data={createChartData([plantData.nitrogen, plantData.phosphorus, plantData.potassium])}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
+              />
+            </Card>
+            {/* <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
+              <CardHeader className="flex justify-center">
                 ความชื้น (%)
               </CardHeader>
-              <Bar
+              <Line
                 options={options}
                 data={createChartData(
                   "ความชื้น",
@@ -890,7 +961,7 @@ function Dashboard({ id }) {
               <CardHeader className="flex justify-center">
                 ค่าความเป็นกรด-ด่าง (pH)
               </CardHeader>
-              <Bar
+              <Line
                 options={options}
                 data={createChartData(
                   "ค่าความเป็นกรด-ด่าง",
@@ -904,7 +975,7 @@ function Dashboard({ id }) {
               <CardHeader className="flex justify-center">
                 ค่าการนำไฟฟ้า (dS/m)
               </CardHeader>
-              <Bar
+              <Line
                 options={options}
                 data={createChartData(
                   "ค่าการนำไฟฟ้า",
@@ -918,7 +989,7 @@ function Dashboard({ id }) {
               <CardHeader className="flex justify-center">
                 ค่าความเข้มแสง (lux)
               </CardHeader>
-              <Bar
+              <Line
                 options={options}
                 data={createChartData(
                   "ค่าความเข้มแสง",
@@ -927,12 +998,12 @@ function Dashboard({ id }) {
                   "rgba(255, 255, 0, 1)"
                 )}
               />
-            </Card>
-            <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
+            </Card> */}
+            {/* <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
               <CardHeader className="flex justify-center">
                 ไนโตรเจน (mg/L)
               </CardHeader>
-              <Bar
+              <Line
                 options={options}
                 data={createChartData(
                   "ไนโตรเจน",
@@ -946,7 +1017,7 @@ function Dashboard({ id }) {
               <CardHeader className="flex justify-center">
                 ฟอสฟอรัส (mg/L)
               </CardHeader>
-              <Bar
+              <Line
                 options={options}
                 data={createChartData(
                   "ฟอสฟอรัส",
@@ -960,7 +1031,7 @@ function Dashboard({ id }) {
               <CardHeader className="flex justify-center">
                 โพแทสเซียม (mg/L)
               </CardHeader>
-              <Bar
+              <Line
                 options={options}
                 data={createChartData(
                   "โพแทสเซียม",
@@ -969,7 +1040,7 @@ function Dashboard({ id }) {
                   "rgba(255, 0, 0, 1)"
                 )}
               />
-            </Card>
+            </Card> */}
           </div>
         </>
       )}
