@@ -527,7 +527,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter, Button, useDisclosure } from "@nextui-org/react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -538,7 +538,10 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+
 import { Line } from "react-chartjs-2";
+import { GoGraph } from "react-icons/go";
+import ModalGraph from "../components/ModalGraph";
 
 function Dashboard({ id }) {
 
@@ -547,6 +550,10 @@ function Dashboard({ id }) {
   const [nutrienData, setnutrienData] = useState(null);
 
   const [factorData, setfactorData] = useState(null);
+  
+  const [refresh, setRefresh] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const { isOpen: isOpenGraph, onOpen: onOpenGraph, onOpenChange: onOpenChangeGraph } = useDisclosure();
 
   const fetchPlantVariables = async (plantId) => {
     try {
@@ -918,11 +925,21 @@ function Dashboard({ id }) {
                   {/* ชุดข้อมูลที่ 2 */}
                   <div className="text-center">
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p className="text-5xl font-bold">80</p>
+                    <p className="text-5xl font-bold">{factorData.lightIntensity}</p>
                   </div>
                 </div>
+
+                <Button onPress={() => {setSelectedId(item.id); onOpenGraph();}} variant="light" size='sm'>
+                  <GoGraph  className="text-xl text-red-500 " />
+                </Button>
+
               </CardBody>
             </Card>
+
+            {isOpenGraph&& (
+                <ModalGraph isOpen={isOpenGraph} onOpenChange={onOpenChangeGraph} id={selectedId} setRefresh={setRefresh} />
+            )}
+
           </div>
           <div className="grid grid-cols-2 gap-4">
             <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
