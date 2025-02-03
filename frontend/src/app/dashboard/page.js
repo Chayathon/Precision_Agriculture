@@ -550,7 +550,7 @@ function Dashboard({ id }) {
   const [nutrienData, setnutrienData] = useState(null);
 
   const [factorData, setfactorData] = useState(null);
-  
+
   const [refresh, setRefresh] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const { isOpen: isOpenGraph, onOpen: onOpenGraph, onOpenChange: onOpenChangeGraph } = useDisclosure();
@@ -678,31 +678,7 @@ function Dashboard({ id }) {
         borderColor: "rgba(0, 229, 255, 1)",
         borderWidth: 2,
         fill: false,
-      },
-      {
-        label: "ค่าความเป็นกรด-ด่าง (pH)",
-        data: Array(9).fill(data.pH),
-        backgroundColor: "rgba(255, 131, 0, 0.5)",
-        borderColor: "rgba(255, 131, 0, 1)",
-        borderWidth: 2,
-        fill: false,
-      },
-      {
-        label: "ค่าการนำไฟฟ้า (dS/m)",
-        data: Array(9).fill(data.salinity),
-        backgroundColor: "rgba(0, 0, 255, 0.5)",
-        borderColor: "rgba(0, 0, 255, 1)",
-        borderWidth: 2,
-        fill: false,
-      },
-      {
-        label: "ค่าความเข้มแสง (lux)",
-        data: Array(9).fill(data.lightIntensity),
-        backgroundColor: "rgba(255, 255, 0, 0.5)",
-        borderColor: "rgba(255, 255, 0, 1)",
-        borderWidth: 2,
-        fill: false,
-      },
+      }
     ],
   });
 
@@ -736,10 +712,9 @@ function Dashboard({ id }) {
     ],
   });
   
-
   return (
     <div className="m-4">
-      {plantData && nutrienData && factorData && (
+      {plantData && nutrienData && factorData &&(
         <>
           <div className="grid grid-cols-3 gap-4 mb-4">
             <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
@@ -929,35 +904,36 @@ function Dashboard({ id }) {
                   </div>
                 </div>
 
-                <Button onPress={() => {setSelectedId(item.id); onOpenGraph();}} variant="light" size='sm'>
-                  <GoGraph  className="text-xl text-red-500 " />
+                <Button onPress={() => {setSelectedId(plantData.id); onOpenGraph();}} variant="light" size='sm'>
+                  <GoGraph className="text-xl text-red-500" />
                 </Button>
 
               </CardBody>
             </Card>
-
-            {isOpenGraph&& (
-                <ModalGraph isOpen={isOpenGraph} onOpenChange={onOpenChangeGraph} id={selectedId} setRefresh={setRefresh} />
-            )}
-
           </div>
+
+          {isOpenGraph && (
+            <ModalGraph isOpen={isOpenGraph} onOpenChange={onOpenChangeGraph} id={selectedId} setRefresh={setRefresh} />
+          )}
+
           <div className="grid grid-cols-2 gap-4">
             <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
               <CardHeader className="flex justify-center">
-                อุณหภูมิ (°C)
+                กราฟ1
               </CardHeader>
               <Line
                 options={options}
                 data={createChartData(plantData)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
               />
             </Card>
+            
             <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
               <CardHeader className="flex justify-center">
-                อุณหภูมิ (°C)
+                กราฟ2
               </CardHeader>
               <Line
                 options={options}
-                data={createChartData([plantData.nitrogen, plantData.phosphorus, plantData.potassium])}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
+                data={createChartDataNutrient(plantData)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
               />
             </Card>
             {/* <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
