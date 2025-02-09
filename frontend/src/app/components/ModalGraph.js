@@ -91,16 +91,16 @@ import { Line } from "react-chartjs-2";
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">แสดงกราฟ</ModalHeader>
+            <ModalHeader className="flex flex-col gap-1">กราฟค่าความเข้มแสง</ModalHeader>
                 {plantData &&(
             <ModalBody>
           
-                              <div className="grid grid-cols-2 gap-4">
-                                  <Line
-                                    options={options}
-                                    data={createChartData(plantData)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
-                                  />
-                                </div>
+            <div className="grid grid-cols-2 gap-4">
+              <Line
+                options={options}
+                data={createChartData(plantData)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
+              />
+             </div>
 
             </ModalBody>
                 )}

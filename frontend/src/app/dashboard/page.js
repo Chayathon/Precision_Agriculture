@@ -917,7 +917,7 @@ function Dashboard({ id }) {
           <div className="grid grid-cols-2 gap-4">
             <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
               <CardHeader className="flex justify-center">
-                กราฟ1
+                กราฟแสดงข้อมูล
               </CardHeader>
               <Line
                 options={options}
@@ -927,7 +927,7 @@ function Dashboard({ id }) {
             
             <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
               <CardHeader className="flex justify-center">
-                กราฟ2
+                กราฟแสดงข้อมูล
               </CardHeader>
               <Line
                 options={options}
