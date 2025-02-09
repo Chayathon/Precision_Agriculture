@@ -575,7 +575,7 @@ function Dashboard({ id }) {
     if (id) {
       fetchPlantVariables(id);
     }
-  }, [id]);
+  }, [id,refresh]);
 
   //----------------------------------------------------------------
 
@@ -599,7 +599,7 @@ function Dashboard({ id }) {
     if (id) {
         fetchNutrien(id);
     }
-  }, [id]);
+  }, [id,refresh]);
 
     //----------------------------------------------------------------
 
@@ -623,7 +623,7 @@ function Dashboard({ id }) {
         if (id) {
             fetchFactor(id);
         }
-      }, [id]);
+      }, [id,refresh]);
 
   ChartJS.register(
     CategoryScale,
@@ -649,7 +649,7 @@ function Dashboard({ id }) {
     const now = new Date();
     const labels = [];
     for (let i = 0; i < 9; i++) {
-      const time = new Date(now.getTime() - (8 - i) * 60 * 60 * 1000);
+      const time = new Date(now.getTime() - (8 - i) * 2 * 60 * 60 * 1000);
       labels.push(
         time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
       );
@@ -903,18 +903,16 @@ function Dashboard({ id }) {
                     <p className="text-5xl font-bold">{factorData.lightIntensity}</p>
                   </div>
                 </div>
-
-                <Button onPress={() => {setSelectedId(plantData.id); onOpenGraph();}} variant="light" size='sm'>
-                  <GoGraph className="text-xl text-red-500" />
-                </Button>
-
+                   <Button onPress={() => {setSelectedId(id); onOpenGraph();}} variant="light" size='sm'>
+                      <GoGraph className="text-xl text-red-500" />
+                   </Button>
               </CardBody>
             </Card>
           </div>
 
           {isOpenGraph && (
-            <ModalGraph isOpen={isOpenGraph} onOpenChange={onOpenChangeGraph} id={selectedId} setRefresh={setRefresh} />
-          )}
+                <ModalGraph isOpen={isOpenGraph} onOpenChange={onOpenChangeGraph} id={selectedId} setRefresh={setRefresh} />
+            )}
 
           <div className="grid grid-cols-2 gap-4">
             <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
