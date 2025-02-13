@@ -866,51 +866,8 @@ function Dashboard({ id }) {
               </CardBody>
             </Card>
           </div>
+
           <div className="grid grid-cols-3 gap-4 mb-4">
-            <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
-              <CardHeader className="flex justify-center">
-                <p className="text-gray-500">ค่าความเป็นกรด-ด่าง (pH)</p>
-              </CardHeader>
-              <CardBody>
-                <div className="flex justify-center items-center gap-12">
-                  {" "}
-                  {/* ไม่มี gap */}
-                  {/* ชุดข้อมูลที่ 1 */}
-                  <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className="text-5xl font-bold ">{plantData.pH}</p>
-                  </div>
-                  {/* ชุดข้อมูลที่ 2 */}
-                  <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p className="text-5xl font-bold">{factorData.pH}</p>
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
-
-            <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
-              <CardHeader className="flex justify-center">
-                <p className="text-gray-500">ค่าการนำไฟฟ้า (dS/m)</p>
-              </CardHeader>
-              <CardBody>
-                <div className="flex justify-center items-center gap-12">
-                  {" "}
-                  {/* ไม่มี gap */}
-                  {/* ชุดข้อมูลที่ 1 */}
-                  <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className="text-5xl font-bold ">{plantData.salinity}</p>
-                  </div>
-                  {/* ชุดข้อมูลที่ 2 */}
-                  <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p className="text-5xl font-bold">{factorData.salinity}</p>
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
-
             <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">ไนโตรเจน (mg/L)</p>
@@ -932,10 +889,6 @@ function Dashboard({ id }) {
                 </div>
               </CardBody>
             </Card>
-            
-          </div>
-
-          <div className="grid grid-cols-3 gap-4 mb-4">
             <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">ฟอสฟอรัส (mg/L)</p>
@@ -980,6 +933,51 @@ function Dashboard({ id }) {
                 </div>
               </CardBody>
             </Card>
+          </div>
+
+          <div className="grid grid-cols-3 gap-4 mb-4">
+            <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
+              <CardHeader className="flex justify-center">
+                <p className="text-gray-500">ค่าความเป็นกรด-ด่าง (pH)</p>
+              </CardHeader>
+              <CardBody>
+                <div className="flex justify-center items-center gap-12">
+                  {" "}
+                  {/* ไม่มี gap */}
+                  {/* ชุดข้อมูลที่ 1 */}
+                  <div className="text-center">
+                    <p className="text-2xl">ค่าที่วัดได้</p>
+                    <p className="text-5xl font-bold ">{plantData.pH}</p>
+                  </div>
+                  {/* ชุดข้อมูลที่ 2 */}
+                  <div className="text-center">
+                    <p className="text-2xl ">ค่ามาตรฐาน</p>
+                    <p className="text-5xl font-bold">{factorData.pH}</p>
+                  </div>
+                </div>
+              </CardBody>
+            </Card>
+            <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
+              <CardHeader className="flex justify-center">
+                <p className="text-gray-500">ค่าการนำไฟฟ้า (dS/m)</p>
+              </CardHeader>
+              <CardBody>
+                <div className="flex justify-center items-center gap-12">
+                  {" "}
+                  {/* ไม่มี gap */}
+                  {/* ชุดข้อมูลที่ 1 */}
+                  <div className="text-center">
+                    <p className="text-2xl">ค่าที่วัดได้</p>
+                    <p className="text-5xl font-bold ">{plantData.salinity}</p>
+                  </div>
+                  {/* ชุดข้อมูลที่ 2 */}
+                  <div className="text-center">
+                    <p className="text-2xl ">ค่ามาตรฐาน</p>
+                    <p className="text-5xl font-bold">{factorData.salinity}</p>
+                  </div>
+                </div>
+              </CardBody>
+            </Card>
             <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">ค่าความเข้มแสง (lux)</p>
@@ -1007,7 +1005,7 @@ function Dashboard({ id }) {
           </div>
 
           {isOpenGraph && (
-                <ModalGraph isOpen={isOpenGraph} onOpenChange={onOpenChangeGraph} id={selectedId} setRefresh={setRefresh} />
+            <ModalGraph isOpen={isOpenGraph} onOpenChange={onOpenChangeGraph} id={selectedId} setRefresh={setRefresh} />
           )}
 
           <div className="flex justify-end mb-4">
@@ -1024,7 +1022,7 @@ function Dashboard({ id }) {
           <div className="grid grid-cols-2 gap-4">
             <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
               <CardHeader className="flex justify-center">
-                กราฟแสดงข้อมูล
+                กราฟแสดงข้อมูลอุณหภูมิ & ความชื้น
               </CardHeader>
               <Line
                 options={options}
@@ -1034,7 +1032,7 @@ function Dashboard({ id }) {
             
             <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
               <CardHeader className="flex justify-center">
-                กราฟแสดงข้อมูล
+                กราฟแสดงข้อมูลสารอาหาร
               </CardHeader>
               <Line
                 options={options}
