@@ -527,12 +527,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Card, CardHeader, CardBody, CardFooter, Button, useDisclosure } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter, Button, useDisclosure, ButtonGroup } from "@nextui-org/react";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  LineElement,  // ลงทะเบียน LineElement
+  LineElement,
   PointElement,
   Title,
   Tooltip,
@@ -546,7 +546,7 @@ import ModalGraph from "../components/ModalGraph";
 function Dashboard({ id }) {
 
   const [plantData, setPlantData] = useState(null);
-
+  const [plantDatas, setPlantDatas] = useState(null);
   const [nutrienData, setnutrienData] = useState(null);
 
   const [factorData, setfactorData] = useState(null);
@@ -555,10 +555,10 @@ function Dashboard({ id }) {
   const [selectedId, setSelectedId] = useState(null);
   const { isOpen: isOpenGraph, onOpen: onOpenGraph, onOpenChange: onOpenChangeGraph } = useDisclosure();
 
-  const fetchPlantVariables = async (plantId) => {
+  const fetchPlantVariable = async (plantId) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/getPlantVariables/${plantId}`
+        `http://localhost:4000/api/getPlantVariable/${plantId}`
       );
 
       if (res.ok) {
@@ -571,11 +571,117 @@ function Dashboard({ id }) {
     }
   };
 
-  useEffect(() => {
-    if (id) {
-      fetchPlantVariables(id);
+  // const fetchPlantVariables = async (plantId) => {
+  //   try {
+  //     const res = await fetch(
+  //       `http://localhost:4000/api/getPlantVariables/${plantId}`
+  //     );
+
+  //     if (res.ok) {
+  //       const data = await res.json();
+  //       console.log(data.resultData); // Log the first item in resultData
+  //       setPlantDatas(data.resultData); // Set the first item
+  //     }
+  //   } catch (err) {
+  //     console.error("Failed to fetch", err);
+  //   }
+  // };
+
+  const fetchPlantVariables7day = async (plantId) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/getPlantVariables7day/${plantId}`
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data.resultData); // Log the first item in resultData
+        setPlantDatas(data.resultData); // Set the first item
+      }
+    } catch (err) {
+      console.error("Failed to fetch", err);
     }
-  }, [id,refresh]);
+  };
+
+  const fetchPlantVariables14day = async (plantId) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/getPlantVariables14day/${plantId}`
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data.resultData); // Log the first item in resultData
+        setPlantDatas(data.resultData); // Set the first item
+      }
+    } catch (err) {
+      console.error("Failed to fetch", err);
+    }
+  };
+
+  const fetchPlantVariables1month = async (plantId) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/getPlantVariables1month/${plantId}`
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data.resultData); // Log the first item in resultData
+        setPlantDatas(data.resultData); // Set the first item
+      }
+    } catch (err) {
+      console.error("Failed to fetch", err);
+    }
+  };
+
+  const fetchPlantVariables3month = async (plantId) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/getPlantVariables3month/${plantId}`
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data.resultData); // Log the first item in resultData
+        setPlantDatas(data.resultData); // Set the first item
+      }
+    } catch (err) {
+      console.error("Failed to fetch", err);
+    }
+  };
+
+  const fetchPlantVariables6month = async (plantId) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/getPlantVariables6month/${plantId}`
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data.resultData); // Log the first item in resultData
+        setPlantDatas(data.resultData); // Set the first item
+      }
+    } catch (err) {
+      console.error("Failed to fetch", err);
+    }
+  };
+
+  const fetchPlantVariables1year = async (plantId) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/getPlantVariables1year/${plantId}`
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        console.log(data.resultData); // Log the first item in resultData
+        setPlantDatas(data.resultData); // Set the first item
+      }
+    } catch (err) {
+      console.error("Failed to fetch", err);
+    }
+  };
 
   //----------------------------------------------------------------
 
@@ -587,7 +693,7 @@ function Dashboard({ id }) {
 
       if (res.ok) {
         const data = await res.json();
-        console.log(data.resultData[0]); // Log the first item in resultData
+        // console.log(data.resultData[0]); // Log the first item in resultData
         setnutrienData(data.resultData[0]); // Set the first item
       }
     } catch (err) {
@@ -595,35 +701,32 @@ function Dashboard({ id }) {
     }
   };
 
+  //----------------------------------------------------------------
+
+  const fetchFactor = async (plantId) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/getFactor/${plantId}`
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        // console.log(data.resultData[0]); // Log the first item in resultData
+        setfactorData(data.resultData[0]); // Set the first item
+      }
+    } catch (err) {
+      console.error("Failed to fetch", err);
+    }
+  };
+    
   useEffect(() => {
     if (id) {
-        fetchNutrien(id);
+      fetchPlantVariable(id);
+      fetchPlantVariables7day(id);
+      fetchNutrien(id);
+      fetchFactor(id);
     }
   }, [id,refresh]);
-
-    //----------------------------------------------------------------
-
-    const fetchFactor = async (plantId) => {
-        try {
-          const res = await fetch(
-            `http://localhost:4000/api/getFactor/${plantId}`
-          );
-    
-          if (res.ok) {
-            const data = await res.json();
-            console.log(data.resultData[0]); // Log the first item in resultData
-            setfactorData(data.resultData[0]); // Set the first item
-          }
-        } catch (err) {
-          console.error("Failed to fetch", err);
-        }
-      };
-    
-      useEffect(() => {
-        if (id) {
-            fetchFactor(id);
-        }
-      }, [id,refresh]);
 
   ChartJS.register(
     CategoryScale,
@@ -644,28 +747,20 @@ function Dashboard({ id }) {
     },
   };
 
-  // Generate labels based on current time
-  const generateTimeLabels = () => {
-    const now = new Date();
-    const labels = [];
-    for (let i = 0; i < 9; i++) {
-      const time = new Date(now.getTime() - (8 - i) * 2 * 60 * 60 * 1000);
-      labels.push(
-        time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-      );
-    }
-    return labels;
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('th-TH', {
+      day: 'numeric',
+      month: '2-digit',
+      year: 'numeric'
+    });
   };
 
-  const labels = generateTimeLabels();
-
-  // Function to generate chart data
-  const createChartData = (data) => ({
-    labels,
+  const createEnvironmentData = (data) => ({
+    labels: data.map(item => formatDate(item.receivedAt)),
     datasets: [
       {
         label: "อุณหภูมิ (°C)",
-        data: Array(9).fill(data.temperature),
+        data: data.map(item => item.temperature),
         backgroundColor: "rgba(150, 150, 150, 0.5)",
         borderColor: "rgba(150, 150, 150, 1)",
         borderWidth: 2,
@@ -673,7 +768,7 @@ function Dashboard({ id }) {
       },
       {
         label: "ความชื้น (%)",
-        data: Array(9).fill(data.humidity),
+        data: data.map(item => item.humidity),
         backgroundColor: "rgba(0, 229, 255, 0.5)",
         borderColor: "rgba(0, 229, 255, 1)",
         borderWidth: 2,
@@ -682,12 +777,13 @@ function Dashboard({ id }) {
     ],
   });
 
-  const createChartDataNutrient = (data) => ({
-    labels,
+  // Create nutrient data
+  const createNutrientData = (data) => ({
+    labels: data.map(item => formatDate(item.receivedAt)),
     datasets: [
       {
         label: "ไนโตรเจน (mg/L)",
-        data: Array(9).fill(data.nitrogen),
+        data: data.map(item => item.nitrogen),
         backgroundColor: "rgba(150, 0, 255, 0.5)",
         borderColor: "rgba(150, 0, 255, 1)",
         borderWidth: 2,
@@ -695,7 +791,7 @@ function Dashboard({ id }) {
       },
       {
         label: "ฟอสฟอรัส (mg/L)",
-        data: Array(9).fill(data.phosphorus),
+        data: data.map(item => item.phosphorus),
         backgroundColor: "rgba(0, 255, 0, 0.5)",
         borderColor: "rgba(0, 255, 0, 1)",
         borderWidth: 2,
@@ -703,7 +799,7 @@ function Dashboard({ id }) {
       },
       {
         label: "โพแทสเซียม (mg/L)",
-        data: Array(9).fill(data.potassium),
+        data: data.map(item => item.potassium),
         backgroundColor: "rgba(255, 0, 0, 0.5)",
         borderColor: "rgba(255, 0, 0, 1)",
         borderWidth: 2,
@@ -912,7 +1008,18 @@ function Dashboard({ id }) {
 
           {isOpenGraph && (
                 <ModalGraph isOpen={isOpenGraph} onOpenChange={onOpenChangeGraph} id={selectedId} setRefresh={setRefresh} />
-            )}
+          )}
+
+          <div className="flex justify-end mb-4">
+            <ButtonGroup>
+              <Button onPress={() => fetchPlantVariables7day(id)} className="focus:bg-gray-400">7 วัน</Button>
+              <Button onPress={() => fetchPlantVariables14day(id)} className="focus:bg-gray-400">14 วัน</Button>
+              <Button onPress={() => fetchPlantVariables1month(id)} className="focus:bg-gray-400">1 เดือน</Button>
+              <Button onPress={() => fetchPlantVariables3month(id)} className="focus:bg-gray-400">3 เดือน</Button>
+              <Button onPress={() => fetchPlantVariables6month(id)} className="focus:bg-gray-400">6 เดือน</Button>
+              <Button onPress={() => fetchPlantVariables1year(id)} className="focus:bg-gray-400">1 ปี</Button>
+            </ButtonGroup>
+          </div>
 
           <div className="grid grid-cols-2 gap-4">
             <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
@@ -921,7 +1028,7 @@ function Dashboard({ id }) {
               </CardHeader>
               <Line
                 options={options}
-                data={createChartData(plantData)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
+                data={createEnvironmentData(plantDatas)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
               />
             </Card>
             
@@ -931,7 +1038,7 @@ function Dashboard({ id }) {
               </CardHeader>
               <Line
                 options={options}
-                data={createChartDataNutrient(plantData)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
+                data={createNutrientData(plantDatas)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
               />
             </Card>
             {/* <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">

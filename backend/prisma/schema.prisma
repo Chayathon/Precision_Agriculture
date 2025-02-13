@@ -73,7 +73,7 @@ model p_variable {
   id            Int     @id @default(autoincrement()) // รหัสตัวแปรที่รับเข้ามา
   plant_id      Int     // รหัสพืช
   plant         plant   @relation(fields: [plant_id], references: [id]) // ความสัมพันธ์ many-to-one กับพืช
-  receivedAt    DateTime // วัน-เดือน-ปี ที่รับเข้า
+  receivedAt    DateTime @default(now()) // วัน-เดือน-ปี ที่รับเข้า
   nitrogen      Float   // ไนโตรเจน
   phosphorus    Float   // ฟอสฟอรัส
   potassium     Float   // โพแทสเซียม
