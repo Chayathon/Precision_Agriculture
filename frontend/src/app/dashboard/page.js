@@ -683,8 +683,6 @@ function Dashboard({ id }) {
     }
   };
 
-  //----------------------------------------------------------------
-
   const fetchNutrien = async (plantId) => {
     try {
       const res = await fetch(
@@ -700,8 +698,6 @@ function Dashboard({ id }) {
       console.error("Failed to fetch", err);
     }
   };
-
-  //----------------------------------------------------------------
 
   const fetchFactor = async (plantId) => {
     try {
