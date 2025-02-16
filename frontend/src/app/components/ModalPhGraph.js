@@ -12,8 +12,7 @@ import {
   } from "chart.js";
 import { Line } from "react-chartjs-2";
 
-  function ModalGraph({ isOpen, onOpenChange, id }) {
-
+function ModalPhGraph({ isOpen, onOpenChange, id }) {
     const [plantData, setPlantData] = useState(null);
 
     const fetchPlantVariables7day = async (plantId) => {
@@ -30,7 +29,7 @@ import { Line } from "react-chartjs-2";
         console.error("Failed to fetch", err);
       }
     };
-
+  
     const fetchPlantVariables14day = async (plantId) => {
       try {
         const res = await fetch(
@@ -45,7 +44,7 @@ import { Line } from "react-chartjs-2";
         console.error("Failed to fetch", err);
       }
     };
-
+  
     const fetchPlantVariables1month = async (plantId) => {
       try {
         const res = await fetch(
@@ -60,7 +59,7 @@ import { Line } from "react-chartjs-2";
         console.error("Failed to fetch", err);
       }
     };
-
+  
     const fetchPlantVariables3month = async (plantId) => {
       try {
         const res = await fetch(
@@ -75,7 +74,7 @@ import { Line } from "react-chartjs-2";
         console.error("Failed to fetch", err);
       }
     };
-
+  
     const fetchPlantVariables6month = async (plantId) => {
       try {
         const res = await fetch(
@@ -90,7 +89,7 @@ import { Line } from "react-chartjs-2";
         console.error("Failed to fetch", err);
       }
     };
-
+  
     const fetchPlantVariables9month = async (plantId) => {
       try {
         const res = await fetch(
@@ -105,7 +104,7 @@ import { Line } from "react-chartjs-2";
         console.error("Failed to fetch", err);
       }
     };
-
+  
     const fetchPlantVariables1year = async (plantId) => {
       try {
         const res = await fetch(
@@ -121,13 +120,13 @@ import { Line } from "react-chartjs-2";
         console.error("Failed to fetch", err);
       }
     };
-  
+    
     useEffect(() => {
       if (id) {
         fetchPlantVariables7day(id);
       }
     }, [id]);
-
+  
     ChartJS.register(
       CategoryScale,
       LinearScale,
@@ -137,7 +136,7 @@ import { Line } from "react-chartjs-2";
       Tooltip,
       Legend
     );
-    
+      
     const options = {
       responsive: true,
       plugins: {
@@ -146,7 +145,7 @@ import { Line } from "react-chartjs-2";
         },
       },
     };
-
+  
     const formatDate = (dateString) => {
       return new Date(dateString).toLocaleDateString('th-TH', {
         day: 'numeric',
@@ -154,7 +153,7 @@ import { Line } from "react-chartjs-2";
         year: 'numeric'
       });
     };
-
+  
     const createChartData = (data) => {
       if (!data) {
         return {
@@ -166,8 +165,8 @@ import { Line } from "react-chartjs-2";
         labels: data.map(item => formatDate(item.receivedAt)),
         datasets: [
           {
-            label: "ค่าความเข้มแสง (lux)",
-            data: data.map(item => item.lightIntensity),
+            label: "ค่าความเป็นกรด-ด่าง (pH)",
+            data: data.map(item => item.pH),
             backgroundColor: "rgba(220, 255, 25, 0.81)",
             borderColor: "rgba(216, 241, 72, 0.86)",
             borderWidth: 2,
@@ -176,42 +175,42 @@ import { Line } from "react-chartjs-2";
         ],
       }
     };
-
-  return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl" placement="top-center">
-      <ModalContent>
-        {(onClose) => (
-          <>
-            <ModalHeader className="flex flex-col gap-1">กราฟค่าความเข้มแสง</ModalHeader>
-            {plantData &&(
-              <ModalBody>
-                <div className="flex justify-end mb-4">
-                  <ButtonGroup>
-                    <Button onPress={() => fetchPlantVariables7day(id)} className="focus:bg-gray-400">7 วัน</Button>
-                    <Button onPress={() => fetchPlantVariables14day(id)} className="focus:bg-gray-400">14 วัน</Button>
-                    <Button onPress={() => fetchPlantVariables1month(id)} className="focus:bg-gray-400">1 เดือน</Button>
-                    <Button onPress={() => fetchPlantVariables3month(id)} className="focus:bg-gray-400">3 เดือน</Button>
-                    <Button onPress={() => fetchPlantVariables6month(id)} className="focus:bg-gray-400">6 เดือน</Button>
-                    <Button onPress={() => fetchPlantVariables9month(id)} className="focus:bg-gray-400">9 เดือน</Button>
-                    <Button onPress={() => fetchPlantVariables1year(id)} className="focus:bg-gray-400">1 ปี</Button>
-                  </ButtonGroup>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <Line
-                    options={options}
-                    data={createChartData(plantData)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
-                  />
-                </div>
-              </ModalBody>
-            )}
-            <ModalFooter>
-              <Button variant="flat" onPress={onClose}>ปิด</Button>
-            </ModalFooter>
-          </>
-        )}
-      </ModalContent>
-    </Modal>
-  );
+  
+    return (
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl" placement="top-center">
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">กราฟค่าความเป็นกรด-ด่าง</ModalHeader>
+              {plantData &&(
+                <ModalBody>
+                  <div className="flex justify-end mb-4">
+                    <ButtonGroup>
+                      <Button onPress={() => fetchPlantVariables7day(id)} className="focus:bg-gray-400">7 วัน</Button>
+                      <Button onPress={() => fetchPlantVariables14day(id)} className="focus:bg-gray-400">14 วัน</Button>
+                      <Button onPress={() => fetchPlantVariables1month(id)} className="focus:bg-gray-400">1 เดือน</Button>
+                      <Button onPress={() => fetchPlantVariables3month(id)} className="focus:bg-gray-400">3 เดือน</Button>
+                      <Button onPress={() => fetchPlantVariables6month(id)} className="focus:bg-gray-400">6 เดือน</Button>
+                      <Button onPress={() => fetchPlantVariables9month(id)} className="focus:bg-gray-400">9 เดือน</Button>
+                      <Button onPress={() => fetchPlantVariables1year(id)} className="focus:bg-gray-400">1 ปี</Button>
+                    </ButtonGroup>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <Line
+                      options={options}
+                      data={createChartData(plantData)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
+                    />
+                  </div>
+                </ModalBody>
+              )}
+              <ModalFooter>
+                <Button variant="flat" onPress={onClose}>ปิด</Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    );
 }
 
-export default ModalGraph;
+export default ModalPhGraph

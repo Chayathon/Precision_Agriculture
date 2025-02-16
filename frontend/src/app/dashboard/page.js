@@ -541,7 +541,9 @@ import {
 
 import { Line } from "react-chartjs-2";
 import { GoGraph } from "react-icons/go";
-import ModalGraph from "../components/ModalGraph";
+import ModalPhGraph from "../components/ModalPhGraph";
+import ModalSalinityGraph from "../components/ModalSalinityGraph";
+import ModalLightIntensityGraph from "../components/ModalLightIntensityGraph";
 
 function Dashboard({ id }) {
 
@@ -552,7 +554,10 @@ function Dashboard({ id }) {
 
   const [refresh, setRefresh] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
-  const { isOpen: isOpenGraph, onOpen: onOpenGraph, onOpenChange: onOpenChangeGraph } = useDisclosure();
+
+  const { isOpen: isOpenPhGraph, onOpen: onOpenPhGraph, onOpenChange: onOpenPhChangeGraph } = useDisclosure();
+  const { isOpen: isOpenSalinityGraph, onOpen: onOpenSalinityGraph, onOpenChange: onOpenSalinityChangeGraph } = useDisclosure();
+  const { isOpen: isOpenLightIntensityGraph, onOpen: onOpenLightIntensityGraph, onOpenChange: onOpenLightIntensityChangeGraph } = useDisclosure();
 
   const fetchPlantVariable = async (plantId) => {
     try {
@@ -944,7 +949,7 @@ function Dashboard({ id }) {
                   <p className="text-gray-500">ค่าความเป็นกรด-ด่าง (pH)</p>
                 </div>
                 <div className="flex justify-end">
-                  <Button onPress={() => {setSelectedId(id); onOpenGraph();}} variant="light" size='sm'>
+                  <Button onPress={() => {setSelectedId(id); onOpenPhGraph();}} variant="light" size='sm'>
                     <GoGraph className="text-xl text-red-500" />
                   </Button>
                 </div>
@@ -972,7 +977,7 @@ function Dashboard({ id }) {
                   <p className="text-gray-500">ค่าการนำไฟฟ้า (dS/m)</p>
                 </div>
                 <div className="flex justify-end">
-                  <Button onPress={() => {setSelectedId(id); onOpenGraph();}} variant="light" size='sm'>
+                  <Button onPress={() => {setSelectedId(id); onOpenSalinityGraph();}} variant="light" size='sm'>
                     <GoGraph className="text-xl text-red-500" />
                   </Button>
                 </div>
@@ -1000,7 +1005,7 @@ function Dashboard({ id }) {
                   <p className="text-gray-500">ค่าความเข้มแสง (lux)</p>
                 </div>
                 <div className="flex justify-end">
-                  <Button onPress={() => {setSelectedId(id); onOpenGraph();}} variant="light" size='sm'>
+                  <Button onPress={() => {setSelectedId(id); onOpenLightIntensityGraph();}} variant="light" size='sm'>
                     <GoGraph className="text-xl text-red-500" />
                   </Button>
                 </div>
@@ -1024,8 +1029,14 @@ function Dashboard({ id }) {
             </Card>
           </div>
 
-          {isOpenGraph && (
-            <ModalGraph isOpen={isOpenGraph} onOpenChange={onOpenChangeGraph} id={selectedId} setRefresh={setRefresh} />
+          {isOpenPhGraph && (
+            <ModalPhGraph isOpen={isOpenPhGraph} onOpenChange={onOpenPhChangeGraph} id={selectedId} setRefresh={setRefresh} />
+          )}
+          {isOpenSalinityGraph && (
+            <ModalSalinityGraph isOpen={isOpenSalinityGraph} onOpenChange={onOpenSalinityChangeGraph} id={selectedId} setRefresh={setRefresh} />
+          )}
+          {isOpenLightIntensityGraph && (
+            <ModalLightIntensityGraph isOpen={isOpenLightIntensityGraph} onOpenChange={onOpenLightIntensityChangeGraph} id={selectedId} setRefresh={setRefresh} />
           )}
 
           <div className="flex justify-end mb-4">
