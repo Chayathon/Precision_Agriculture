@@ -545,11 +545,10 @@ import ModalGraph from "../components/ModalGraph";
 
 function Dashboard({ id }) {
 
-  const [plantData, setPlantData] = useState(null);
-  const [plantDatas, setPlantDatas] = useState(null);
-  const [nutrienData, setnutrienData] = useState(null);
-
-  const [factorData, setfactorData] = useState(null);
+  const [plantData, setPlantData] = useState();
+  const [plantDatas, setPlantDatas] = useState();
+  const [nutrienData, setnutrienData] = useState();
+  const [factorData, setfactorData] = useState();
 
   const [refresh, setRefresh] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -571,22 +570,6 @@ function Dashboard({ id }) {
     }
   };
 
-  // const fetchPlantVariables = async (plantId) => {
-  //   try {
-  //     const res = await fetch(
-  //       `http://localhost:4000/api/getPlantVariables/${plantId}`
-  //     );
-
-  //     if (res.ok) {
-  //       const data = await res.json();
-  //       console.log(data.resultData); // Log the first item in resultData
-  //       setPlantDatas(data.resultData); // Set the first item
-  //     }
-  //   } catch (err) {
-  //     console.error("Failed to fetch", err);
-  //   }
-  // };
-
   const fetchPlantVariables7day = async (plantId) => {
     try {
       const res = await fetch(
@@ -595,8 +578,7 @@ function Dashboard({ id }) {
 
       if (res.ok) {
         const data = await res.json();
-        console.log(data.resultData); // Log the first item in resultData
-        setPlantDatas(data.resultData); // Set the first item
+        setPlantDatas(data.resultData);
       }
     } catch (err) {
       console.error("Failed to fetch", err);
@@ -611,8 +593,7 @@ function Dashboard({ id }) {
 
       if (res.ok) {
         const data = await res.json();
-        console.log(data.resultData); // Log the first item in resultData
-        setPlantDatas(data.resultData); // Set the first item
+        setPlantDatas(data.resultData);
       }
     } catch (err) {
       console.error("Failed to fetch", err);
@@ -627,8 +608,7 @@ function Dashboard({ id }) {
 
       if (res.ok) {
         const data = await res.json();
-        console.log(data.resultData); // Log the first item in resultData
-        setPlantDatas(data.resultData); // Set the first item
+        setPlantDatas(data.resultData);
       }
     } catch (err) {
       console.error("Failed to fetch", err);
@@ -643,8 +623,7 @@ function Dashboard({ id }) {
 
       if (res.ok) {
         const data = await res.json();
-        console.log(data.resultData); // Log the first item in resultData
-        setPlantDatas(data.resultData); // Set the first item
+        setPlantDatas(data.resultData);
       }
     } catch (err) {
       console.error("Failed to fetch", err);
@@ -659,8 +638,22 @@ function Dashboard({ id }) {
 
       if (res.ok) {
         const data = await res.json();
-        console.log(data.resultData); // Log the first item in resultData
-        setPlantDatas(data.resultData); // Set the first item
+        setPlantDatas(data.resultData);
+      }
+    } catch (err) {
+      console.error("Failed to fetch", err);
+    }
+  };
+
+  const fetchPlantVariables9month = async (plantId) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/getPlantVariables9month/${plantId}`
+      );
+
+      if (res.ok) {
+        const data = await res.json();
+        setPlantDatas(data.resultData);
       }
     } catch (err) {
       console.error("Failed to fetch", err);
@@ -675,8 +668,7 @@ function Dashboard({ id }) {
 
       if (res.ok) {
         const data = await res.json();
-        console.log(data.resultData); // Log the first item in resultData
-        setPlantDatas(data.resultData); // Set the first item
+        setPlantDatas(data.resultData);
       }
     } catch (err) {
       console.error("Failed to fetch", err);
@@ -691,8 +683,7 @@ function Dashboard({ id }) {
 
       if (res.ok) {
         const data = await res.json();
-        // console.log(data.resultData[0]); // Log the first item in resultData
-        setnutrienData(data.resultData[0]); // Set the first item
+        setnutrienData(data.resultData[0]);
       }
     } catch (err) {
       console.error("Failed to fetch", err);
@@ -707,8 +698,7 @@ function Dashboard({ id }) {
 
       if (res.ok) {
         const data = await res.json();
-        // console.log(data.resultData[0]); // Log the first item in resultData
-        setfactorData(data.resultData[0]); // Set the first item
+        setfactorData(data.resultData[0]);
       }
     } catch (err) {
       console.error("Failed to fetch", err);
@@ -722,12 +712,12 @@ function Dashboard({ id }) {
       fetchNutrien(id);
       fetchFactor(id);
     }
-  }, [id,refresh]);
+  }, [id]);
 
   ChartJS.register(
     CategoryScale,
     LinearScale,
-    LineElement,  // ลงทะเบียน LineElement
+    LineElement,
     PointElement,
     Title,
     Tooltip,
@@ -751,58 +741,74 @@ function Dashboard({ id }) {
     });
   };
 
-  const createEnvironmentData = (data) => ({
-    labels: data.map(item => formatDate(item.receivedAt)),
-    datasets: [
-      {
-        label: "อุณหภูมิ (°C)",
-        data: data.map(item => item.temperature),
-        backgroundColor: "rgba(150, 150, 150, 0.5)",
-        borderColor: "rgba(150, 150, 150, 1)",
-        borderWidth: 2,
-        fill: false,
-      },
-      {
-        label: "ความชื้น (%)",
-        data: data.map(item => item.humidity),
-        backgroundColor: "rgba(0, 229, 255, 0.5)",
-        borderColor: "rgba(0, 229, 255, 1)",
-        borderWidth: 2,
-        fill: false,
-      }
-    ],
-  });
+  const createEnvironmentData = (data) => {
+    if (!data) {
+      return {
+        labels: [],
+        datasets: []
+      };
+    }
+    return {
+      labels: data.map(item => formatDate(item.receivedAt)),
+      datasets: [
+        {
+          label: "อุณหภูมิ (°C)",
+          data: data.map(item => item.temperature),
+          backgroundColor: "rgba(150, 150, 150, 0.5)",
+          borderColor: "rgba(150, 150, 150, 1)",
+          borderWidth: 2,
+          fill: false,
+        },
+        {
+          label: "ความชื้น (%)",
+          data: data.map(item => item.humidity),
+          backgroundColor: "rgba(0, 229, 255, 0.5)",
+          borderColor: "rgba(0, 229, 255, 1)",
+          borderWidth: 2,
+          fill: false,
+        }
+      ],
+    }
+  };
 
   // Create nutrient data
-  const createNutrientData = (data) => ({
-    labels: data.map(item => formatDate(item.receivedAt)),
-    datasets: [
-      {
-        label: "ไนโตรเจน (mg/L)",
-        data: data.map(item => item.nitrogen),
-        backgroundColor: "rgba(150, 0, 255, 0.5)",
-        borderColor: "rgba(150, 0, 255, 1)",
-        borderWidth: 2,
-        fill: false,
-      },
-      {
-        label: "ฟอสฟอรัส (mg/L)",
-        data: data.map(item => item.phosphorus),
-        backgroundColor: "rgba(0, 255, 0, 0.5)",
-        borderColor: "rgba(0, 255, 0, 1)",
-        borderWidth: 2,
-        fill: false,
-      },
-      {
-        label: "โพแทสเซียม (mg/L)",
-        data: data.map(item => item.potassium),
-        backgroundColor: "rgba(255, 0, 0, 0.5)",
-        borderColor: "rgba(255, 0, 0, 1)",
-        borderWidth: 2,
-        fill: false,
-      },
-    ],
-  });
+  const createNutrientData = (data) => {
+    if (!data) {
+      return {
+        labels: [],
+        datasets: []
+      };
+    }
+    return {
+      labels: data.map(item => formatDate(item.receivedAt)),
+      datasets: [
+        {
+          label: "ไนโตรเจน (mg/L)",
+          data: data.map(item => item.nitrogen),
+          backgroundColor: "rgba(150, 0, 255, 0.5)",
+          borderColor: "rgba(150, 0, 255, 1)",
+          borderWidth: 2,
+          fill: false,
+        },
+        {
+          label: "ฟอสฟอรัส (mg/L)",
+          data: data.map(item => item.phosphorus),
+          backgroundColor: "rgba(0, 255, 0, 0.5)",
+          borderColor: "rgba(0, 255, 0, 1)",
+          borderWidth: 2,
+          fill: false,
+        },
+        {
+          label: "โพแทสเซียม (mg/L)",
+          data: data.map(item => item.potassium),
+          backgroundColor: "rgba(255, 0, 0, 0.5)",
+          borderColor: "rgba(255, 0, 0, 1)",
+          borderWidth: 2,
+          fill: false,
+        },
+      ],
+    }
+  };
   
   return (
     <div className="m-4">
@@ -933,8 +939,15 @@ function Dashboard({ id }) {
 
           <div className="grid grid-cols-3 gap-4 mb-4">
             <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
-              <CardHeader className="flex justify-center">
-                <p className="text-gray-500">ค่าความเป็นกรด-ด่าง (pH)</p>
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex justify-center flex-1"> 
+                  <p className="text-gray-500">ค่าความเป็นกรด-ด่าง (pH)</p>
+                </div>
+                <div className="flex justify-end">
+                  <Button onPress={() => {setSelectedId(id); onOpenGraph();}} variant="light" size='sm'>
+                    <GoGraph className="text-xl text-red-500" />
+                  </Button>
+                </div>
               </CardHeader>
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
@@ -954,8 +967,15 @@ function Dashboard({ id }) {
               </CardBody>
             </Card>
             <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
-              <CardHeader className="flex justify-center">
-                <p className="text-gray-500">ค่าการนำไฟฟ้า (dS/m)</p>
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex justify-center flex-1"> 
+                  <p className="text-gray-500">ค่าการนำไฟฟ้า (dS/m)</p>
+                </div>
+                <div className="flex justify-end">
+                  <Button onPress={() => {setSelectedId(id); onOpenGraph();}} variant="light" size='sm'>
+                    <GoGraph className="text-xl text-red-500" />
+                  </Button>
+                </div>
               </CardHeader>
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
@@ -975,8 +995,15 @@ function Dashboard({ id }) {
               </CardBody>
             </Card>
             <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
-              <CardHeader className="flex justify-center">
-                <p className="text-gray-500">ค่าความเข้มแสง (lux)</p>
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex justify-center flex-1"> 
+                  <p className="text-gray-500">ค่าความเข้มแสง (lux)</p>
+                </div>
+                <div className="flex justify-end">
+                  <Button onPress={() => {setSelectedId(id); onOpenGraph();}} variant="light" size='sm'>
+                    <GoGraph className="text-xl text-red-500" />
+                  </Button>
+                </div>
               </CardHeader>
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
@@ -993,9 +1020,6 @@ function Dashboard({ id }) {
                     <p className="text-5xl font-bold">{factorData.lightIntensity}</p>
                   </div>
                 </div>
-                   <Button onPress={() => {setSelectedId(id); onOpenGraph();}} variant="light" size='sm'>
-                      <GoGraph className="text-xl text-red-500" />
-                   </Button>
               </CardBody>
             </Card>
           </div>
@@ -1011,6 +1035,7 @@ function Dashboard({ id }) {
               <Button onPress={() => fetchPlantVariables1month(id)} className="focus:bg-gray-400">1 เดือน</Button>
               <Button onPress={() => fetchPlantVariables3month(id)} className="focus:bg-gray-400">3 เดือน</Button>
               <Button onPress={() => fetchPlantVariables6month(id)} className="focus:bg-gray-400">6 เดือน</Button>
+              <Button onPress={() => fetchPlantVariables9month(id)} className="focus:bg-gray-400">9 เดือน</Button>
               <Button onPress={() => fetchPlantVariables1year(id)} className="focus:bg-gray-400">1 ปี</Button>
             </ButtonGroup>
           </div>

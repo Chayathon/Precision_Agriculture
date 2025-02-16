@@ -332,6 +332,51 @@ router.get('/getPlantVariables6month/:id', async (req, res) => {
     }
 });
 
+router.get('/getPlantVariables9month/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const latestRecord = await prisma.p_variable.findFirst({
+            where: {
+                plant_id: Number(id),
+            },
+            orderBy: {
+                receivedAt: 'desc',
+            },
+        });
+        
+        const latestDate = new Date(latestRecord.receivedAt);
+        const Days = new Date(latestDate);
+        Days.setMonth(latestDate.getMonth() - 9);
+
+        // ดึงข้อมูลเฉพาะในช่วง 9 เดือน
+        const plantVariables = await prisma.p_variable.findMany({
+            where: {
+                plant_id: Number(id),
+                receivedAt: {
+                    gte: Days, // มากกว่าหรือเท่ากับ 9 เดือนก่อน
+                    lte: latestDate,   // น้อยกว่าหรือเท่ากับวันที่ล่าสุด
+                },
+            },
+            orderBy: {
+                receivedAt: 'asc',
+            },
+        });
+
+        if (plantVariables.length === 0) {
+            return res.status(404).json({ message: 'No data found for the last 9 month' });
+        }
+
+        res.status(200).json({
+            message: 'Get Plant Variables for the last 9 month',
+            resultData: plantVariables,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
 router.get('/getPlantVariables1year/:id', async (req, res) => {
     try {
         const { id } = req.params;
