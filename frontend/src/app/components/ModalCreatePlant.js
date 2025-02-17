@@ -4,7 +4,7 @@ import { CalendarDate } from "@internationalized/date";
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 
-function ModalCreatePlane({ isOpen, onOpenChange, setRefresh }) {
+function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
 
     const [plantName, setPlantName] = useState('');
     const [plantAt, setPlantAt] = useState('');
@@ -113,4 +113,4 @@ function ModalCreatePlane({ isOpen, onOpenChange, setRefresh }) {
 
 }
 
-export default ModalCreatePlane;
+export default ModalCreatePlant;

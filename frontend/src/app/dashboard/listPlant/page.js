@@ -10,7 +10,7 @@ import { HiOutlineTrash } from "react-icons/hi2";
 import { CiViewList } from "react-icons/ci";
 import moment from "moment";
 import 'moment/locale/th';
-import ModalCreatePlane from "../../components/ModalCreatePlane";
+import ModalCreatePlant from "../../components/ModalCreatePlant";
 import ModalUpdatePlant from "../../components/ModalUpdatePlant";
 import ModalDeletePlant from "../../components/ModalDeletePlant";
 import ModalMultiDeletePlant from "../../components/ModalMultiDeletePlant";
@@ -295,7 +295,7 @@ export default function ListPlant() {
             </Table> 
 
             {isOpenCreate && (
-                <ModalCreatePlane isOpen={isOpenCreate} onOpenChange={onOpenChangeCreate} setRefresh={setRefresh} userId={Cookies.get("UserData")} />
+                <ModalCreatePlant isOpen={isOpenCreate} onOpenChange={onOpenChangeCreate} setRefresh={setRefresh} userId={Cookies.get("UserData")} />
             )}
             {isOpenFactor_Nutrient && (
                 <ModalFactor_Nutrient isOpen={isOpenFactor_Nutrient} onOpenChange={onOpenChangeFactor_Nutrient} id={selectedId} setRefresh={setRefresh} />
