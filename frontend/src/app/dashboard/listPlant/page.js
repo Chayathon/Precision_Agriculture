@@ -267,7 +267,7 @@ export default function ListPlant() {
                         <TableRow key={item.id}>
                             <TableCell>{item.id}</TableCell>
                             <TableCell>{item.plantname}</TableCell>
-                            <TableCell>{convertYear(item.plantAt)}</TableCell>
+                            <TableCell>{convertYear(item.plantedAt)}</TableCell>
                             <TableCell>{item.user_id }</TableCell>
                             <TableCell>
                                 <ButtonGroup>

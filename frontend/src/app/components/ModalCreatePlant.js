@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, DateInput, useDisclosure } from '@nextui-org/react';
-import { CalendarDate } from "@internationalized/date";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, DateInput, useDisclosure, DatePicker, Select, SelectItem } from '@nextui-org/react';
+import { getLocalTimeZone, today } from "@internationalized/date";
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 
@@ -66,33 +66,44 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
     };
 
     return (
-        <>
-            <Modal
-                isOpen={isOpen}
-                onOpenChange={onOpenChange}
-            >
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">เพิ่มข้อมูล</ModalHeader>
-                                <ModalBody>
-                                    <form onSubmit={handleSubmit}>
-                                        <div className='mb-4'>
-                                            <Input
-                                                autoFocus
-                                                label="พืช"
-                                                variant="bordered"
-                                                onChange={(e) => setPlantName(e.target.value)}
-                                            />
-                                        </div>
-                                        <div className='mb-4'>
-                                            <DateInput
-                                                label="วันที่ปลูก"
-                                                placeholderValue={new CalendarDate(1995, 11, 6)}
-                                                onChange={handleDateChange} // เพิ่มการเรียกฟังก์ชันเมื่อวันที่เปลี่ยน
-                                            />
-                                        </div>
-                                                                        <ModalFooter>
+        <Modal
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+        >
+            <ModalContent>
+                {(onClose) => (
+                    <form onSubmit={handleSubmit}>
+                        <ModalHeader className="flex flex-col gap-2">เพิ่มข้อมูล</ModalHeader>
+                        <ModalBody>
+                                <div>
+                                    {/* <Input
+                                        autoFocus
+                                        label="พืช"
+                                        variant="bordered"
+                                        onChange={(e) => setPlantName(e.target.value)}
+                                    /> */}
+                                    <Select
+                                        isRequired
+                                        onChange={(e) => setPlantName(e.target.value)}
+                                        label="พืช"
+                                        placeholder="เลือกพืชที่ปลูก"
+                                        >
+                                            <SelectItem key="ข้าว">ข้าว</SelectItem>
+                                            <SelectItem key="ข้าวโพด">ข้าวโพด</SelectItem>
+                                            <SelectItem key="มันสำปะหลัง">มันสำปะหลัง</SelectItem>
+                                            <SelectItem key="ทุเรียน">ทุเรียน</SelectItem>
+                                    </Select>
+                                </div>
+                                <div>
+                                    <DatePicker
+                                        isRequired
+                                        defaultValue={today(getLocalTimeZone())}
+                                        maxValue={today(getLocalTimeZone())}
+                                        onChange={handleDateChange} // เพิ่มการเรียกฟังก์ชันเมื่อวันที่เปลี่ยน
+                                        label="วันที่ปลูก"
+                                    />
+                                </div>
+                                <ModalFooter>
                                     <Button variant="flat" onPress={onClose}>
                                         ยกเลิก
                                     </Button>
@@ -100,17 +111,12 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                                         เพิ่ม
                                     </Button>
                                 </ModalFooter>
-                                    </form>
-                                </ModalBody>
-
-
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-        </>
+                        </ModalBody>
+                    </form>
+                )}
+            </ModalContent>
+        </Modal>
     );
-
 }
 
 export default ModalCreatePlant;
