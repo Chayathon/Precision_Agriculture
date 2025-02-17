@@ -546,11 +546,11 @@ import ModalSalinityGraph from "../components/ModalSalinityGraph";
 import ModalLightIntensityGraph from "../components/ModalLightIntensityGraph";
 
 function Dashboard({ id }) {
-
-  const [plantData, setPlantData] = useState();
-  const [plantDatas, setPlantDatas] = useState();
-  const [nutrienData, setnutrienData] = useState();
-  const [factorData, setfactorData] = useState();
+  const [plantAge, setPlantAge] = useState("");
+  const [plantData, setPlantData] = useState(null);
+  const [plantDatas, setPlantDatas] = useState(null);
+  const [nutrienData, setnutrienData] = useState(null);
+  const [factorData, setfactorData] = useState(null);
 
   const [refresh, setRefresh] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -558,6 +558,38 @@ function Dashboard({ id }) {
   const { isOpen: isOpenPhGraph, onOpen: onOpenPhGraph, onOpenChange: onOpenPhChangeGraph } = useDisclosure();
   const { isOpen: isOpenSalinityGraph, onOpen: onOpenSalinityGraph, onOpenChange: onOpenSalinityChangeGraph } = useDisclosure();
   const { isOpen: isOpenLightIntensityGraph, onOpen: onOpenLightIntensityGraph, onOpenChange: onOpenLightIntensityChangeGraph } = useDisclosure();
+  
+  const calculateAge = (plantedAt) => {
+    // แปลงวันที่ปลูกเป็นวัตถุ Date
+    const plantedDate = new Date(plantedAt);
+    // วันที่ปัจจุบัน
+    const currentDate = new Date();
+    
+    // คำนวณความแตกต่างของเวลาในหน่วยมิลลิวินาที
+    const timeDifference = currentDate - plantedDate;
+    
+    // แปลงมิลลิวินาทีเป็นวัน
+    const ageInDays = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+    
+    return ageInDays;
+  };
+
+  const fetchPlant = async (plantId) => {
+    try {
+      const res = await fetch(`http://localhost:4000/api/getPlant/${plantId}`);
+
+      if(res.ok) {
+        const data = await res.json();
+        const plantedAt = data.resultData.plantedAt;
+        const ageInDays = calculateAge(plantedAt);
+        
+        // อัพเดต state หรือแสดงผลอายุของพืช
+        setPlantAge(ageInDays);
+      }
+    } catch (err) {
+      console.error("Failed to fetch", err);
+    }
+  }
 
   const fetchPlantVariable = async (plantId) => {
     try {
@@ -712,12 +744,13 @@ function Dashboard({ id }) {
     
   useEffect(() => {
     if (id) {
+      fetchPlant(id);
       fetchPlantVariable(id);
       fetchPlantVariables7day(id);
       fetchNutrien(id);
       fetchFactor(id);
     }
-  }, [id]);
+  }, [id, refresh]);
 
   ChartJS.register(
     CategoryScale,
@@ -825,7 +858,7 @@ function Dashboard({ id }) {
                 <p className="text-gray-500">อายุ (วัน)</p>
               </CardHeader>
               <CardBody>
-                <p className="text-center text-6xl font-bold">30</p>
+                <p className="text-center text-6xl font-bold">{plantAge}</p>
               </CardBody>
             </Card>
 
