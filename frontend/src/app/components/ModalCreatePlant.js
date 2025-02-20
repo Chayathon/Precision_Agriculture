@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, DateInput, useDisclosure, DatePicker, Select, SelectItem } from '@nextui-org/react';
 import { getLocalTimeZone, today } from "@internationalized/date";
 import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 
 function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
-
-    const [plantName, setPlantName] = useState('');
+    const [selectedPlant, setSelectedPlant] = useState('');
+    const [customPlant, setCustomPlant] = useState('');
     const [plantAt, setPlantAt] = useState('');
 
     // ฟังก์ชัน handleDateChange ถูกประกาศในขอบเขตเดียวกับคอมโพเนนต์
@@ -14,11 +14,23 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
         setPlantAt(date?.toString() || ''); // แปลงเป็น string หรือฟอร์แมตตามที่ต้องการ
     };
 
+    useEffect(() => {
+        const dateNow = today(getLocalTimeZone()).toString();
+        setPlantAt(dateNow);
+    }, []);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!plantName || !plantAt) {
+        if (!selectedPlant || !plantAt) {
             toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
+            return;
+        }
+
+        const plantName = selectedPlant === "other" ? customPlant : selectedPlant;
+
+        if (!plantName) {
+            toast.error("กรุณาระบุชื่อพืช!");
             return;
         }
 
@@ -72,19 +84,14 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
         >
             <ModalContent>
                 {(onClose) => (
-                    <form onSubmit={handleSubmit}>
-                        <ModalHeader className="flex flex-col gap-2">เพิ่มข้อมูล</ModalHeader>
+                    <>
+                        <ModalHeader className="flex flex-col">เพิ่มข้อมูล</ModalHeader>
                         <ModalBody>
-                                <div>
-                                    {/* <Input
-                                        autoFocus
-                                        label="พืช"
-                                        variant="bordered"
-                                        onChange={(e) => setPlantName(e.target.value)}
-                                    /> */}
+                            <form onSubmit={handleSubmit}>
+                                <div className='mb-3'>
                                     <Select
                                         isRequired
-                                        onChange={(e) => setPlantName(e.target.value)}
+                                        onChange={(e) => setSelectedPlant(e.target.value)}
                                         label="พืช"
                                         placeholder="เลือกพืชที่ปลูก"
                                         >
@@ -92,9 +99,20 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                                             <SelectItem key="ข้าวโพด">ข้าวโพด</SelectItem>
                                             <SelectItem key="มันสำปะหลัง">มันสำปะหลัง</SelectItem>
                                             <SelectItem key="ทุเรียน">ทุเรียน</SelectItem>
+                                            <SelectItem key="other">อื่นๆ</SelectItem>
                                     </Select>
                                 </div>
-                                <div>
+                                {selectedPlant === "other" && (
+                                    <div className='mb-3'>
+                                        <Input
+                                            isRequired
+                                            label="ระบุพืชที่ปลูก"
+                                            placeholder="กรอกชื่อพืช"
+                                            onChange={(e) => setCustomPlant(e.target.value)}
+                                        />
+                                    </div>
+                                )}
+                                <div className='mt-3'>
                                     <DatePicker
                                         isRequired
                                         defaultValue={today(getLocalTimeZone())}
@@ -111,8 +129,9 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                                         เพิ่ม
                                     </Button>
                                 </ModalFooter>
+                            </form>
                         </ModalBody>
-                    </form>
+                    </>
                 )}
             </ModalContent>
         </Modal>
