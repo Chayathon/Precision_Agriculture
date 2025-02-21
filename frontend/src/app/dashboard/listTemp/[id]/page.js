@@ -130,23 +130,24 @@ function ListTemp({ params }) {
         return buddhistYearDate;
     };
 
-    const exportToPDF = () => {
-      const input = document.getElementById("content-to-export");
-    
-      html2canvas(input).then((canvas) => {
-        const imgData = canvas.toDataURL("image/png");
-    
-        // สร้าง PDF ด้วยขนาด A4
-        const pdf = new jsPDF("p", "mm", "a4"); // "p" คือแนวตั้ง, "mm" คือหน่วยมิลลิเมตร, "a4" คือขนาดกระดาษ
-        const imgWidth = 210; // ความกว้างของ A4
-        const imgHeight = (canvas.height * imgWidth) / canvas.width; // คำนวณความสูงให้สัดส่วนเท่ากับภาพ
-    
-        // เพิ่มภาพลงใน PDF และปรับขนาดให้พอดีกับกระดาษ A4
-        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-    
-        // บันทึกไฟล์ PDF
-        pdf.save("document.pdf");
-      });
+    const exportToPDF = async () => {
+      try {
+        const element = document.getElementById('content-to-export');
+        
+        const canvas = await html2canvas(element);
+        const imgData = canvas.toDataURL('image/png');
+        
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('temperature-data.pdf');
+        
+      } catch (error) {
+        console.error('Error generating PDF:', error);
+      }
     };
 
     return (
@@ -154,23 +155,25 @@ function ListTemp({ params }) {
             aria-label="List Temperature"
             id='content-to-export'
             topContent={
-              <div className='flex'>
-                <div className="justify-start">
-                    <ButtonGroup>
-                        <Button onPress={() => fetchPlantVariables7day(id)} className="focus:bg-gray-400">7 วัน</Button>
-                        <Button onPress={() => fetchPlantVariables14day(id)} className="focus:bg-gray-400">14 วัน</Button>
-                        <Button onPress={() => fetchPlantVariables1month(id)} className="focus:bg-gray-400">1 เดือน</Button>
-                        <Button onPress={() => fetchPlantVariables3month(id)} className="focus:bg-gray-400">3 เดือน</Button>
-                        <Button onPress={() => fetchPlantVariables6month(id)} className="focus:bg-gray-400">6 เดือน</Button>
-                        <Button onPress={() => fetchPlantVariables9month(id)} className="focus:bg-gray-400">9 เดือน</Button>
-                        <Button onPress={() => fetchPlantVariables1year(id)} className="focus:bg-gray-400">1 ปี</Button>
-                    </ButtonGroup>
-                </div>
-                <div className='justify-end'>
-                  <ButtonGroup>
-                    <Button onPress={exportToPDF}>PDF</Button>
-                  </ButtonGroup>
-                </div>
+              <div className='flex justify-between'>
+                <ButtonGroup>
+                    <Button onPress={() => fetchPlantVariables7day(id)} className="focus:bg-gray-400">7 วัน</Button>
+                    <Button onPress={() => fetchPlantVariables14day(id)} className="focus:bg-gray-400">14 วัน</Button>
+                    <Button onPress={() => fetchPlantVariables1month(id)} className="focus:bg-gray-400">1 เดือน</Button>
+                    <Button onPress={() => fetchPlantVariables3month(id)} className="focus:bg-gray-400">3 เดือน</Button>
+                    <Button onPress={() => fetchPlantVariables6month(id)} className="focus:bg-gray-400">6 เดือน</Button>
+                    <Button onPress={() => fetchPlantVariables9month(id)} className="focus:bg-gray-400">9 เดือน</Button>
+                    <Button onPress={() => fetchPlantVariables1year(id)} className="focus:bg-gray-400">1 ปี</Button>
+                </ButtonGroup>
+                <ButtonGroup>
+                <Button 
+                  onPress={exportToPDF}
+                  isLoading={isLoading}
+                  disabled={isLoading || !plantData?.length}
+                >
+                  {isLoading ? 'กำลังสร้าง PDF...' : 'PDF'}
+                </Button>
+                </ButtonGroup>
               </div>
             }
             className='p-4'
