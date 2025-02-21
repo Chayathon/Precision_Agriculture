@@ -5,9 +5,8 @@ import Cookies from "js-cookie";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure } from "@nextui-org/react";
 import { FaPlus, FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
-import { CiEdit } from "react-icons/ci";
+import { CiEdit, CiViewList } from "react-icons/ci";
 import { HiOutlineTrash } from "react-icons/hi2";
-import { CiViewList } from "react-icons/ci";
 import moment from "moment";
 import 'moment/locale/th';
 import ModalCreatePlant from "../../components/ModalCreatePlant";
@@ -18,7 +17,6 @@ import ModalFactor_Nutrient from "../../components/ModalFactor_Nutrient";
 
 
 export default function ListPlant() {
-
     const [plants, setPlants] = useState([]);
 
     const [refresh, setRefresh] = useState(false);
@@ -140,7 +138,7 @@ export default function ListPlant() {
         fetchPlant();
     }, [refresh]);
 
-    const convertYear = (dateConvert) => {
+    const convertDate = (dateConvert) => {
         const date = moment(dateConvert).locale('th');
 
         // เพิ่ม 543 ปีเข้าไปในปี
@@ -267,7 +265,7 @@ export default function ListPlant() {
                         <TableRow key={item.id}>
                             <TableCell>{item.id}</TableCell>
                             <TableCell>{item.plantname}</TableCell>
-                            <TableCell>{convertYear(item.plantedAt)}</TableCell>
+                            <TableCell>{convertDate(item.plantedAt)}</TableCell>
                             <TableCell>{item.user_id }</TableCell>
                             <TableCell>
                                 <ButtonGroup>

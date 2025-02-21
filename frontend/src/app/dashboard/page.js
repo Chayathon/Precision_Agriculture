@@ -544,6 +544,7 @@ import { GoGraph } from "react-icons/go";
 import ModalPhGraph from "../components/ModalPhGraph";
 import ModalSalinityGraph from "../components/ModalSalinityGraph";
 import ModalLightIntensityGraph from "../components/ModalLightIntensityGraph";
+import Link from "next/link";
 
 function Dashboard({ id }) {
   const [plantAge, setPlantAge] = useState("");
@@ -862,9 +863,22 @@ function Dashboard({ id }) {
               </CardBody>
             </Card>
 
-            <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
-              <CardHeader className="flex justify-center">
-                <p className="text-gray-500">อุณหภูมิ (°C)</p>
+            <Card
+              className="drop-shadow-xl hover:-translate-y-1 cursor-pointer"
+            >
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex justify-center flex-1"> 
+                  <p className="text-gray-500">อุณหภูมิ (°C)</p>
+                </div>
+                <div className="flex justify-end">
+                  <Button variant="light" size='sm'>
+                    <Link
+                      href={`/dashboard/listTemp/${id}`}
+                    >
+                      <GoGraph className="text-xl text-red-500" />
+                    </Link>
+                  </Button>
+                </div>
               </CardHeader>
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
