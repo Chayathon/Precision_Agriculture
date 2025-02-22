@@ -7,7 +7,7 @@ import 'moment/locale/th';
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 
-function ListTemp({ params }) {
+function ListHumid({ params }) {
     const { id } = React.use(params);
     
     const [plantData, setPlantData] = useState([]);
@@ -182,7 +182,7 @@ function ListTemp({ params }) {
         >
             <TableHeader>
                 <TableColumn key="date">วันที่</TableColumn>
-                <TableColumn key="temperature">อุณหภูมิ (°C)</TableColumn>
+                <TableColumn key="humidity">ความชื้น (%)</TableColumn>
             </TableHeader>
             <TableBody
                 items={plantData || []}
@@ -193,7 +193,7 @@ function ListTemp({ params }) {
                 {(item) => (
                     <TableRow key={item.id}>
                         <TableCell>{convertDate(item.receivedAt)}</TableCell>
-                        <TableCell>{item.temperature}</TableCell>
+                        <TableCell>{item.humidity}</TableCell>
                     </TableRow>
                 )}
             </TableBody>
@@ -201,4 +201,4 @@ function ListTemp({ params }) {
     );
 }
 
-export default ListTemp;
+export default ListHumid;

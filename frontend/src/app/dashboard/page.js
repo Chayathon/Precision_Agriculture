@@ -540,6 +540,7 @@ import {
 } from "chart.js";
 
 import { Line } from "react-chartjs-2";
+import { FaTable, FaChartLine } from "react-icons/fa6";
 import { GoGraph } from "react-icons/go";
 import ModalPhGraph from "../components/ModalPhGraph";
 import ModalSalinityGraph from "../components/ModalSalinityGraph";
@@ -875,7 +876,7 @@ function Dashboard({ id }) {
                     <Link
                       href={`/dashboard/listTemp/${id}`}
                     >
-                      <GoGraph className="text-xl text-red-500" />
+                      <FaTable className="text-xl text-red-400" />
                     </Link>
                   </Button>
                 </div>
@@ -997,7 +998,7 @@ function Dashboard({ id }) {
                 </div>
                 <div className="flex justify-end">
                   <Button onPress={() => {setSelectedId(id); onOpenPhGraph();}} variant="light" size='sm'>
-                    <GoGraph className="text-xl text-red-500" />
+                    <FaChartLine className="text-xl text-red-400" />
                   </Button>
                 </div>
               </CardHeader>
@@ -1025,7 +1026,7 @@ function Dashboard({ id }) {
                 </div>
                 <div className="flex justify-end">
                   <Button onPress={() => {setSelectedId(id); onOpenSalinityGraph();}} variant="light" size='sm'>
-                    <GoGraph className="text-xl text-red-500" />
+                    <FaChartLine className="text-xl text-red-400" />
                   </Button>
                 </div>
               </CardHeader>
@@ -1053,7 +1054,7 @@ function Dashboard({ id }) {
                 </div>
                 <div className="flex justify-end">
                   <Button onPress={() => {setSelectedId(id); onOpenLightIntensityGraph();}} variant="light" size='sm'>
-                    <GoGraph className="text-xl text-red-500" />
+                    <FaChartLine className="text-xl text-red-400" />
                   </Button>
                 </div>
               </CardHeader>
