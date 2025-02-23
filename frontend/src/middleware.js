@@ -13,7 +13,7 @@ export function middleware(request) {
             return NextResponse.redirect(new URL("/", request.url));
         }
 
-        if (url?.includes("/dashboard") && (!userRoles.includes("user"))) {
+        if (url?.includes("/home/dashboard") && (!userRoles.includes("user"))) {
             return NextResponse.redirect(new URL("/", request.url));
         } 
     }
