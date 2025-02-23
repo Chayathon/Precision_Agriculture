@@ -551,8 +551,8 @@ function Dashboard({ id }) {
   const [plantAge, setPlantAge] = useState("");
   const [plantData, setPlantData] = useState(null);
   const [plantDatas, setPlantDatas] = useState(null);
-  const [nutrienData, setnutrienData] = useState(null);
-  const [factorData, setfactorData] = useState(null);
+  const [nutrientData, setNutrientData] = useState(null);
+  const [factorData, setFactorData] = useState(null);
 
   const [refresh, setRefresh] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -714,15 +714,15 @@ function Dashboard({ id }) {
     }
   };
 
-  const fetchNutrien = async (plantId) => {
+  const fetchNutrient = async (plantId) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/getNutrien/${plantId}`
+        `http://localhost:4000/api/getNutrient/${plantId}`
       );
 
       if (res.ok) {
         const data = await res.json();
-        setnutrienData(data.resultData[0]);
+        setNutrientData(data.resultData[0]);
       }
     } catch (err) {
       console.error("Failed to fetch", err);
@@ -737,7 +737,7 @@ function Dashboard({ id }) {
 
       if (res.ok) {
         const data = await res.json();
-        setfactorData(data.resultData[0]);
+        setFactorData(data.resultData[0]);
       }
     } catch (err) {
       console.error("Failed to fetch", err);
@@ -749,7 +749,7 @@ function Dashboard({ id }) {
       fetchPlant(id);
       fetchPlantVariable(id);
       fetchPlantVariables7day(id);
-      fetchNutrien(id);
+      fetchNutrient(id);
       fetchFactor(id);
     }
   }, [id, refresh]);
@@ -852,7 +852,7 @@ function Dashboard({ id }) {
   
   return (
     <div className="m-4">
-      {plantData && nutrienData && factorData &&(
+      {plantData && plantDatas && nutrientData && factorData ? (
         <>
           <div className="grid grid-cols-3 gap-4 mb-4">
             <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
@@ -928,7 +928,7 @@ function Dashboard({ id }) {
                   {/* ชุดข้อมูลที่ 2 */}
                   <div className="text-center">
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p className="text-5xl font-bold">{nutrienData.nitrogen}</p>
+                    <p className="text-5xl font-bold">{nutrientData.nitrogen}</p>
                   </div>
                 </div>
               </CardBody>
@@ -951,7 +951,7 @@ function Dashboard({ id }) {
                   {/* ชุดข้อมูลที่ 2 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่ามาตรฐาน</p>
-                    <p className="text-5xl font-bold"> {nutrienData.phosphorus}</p>
+                    <p className="text-5xl font-bold"> {nutrientData.phosphorus}</p>
                   </div>
                 </div>
               </CardBody>
@@ -972,7 +972,7 @@ function Dashboard({ id }) {
                   {/* ชุดข้อมูลที่ 2 */}
                   <div className="text-center">
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p className="text-5xl font-bold">{nutrienData.potassium}</p>
+                    <p className="text-5xl font-bold">{nutrientData.potassium}</p>
                   </div>
                 </div>
               </CardBody>
@@ -1130,106 +1130,12 @@ function Dashboard({ id }) {
                 data={createNutrientData(plantDatas)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
               />
             </Card>
-            {/* <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
-              <CardHeader className="flex justify-center">
-                ความชื้น (%)
-              </CardHeader>
-              <Line
-                options={options}
-                data={createChartData(
-                  "ความชื้น",
-                  plantData.humidity,
-                  "rgba(0, 229, 255, 0.5)",
-                  "rgba(0, 229, 255, 1)"
-                )}
-              />
-            </Card>
-            <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
-              <CardHeader className="flex justify-center">
-                ค่าความเป็นกรด-ด่าง (pH)
-              </CardHeader>
-              <Line
-                options={options}
-                data={createChartData(
-                  "ค่าความเป็นกรด-ด่าง",
-                  plantData.pH,
-                  "rgba(255, 131, 0, 0.5)",
-                  "rgba(255, 131, 0, 1)"
-                )}
-              />
-            </Card>
-            <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
-              <CardHeader className="flex justify-center">
-                ค่าการนำไฟฟ้า (dS/m)
-              </CardHeader>
-              <Line
-                options={options}
-                data={createChartData(
-                  "ค่าการนำไฟฟ้า",
-                  plantData.salinity,
-                  "rgba(0, 0, 255, 0.5)",
-                  "rgba(0, 0, 255, 1)"
-                )}
-              />
-            </Card>
-            <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
-              <CardHeader className="flex justify-center">
-                ค่าความเข้มแสง (lux)
-              </CardHeader>
-              <Line
-                options={options}
-                data={createChartData(
-                  "ค่าความเข้มแสง",
-                  plantData.lightIntensity,
-                  "rgba(255, 255, 0, 0.5)",
-                  "rgba(255, 255, 0, 1)"
-                )}
-              />
-            </Card> */}
-            {/* <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
-              <CardHeader className="flex justify-center">
-                ไนโตรเจน (mg/L)
-              </CardHeader>
-              <Line
-                options={options}
-                data={createChartData(
-                  "ไนโตรเจน",
-                  plantData.nitrogen,
-                  "rgba(150, 0, 255, 0.5)",
-                  "rgba(150, 0, 255, 1)"
-                )}
-              />
-            </Card>
-            <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
-              <CardHeader className="flex justify-center">
-                ฟอสฟอรัส (mg/L)
-              </CardHeader>
-              <Line
-                options={options}
-                data={createChartData(
-                  "ฟอสฟอรัส",
-                  plantData.phosphorus,
-                  "rgba(0, 255, 0, 0.5)",
-                  "rgba(0, 255, 0, 1)"
-                )}
-              />
-            </Card>
-            <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
-              <CardHeader className="flex justify-center">
-                โพแทสเซียม (mg/L)
-              </CardHeader>
-              <Line
-                options={options}
-                data={createChartData(
-                  "โพแทสเซียม",
-                  plantData.potassium,
-                  "rgba(255, 0, 0, 0.5)",
-                  "rgba(255, 0, 0, 1)"
-                )}
-              />
-            </Card> */}
           </div>
         </>
+      ) : (
+        <div className="flex justify-center items-center h-full">
+          <h2 className="text-2xl text-gray-500">ไม่มีข้อมูลสำหรับแสดงผล</h2>
+        </div>
       )}
     </div>
   );

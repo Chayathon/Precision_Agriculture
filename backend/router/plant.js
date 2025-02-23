@@ -208,11 +208,11 @@ router.post('/createNutrient', async (req, res) => {
     }
 });
 
-router.get('/getNutrien/:id', async (req, res) => {
+router.get('/getNutrient/:id', async (req, res) => {
     try {
         const { id } = req.params;
 
-        const Nutrien = await prisma.p_nutrient.findMany({
+        const Nutrient = await prisma.p_nutrient.findMany({
             where: {
                 plant_id: Number(id),
             },
@@ -220,10 +220,10 @@ router.get('/getNutrien/:id', async (req, res) => {
             take: 1,
         });
 
-        if(Nutrien) {
+        if(Nutrient) {
             res.status(200).json({
                 message: 'Get Nutrien Variables',
-                resultData: Nutrien,
+                resultData: Nutrient,
             });
         }
     } catch (err) {
