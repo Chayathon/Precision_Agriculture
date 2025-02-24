@@ -17,12 +17,13 @@ model user {
   id Int @id @default(autoincrement())
   firstname String
   lastname String
-  email String
+  email String @unique
   tel String
   address String
   username String
   password String
   role_id Int
+  otp Int?
   role role @relation(fields: [role_id], references: [id]) 
   plant plant[]
 }

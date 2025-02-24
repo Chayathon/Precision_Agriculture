@@ -43,6 +43,47 @@ router.get("/getUser/:id", async (req, res) => {
     }
 });
 
+router.get("/getUserbyEmail/:email", async (req, res) => {
+    const { email } = req.params;
+
+    try {
+        const getUser = await prisma.user.findFirst({
+            where: {
+                email: email,
+            },
+        });
+
+        if (getUser) {
+            const generateOTP = Math.floor(100000 + Math.random() * 900000);
+
+            const updatedUser = await prisma.user.update({
+                where: {
+                    email: email,
+                },
+                data: {
+                    otp: generateOTP,
+                },
+            });
+
+            res.status(200).json({
+                message: "Get User by Email and OTP Generated",
+                resultData: {
+                    user: updatedUser,
+                    otp: generateOTP,
+                },
+            });
+        } else {
+            res.status(404).json({
+                message: "User not found",
+                resultData: null,
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
 router.post("/createUser", async (req, res) => {
     const password = req.body.password
     const hashPassword = await bcrypt.hash(password, 10);
@@ -100,6 +141,37 @@ router.put("/updateUser/:id", async (req, res) => {
         res.status(200).json({
             message: "User updated successfully",
         });
+    }
+});
+
+router.put("/updatePassword", async (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    try {
+        const updatedPassword = await prisma.user.update({
+            where: {
+                email: email,
+            },
+            data: {
+                password: hashPassword,
+                otp: null,
+            },
+        });
+
+        if(updatedPassword) {
+            res.status(200).json({
+                message: "Password updated successfully"
+            });
+        } else {
+            res.status(401).json({
+                message: "Password update failed"
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
     }
 });
 
