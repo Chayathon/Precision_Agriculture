@@ -69,7 +69,7 @@ function Page() {
                             label="รหัสผ่าน"
                             variant='faded'
                             endContent={
-                                <Button type="button" size="sm" className='bg-gray-300' onClick={toggleVisibility} aria-label="toggle password visibility">
+                                <Button type="button" size="sm" className='bg-gray-300' onPress={toggleVisibility} aria-label="toggle password visibility">
                                 {isVisible ? (
                                     'ซ่อน'
                                 ) : (

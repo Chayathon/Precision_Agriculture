@@ -95,7 +95,7 @@ function Page() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 label="รหัสผ่าน"
                                 endContent={
-                                    <Button type="button" size="sm" className='bg-gray-300' onClick={toggleVisibility} aria-label="toggle password visibility">
+                                    <Button type="button" size="sm" className='bg-gray-300' onPress={toggleVisibility} aria-label="toggle password visibility">
                                     {isVisible ? (
                                         'ซ่อน'
                                     ) : (
@@ -112,7 +112,7 @@ function Page() {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 label="ยืนยันรหัสผ่าน"
                                 endContent={
-                                    <Button type="button" size="sm" className='bg-gray-300' onClick={toggleVisibility} aria-label="toggle password visibility">
+                                    <Button type="button" size="sm" className='bg-gray-300' onPress={toggleVisibility} aria-label="toggle password visibility">
                                     {isVisible ? (
                                         'ซ่อน'
                                     ) : (
