@@ -4,6 +4,7 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+const nodemailer = require('nodemailer');
 const bcrypt = require("bcrypt");
 
 const { authIsCheck, isAdmin } = require("../middleware/auth");
@@ -43,7 +44,7 @@ router.get("/getUser/:id", async (req, res) => {
     }
 });
 
-router.get("/getUserbyEmail/:email", async (req, res) => {
+router.get("/forgotPassword/:email", async (req, res) => {
     const { email } = req.params;
 
     try {
@@ -65,8 +66,47 @@ router.get("/getUserbyEmail/:email", async (req, res) => {
                 },
             });
 
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                    user: process.env.EMAIL_USER,
+                    pass: process.env.EMAIL_PASS
+                },
+            });
+
+            const mailOptions = {
+                from: 'Precision Agriculture',
+                to: email,
+                subject: 'One Time Password',
+                html: `
+                    <h3>รหัส OTP ของคุณ: <u>${generateOTP}</u></h3>
+                    <p style="color: red;">
+                        <small>*มีอายุการใช้งาน 5 นาที</small>
+                    </p>
+                `
+            }
+
+            await transporter.sendMail(mailOptions);
+
+            // ตั้ง timeout ให้ OTP เป็น null หลัง 5 นาที (300,000 ms)
+            setTimeout(async () => {
+                try {
+                    await prisma.user.update({
+                        where: {
+                            email: email,
+                        },
+                        data: {
+                            otp: null,
+                        },
+                    });
+                    console.log(`OTP for ${email} has been reset to null`);
+                } catch (error) {
+                    console.error(`Failed to reset OTP for ${email}:`, error);
+                }
+            }, 5 * 60 * 1000);
+
             res.status(200).json({
-                message: "Get User by Email and OTP Generated",
+                message: "Get User by Email, OTP Generated, Send Email",
                 resultData: {
                     user: updatedUser,
                     otp: generateOTP,

@@ -13,25 +13,28 @@ function ForgotPassword() {
     const [otp, setOTP] = useState();
     const [inputOTP, setInputOTP] = useState();
     const [isCheck, setIsCheck] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         try {
             if (!isCheck) {
-                const res = await fetch(`http://localhost:4000/api/getUserbyEmail/${email}`);
+                const res = await fetch(`http://localhost:4000/api/forgotPassword/${email}`);
 
                 if(res.status === 200) {
                     const data = await res.json();
                     setOTP(data.resultData.otp);
                     setIsCheck(true);
                     
-                    toast.success("ส่ง OTP ไปที่อีเมลของคุณแล้ว")
+                    toast.success("ส่ง OTP ไปที่อีเมลของคุณแล้ว");
                 } else if(res.status === 404) {
-                    toast.error("ไม่พบที่อยู่อีเมลนี้!")
+                    toast.error("ไม่พบที่อยู่อีเมลนี้!");
                 }
             } else {
                 if(inputOTP == otp) {
+                    toast.success("OTP ถูกต้อง!");
                     router.push(`/forgotPassword/newPassword?email=${encodeURIComponent(email)}`);
                 } else {
                     toast.warn("OTP ไม่ถูกต้อง!");
@@ -39,6 +42,9 @@ function ForgotPassword() {
             }
         } catch (error) {
             console.error("Failed to fetch: ", error);
+            toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่");
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -67,6 +73,7 @@ function ForgotPassword() {
                                     <InputOtp
                                         isRequired
                                         autoFocus
+                                        value={inputOTP}
                                         onChange={(e) => setInputOTP(e.target.value)}
                                         aria-label="OTP input field"
                                         length={6}
@@ -76,7 +83,15 @@ function ForgotPassword() {
                                 </>
                             )}
                         </div>
-                        <Button type='submit' color='primary' className='w-full'>ยืนยัน</Button>
+                        <Button
+                            type='submit'
+                            color='primary'
+                            className='w-full'
+                            isLoading={isLoading}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'กำลังดำเนินการ...' : (isCheck ? 'ยืนยัน OTP' : 'ยืนยัน')}
+                        </Button>
                     </form>
                 </CardBody>
                 <CardFooter>

@@ -12,12 +12,14 @@ function NewPassword() {
 
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         if(!password || !confirmPassword) {
             toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
@@ -51,6 +53,8 @@ function NewPassword() {
             }
         } catch(error) {
             console.error("Error: ", error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -97,7 +101,15 @@ function NewPassword() {
                                 isRequired
                             />
                         </div>
-                        <Button type='submit' color='primary' className='w-full'>ยืนยัน</Button>
+                        <Button
+                            type='submit'
+                            color='success'
+                            className='w-full'
+                            isLoading={isLoading}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'กำลังดำเนินการ...' : 'ยืนยัน'}
+                        </Button>
                     </form>
                 </CardBody>
             </Card>
