@@ -7,29 +7,35 @@ import {Card, CardHeader, CardBody, CardFooter, Input, Textarea, Button} from "@
 import { toast } from 'react-toastify'
 
 function Page() {
-    const router = useRouter()
+    const router = useRouter();
+
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [email, setEmail] = useState("");
+    const [tel, setTel] = useState("");
+    const [address, setAddress] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+    const [isLoading, setIsLoading] = useState(false);
+
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
 
-    const [firstname, setFirstname] = useState("")
-    const [lastname, setLastname] = useState("")
-    const [email, setEmail] = useState("")
-    const [tel, setTel] = useState("")
-    const [address, setAddress] = useState("")
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    const [confirmPassword, setConfirmPassword] = useState("")
-
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         if(password != confirmPassword) {
-            toast.error("รหัสผ่านไม่ตรงกัน!")
+            toast.error("รหัสผ่านไม่ตรงกัน!");
+            setIsLoading(false);
             return;
         }
 
         if(!firstname || !lastname || !email || !tel || !address || !username || !password || !confirmPassword) {
-            toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!")
+            toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
+            setIsLoading(false);
             return;
         }
 
@@ -42,31 +48,33 @@ function Page() {
                 body: JSON.stringify({
                     firstname, lastname, email, tel, address, username, password
                 })
-            })
+            });
 
             if(res.ok) {
-                const form = e.target
-                form.reset()
+                const form = e.target;
+                form.reset();
                 toast.success("ลงทะเบียนสำเร็จแล้ว", {
-                    autoClose: 1500
-                })
+                    autoClose: 1500,
+                });
 
                 setTimeout(() => {
-                    router.push('/')
+                    router.push('/');
                 }, 1500)
                     
             }
             else {
-                toast.warn("อีเมลหรือชื่อผู้ใช้นี้ ได้รับการลงทะเบียนแล้ว")
-                return;
+                toast.warn("อีเมลหรือชื่อผู้ใช้นี้ ได้รับการลงทะเบียนแล้ว", {
+                    autoClose: 3000,
+                });
             }
-        }
-        catch (err) {
+        } catch (err) {
             console.log("Error", err)
+        } finally {
+            setIsLoading(false);
         }
     }
 
-    return(
+    return (
         <div className="grid w-[100vw] h-[100vh]">
             <Card className="m-auto w-1/2 drop-shadow-2xl bg-blend-darken">
                 <CardHeader className='text-2xl font-bold justify-center'>
@@ -124,7 +132,15 @@ function Page() {
                                 isRequired
                             />
                         </div>
-                        <Button color='primary' type='submit' className='w-full'>สมัครสมาชิก</Button>
+                        <Button
+                            color='primary'
+                            type='submit'
+                            className='w-full'
+                            isLoading={isLoading}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'กำลังสมัครสมาชิก' : 'สมัครสมาชิก'}
+                        </Button>
                     </form>
                 </CardBody>
                 <CardFooter className='flex justify-between'>

@@ -77,7 +77,7 @@ router.get("/forgotPassword/:email", async (req, res) => {
             const mailOptions = {
                 from: 'Precision Agriculture',
                 to: email,
-                subject: 'One Time Password',
+                subject: 'One Time Passcode',
                 html: `
                     <h3>รหัส OTP ของคุณ: <u>${generateOTP}</u></h3>
                     <p style="color: red;">

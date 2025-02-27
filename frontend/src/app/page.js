@@ -8,18 +8,23 @@ import {Card, CardHeader, CardBody, CardFooter, Input, Button} from "@nextui-org
 import { toast } from 'react-toastify';
 
 function Page() {
-    const router = useRouter()
+    const router = useRouter();
+
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const [isLoading, setIsLoading] = useState(false);
+
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
 
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        setIsLoading(true);
 
         if(!username || !password) {
-            toast.error("กรุณากรอกชื่อผู้ใช้และรหัสผ่าน")
+            toast.error("กรุณากรอกชื่อผู้ใช้และรหัสผ่าน");
+            setIsLoading(false);
             return;
         }
 
@@ -32,26 +37,26 @@ function Page() {
                 body: JSON.stringify({
                     username, password
                 })
-            })
+            });
 
-            const data = await res.json()
+            const data = await res.json();
 
-            if(res.ok && data.message == 'Login Successfully') {
-                Cookies.set('Token', data.token, { expires: 1 })
-                Cookies.set('UserData', JSON.stringify(data.resultData), { expires: 1 })
+            if(res.status === 200 && data.message == 'Login Successfully') {
+                Cookies.set('Token', data.token, { expires: 1 });
+                Cookies.set('UserData', JSON.stringify(data.resultData), { expires: 1 });
                 localStorage.setItem("Token", data.token);
-                localStorage.setItem("UserData", JSON.stringify(data.resultData))
+                localStorage.setItem("UserData", JSON.stringify(data.resultData));
                 
-                toast.success("เข้าสู่ระบบสำเร็จ")
-                router.push(data.path)
+                toast.success("เข้าสู่ระบบสำเร็จ");
+                router.push(data.path);
             }
             else {
-                toast.error("ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง!")
-                return;
+                toast.error("ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง!");
             }
-        }
-        catch (error) {
-            console.log("Error", error)
+        } catch (error) {
+            console.log("Error", error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -63,7 +68,13 @@ function Page() {
                 </CardHeader>
                 <CardBody>
                     <form onSubmit={handleSubmit}>
-                        <Input onChange={(e) => setUsername(e.target.value)} type='text' label='ชื่อผู้ใช้' variant='faded' autoFocus />
+                        <Input
+                            onChange={(e) => setUsername(e.target.value)}
+                            type='text'
+                            label='ชื่อผู้ใช้'
+                            variant='faded'
+                            autoFocus
+                        />
                         <Input
                             onChange={(e) => setPassword(e.target.value)}
                             label="รหัสผ่าน"
@@ -80,7 +91,15 @@ function Page() {
                             type={isVisible ? "text" : "password"}
                             className='my-4'
                         />
-                        <Button type='submit' color='success' className='w-full'>เข้าสู่ระบบ</Button>
+                        <Button
+                            type='submit'
+                            color='success'
+                            className='w-full'
+                            isLoading={isLoading}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'}
+                        </Button>
                     </form>
                 </CardBody>
                 <CardFooter className='flex justify-between'>
