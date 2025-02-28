@@ -22,7 +22,7 @@ router.get('/listPlant', async (req, res) => {
 
 router.post('/createPlant', async (req, res) => {
 
-    const { plantName, plantAt, userId } = req.body; // ดึงข้อมูล userId จาก body
+    const { plantName, plantAt, plantId, userId } = req.body; // ดึงข้อมูล userId จาก body
 
     if (!plantName || !plantAt || !userId) {
         return res.status(400).json({ error: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
@@ -40,6 +40,7 @@ router.post('/createPlant', async (req, res) => {
             data: {
                 plantname: plantName,
                 plantedAt: plantDate, // บันทึกวันที่
+                plant_id: Number(plantId),
                 user_id: userId, // ใช้ userId ที่ได้รับจาก client
             }
         });
@@ -144,9 +145,25 @@ router.delete('/deletePlant/:id', async (req, res) => {
     }
 });
 
+router.get('/getPlantAvaliable', async (req, res) => {
+    try {
+        const getPlantAvaliable = await prisma.plant_avaliable.findMany();
+
+        if (getPlantAvaliable) {
+            res.status(200).json({
+                message: "Get Plant Avaliable",
+                resultData: getPlantAvaliable,
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Server Error');
+    }
+})
+
 router.post('/createFactor', async (req, res) => {
 
-    const { ph, temperature, humidity, lightIntensity, salinity, plantId } = req.body;
+    const { age, ph, temperature, humidity, salinity, lightIntensity, plantId } = req.body;
 
     console.log(req.body);
 
@@ -157,6 +174,7 @@ router.post('/createFactor', async (req, res) => {
     try {
         const createFactor = await prisma.p_factor.create({
             data: {
+                age: Number(age),
                 pH: parseFloat(ph), // แปลงเป็นตัวเลข
                 temperature: parseFloat(temperature), // แปลงเป็นตัวเลข
                 humidity: parseFloat(humidity), // แปลงเป็นตัวเลข
@@ -179,7 +197,7 @@ router.post('/createFactor', async (req, res) => {
 
 router.post('/createNutrient', async (req, res) => {
 
-    const { nitrogen, phosphorus, potassium, plantId } = req.body;
+    const { age, nitrogen, phosphorus, potassium, plantId } = req.body;
 
     console.log(req.body);
 
@@ -190,6 +208,7 @@ router.post('/createNutrient', async (req, res) => {
     try {
         const createNutrient = await prisma.p_nutrient.create({
             data: {
+                age: Number(age),
                 nitrogen: parseFloat(nitrogen), // แปลงเป็นตัวเลข
                 phosphorus: parseFloat(phosphorus), // แปลงเป็นตัวเลข
                 potassium: parseFloat(potassium), // แปลงเป็นตัวเลข
@@ -222,7 +241,7 @@ router.get('/getNutrient/:id', async (req, res) => {
 
         if(Nutrient) {
             res.status(200).json({
-                message: 'Get Nutrien Variables',
+                message: 'Get Nutrient Variables',
                 resultData: Nutrient,
             });
         }
@@ -246,7 +265,7 @@ router.get('/getFactor/:id', async (req, res) => {
 
         if(Factor) {
             res.status(200).json({
-                message: 'Get Nutrien Variables',
+                message: 'Get Factor Variables',
                 resultData: Factor,
             });
         }

@@ -34,16 +34,46 @@ model role {
   users user[] // Add this field to represent the one-to-many relationship
 }
 
+model plant_avaliable {
+  id Int @id @default(autoincrement())
+  plantname String
+  plant plant[]
+  nutrients p_nutrient[]
+  factors   p_factor[]
+  // plant_need plant_need[]
+}
+
+// model plant_need {
+//   id           Int    @id @default(autoincrement()) // รหัสตัวแปรที่พืชต้องการ
+//   plant_id     Int    // รหัสพืช
+//   age        Int     // อายุพืช
+//   nitrogen   Float   // ไนโตรเจน
+//   phosphorus Float   // ฟอสฟอรัส
+//   potassium  Float   // โพแทสเซียม
+//   pH            Float   // ความกรด-ด่างของดิน
+//   temperature   Float   // อุณหภูมิ
+//   humidity      Float   // ความชื้น
+//   salinity      Float   // ความเค็มของดิน
+//   lightIntensity Float   // ความเข้มแสง
+//   plant_avaliable plant_avaliable @relation(fields: [plant_id], references: [id])
+//   // nutrient_id  Int    // รหัสสารอาหาร
+//   // nutrient     p_nutrient @relation("PlantToNutrient", fields: [nutrient_id], references: [id])
+//   // factor_id    Int    // รหัสปัจจัยที่เกี่ยวข้อง
+//   // factor       p_factor @relation("PlantToFactor",fields: [factor_id], references: [id])
+// }
+
 model plant {
   id        Int      @id @default(autoincrement())
+  plant_id  Int
   plantname String
   plantedAt DateTime
   user_id   Int
+  plant_avaliable plant_avaliable @relation(fields: [plant_id], references: [id])
   user      user     @relation(fields: [user_id], references: [id]) // ความสัมพันธ์ many-to-one กับผู้ใช้
-  nutrients p_nutrient[] // ความสัมพันธ์ one-to-many กับสารอาหาร
-  factors   p_factor[]   // ความสัมพันธ์ one-to-many กับปัจจัยที่เกี่ยวข้อง
   variables p_variable[] // ความสัมพันธ์ one-to-many กับค่าตัวแปรที่เกี่ยวข้อง
-  plantNeeds plantNeed[] // ความสัมพันธ์ one-to-many กับค่าตัวแปรที่พืชต้องการ
+  // nutrients p_nutrient[] // ความสัมพันธ์ one-to-many กับสารอาหาร
+  // factors   p_factor[]   // ความสัมพันธ์ one-to-many กับปัจจัยที่เกี่ยวข้อง
+  // plantNeeds plantNeed[] // ความสัมพันธ์ one-to-many กับค่าตัวแปรที่พืชต้องการ
 }
 
 model p_nutrient {
@@ -53,9 +83,9 @@ model p_nutrient {
   phosphorus Float   // ฟอสฟอรัส
   potassium  Float   // โพแทสเซียม
   plant_id   Int     // รหัสพืช
-  plant      plant   @relation(fields: [plant_id], references: [id]) // ความสัมพันธ์ many-to-one กับพืช
+  plant_avaiable      plant_avaliable   @relation(fields: [plant_id], references: [id]) // ความสัมพันธ์ many-to-one กับพืช
 
-  plantNeed plantNeed[] @relation("PlantToNutrient")
+  // plantNeed plantNeed[] @relation("PlantToNutrient")
 }
 
 model p_factor {
@@ -67,9 +97,9 @@ model p_factor {
   lightIntensity Float   // ความเข้มแสง
   salinity      Float   // ความเค็มของดิน
   plant_id      Int     // รหัสพืช
-  plant         plant   @relation(fields: [plant_id], references: [id]) // ความสัมพันธ์ many-to-one กับพืช
+  plant_avaiable      plant_avaliable   @relation(fields: [plant_id], references: [id]) // ความสัมพันธ์ many-to-one กับพืช
 
-  plantNeed plantNeed[] @relation("PlantToFactor")
+  // plantNeed plantNeed[] @relation("PlantToFactor")
 }
 
 model p_variable {
@@ -85,14 +115,4 @@ model p_variable {
   humidity      Float   // ความชื้น
   lightIntensity Float   // ความเข้มแสง
   salinity      Float   // ความเค็มของดิน
-}
-
-model plantNeed {
-  id           Int    @id @default(autoincrement()) // รหัสตัวแปรที่พืชต้องการ
-  plant_id     Int    // รหัสพืช
-  plant        plant  @relation(fields: [plant_id], references: [id]) // ความสัมพันธ์ many-to-one กับพืช
-  nutrient_id  Int    // รหัสสารอาหาร
-  nutrient     p_nutrient @relation("PlantToNutrient", fields: [nutrient_id], references: [id])
-  factor_id    Int    // รหัสปัจจัยที่เกี่ยวข้อง
-  factor       p_factor @relation("PlantToFactor",fields: [factor_id], references: [id])
 }

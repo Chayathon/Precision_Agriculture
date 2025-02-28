@@ -5,10 +5,28 @@ import { toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 
 function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
-    const [selectedPlant, setSelectedPlant] = useState('');
+    const [plantAvaliable, setPlantAvaliable] = useState([]);
+    const [selectedPlant, setSelectedPlant] = useState({ id: null, plantname: "" });
     const [customPlant, setCustomPlant] = useState('');
     const [plantAt, setPlantAt] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+
+    const fetchPlantAvaliable = async () => {
+        try {
+            const res = await fetch(`http://localhost:4000/api/getPlantAvaliable`);
+
+            if(res.status === 200) {
+                const data = await res.json();
+                setPlantAvaliable(data.resultData);
+            }
+        } catch (error) {
+            console.error("Failed to fetch: ", error);
+        }
+    }
+
+    useEffect(() => {
+        fetchPlantAvaliable();
+    }, []);
 
     // ฟังก์ชัน handleDateChange ถูกประกาศในขอบเขตเดียวกับคอมโพเนนต์
     const handleDateChange = (date) => {
@@ -20,19 +38,39 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
         setPlantAt(dateNow);
     }, []);
 
+    const handleSelectionChange = (key) => {
+        // หา item ที่ตรงกับ key ที่เลือก
+        const selectedItem = plantAvaliable.find((item) => item.id === Number(key));
+        if (selectedItem) {
+          // อัปเดต state ด้วยทั้ง id และ plantname
+            setSelectedPlant({
+                id: selectedItem.id,
+                plantname: selectedItem.plantname,
+            });
+        } else {
+            setSelectedPlant({
+                id: key,
+                plantname: "",
+            })
+        }
+        console.log(selectedPlant);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
 
         if (!selectedPlant || !plantAt) {
             toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
+            setIsLoading(false);
             return;
         }
 
-        const plantName = selectedPlant === "other" ? customPlant : selectedPlant;
+        const plantName = selectedPlant.plantname === "อื่นๆ" ? customPlant : selectedPlant;
 
         if (!plantName) {
             toast.error("กรุณาระบุชื่อพืช!");
+            setIsLoading(false);
             return;
         }
 
@@ -52,8 +90,9 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    plantName,
+                    plantName: selectedPlant.plantname === "อื่นๆ" ? customPlant : selectedPlant.plantname,
                     plantAt,
+                    plantId: selectedPlant.id,
                     userId: parsedUserData.id,  // ส่ง userId ที่ได้จาก parsedUserData
                 })
             });
@@ -95,18 +134,17 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                                 <div className='mb-3'>
                                     <Select
                                         isRequired
-                                        onChange={(e) => setSelectedPlant(e.target.value)}
+                                        onChange={(e) => handleSelectionChange(e.target.value)}
+                                        value={selectedPlant}
                                         label="พืช"
                                         placeholder="เลือกพืชที่ปลูก"
-                                        >
-                                            <SelectItem key="ข้าว">ข้าว</SelectItem>
-                                            <SelectItem key="ข้าวโพด">ข้าวโพด</SelectItem>
-                                            <SelectItem key="มันสำปะหลัง">มันสำปะหลัง</SelectItem>
-                                            <SelectItem key="ทุเรียน">ทุเรียน</SelectItem>
-                                            <SelectItem key="other">อื่นๆ</SelectItem>
+                                    >
+                                        {plantAvaliable.map((item) => (
+                                            <SelectItem key={item.id} value={item.plantname}>{item.plantname}</SelectItem>
+                                        ))}
                                     </Select>
                                 </div>
-                                {selectedPlant === "other" && (
+                                {selectedPlant.plantname === "อื่นๆ" && (
                                     <div className='mb-3'>
                                         <Input
                                             isRequired
