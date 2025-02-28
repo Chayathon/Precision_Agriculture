@@ -580,7 +580,7 @@ function Dashboard({ id }) {
     try {
       const res = await fetch(`http://localhost:4000/api/getPlant/${plantId}`);
 
-      if(res.ok) {
+      if(res.status === 200) {
         const data = await res.json();
         const plantedAt = data.resultData.plantedAt;
         const ageInDays = calculateAge(plantedAt);
@@ -599,7 +599,7 @@ function Dashboard({ id }) {
         `http://localhost:4000/api/getPlantVariable/${plantId}`
       );
 
-      if (res.ok) {
+      if (res.status === 200) {
         const data = await res.json();
         console.log(data.resultData[0]); // Log the first item in resultData
         setPlantData(data.resultData[0]); // Set the first item
@@ -615,7 +615,7 @@ function Dashboard({ id }) {
         `http://localhost:4000/api/getPlantVariables7day/${plantId}`
       );
 
-      if (res.ok) {
+      if (res.status === 200) {
         const data = await res.json();
         setPlantDatas(data.resultData);
       }
@@ -630,7 +630,7 @@ function Dashboard({ id }) {
         `http://localhost:4000/api/getPlantVariables14day/${plantId}`
       );
 
-      if (res.ok) {
+      if (res.status === 200) {
         const data = await res.json();
         setPlantDatas(data.resultData);
       }
@@ -645,7 +645,7 @@ function Dashboard({ id }) {
         `http://localhost:4000/api/getPlantVariables1month/${plantId}`
       );
 
-      if (res.ok) {
+      if (res.status === 200) {
         const data = await res.json();
         setPlantDatas(data.resultData);
       }
@@ -660,7 +660,7 @@ function Dashboard({ id }) {
         `http://localhost:4000/api/getPlantVariables3month/${plantId}`
       );
 
-      if (res.ok) {
+      if (res.status === 200) {
         const data = await res.json();
         setPlantDatas(data.resultData);
       }
@@ -675,7 +675,7 @@ function Dashboard({ id }) {
         `http://localhost:4000/api/getPlantVariables6month/${plantId}`
       );
 
-      if (res.ok) {
+      if (res.status === 200) {
         const data = await res.json();
         setPlantDatas(data.resultData);
       }
@@ -690,7 +690,7 @@ function Dashboard({ id }) {
         `http://localhost:4000/api/getPlantVariables9month/${plantId}`
       );
 
-      if (res.ok) {
+      if (res.status === 200) {
         const data = await res.json();
         setPlantDatas(data.resultData);
       }
@@ -705,7 +705,7 @@ function Dashboard({ id }) {
         `http://localhost:4000/api/getPlantVariables1year/${plantId}`
       );
 
-      if (res.ok) {
+      if (res.status === 200) {
         const data = await res.json();
         setPlantDatas(data.resultData);
       }
@@ -720,7 +720,7 @@ function Dashboard({ id }) {
         `http://localhost:4000/api/getNutrient/${plantId}`
       );
 
-      if (res.ok) {
+      if (res.status === 200) {
         const data = await res.json();
         setNutrientData(data.resultData[0]);
       }
@@ -735,7 +735,7 @@ function Dashboard({ id }) {
         `http://localhost:4000/api/getFactor/${plantId}`
       );
 
-      if (res.ok) {
+      if (res.status === 200) {
         const data = await res.json();
         setFactorData(data.resultData[0]);
       }

@@ -3,12 +3,13 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input
 import { toast } from 'react-toastify';
 
 function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
+  const [age, setAge] = useState('');
   //p_factor
   const [ph, setPh] = useState('');
   const [temperature, setTemperature] = useState('');
   const [humidity, setHumidity] = useState('');
-  const [lightIntensity, setLightIntensity] = useState('');
   const [salinity, setSalinity] = useState('');
+  const [lightIntensity, setLightIntensity] = useState('');
 
   //p_nutrient
   const [nitrogen, setNitrogen] = useState('');
@@ -47,7 +48,7 @@ function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
   e.preventDefault();
   setIsLoading(true);
 
-  if (!ph || !temperature || !humidity || !lightIntensity || !salinity || !plantId) {
+  if (!age || !ph || !temperature || !humidity || !salinity || !lightIntensity || !plantId) {
     toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
     setIsLoading(false);
     return;
@@ -60,22 +61,23 @@ function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        age,
         ph,
         temperature,
         humidity,
-        lightIntensity,
         salinity,
+        lightIntensity,
         plantId,  // ส่ง id ของพืชไปแทนชื่อพืช
         
       }),
     });
 
     if (res.status === 200) {
-      toast.success("เพิ่มข้อมูล Factor เรียบร้อยแล้ว");
+      toast.success("เพิ่มข้อมูลค่าตัวแปรที่เกี่ยวข้องเรียบร้อยแล้ว");
       setRefresh(true);
       onOpenChange(false);
     } else {
-      toast.warn("เพิ่มข้อมูล Factor ล้มเหลว");
+      toast.warn("เพิ่มข้อมูลค่าตัวแปรที่เกี่ยวข้องล้มเหลว");
     }
   } catch (err) {
     console.log("Error:", err);
@@ -89,7 +91,7 @@ function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
   e.preventDefault();
   setIsLoading(true);
 
-  if (!nitrogen || !phosphorus || !potassium || !plantId) {
+  if (!age || !nitrogen || !phosphorus || !potassium || !plantId) {
     toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
     setIsLoading(false);
     return;
@@ -102,6 +104,7 @@ function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        age,
         nitrogen,
         phosphorus,
         potassium,
@@ -110,11 +113,11 @@ function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
     });
 
     if (res.ok) {
-      toast.success("เพิ่มข้อมูล Nutrient เรียบร้อยแล้ว");
+      toast.success("เพิ่มข้อมูลค่าสารอาหารเรียบร้อยแล้ว");
       setRefresh(true);
       onOpenChange(false);
     } else {
-      toast.warn("เพิ่มข้อมูล Nutrient ล้มเหลว");
+      toast.warn("เพิ่มข้อมูลค่าสารอาหารล้มเหลว");
     }
   } catch (err) {
     console.log("Error:", err);
@@ -124,38 +127,38 @@ function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
 };
 
 return (
-  <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+  <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='lg'>
     <ModalContent>
       <ModalHeader className="flex flex-col gap-1">เพิ่มข้อมูล</ModalHeader>
       <ModalBody>
         <Tabs aria-label="Options">
-          <Tab key="Factor" title="Factor">
+          <Tab key="Factor" title="ค่าตัวแปรที่เกี่ยวข้อง">
             <form onSubmit={handleSubmitFactor}>
-              <div className="flex mb-4 gap-4">
+            <div className="flex mb-4 gap-4">
+                <Input
+                  onChange={(e) => setAge(e.target.value)}
+                  type="number"
+                  label="อายุน้อยกว่า (วัน)"
+                  isRequired
+                />
                 <Input
                   onChange={(e) => setPh(e.target.value)}
                   type="text"
-                  label="pH"
-                  isRequired
-                />
-                <Input
-                  onChange={(e) => setTemperature(e.target.value)}
-                  type="text"
-                  label="Temperature"
+                  label="ค่าความเป็นกรด-ด่าง (pH)"
                   isRequired
                 />
               </div>
-              <div className="flex my-4 gap-4">
+              <div className="flex mb-4 gap-4">
+                <Input
+                  onChange={(e) => setTemperature(e.target.value)}
+                  type="text"
+                  label="อุณหภูมิ (°C)"
+                  isRequired
+                />
                 <Input
                   onChange={(e) => setHumidity(e.target.value)}
                   type="text"
-                  label="Humidity"
-                  isRequired
-                />
-                  <Input
-                  onChange={(e) =>  setLightIntensity(e.target.value)}
-                  type="text"
-                  label="LightIntensity"
+                  label="ความชื้น (%)"
                   isRequired
                 />
               </div>
@@ -163,7 +166,13 @@ return (
                 <Input
                   onChange={(e) =>  setSalinity(e.target.value)}
                   type="text"
-                  label="Salinity"
+                  label="ค่าการนำไฟฟ้า (dS/m)"
+                  isRequired
+                />
+                  <Input
+                  onChange={(e) =>  setLightIntensity(e.target.value)}
+                  type="text"
+                  label="ค่าความเข้มแสง (lux)"
                   isRequired
                 />
               </div>
@@ -183,38 +192,43 @@ return (
             </form>
           </Tab>
 
-          <Tab key="Nutrient" title="Nutrient">
-              {/* ฟอร์มสำหรับ Nutrient */}
+          <Tab key="Nutrient" title="ค่าสารอาหาร">
               <form onSubmit={handleSubmitNutrient}>
                 <div className="flex mb-4 gap-4">
                   <Input
-                    onChange={(e) => setNitrogen(e.target.value)}
-                    type="text"
-                    label="Nitrogen"
+                    onChange={(e) => setAge(e.target.value)}
+                    type="number"
+                    label="อายุน้อยกว่า (วัน)"
                     isRequired
                   />
+                  <Input
+                    onChange={(e) => setNitrogen(e.target.value)}
+                    type="text"
+                    label="ไนโตรเจน (mg/L)"
+                    isRequired
+                  />
+                </div>
+                <div className="flex my-4 gap-4">
                   <Input
                     onChange={(e) => setPhosphorus(e.target.value)}
                     type="text"
-                    label="Phosphorus"
+                    label="ฟอสฟอรัส (mg/L)"
                     isRequired
                   />
-                </div>
-                <div className="flex my-4 gap-4">
                   <Input
                     onChange={(e) => setPotassium(e.target.value)}
                     type="text"
-                    label="Potassium"
+                    label="โพแทสเซียม (mg/L)"
                     isRequired
                   />
                 </div>
                 <div className="flex my-4 gap-4">
                   <Input
-                      label="พืช"
-                      variant="bordered"
-                      value={plantName}
-                      onChange={(e) => setPlantName(e.target.value)}
-                      isReadOnly 
+                    label="พืช"
+                    variant="bordered"
+                    value={plantName}
+                    onChange={(e) => setPlantName(e.target.value)}
+                    isReadOnly 
                   />
                 </div>
                 <ModalFooter>
