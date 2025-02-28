@@ -48,6 +48,7 @@ model plant {
 
 model p_nutrient {
   id         Int     @id @default(autoincrement())  // รหัสสารอาหาร
+  age        Int
   nitrogen   Float   // ไนโตรเจน
   phosphorus Float   // ฟอสฟอรัส
   potassium  Float   // โพแทสเซียม
@@ -59,6 +60,7 @@ model p_nutrient {
 
 model p_factor {
   id            Int     @id @default(autoincrement()) // รหัสปัจจัยที่เกี่ยวข้อง
+  age           Int
   pH            Float   // ความกรด-ด่างของดิน
   temperature   Float   // อุณหภูมิ
   humidity      Float   // ความชื้น
