@@ -3,7 +3,6 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input
 import { toast } from 'react-toastify';
 
 function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
-
   //p_factor
   const [ph, setPh] = useState('');
   const [temperature, setTemperature] = useState('');
@@ -18,6 +17,8 @@ function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
 
   const [plantId, setPlantId] = useState('');  // เก็บ id ของพืช
   const [plantName, setPlantName] = useState('');
+
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if(isOpen) {
@@ -43,20 +44,12 @@ function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
 
  // Handle Submit สำหรับฟอร์ม Factor
  const handleSubmitFactor = async (e) => {
-
-  console.log({
-    ph,
-    temperature,
-    humidity,
-    lightIntensity,
-    salinity,
-    plantId,  // ตรวจสอบว่า plantId มีค่าหรือไม่
-  });
-
   e.preventDefault();
+  setIsLoading(true);
 
   if (!ph || !temperature || !humidity || !lightIntensity || !salinity || !plantId) {
     toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
+    setIsLoading(false);
     return;
   }
 
@@ -77,7 +70,7 @@ function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
       }),
     });
 
-    if (res.ok) {
+    if (res.status === 200) {
       toast.success("เพิ่มข้อมูล Factor เรียบร้อยแล้ว");
       setRefresh(true);
       onOpenChange(false);
@@ -86,15 +79,19 @@ function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
     }
   } catch (err) {
     console.log("Error:", err);
+  } finally {
+    setIsLoading(false);
   }
 };
 
  // Handle Submit สำหรับฟอร์ม Nutrient
  const handleSubmitNutrient = async (e) => {
   e.preventDefault();
+  setIsLoading(true);
 
   if (!nitrogen || !phosphorus || !potassium || !plantId) {
     toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
+    setIsLoading(false);
     return;
   }
 
@@ -121,6 +118,8 @@ function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
     }
   } catch (err) {
     console.log("Error:", err);
+  } finally {
+    setIsLoading(false);
   }
 };
 
@@ -220,7 +219,14 @@ return (
                 </div>
                 <ModalFooter>
                   <Button variant="flat" onPress={onOpenChange}>ยกเลิก</Button>
-                  <Button type="submit" color="primary">เพิ่ม</Button>
+                  <Button
+                    type="submit"
+                    color="primary"
+                    isLoading={isLoading}
+                    disabled={isLoading}
+                  >
+                    {isLoading ? 'กำลังเพิ่มข้อมูล...' : 'เพิ่ม'}
+                  </Button>
                 </ModalFooter>
               </form>
             </Tab>

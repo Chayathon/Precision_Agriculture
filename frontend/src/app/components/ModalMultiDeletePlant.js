@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
 function ModalMultiDeletePlant({ isOpen, onOpenChange, selectedKeys, setRefresh, deleteSuccess }) {
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleClick = async () => {
+        setIsLoading(true);
+
         try {
             // สร้าง array ของ promises สำหรับการลบแต่ละ user
             const deletePromises = selectedKeys.map(plantId => 
@@ -27,6 +30,8 @@ function ModalMultiDeletePlant({ isOpen, onOpenChange, selectedKeys, setRefresh,
             
         } catch (error) {
             console.error("Error deleting users: ", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -43,8 +48,13 @@ function ModalMultiDeletePlant({ isOpen, onOpenChange, selectedKeys, setRefresh,
                         <Button variant="flat" onPress={onClose}>
                             ยกเลิก
                         </Button>
-                        <Button color="danger" onPress={handleClick}>
-                            ลบ
+                        <Button
+                            color="danger"
+                            onPress={handleClick}
+                            isLoading={isLoading}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
                         </Button>
                     </ModalFooter>
                 </>
@@ -52,8 +62,6 @@ function ModalMultiDeletePlant({ isOpen, onOpenChange, selectedKeys, setRefresh,
             </ModalContent>
         </Modal>
     )
-
-
 }
 
 export default ModalMultiDeletePlant

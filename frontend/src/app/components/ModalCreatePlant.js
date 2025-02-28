@@ -8,6 +8,7 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
     const [selectedPlant, setSelectedPlant] = useState('');
     const [customPlant, setCustomPlant] = useState('');
     const [plantAt, setPlantAt] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     // ฟังก์ชัน handleDateChange ถูกประกาศในขอบเขตเดียวกับคอมโพเนนต์
     const handleDateChange = (date) => {
@@ -21,6 +22,7 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         if (!selectedPlant || !plantAt) {
             toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
@@ -56,7 +58,7 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                 })
             });
 
-            if (res.ok) {
+            if (res.status === 200) {
                 const form = e.target;
                 form.reset();
 
@@ -74,6 +76,8 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
             }
         } catch (err) {
             console.log("Error", err);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -125,8 +129,13 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                                     <Button variant="flat" onPress={onClose}>
                                         ยกเลิก
                                     </Button>
-                                    <Button type='submit' color="primary">
-                                        เพิ่ม
+                                    <Button
+                                        type='submit'
+                                        color='primary'
+                                        isLoading={isLoading}
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? 'กำลังเพิ่มข้อมูล...' : 'เพิ่ม'}
                                     </Button>
                                 </ModalFooter>
                             </form>

@@ -3,9 +3,8 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input
 import { toast } from 'react-toastify'
 
 function ModalUpdatePlant({ isOpen, onOpenChange, id, setRefresh }) {
-
     const [plantName, setPlantName] = useState('');
-
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if(isOpen) {
@@ -30,9 +29,11 @@ function ModalUpdatePlant({ isOpen, onOpenChange, id, setRefresh }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         if(!plantName) {
             toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!")
+            setIsLoading(false);
             return;
         }
 
@@ -47,24 +48,26 @@ function ModalUpdatePlant({ isOpen, onOpenChange, id, setRefresh }) {
                 })
             })
 
-            if(res.ok) {
+            if(res.status === 200) {
                 const form = e.target
-                form.reset()
+                form.reset();
 
-                toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว")  
+                toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว")  ;
                 onOpenChange(false);
-                setRefresh(true)
+                setRefresh(true);
 
                 setTimeout(() => {
-                    setRefresh(false)
-                }, 1000)
+                    setRefresh(false);
+                }, 1000);
             }
             else {
-                toast.error("แก้ไขข้อมูลล้มเหลว")
+                toast.error("แก้ไขข้อมูลล้มเหลว");
                 return;
             }
         } catch (err) {
             console.log(err);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -92,8 +95,11 @@ function ModalUpdatePlant({ isOpen, onOpenChange, id, setRefresh }) {
                                     <Button variant="flat" onPress={onClose}>
                                         ยกเลิก
                                     </Button>
-                                    <Button type='submit' color="warning">
-                                        แก้ไข
+                                    <Button
+                                        type='submit'
+                                        color='warning'
+                                    >
+                                        {isLoading ? 'กำลังแก้ไขข้อมูล...' : 'แก้ไข'}
                                     </Button>
                                 </ModalFooter>
                             </form>
