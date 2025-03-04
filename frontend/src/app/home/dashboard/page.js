@@ -795,6 +795,19 @@ function Dashboard({ id }) {
     }
   }, [id, otherPlant]);
 
+  useEffect(() => {
+    if(plantData && factorData && nutrientData) {
+      plantData.temperature < factorData.temperature ? localStorage.setItem('temperature', 'อุณหภูมิต่ำกว่าค่าที่ต้องการ') : localStorage.removeItem('temperature');
+      plantData.humidity < factorData.humidity ? localStorage.setItem('humidity', 'ความชื้นต่ำกว่าค่าที่ต้องการ') : localStorage.removeItem('humidity');
+      plantData.nitrogen < nutrientData.nitrogen ? localStorage.setItem('nitrogen', 'ไนโตรเจนต่ำกว่าค่าที่ต้องการ') : localStorage.removeItem('nitrogen');
+      plantData.phosphorus < nutrientData.phosphorus ? localStorage.setItem('phosphorus', 'ฟอสฟอรัสต่ำกว่าค่าที่ต้องการ') : localStorage.removeItem('phosphorus');
+      plantData.potassium < nutrientData.potassium ? localStorage.setItem('potassium', 'โพแทสเซียมต่ำกว่าค่าที่ต้องการ') : localStorage.removeItem('potassium');
+      plantData.pH < factorData.pH ? localStorage.setItem('pH', 'ค่าความเป็นกรด-ด่างต่ำกว่าค่าที่ต้องการ') : localStorage.removeItem('pH');
+      plantData.salinity < factorData.salinity ? localStorage.setItem('salinity', 'ค่าการนำไฟฟ้าต่ำกว่าค่าที่ต้องการ') : localStorage.removeItem('salinity');
+      plantData.lightIntensity < factorData.lightIntensity ? localStorage.setItem('lightIntensity', 'ค่าความเข้มแสงต่ำกว่าค่าที่ต้องการ') : localStorage.removeItem('lightIntensity');
+    }
+  }, [plantData, factorData])
+
   ChartJS.register(
     CategoryScale,
     LinearScale,
@@ -918,7 +931,9 @@ function Dashboard({ id }) {
                   {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className="text-5xl font-bold ">{plantData.temperature}</p>
+                    <p className={`text-5xl font-bold ${plantData.temperature < factorData.temperature ? 'text-red-500' : 'text-green-500'}`}>
+                      {plantData.temperature}
+                    </p>
                   </div>
                   {/* ชุดข้อมูลที่ 2 */}
                   <div className="text-center">
@@ -940,7 +955,9 @@ function Dashboard({ id }) {
                   {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className="text-5xl font-bold ">{plantData.humidity}</p>
+                    <p className={`text-5xl font-bold ${plantData.humidity < factorData.humidity ? 'text-red-500' : 'text-green-500'}`}>
+                      {plantData.humidity}
+                    </p>
                   </div>
                   {/* ชุดข้อมูลที่ 2 */}
                   <div className="text-center">
@@ -964,7 +981,9 @@ function Dashboard({ id }) {
                   {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className="text-5xl font-bold ">{plantData.nitrogen}</p>
+                    <p className={`text-5xl font-bold ${plantData.nitrogen < nutrientData.nitrogen ? 'text-red-500' : 'text-green-500'}`}>
+                      {plantData.nitrogen}
+                    </p>
                   </div>
                   {/* ชุดข้อมูลที่ 2 */}
                   <div className="text-center">
@@ -985,7 +1004,7 @@ function Dashboard({ id }) {
                   {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className="text-5xl font-bold ">
+                    <p className={`text-5xl font-bold ${plantData.phosphorus < nutrientData.phosphorus ? 'text-red-500' : 'text-green-500'}`}>
                       {plantData.phosphorus}
                     </p>
                   </div>
@@ -1008,7 +1027,9 @@ function Dashboard({ id }) {
                   {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className="text-5xl font-bold ">{plantData.potassium}</p>
+                    <p className={`text-5xl font-bold ${plantData.potassium < nutrientData.potassium ? 'text-red-500' : 'text-green-500'}`}>
+                      {plantData.potassium}
+                    </p>
                   </div>
                   {/* ชุดข้อมูลที่ 2 */}
                   <div className="text-center">
@@ -1039,7 +1060,9 @@ function Dashboard({ id }) {
                   {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className="text-5xl font-bold ">{plantData.pH}</p>
+                    <p className={`text-5xl font-bold ${plantData.pH < factorData.pH ? 'text-red-500' : 'text-green-500'}`}>
+                      {plantData.pH}
+                    </p>
                   </div>
                   {/* ชุดข้อมูลที่ 2 */}
                   <div className="text-center">
@@ -1067,7 +1090,9 @@ function Dashboard({ id }) {
                   {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className="text-5xl font-bold ">{plantData.salinity}</p>
+                    <p className={`text-5xl font-bold ${plantData.salinity < factorData.salinity ? 'text-red-500' : 'text-green-500'}`}>
+                      {plantData.salinity}
+                    </p>
                   </div>
                   {/* ชุดข้อมูลที่ 2 */}
                   <div className="text-center">
@@ -1095,7 +1120,9 @@ function Dashboard({ id }) {
                   {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className="text-5xl font-bold "> {plantData.lightIntensity}</p>
+                    <p className={`text-5xl font-bold ${plantData.lightIntensity < factorData.lightIntensity ? 'text-red-500' : 'text-green-500'}`}>
+                      {plantData.lightIntensity}
+                    </p>
                   </div>
                   {/* ชุดข้อมูลที่ 2 */}
                   <div className="text-center">

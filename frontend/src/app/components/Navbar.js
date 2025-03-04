@@ -33,6 +33,8 @@ function UserNavbar() {
         [selectedKeys, plants]
     );
 
+    const [notifications, setNotifications] = useState([]);
+
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [email, setEmail] = useState('');
@@ -109,6 +111,34 @@ function UserNavbar() {
             router.push('/home/dashboard');
         }
     }, [selectedKeys]);
+
+    useEffect(() => {
+        const loadNotifications = () => {
+            // รายการ key ที่เราเก็บใน localStorage จาก page.js
+            const keys = [
+                'temperature',
+                'humidity',
+                'nitrogen',
+                'phosphorus',
+                'potassium',
+                'pH',
+                'salinity',
+                'lightIntensity'
+            ];
+        
+            // ดึงข้อมูลจาก localStorage และกรองเฉพาะที่มีค่า
+            const items = keys
+                .map(key => ({
+                    key: key,
+                    message: localStorage.getItem(key)
+                }))
+                .filter(item => item.message !== null); // กรองเฉพาะที่มีข้อความ
+        
+            setNotifications(items);
+        };
+    
+        loadNotifications();
+    }, []);
 
     useEffect(() => {
         if(isOpenEdit) {
@@ -188,6 +218,11 @@ function UserNavbar() {
         router.push('/');
     }
 
+    const handleRemoveItem = (key) => {
+        localStorage.removeItem(key); // ลบจาก localStorage
+        setNotifications(prev => prev.filter(item => item.key !== key)); // อัพเดท state
+    };
+
     return (
         <>
             <Navbar className='bg-gray-800 text-white'>
@@ -233,33 +268,43 @@ function UserNavbar() {
                     <Dropdown placement="bottom-end">
                         <DropdownTrigger>
                             <div>
-                                <Badge content="3" size="sm" color="danger">
-                                    <FaBell className='size-6 cursor-pointer' />
+                                <Badge content={notifications.length} size="sm" color="danger">
+                                    <FaBell className="size-6 cursor-pointer" />
                                 </Badge>
                             </div>
                         </DropdownTrigger>
                         <DropdownMenu>
-                            <DropdownItem
-                                description="ต่ำกว่าค่าที่ต้องการ"
-                                isReadOnly
-                                showDivider
-                            >
-                                ไนโตรเจน
-                            </DropdownItem>
-                            <DropdownItem
-                                description="ต่ำกว่าค่าที่ต้องการ"
-                                isReadOnly
-                                showDivider
-                            >
-                                ฟอสฟอรัส
-                            </DropdownItem>
-                            <DropdownItem
-                                description="ต่ำกว่าค่าที่ต้องการ"
-                                isReadOnly
-                                showDivider
-                            >
-                                โพแทสเซียม
-                            </DropdownItem>
+                            {notifications.length > 0 ? (
+                                notifications.map((item, index) => (
+                                    <DropdownItem
+                                        key={item.key}
+                                        description={item.message.split('ต่ำกว่าค่าที่ต้องการ')[0] === item.message ? "ต่ำกว่าค่าที่ต้องการ" : item.message}
+                                        showDivider={index < notifications.length - 1}
+                                        className="flex justify-between items-center"
+                                    >
+                                        <span>
+                                            {item.key === 'temperature' && 'อุณหภูมิ'}
+                                            {item.key === 'humidity' && 'ความชื้น'}
+                                            {item.key === 'nitrogen' && 'ไนโตรเจน'}
+                                            {item.key === 'phosphorus' && 'ฟอสฟอรัส'}
+                                            {item.key === 'potassium' && 'โพแทสเซียม'}
+                                            {item.key === 'pH' && 'ค่าความเป็นกรด-ด่าง'}
+                                            {item.key === 'salinity' && 'ค่าการนำไฟฟ้า'}
+                                            {item.key === 'lightIntensity' && 'ค่าความเข้มแสง'}
+                                        </span>
+                                        <Button
+                                            size="sm"
+                                            color="danger"
+                                            variant="light"
+                                            onPress={() => handleRemoveItem(item.key)}
+                                        >
+                                            ลบ
+                                        </Button>
+                                    </DropdownItem>
+                                ))
+                            ) : (
+                                <DropdownItem isReadOnly>ไม่มีการแจ้งเตือน</DropdownItem>
+                            )}
                         </DropdownMenu>
                     </Dropdown>
                     <Dropdown placement="bottom-end">
