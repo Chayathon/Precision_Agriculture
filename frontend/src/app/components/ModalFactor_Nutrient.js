@@ -129,7 +129,7 @@ function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
 return (
   <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='lg'>
     <ModalContent>
-      <ModalHeader className="flex flex-col gap-1">เพิ่มข้อมูล</ModalHeader>
+      <ModalHeader className="flex flex-col gap-1">เพิ่มค่าตัวแปรที่พืชต้องการ</ModalHeader>
       <ModalBody>
         <Tabs aria-label="Options">
           <Tab key="Factor" title="ค่าตัวแปรที่เกี่ยวข้อง">
