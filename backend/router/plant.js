@@ -172,7 +172,7 @@ router.post('/createFactor', async (req, res) => {
     }
 
     try {
-        const createFactor = await prisma.p_factor.create({
+        const createFactor = await prisma.p_other_factor.create({
             data: {
                 age: Number(age),
                 pH: parseFloat(ph), // แปลงเป็นตัวเลข
@@ -206,7 +206,7 @@ router.post('/createNutrient', async (req, res) => {
     }
 
     try {
-        const createNutrient = await prisma.p_nutrient.create({
+        const createNutrient = await prisma.p_other_nutrient.create({
             data: {
                 age: Number(age),
                 nitrogen: parseFloat(nitrogen), // แปลงเป็นตัวเลข
@@ -256,6 +256,54 @@ router.get('/getFactor/:id', async (req, res) => {
         const { id } = req.params;
 
         const Factor = await prisma.p_factor.findMany({
+            where: {
+                plant_id: Number(id),
+            },
+
+            take: 1,
+        });
+
+        if(Factor) {
+            res.status(200).json({
+                message: 'Get Factor Variables',
+                resultData: Factor,
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+router.get('/getOtherNutrient/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const Nutrient = await prisma.p_other_nutrient.findMany({
+            where: {
+                plant_id: Number(id),
+            },
+
+            take: 1,
+        });
+
+        if(Nutrient) {
+            res.status(200).json({
+                message: 'Get Nutrient Variables',
+                resultData: Nutrient,
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+router.get('/getOtherFactor/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const Factor = await prisma.p_other_factor.findMany({
             where: {
                 plant_id: Number(id),
             },

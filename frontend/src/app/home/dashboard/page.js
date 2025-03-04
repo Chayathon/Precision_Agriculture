@@ -553,6 +553,7 @@ function Dashboard({ id }) {
   const [plantDatas, setPlantDatas] = useState(null);
   const [nutrientData, setNutrientData] = useState(null);
   const [factorData, setFactorData] = useState(null);
+  const [otherPlant, setOtherPlant] = useState(null);
 
   const [refresh, setRefresh] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
@@ -587,6 +588,7 @@ function Dashboard({ id }) {
         
         // อัพเดต state หรือแสดงผลอายุของพืช
         setPlantAge(ageInDays);
+        data.resultData.plant_id == 99 ? setOtherPlant(true) : setOtherPlant(false);
       }
     } catch (err) {
       console.error("Failed to fetch", err);
@@ -601,8 +603,7 @@ function Dashboard({ id }) {
 
       if (res.status === 200) {
         const data = await res.json();
-        console.log(data.resultData[0]); // Log the first item in resultData
-        setPlantData(data.resultData[0]); // Set the first item
+        setPlantData(data.resultData[0]);
       }
     } catch (err) {
       console.error("Failed to fetch", err);
@@ -743,16 +744,56 @@ function Dashboard({ id }) {
       console.error("Failed to fetch", err);
     }
   };
+
+  const fetchOtherNutrient = async (plantId) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/getOtherNutrient/${plantId}`
+      );
+
+      if (res.status === 200) {
+        const data = await res.json();
+        setNutrientData(data.resultData[0]);
+      }
+    } catch (err) {
+      console.error("Failed to fetch", err);
+    }
+  };
+
+  const fetchOtherFactor = async (plantId) => {
+    try {
+      const res = await fetch(
+        `http://localhost:4000/api/getOtherFactor/${plantId}`
+      );
+
+      if (res.status === 200) {
+        const data = await res.json();
+        setFactorData(data.resultData[0]);
+      }
+    } catch (err) {
+      console.error("Failed to fetch", err);
+    }
+  };
     
   useEffect(() => {
     if (id) {
       fetchPlant(id);
       fetchPlantVariable(id);
       fetchPlantVariables7day(id);
-      fetchNutrient(id);
-      fetchFactor(id);
     }
   }, [id, refresh]);
+
+  useEffect(() => {
+    if (id && otherPlant !== null) { // รอจน otherPlant มีค่า
+      if (otherPlant) {
+        fetchOtherNutrient(id);
+        fetchOtherFactor(id);
+      } else {
+        fetchNutrient(id);
+        fetchFactor(id);
+      }
+    }
+  }, [id, otherPlant]);
 
   ChartJS.register(
     CategoryScale,

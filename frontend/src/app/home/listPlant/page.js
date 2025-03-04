@@ -123,7 +123,7 @@ export default function ListPlant() {
         try {
             const res = await fetch(`http://localhost:4000/api/listPlant`);
 
-            if (res.ok) {
+            if (res.status === 200) {
                 const data = await res.json();
                 setPlants(data.resultData);
                 setIsLoading(false);
@@ -269,11 +269,13 @@ export default function ListPlant() {
                             <TableCell>{item.user_id }</TableCell>
                             <TableCell>
                                 <ButtonGroup>
-                                    <Tooltip content="เพิ่มค่าตัวแปร" color="success">
-                                        <Button onPress={() => {setSelectedId(item.id); onOpenFactor_Nutrient();}} variant="light" size='sm'>
-                                            <CiViewList  className="text-xl text-success-500" />
-                                        </Button>
-                                    </Tooltip>
+                                    {item.plant_id === 99 && (
+                                        <Tooltip content="เพิ่มค่าตัวแปร" color="success">
+                                            <Button onPress={() => {setSelectedId(item.id); onOpenFactor_Nutrient();}} variant="light" size='sm'>
+                                                <CiViewList  className="text-xl text-success-500" />
+                                            </Button>
+                                        </Tooltip>
+                                    )}
                                     <Tooltip content="แก้ไข" color="warning">
                                         <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}} variant="light" size='sm'>
                                             <CiEdit className="text-xl text-amber-500" />
