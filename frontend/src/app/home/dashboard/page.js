@@ -585,10 +585,10 @@ function Dashboard({ id }) {
         const data = await res.json();
         const plantedAt = data.resultData.plantedAt;
         const ageInDays = calculateAge(plantedAt);
-        
+
         // อัพเดต state หรือแสดงผลอายุของพืช
         setPlantAge(ageInDays);
-        data.resultData.plant_id == 99 ? setOtherPlant(true) : setOtherPlant(false);
+        data.resultData.plant_id === 0 ? setOtherPlant(true) : setOtherPlant(false);
       }
     } catch (err) {
       console.error("Failed to fetch", err);
@@ -718,7 +718,7 @@ function Dashboard({ id }) {
   const fetchNutrient = async (plantId) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/getNutrient/${plantId}`
+        `http://localhost:4000/api/getNutrient/${plantId}/${plantAge}`
       );
 
       if (res.status === 200) {
@@ -733,7 +733,7 @@ function Dashboard({ id }) {
   const fetchFactor = async (plantId) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/getFactor/${plantId}`
+        `http://localhost:4000/api/getFactor/${plantId}/${plantAge}`
       );
 
       if (res.status === 200) {
@@ -748,7 +748,7 @@ function Dashboard({ id }) {
   const fetchOtherNutrient = async (plantId) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/getOtherNutrient/${plantId}`
+        `http://localhost:4000/api/getOtherNutrient/${plantId}/${plantAge}`
       );
 
       if (res.status === 200) {
@@ -763,7 +763,7 @@ function Dashboard({ id }) {
   const fetchOtherFactor = async (plantId) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/getOtherFactor/${plantId}`
+        `http://localhost:4000/api/getOtherFactor/${plantId}/${plantAge}`
       );
 
       if (res.status === 200) {

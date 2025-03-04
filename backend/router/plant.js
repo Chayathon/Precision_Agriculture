@@ -227,22 +227,26 @@ router.post('/createNutrient', async (req, res) => {
     }
 });
 
-router.get('/getNutrient/:id', async (req, res) => {
+router.get('/getNutrient/:id/:age', async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id, age } = req.params;
 
-        const Nutrient = await prisma.p_nutrient.findMany({
+        const Nutrient = await prisma.p_nutrient.findFirst({
             where: {
                 plant_id: Number(id),
+                age: {
+                    lte: Number(age)
+                }
             },
-
-            take: 1,
+            orderBy: {
+                age: 'desc'
+            }
         });
 
         if(Nutrient) {
             res.status(200).json({
                 message: 'Get Nutrient Variables',
-                resultData: Nutrient,
+                resultData: [Nutrient],
             });
         }
     } catch (err) {
@@ -251,22 +255,26 @@ router.get('/getNutrient/:id', async (req, res) => {
     }
 });
 
-router.get('/getFactor/:id', async (req, res) => {
+router.get('/getFactor/:id/:age', async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id, age } = req.params;
 
-        const Factor = await prisma.p_factor.findMany({
+        const Factor = await prisma.p_factor.findFirst({
             where: {
                 plant_id: Number(id),
+                age: {
+                    lte: Number(age)
+                }
             },
-
-            take: 1,
+            orderBy: {
+                age: 'desc'
+            }
         });
 
         if(Factor) {
             res.status(200).json({
                 message: 'Get Factor Variables',
-                resultData: Factor,
+                resultData: [Factor],
             });
         }
     } catch (err) {
@@ -275,22 +283,26 @@ router.get('/getFactor/:id', async (req, res) => {
     }
 });
 
-router.get('/getOtherNutrient/:id', async (req, res) => {
+router.get('/getOtherNutrient/:id/:age', async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id, age } = req.params;
 
-        const Nutrient = await prisma.p_other_nutrient.findMany({
+        const Nutrient = await prisma.p_other_nutrient.findFirst({
             where: {
                 plant_id: Number(id),
+                age: {
+                    lte: Number(age)
+                }
             },
-
-            take: 1,
+            orderBy: {
+                age: 'desc'
+            }
         });
 
         if(Nutrient) {
             res.status(200).json({
                 message: 'Get Nutrient Variables',
-                resultData: Nutrient,
+                resultData: [Nutrient],
             });
         }
     } catch (err) {
@@ -299,22 +311,26 @@ router.get('/getOtherNutrient/:id', async (req, res) => {
     }
 });
 
-router.get('/getOtherFactor/:id', async (req, res) => {
+router.get('/getOtherFactor/:id/:age', async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id, age } = req.params;
 
-        const Factor = await prisma.p_other_factor.findMany({
+        const Factor = await prisma.p_other_factor.findFirst({
             where: {
                 plant_id: Number(id),
+                age: {
+                    lte: Number(age)
+                }
             },
-
-            take: 1,
+            orderBy: {
+                age: 'desc'
+            }
         });
 
         if(Factor) {
             res.status(200).json({
                 message: 'Get Factor Variables',
-                resultData: Factor,
+                resultData: [Factor],
             });
         }
     } catch (err) {

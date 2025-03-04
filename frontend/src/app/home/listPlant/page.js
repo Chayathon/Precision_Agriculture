@@ -269,7 +269,7 @@ export default function ListPlant() {
                             <TableCell>{item.user_id }</TableCell>
                             <TableCell>
                                 <ButtonGroup>
-                                    {item.plant_id === 99 && (
+                                    {item.plant_id === 0 && (
                                         <Tooltip content="เพิ่มค่าตัวแปร" color="success">
                                             <Button onPress={() => {setSelectedId(item.id); onOpenFactor_Nutrient();}} variant="light" size='sm'>
                                                 <CiViewList  className="text-xl text-success-500" />

@@ -138,7 +138,7 @@ return (
                 <Input
                   onChange={(e) => setAge(e.target.value)}
                   type="number"
-                  label="อายุน้อยกว่า (วัน)"
+                  label="อายุตั้งแต่กี่ (วัน) ขึ้นไป"
                   isRequired
                 />
                 <Input
