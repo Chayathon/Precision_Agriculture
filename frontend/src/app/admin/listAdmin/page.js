@@ -43,7 +43,10 @@ export default function ListAdmin() {
                 user.lastname?.toLowerCase().includes(filterValue.toLowerCase()) ||
                 user.email?.toLowerCase().includes(filterValue.toLowerCase()) ||
                 user.tel?.toLowerCase().includes(filterValue.toLowerCase()) ||
-                user.username?.toLowerCase().includes(filterValue.toLowerCase())
+                user.username?.toLowerCase().includes(filterValue.toLowerCase()) ||
+                user.provinceRel.name_th?.toLowerCase().includes(filterValue.toLowerCase()) ||
+                user.districtRel.name_th?.toLowerCase().includes(filterValue.toLowerCase()) ||
+                user.subdistrictRel.name_th?.toLowerCase().includes(filterValue.toLowerCase())
             );
         }
 
@@ -247,6 +250,9 @@ export default function ListAdmin() {
                     <TableColumn allowsSorting key="email">อีเมล</TableColumn>
                     <TableColumn allowsSorting key="tel">เบอร์โทรศัพท์</TableColumn>
                     <TableColumn allowsSorting key="address">ที่อยู่</TableColumn>
+                    <TableColumn allowsSorting key="province">จังหวัด</TableColumn>
+                    <TableColumn allowsSorting key="district">เขต/อำเภอ</TableColumn>
+                    <TableColumn allowsSorting key="subdistrict">แขวง/ตำบล</TableColumn>
                     <TableColumn allowsSorting key="username">ชื่อผู้ใช้</TableColumn>
                     <TableColumn key="tools">จัดการ</TableColumn>
                 </TableHeader>
@@ -263,6 +269,9 @@ export default function ListAdmin() {
                             <TableCell>{item.email}</TableCell>
                             <TableCell>{item.tel}</TableCell>
                             <TableCell>{item.address}</TableCell>
+                            <TableCell>{item.provinceRel.name_th}</TableCell>
+                            <TableCell>{item.districtRel.name_th}</TableCell>
+                            <TableCell>{item.subdistrictRel.name_th}</TableCell>
                             <TableCell>{item.username}</TableCell>
                             <TableCell>
                                 <ButtonGroup>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import Cookies from "js-cookie";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure, user } from "@nextui-org/react";
 import { FaPlus, FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
@@ -43,7 +43,10 @@ export default function ListUser() {
                 user.lastname?.toLowerCase().includes(filterValue.toLowerCase()) ||
                 user.email?.toLowerCase().includes(filterValue.toLowerCase()) ||
                 user.tel?.toLowerCase().includes(filterValue.toLowerCase()) ||
-                user.username?.toLowerCase().includes(filterValue.toLowerCase())
+                user.username?.toLowerCase().includes(filterValue.toLowerCase()) ||
+                user.provinceRel.name_th?.toLowerCase().includes(filterValue.toLowerCase()) ||
+                user.districtRel.name_th?.toLowerCase().includes(filterValue.toLowerCase()) ||
+                user.subdistrictRel.name_th?.toLowerCase().includes(filterValue.toLowerCase())
             );
         }
 
