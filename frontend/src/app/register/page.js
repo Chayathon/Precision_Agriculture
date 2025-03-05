@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
-import {Card, CardHeader, CardBody, CardFooter, Input, Textarea, Button, Autocomplete, AutocompleteItem, Select, SelectItem} from "@nextui-org/react";
+import {Card, CardHeader, CardBody, CardFooter, Input, Textarea, Button, Select, SelectItem} from "@nextui-org/react";
 import { toast } from 'react-toastify'
 
 function Page() {
@@ -79,13 +79,36 @@ function Page() {
         console.log("Province:", address?.province);
         if(address?.province) {
             fetchDistricts(address?.province);
+
+            setAddress(prev => ({
+                ...prev,
+                district: "",
+                subdistrict: ""
+            }));
+        } else {
+            setAddress(prev => ({
+                ...prev,
+                district: "",
+                subdistrict: ""
+            }));
         }
+        
     }, [address?.province]);
 
     useEffect(() => {
         console.log("District:", address?.district);
         if(address?.district) {
             fetchSubdistricts(address?.district);
+
+            setAddress(prev => ({
+                ...prev,
+                subdistrict: ""
+            }));
+        } else {
+            setAddress(prev => ({
+                ...prev,
+                subdistrict: ""
+            }));
         }
     }, [address?.district]);
 
@@ -196,6 +219,7 @@ function Page() {
                             >
                                 {(item) => <SelectItem key={item.province_id}>{item.name_th}</SelectItem>}
                             </Select>
+                            
                             <Select
                                 onChange={(e) => setAddress(prev => ({
                                     ...prev,
@@ -204,6 +228,7 @@ function Page() {
                                 items={districts}
                                 label='เขต/อำเภอ'
                                 placeholder='เลือกเขต/อำเภอ'
+                                selectedKeys={address.district ? [address.district] : []}
                                 isDisabled={!address?.province}
                                 isRequired
                             >
@@ -218,7 +243,8 @@ function Page() {
                                 items={subdistricts}
                                 label='แขวง/ตำบล'
                                 placeholder='เลือกแขวง/ตำบล'
-                                isDisabled={!address.district}
+                                selectedKeys={address.subdistrict ? [address.subdistrict] : []}
+                                isDisabled={!address?.district}
                                 isRequired
                             >
                                 {(item) => <SelectItem key={item.subdistrict_id}>{item.name_th}</SelectItem>}
