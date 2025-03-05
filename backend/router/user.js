@@ -17,6 +17,9 @@ router.get("/listUser/:role_id", authIsCheck, isAdmin, async (req, res) => {
         },
         include: {
             role: true,
+            provinceRel: true, // ดึงข้อมูลจาก province
+            districtRel: true, // ดึงข้อมูลจาก district
+            subdistrictRel: true, // ดึงข้อมูลจาก subdistrict
         },
     });
 

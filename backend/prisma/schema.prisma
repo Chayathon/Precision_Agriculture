@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,119 +7,161 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
-  id Int @id @default(autoincrement())
-  firstname String
-  lastname String
-  email String @unique
-  tel String
-  address String
-  username String
-  password String
-  role_id Int
-  otp Int?
-  role role @relation(fields: [role_id], references: [id]) 
-  plant plant[]
+model role {
+  id        Int    @id @default(autoincrement())
+  role_name String
+  users     user[]
 }
 
-model role {
-  id Int @id @default(autoincrement())
-  role_name String
-  users user[] // Add this field to represent the one-to-many relationship
+model province {
+  province_id Int     @id @db.UnsignedInt
+  name_th     String? @db.VarChar(120)
+  name_en     String? @db.VarChar(120)
+  users       user[]  // ความสัมพันธ์ย้อนกลับไปยัง user
+  districts   district[] // ความสัมพันธ์ไปยัง district
+}
+
+model district {
+  district_id Int     @id @db.UnsignedInt
+  province_id Int     @db.UnsignedInt
+  name_th     String? @db.VarChar(120)
+  name_en     String? @db.VarChar(120)
+  provinceRel province @relation(fields: [province_id], references: [province_id]) // ความสัมพันธ์กับ province
+  users       user[]  // ความสัมพันธ์ย้อนกลับไปยัง user
+  subdistricts subdistrict[] // ความสัมพันธ์ไปยัง subdistrict
+
+  @@index([province_id], map: "province_id")
+}
+
+model subdistrict {
+  subdistrict_id Int      @id @db.UnsignedInt
+  district_id    Int?     @db.UnsignedInt
+  name_th        String?  @db.VarChar(120)
+  name_en        String?  @db.VarChar(120)
+  lat            Decimal? @db.Decimal(5, 3)
+  long           Decimal? @db.Decimal(6, 3)
+  zipcode        Int?     @db.UnsignedMediumInt
+  districtRel    district? @relation(fields: [district_id], references: [district_id]) // ความสัมพันธ์กับ district
+  users          user[]  // ความสัมพันธ์ย้อนกลับไปยัง user
+
+  @@index([district_id], map: "district_id")
+}
+
+model user {
+  id          Int     @id @default(autoincrement())
+  firstname   String
+  lastname    String
+  email       String  @unique
+  tel         String
+  address     String
+  province    Int     @db.UnsignedInt
+  district    Int     @db.UnsignedInt
+  subdistrict Int     @db.UnsignedInt
+  username    String
+  password    String
+  role_id     Int
+  otp         Int?
+  plant       plant[]
+  role        role     @relation(fields: [role_id], references: [id])
+  provinceRel province @relation(fields: [province], references: [province_id]) // ความสัมพันธ์กับ province
+  districtRel district @relation(fields: [district], references: [district_id]) // ความสัมพันธ์กับ district
+  subdistrictRel subdistrict @relation(fields: [subdistrict], references: [subdistrict_id]) // ความสัมพันธ์กับ subdistrict
+
+  @@index([role_id], map: "user_role_id_fkey")
+  @@index([province], map: "user_province_fkey")
+  @@index([district], map: "user_district_fkey")
+  @@index([subdistrict], map: "user_subdistrict_fkey")
 }
 
 model plant_avaliable {
-  id Int @id @default(autoincrement())
+  id        Int          @id @default(autoincrement())
   plantname String
-  plant plant[]
-  nutrients p_nutrient[]
   factors   p_factor[]
-  // plant_need plant_need[]
+  nutrients p_nutrient[]
+  plant     plant[]
 }
 
 model p_other_nutrient {
-  id           Int    @id @default(autoincrement()) // รหัสตัวแปรที่พืชต้องการ
-  plant_id     Int    // รหัสพืช
-  age        Int     // อายุพืช
-  nitrogen   Float   // ไนโตรเจน
-  phosphorus Float   // ฟอสฟอรัส
-  potassium  Float   // โพแทสเซียม
-  plant plant @relation(fields: [plant_id], references: [id])
-  // nutrient_id  Int    // รหัสสารอาหาร
-  // nutrient     p_nutrient @relation("PlantToNutrient", fields: [nutrient_id], references: [id])
-  // factor_id    Int    // รหัสปัจจัยที่เกี่ยวข้อง
-  // factor       p_factor @relation("PlantToFactor",fields: [factor_id], references: [id])
+  id         Int   @id @default(autoincrement())
+  plant_id   Int
+  age        Int
+  nitrogen   Float
+  phosphorus Float
+  potassium  Float
+  plant      plant @relation(fields: [plant_id], references: [id])
+
+  @@index([plant_id], map: "p_other_nutrient_plant_id_fkey")
 }
 
 model p_other_factor {
-  id           Int    @id @default(autoincrement()) // รหัสตัวแปรที่พืชต้องการ
-  plant_id     Int    // รหัสพืช
-  age        Int     // อายุพืช
-  pH            Float   // ความกรด-ด่างของดิน
-  temperature   Float   // อุณหภูมิ
-  humidity      Float   // ความชื้น
-  salinity      Float   // ความเค็มของดิน
-  lightIntensity Float   // ความเข้มแสง
-  plant plant @relation(fields: [plant_id], references: [id])
-  // nutrient_id  Int    // รหัสสารอาหาร
-  // nutrient     p_nutrient @relation("PlantToNutrient", fields: [nutrient_id], references: [id])
-  // factor_id    Int    // รหัสปัจจัยที่เกี่ยวข้อง
-  // factor       p_factor @relation("PlantToFactor",fields: [factor_id], references: [id])
+  id             Int   @id @default(autoincrement())
+  plant_id       Int
+  age            Int
+  pH             Float
+  temperature    Float
+  humidity       Float
+  salinity       Float
+  lightIntensity Float
+  plant          plant @relation(fields: [plant_id], references: [id])
+
+  @@index([plant_id], map: "p_other_factor_plant_id_fkey")
 }
 
 model plant {
-  id        Int      @id @default(autoincrement())
-  plant_id  Int
-  plantname String
-  plantedAt DateTime
-  user_id   Int
-  plant_avaliable plant_avaliable @relation(fields: [plant_id], references: [id])
-  user      user     @relation(fields: [user_id], references: [id]) // ความสัมพันธ์ many-to-one กับผู้ใช้
-  variables p_variable[] // ความสัมพันธ์ one-to-many กับค่าตัวแปรที่เกี่ยวข้อง
+  id                Int                @id @default(autoincrement())
+  plantname         String
+  plantedAt         DateTime
+  user_id           Int
+  plant_id          Int
+  p_other_factors   p_other_factor[]
   p_other_nutrients p_other_nutrient[]
-  p_other_factors p_other_factor[]
-  // nutrients p_nutrient[] // ความสัมพันธ์ one-to-many กับสารอาหาร
-  // factors   p_factor[]   // ความสัมพันธ์ one-to-many กับปัจจัยที่เกี่ยวข้อง
-  // plantNeeds plantNeed[] // ความสัมพันธ์ one-to-many กับค่าตัวแปรที่พืชต้องการ
+  variables         p_variable[]
+  plant_avaliable   plant_avaliable    @relation(fields: [plant_id], references: [id])
+  user              user               @relation(fields: [user_id], references: [id])
+
+  @@index([plant_id], map: "plant_plant_id_fkey")
+  @@index([user_id], map: "plant_user_id_fkey")
 }
 
 model p_nutrient {
-  id         Int     @id @default(autoincrement())  // รหัสสารอาหาร
-  age        Int
-  nitrogen   Float   // ไนโตรเจน
-  phosphorus Float   // ฟอสฟอรัส
-  potassium  Float   // โพแทสเซียม
-  plant_id   Int     // รหัสพืช
-  plant_avaiable      plant_avaliable   @relation(fields: [plant_id], references: [id]) // ความสัมพันธ์ many-to-one กับพืช
+  id             Int             @id @default(autoincrement())
+  nitrogen       Float
+  phosphorus     Float
+  potassium      Float
+  plant_id       Int
+  age            Int
+  plant_avaiable plant_avaliable @relation(fields: [plant_id], references: [id])
 
-  // plantNeed plantNeed[] @relation("PlantToNutrient")
+  @@index([plant_id], map: "p_nutrient_plant_id_fkey")
 }
 
 model p_factor {
-  id            Int     @id @default(autoincrement()) // รหัสปัจจัยที่เกี่ยวข้อง
-  age           Int
-  pH            Float   // ความกรด-ด่างของดิน
-  temperature   Float   // อุณหภูมิ
-  humidity      Float   // ความชื้น
-  lightIntensity Float   // ความเข้มแสง
-  salinity      Float   // ความเค็มของดิน
-  plant_id      Int     // รหัสพืช
-  plant_avaiable      plant_avaliable   @relation(fields: [plant_id], references: [id]) // ความสัมพันธ์ many-to-one กับพืช
+  id             Int             @id @default(autoincrement())
+  pH             Float
+  temperature    Float
+  humidity       Float
+  lightIntensity Float
+  salinity       Float
+  plant_id       Int
+  age            Int
+  plant_avaiable plant_avaliable @relation(fields: [plant_id], references: [id])
 
-  // plantNeed plantNeed[] @relation("PlantToFactor")
+  @@index([plant_id], map: "p_factor_plant_id_fkey")
 }
 
 model p_variable {
-  id            Int     @id @default(autoincrement()) // รหัสตัวแปรที่รับเข้ามา
-  plant_id      Int     // รหัสพืช
-  plant         plant   @relation(fields: [plant_id], references: [id]) // ความสัมพันธ์ many-to-one กับพืช
-  receivedAt    DateTime @default(now()) // วัน-เดือน-ปี ที่รับเข้า
-  nitrogen      Float   // ไนโตรเจน
-  phosphorus    Float   // ฟอสฟอรัส
-  potassium     Float   // โพแทสเซียม
-  pH            Float   // ความกรด-ด่างของดิน
-  temperature   Float   // อุณหภูมิ
-  humidity      Float   // ความชื้น
-  lightIntensity Float   // ความเข้มแสง
-  salinity      Float   // ความเค็มของดิน
+  id             Int      @id @default(autoincrement())
+  plant_id       Int
+  receivedAt     DateTime @default(now())
+  nitrogen       Float
+  phosphorus     Float
+  potassium      Float
+  pH             Float
+  temperature    Float
+  humidity       Float
+  lightIntensity Float
+  salinity       Float
+  plant          plant    @relation(fields: [plant_id], references: [id])
+
+  @@index([plant_id], map: "p_variable_plant_id_fkey")
 }
