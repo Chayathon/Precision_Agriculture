@@ -56,6 +56,39 @@ const prisma = new PrismaClient();
 //     }
 // });
 
+router.post('/recievedVariable', async (req, res) => {
+    try {
+        // const { id, temperature, humidity, pH, salinity, lightIntensity, nitrogen, phosphorus, potassium } = req.body;
+
+        const now = new Date();
+        const recievedTime = new Date(now.getTime() + (7 * 60 * 60 * 1000));
+
+        const plantVariable = await prisma.p_variable.create({
+            data: {
+                plant_id: Number(req.body.id),
+                temperature: req.body.temperature,
+                humidity: req.body.humidity,
+                pH: req.body.pH,
+                salinity: req.body.salinity,
+                lightIntensity: req.body.lightIntensity,
+                nitrogen: req.body.nitrogen,
+                phosphorus: req.body.phosphorus,
+                potassium: req.body.potassium,
+                receivedAt: recievedTime
+            }
+        });
+
+        if(plantVariable) {
+            res.status(200).json({
+                message: 'ส่งข้อมูลพืชเรียบร้อยแล้ว',
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
 router.get('/getPlantVariable/:id', async (req, res) => {
     try {
         const { id } = req.params;
