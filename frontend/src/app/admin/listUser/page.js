@@ -6,7 +6,8 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input,
 import { FaPlus, FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
-import { HiOutlineTrash } from "react-icons/hi2";
+import { HiOutlineEye, HiOutlineTrash } from "react-icons/hi2";
+import ModalInfoUser from "../components/ModalInfoUser";
 import ModalCreateUser from "../components/ModalCreateUser";
 import ModalUpdateUser from "../components/ModalUpdateUser";
 import ModalDeleteUser from "../components/ModalDeleteUser";
@@ -19,6 +20,7 @@ export default function ListUser() {
     const [isLoading, setIsLoading] = useState(true);
 
     const [selectedId, setSelectedId] = useState(null);
+    const { isOpen: isOpenInfo, onOpen: onOpenInfo, onOpenChange: onOpenChangeInfo } = useDisclosure();
     const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeCreate } = useDisclosure();
     const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onOpenChange: onOpenChangeUpdate } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onOpenChange: onOpenChangeDelete } = useDisclosure();
@@ -275,6 +277,11 @@ export default function ListUser() {
                             <TableCell>{item.username}</TableCell>
                             <TableCell>
                                 <ButtonGroup>
+                                    <Tooltip content="ดูข้อมูล" color="primary">
+                                        <Button onPress={() => {setSelectedId(item.id); onOpenInfo();}} variant="light" size='sm'>
+                                            <HiOutlineEye className="text-xl text-blue-500" />
+                                        </Button>
+                                    </Tooltip>
                                     <Tooltip content="แก้ไข" color="warning">
                                         <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}} variant="light" size='sm'>
                                             <CiEdit className="text-xl text-amber-500" />
@@ -292,6 +299,9 @@ export default function ListUser() {
                 </TableBody>
             </Table>
             
+            {isOpenInfo && (
+                <ModalInfoUser isOpen={isOpenInfo} onOpenChange={onOpenChangeInfo} id={selectedId} />
+            )}
             {isOpenCreate && (
                 <ModalCreateUser isOpen={isOpenCreate} onOpenChange={onOpenChangeCreate} setRefresh={setRefresh} />
             )}
