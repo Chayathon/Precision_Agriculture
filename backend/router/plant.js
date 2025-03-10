@@ -283,6 +283,40 @@ router.post('/createFactor', async (req, res) => {
     }
 
     try {
+        const createFactor = await prisma.p_factor.create({
+            data: {
+                age: Number(age),
+                pH: parseFloat(ph), // แปลงเป็นตัวเลข
+                temperature: parseFloat(temperature), // แปลงเป็นตัวเลข
+                humidity: parseFloat(humidity), // แปลงเป็นตัวเลข
+                lightIntensity: parseFloat(lightIntensity), // แปลงเป็นตัวเลข
+                salinity: parseFloat(salinity), // แปลงเป็นตัวเลข
+                plant_id: plantId,  // ใช้ plantId ที่รับมา
+            }
+        });
+
+        if(createFactor) {
+            res.status(200).json({
+                message: 'Factor created successfully',
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+router.post('/createOtherFactor', async (req, res) => {
+
+    const { age, ph, temperature, humidity, salinity, lightIntensity, plantId } = req.body;
+
+    console.log(req.body);
+
+    if (!plantId) {
+        return res.status(400).json({ message: "Missing plantId" });
+    }
+
+    try {
         const createFactor = await prisma.p_other_factor.create({
             data: {
                 age: Number(age),
@@ -307,6 +341,38 @@ router.post('/createFactor', async (req, res) => {
 });
 
 router.post('/createNutrient', async (req, res) => {
+
+    const { age, nitrogen, phosphorus, potassium, plantId } = req.body;
+
+    console.log(req.body);
+
+    if (!plantId) {
+        return res.status(400).json({ message: "Missing plantId" });
+    }
+
+    try {
+        const createNutrient = await prisma.p_nutrient.create({
+            data: {
+                age: Number(age),
+                nitrogen: parseFloat(nitrogen), // แปลงเป็นตัวเลข
+                phosphorus: parseFloat(phosphorus), // แปลงเป็นตัวเลข
+                potassium: parseFloat(potassium), // แปลงเป็นตัวเลข
+                plant_id: plantId,  // ใช้ plantId ที่รับมา
+            }
+        });
+
+        if(createNutrient) {
+            res.status(200).json({
+                message: 'Nutrient created successfully',
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+router.post('/createOtherNutrient', async (req, res) => {
 
     const { age, nitrogen, phosphorus, potassium, plantId } = req.body;
 
@@ -366,6 +432,31 @@ router.get('/getNutrient/:id/:age', async (req, res) => {
     }
 });
 
+router.get('/getNutrientById/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const Nutrient = await prisma.p_nutrient.findMany({
+            where: {
+                plant_id: Number(id)
+            },
+            orderBy: {
+                age: 'desc'
+            }
+        });
+
+        if(Nutrient) {
+            res.status(200).json({
+                message: 'Get Nutrient By ID',
+                resultData: Nutrient,
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
 router.get('/getFactor/:id/:age', async (req, res) => {
     try {
         const { id, age } = req.params;
@@ -386,6 +477,31 @@ router.get('/getFactor/:id/:age', async (req, res) => {
             res.status(200).json({
                 message: 'Get Factor Variables',
                 resultData: [Factor],
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+router.get('/getFactorById/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const Factor = await prisma.p_factor.findMany({
+            where: {
+                plant_id: Number(id)
+            },
+            orderBy: {
+                age: 'desc'
+            }
+        });
+
+        if(Factor) {
+            res.status(200).json({
+                message: 'Get Factor By ID',
+                resultData: Factor,
             });
         }
     } catch (err) {

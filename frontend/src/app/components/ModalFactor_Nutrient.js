@@ -55,7 +55,7 @@ function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
   }
 
   try {
-    const res = await fetch("http://localhost:4000/api/createFactor", {
+    const res = await fetch("http://localhost:4000/api/createOtherFactor", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -98,7 +98,7 @@ function ModalFactor_Nutrient({ isOpen, onOpenChange, setRefresh, id }) {
   }
 
   try {
-    const res = await fetch("http://localhost:4000/api/createNutrient", {
+    const res = await fetch("http://localhost:4000/api/createOtherNutrient", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -134,7 +134,7 @@ return (
         <Tabs aria-label="Options">
           <Tab key="Factor" title="ค่าตัวแปรที่เกี่ยวข้อง">
             <form onSubmit={handleSubmitFactor}>
-            <div className="flex mb-4 gap-4">
+              <div className="flex mb-4 gap-4">
                 <Input
                   onChange={(e) => setAge(e.target.value)}
                   type="number"
