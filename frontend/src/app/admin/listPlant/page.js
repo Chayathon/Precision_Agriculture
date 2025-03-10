@@ -5,15 +5,16 @@ import Cookies from "js-cookie";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure } from "@nextui-org/react";
 import { FaPlus, FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
-import { CiEdit } from "react-icons/ci";
+import { CiEdit, CiViewList } from "react-icons/ci";
 import { HiOutlineTrash } from "react-icons/hi2";
 import ModalCreatePlant from "../components/ModalCreatePlant";
 import ModalUpdatePlant from "../components/ModalUpdatePlant";
 import ModalDeletePlant from "../components/ModalDeletePlant";
 import ModalMultiDeletePlant from "../components/ModalMultiDeletePlant";
+import ModalPlantVariable from "../components/ModalPlantVariable";
 
 export default function ListRole() {
-    const [roles, setRoles] = useState([]);
+    const [plantAvaliables, setPlantAvaliable] = useState([]);
 
     const [refresh, setRefresh] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -23,6 +24,7 @@ export default function ListRole() {
     const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onOpenChange: onOpenChangeUpdate } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onOpenChange: onOpenChangeDelete } = useDisclosure();
     const { isOpen: isOpenMultiDelete, onOpen: onOpenMultiDelete, onOpenChange: onOpenChangeMultiDelete } = useDisclosure();
+    const { isOpen: isOpenPlantVariable, onOpen: onOpenPlantVariable, onOpenChange: onOpenChangePlantVariable } = useDisclosure();
 
     const [filterValue, setFilterValue] = useState("");
     const [selectedKeys, setSelectedKeys] = useState(new Set([]));
@@ -35,7 +37,7 @@ export default function ListRole() {
 
     // Filter items based on search
     const filteredItems = useMemo(() => {
-        let filteredUsers = [...roles];
+        let filteredUsers = [...plantAvaliables];
 
         if (filterValue) {
             filteredUsers = filteredUsers.filter((role) =>
@@ -44,7 +46,7 @@ export default function ListRole() {
         }
 
         return filteredUsers;
-    }, [roles, filterValue]);
+    }, [plantAvaliables, filterValue]);
 
     // Calculate pagination
     const pages = Math.ceil(filteredItems.length / rowsPerPage);
@@ -114,7 +116,7 @@ export default function ListRole() {
     }, []);
 
     // Fetch users data
-    const fetchRole = async () => {
+    const fetchPlant = async () => {
         try {
             const token = Cookies.get("Token");
             const res = await fetch(`http://localhost:4000/api/listPlantAvaliable`, {
@@ -123,7 +125,7 @@ export default function ListRole() {
 
             if (res.ok) {
                 const data = await res.json();
-                setRoles(data.resultData);
+                setPlantAvaliable(data.resultData);
                 setIsLoading(false);
                 setPage(1);
             }
@@ -133,7 +135,7 @@ export default function ListRole() {
     };
 
     useEffect(() => {
-        fetchRole();
+        fetchPlant();
     }, [refresh]);
 
     // Top content of table
@@ -167,7 +169,7 @@ export default function ListRole() {
                     </div>
                 </div>
                 <div className="flex justify-between items-center">
-                    <span className="text-default-400 text-small">ทั้งหมด {roles.length} รายการ</span>
+                    <span className="text-default-400 text-small">ทั้งหมด {plantAvaliables.length} รายการ</span>
                     <label className="flex items-center text-default-400 text-small">
                         รายการ/หน้า:
                         <select
@@ -185,7 +187,7 @@ export default function ListRole() {
                 </div>
             </div>
         );
-    }, [filterValue, onRowsPerPageChange, roles.length, onSearchChange, selectedKeys.size]);
+    }, [filterValue, onRowsPerPageChange, plantAvaliables.length, onSearchChange, selectedKeys.size]);
 
     // Bottom content of table
     const bottomContent = useMemo(() => {
@@ -254,6 +256,13 @@ export default function ListRole() {
                             <TableCell>{item.plantname}</TableCell>
                             <TableCell>
                                 <ButtonGroup>
+                                    {item.id > 0 && (
+                                        <Tooltip content="เพิ่มค่าตัวแปร" color="success">
+                                            <Button onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}} variant="light" size='sm'>
+                                                <CiViewList  className="text-xl text-success-500" />
+                                            </Button>
+                                        </Tooltip>
+                                    )}
                                     <Tooltip content="แก้ไข" color="warning">
                                         <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}} variant="light" size='sm'>
                                             <CiEdit className="text-xl text-amber-500" />
@@ -290,6 +299,9 @@ export default function ListRole() {
                         setSelectedKeys(new Set());
                     }}
                 />
+            )}
+            {isOpenPlantVariable && (
+                <ModalPlantVariable isOpen={isOpenPlantVariable} onOpenChange={onOpenChangePlantVariable} id={selectedId} />
             )}
         </div>
     );
