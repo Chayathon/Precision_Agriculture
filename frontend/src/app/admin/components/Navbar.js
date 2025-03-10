@@ -153,6 +153,11 @@ function AdminNavbar() {
 
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <NavbarItem>
+                    <Link href="/admin/listPlant">
+                        ข้อมูลพืช
+                    </Link>
+                </NavbarItem>
+                <NavbarItem>
                     <Link href="/admin/listAdmin">
                         ข้อมูลผู้ดูแลระบบ
                     </Link>
