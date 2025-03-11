@@ -13,7 +13,7 @@ import ModalCreatePlant from "../../components/ModalCreatePlant";
 import ModalUpdatePlant from "../../components/ModalUpdatePlant";
 import ModalDeletePlant from "../../components/ModalDeletePlant";
 import ModalMultiDeletePlant from "../../components/ModalMultiDeletePlant";
-import ModalFactor_Nutrient from "../../components/ModalFactor_Nutrient";
+import ModalPlantVariable from "@/app/components/ModalPlantVariable";
 
 
 export default function ListPlant() {
@@ -23,7 +23,7 @@ export default function ListPlant() {
     const [isLoading, setIsLoading] = useState(true);
 
     const [selectedId, setSelectedId] = useState(null);
-    const { isOpen: isOpenFactor_Nutrient, onOpen: onOpenFactor_Nutrient, onOpenChange: onOpenChangeFactor_Nutrient } = useDisclosure();
+    const { isOpen: isOpenPlantVariable, onOpen: onOpenPlantVariable, onOpenChange: onOpenChangePlantVariable } = useDisclosure();
     const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeCreate } = useDisclosure();
     const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onOpenChange: onOpenChangeUpdate } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onOpenChange: onOpenChangeDelete } = useDisclosure();
@@ -271,7 +271,7 @@ export default function ListPlant() {
                                 <ButtonGroup>
                                     {item.plant_id === 0 && (
                                         <Tooltip content="เพิ่มค่าตัวแปร" color="success">
-                                            <Button onPress={() => {setSelectedId(item.id); onOpenFactor_Nutrient();}} variant="light" size='sm'>
+                                            <Button onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}} variant="light" size='sm'>
                                                 <CiViewList  className="text-xl text-success-500" />
                                             </Button>
                                         </Tooltip>
@@ -294,11 +294,11 @@ export default function ListPlant() {
                 </TableBody>
             </Table> 
 
+            {isOpenPlantVariable && (
+                <ModalPlantVariable isOpen={isOpenPlantVariable} onOpenChange={onOpenChangePlantVariable} id={selectedId} />
+            )}
             {isOpenCreate && (
                 <ModalCreatePlant isOpen={isOpenCreate} onOpenChange={onOpenChangeCreate} setRefresh={setRefresh} userId={Cookies.get("UserData")} />
-            )}
-            {isOpenFactor_Nutrient && (
-                <ModalFactor_Nutrient isOpen={isOpenFactor_Nutrient} onOpenChange={onOpenChangeFactor_Nutrient} id={selectedId} setRefresh={setRefresh} />
             )}
             {isOpenUpdate && (
                 <ModalUpdatePlant isOpen={isOpenUpdate} onOpenChange={onOpenChangeUpdate} id={selectedId} setRefresh={setRefresh} />
