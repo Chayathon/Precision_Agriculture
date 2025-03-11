@@ -38,12 +38,6 @@ function ModalUpdateNutrient({ isOpen, onOpenChange, id, setRefresh }) {
         e.preventDefault();
         setIsLoading(true);
 
-        // if(!age || !ph || !temperature || !humidity || salinity || lightIntensity) {
-        //     toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
-        //     setIsLoading(false);
-        //     return;
-        // }
-
         try {
             const res = await fetch(`http://localhost:4000/api/updateNutrient/${id}`, {
                 method: 'PUT',

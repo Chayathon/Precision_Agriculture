@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tabs, Tab, useDisclosure, Tooltip, ButtonGroup } from '@nextui-org/react'
-import moment from "moment";
-import 'moment/locale/th';
 import { FaPlus } from 'react-icons/fa6';
 import { CiEdit } from 'react-icons/ci';
 import { HiOutlineTrash } from 'react-icons/hi2';

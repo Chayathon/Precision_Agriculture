@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, useDisclosure, Tabs, Tab } from '@nextui-org/react';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 
 function ModalCreateFactor({ isOpen, onOpenChange, setRefresh, id }) {
@@ -12,7 +12,6 @@ function ModalCreateFactor({ isOpen, onOpenChange, setRefresh, id }) {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    // Handle Submit สำหรับฟอร์ม Factor
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
