@@ -255,17 +255,33 @@ router.delete('/deletePlant/:id', async (req, res) => {
 router.delete('/deletePlantAvaliable/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const delPlant = await prisma.plant_avaliable.delete({
-            where: {
-                id: Number(id),
-            },
+
+        await prisma.$transaction(async (prisma) => {
+            // ลบข้อมูลใน p_factor
+            await prisma.p_factor.deleteMany({
+                where: {
+                    plant_id: Number(id),
+                },
+            });
+
+            // ลบข้อมูลใน p_nutrient
+            await prisma.p_nutrient.deleteMany({
+                where: {
+                    plant_id: Number(id),
+                },
+            });
+
+            // ลบข้อมูลใน plant_avaliable
+            await prisma.plant_avaliable.delete({
+                where: {
+                    id: Number(id),
+                },
+            });
         });
 
-        if(delPlant) {
-            res.status(200).json({
-                message: 'Plant deleted successfully',
-            });
-        }
+        res.status(200).json({
+            message: 'Plant and related data deleted successfully',
+        });
     } catch (err) {
         console.log(err);
         res.status(500).send('Server Error');
