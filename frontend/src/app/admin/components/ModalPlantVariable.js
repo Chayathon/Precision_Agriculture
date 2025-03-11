@@ -109,7 +109,7 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
                                                 <TableColumn key="lightIntensity">ค่าความเข้มแสง (lux)</TableColumn>
                                                 <TableColumn key="tools">จัดการ</TableColumn>
                                             </TableHeader>
-                                            <TableBody items={factor}>
+                                            <TableBody items={factor} emptyContent="ไม่มีข้อมูล">
                                                 {(item) => (
                                                     <TableRow key={item.id}>
                                                         <TableCell>{item.age}</TableCell>
@@ -150,7 +150,7 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
                                                 <TableColumn key="ph">(K) โพแทสเซียม (mg/L)</TableColumn>
                                                 <TableColumn key="tools">จัดการ</TableColumn>
                                             </TableHeader>
-                                            <TableBody items={nutrient}>
+                                            <TableBody items={nutrient} emptyContent="ไม่มีข้อมูล">
                                                 {(item) => (
                                                     <TableRow key={item.id}>
                                                         <TableCell>{item.age}</TableCell>

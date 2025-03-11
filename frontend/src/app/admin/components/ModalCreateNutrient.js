@@ -47,6 +47,7 @@ function ModalCreateNutrient({ isOpen, onOpenChange, setRefresh, id }) {
             console.log("Error:", err);
         } finally {
             setIsLoading(false);
+            setRefresh(false);
         }
     };
 

@@ -62,10 +62,6 @@ function ModalUpdateNutrient({ isOpen, onOpenChange, id, setRefresh }) {
                 toast.success("แก้ไขข้อมูลค่าสารอาหารเรียบร้อยแล้ว"); 
                 onOpenChange(false);
                 setRefresh(true);
-
-                setTimeout(() => {
-                    setRefresh(false);
-                }, 1000);
             }
             else {
                 toast.error("แก้ไขข้อมูลค่าสารอาหารล้มเหลว");
@@ -75,6 +71,7 @@ function ModalUpdateNutrient({ isOpen, onOpenChange, id, setRefresh }) {
             console.log(err);
         } finally {
             setIsLoading(false);
+            setRefresh(false);
         }
     }
 

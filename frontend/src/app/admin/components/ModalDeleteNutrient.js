@@ -17,10 +17,6 @@ function ModalDeleteNutrient({ isOpen, onOpenChange, id, setRefresh }) {
                 toast.success("ลบข้อมูลค่าสารอาหารเรียบร้อยแล้ว");
                 onOpenChange(false);
                 setRefresh(true);
-
-                setTimeout(() => {
-                    setRefresh(false);
-                }, 1000);
             }
             else {
                 toast.error("ลบข้อมูลค่าสารอาหารล้มเหลว");
@@ -30,6 +26,7 @@ function ModalDeleteNutrient({ isOpen, onOpenChange, id, setRefresh }) {
             console.error("Error: ", err);
         } finally {
             setIsLoading(false);
+            setRefresh(false);
         }
     }
 

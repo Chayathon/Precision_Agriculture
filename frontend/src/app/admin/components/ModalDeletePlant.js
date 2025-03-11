@@ -2,21 +2,21 @@ import { useState, useEffect } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
-function ModalDeleteRole({ isOpen, onOpenChange, id, setRefresh }) {
+function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
     const [plantName, setPlantName] = useState('');
 
     useEffect(() => {
         if(isOpen) {
             const fetchData = async () => {
                 try {
-                    const res = await fetch(`http://localhost:4000/api/getPlantAvaliable/${id}`);
+                    const res = await fetch(`http://localhost:4000/api/getPlantAvaliableById/${id}`);
                         
                     if (!res.ok) {
                         throw new Error("Failed to fetch");
                     }
 
                     const data = await res.json();
-                    setPlantName(data.resultData.role_name);
+                    setPlantName(data.resultData.plantname);
                 } catch (err) {
                     console.error("Error fetching data: ", err);
                 }
@@ -28,7 +28,7 @@ function ModalDeleteRole({ isOpen, onOpenChange, id, setRefresh }) {
 
     const handleSubmit = async () => {
         try{
-            const res = await fetch(`http://localhost:4000/api/deleteRole/${id}`, {
+            const res = await fetch(`http://localhost:4000/api/deletePlantAvaliable/${id}`, {
                 method: 'DELETE'
             });
 
@@ -76,4 +76,4 @@ function ModalDeleteRole({ isOpen, onOpenChange, id, setRefresh }) {
     )
 }
 
-export default ModalDeleteRole
+export default ModalDeletePlant

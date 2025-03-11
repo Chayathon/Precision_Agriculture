@@ -66,10 +66,6 @@ function ModalUpdateFactor({ isOpen, onOpenChange, id, setRefresh }) {
                 toast.success("แก้ไขข้อมูลค่าตัวแปรที่เกี่ยวข้องเรียบร้อยแล้ว"); 
                 onOpenChange(false);
                 setRefresh(true);
-
-                setTimeout(() => {
-                    setRefresh(false);
-                }, 1000);
             }
             else {
                 toast.error("แก้ไขข้อมูลค่าตัวแปรที่เกี่ยวข้องล้มเหลว");
@@ -79,6 +75,7 @@ function ModalUpdateFactor({ isOpen, onOpenChange, id, setRefresh }) {
             console.log(err);
         } finally {
             setIsLoading(false);
+            setRefresh(false);
         }
     }
 

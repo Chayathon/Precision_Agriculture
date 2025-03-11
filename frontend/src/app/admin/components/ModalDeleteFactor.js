@@ -17,10 +17,6 @@ function ModalDeleteFactor({ isOpen, onOpenChange, id, setRefresh }) {
                 toast.success("ลบข้อมูลค่าตัวแปรที่เกี่ยวข้องเรียบร้อยแล้ว");
                 onOpenChange(false);
                 setRefresh(true);
-
-                setTimeout(() => {
-                    setRefresh(false);
-                }, 1000);
             }
             else {
                 toast.error("ลบข้อมูลค่าตัวแปรที่เกี่ยวข้องล้มเหลว");
@@ -30,6 +26,7 @@ function ModalDeleteFactor({ isOpen, onOpenChange, id, setRefresh }) {
             console.error("Error: ", err);
         } finally {
             setIsLoading(false);
+            setRefresh(false);
         }
     }
 
