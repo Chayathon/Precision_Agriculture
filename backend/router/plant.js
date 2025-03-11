@@ -4,9 +4,15 @@ const router = express.Router();
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-router.get('/listPlant', async (req, res) => {
+router.get('/listPlant/:id', async (req, res) => {
+    const { id } = req.params;
+
     try {
-        const listPlant = await prisma.plant.findMany();
+        const listPlant = await prisma.plant.findMany({
+            where: {
+                user_id: Number(id),
+            }
+        });
 
         if (listPlant) {
             res.status(200).json({

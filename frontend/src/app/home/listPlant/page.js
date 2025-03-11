@@ -15,8 +15,8 @@ import ModalDeletePlant from "../../components/ModalDeletePlant";
 import ModalMultiDeletePlant from "../../components/ModalMultiDeletePlant";
 import ModalPlantVariable from "@/app/components/ModalPlantVariable";
 
-
 export default function ListPlant() {
+    const [id, setId] = useState('');
     const [plants, setPlants] = useState([]);
 
     const [refresh, setRefresh] = useState(false);
@@ -119,24 +119,35 @@ export default function ListPlant() {
     }, []);
 
      // Fetch plant data
-    const fetchPlant = async () => {
+    const fetchPlant = async (id) => {
         try {
-            const res = await fetch(`http://localhost:4000/api/listPlant`);
+            const res = await fetch(`http://localhost:4000/api/listPlant/${id}`);
 
             if (res.status === 200) {
                 const data = await res.json();
                 setPlants(data.resultData);
-                setIsLoading(false);
                 setPage(1);
             }
         } catch (error) {
             console.error("Error fetching data: ", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchPlant();
-    }, [refresh]);
+        if(localStorage.getItem('UserData')) {
+            const user = JSON.parse(localStorage.getItem('UserData') || '{}')
+
+            if(user) {
+                setId(user.id);
+            }
+        }
+    }, [])
+
+    useEffect(() => {
+        fetchPlant(id);
+    }, [id, refresh]);
 
     const convertDate = (dateConvert) => {
         const date = moment(dateConvert).locale('th');
@@ -144,7 +155,7 @@ export default function ListPlant() {
         // เพิ่ม 543 ปีเข้าไปในปี
         const buddhistYearDate = date.format('D MMMM') + ' ' + (date.year() + 543);
 
-        return (buddhistYearDate)
+        return (buddhistYearDate);
     }
 
     // Top content of table
@@ -250,9 +261,8 @@ export default function ListPlant() {
             >
                 <TableHeader>
                     <TableColumn allowsSorting key="id">ไอดี</TableColumn>
-                    <TableColumn allowsSorting key="plantname">ชื่อพืช</TableColumn>
                     <TableColumn allowsSorting key="plantedAt">วันที่ปลูก</TableColumn>
-                    <TableColumn allowsSorting key="user_id ">ผู้เพิ่มพืช</TableColumn>
+                    <TableColumn allowsSorting key="plantname">ชื่อพืช</TableColumn>
                     <TableColumn key="tools">จัดการ</TableColumn>
                 </TableHeader>
                 <TableBody 
@@ -264,9 +274,8 @@ export default function ListPlant() {
                      {(item) => (
                         <TableRow key={item.id}>
                             <TableCell>{item.id}</TableCell>
-                            <TableCell>{item.plantname}</TableCell>
                             <TableCell>{convertDate(item.plantedAt)}</TableCell>
-                            <TableCell>{item.user_id }</TableCell>
+                            <TableCell>{item.plantname}</TableCell>
                             <TableCell>
                                 <ButtonGroup>
                                     {item.plant_id === 0 && (
@@ -314,11 +323,9 @@ export default function ListPlant() {
                     setRefresh={setRefresh}
                     deleteSuccess={() => {
                         setSelectedKeys(new Set());
-            }}
+                    }}
                 />
             )}
-            
         </div>
     );
-
 }
