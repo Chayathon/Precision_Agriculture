@@ -1,17 +1,31 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tabs, Tab, useDisclosure } from '@nextui-org/react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Tabs, Tab, useDisclosure, Tooltip, ButtonGroup } from '@nextui-org/react'
 import moment from "moment";
 import 'moment/locale/th';
 import { FaPlus } from 'react-icons/fa6';
-import ModalCreatePlant from './ModalCreatePlant';
+import { CiEdit } from 'react-icons/ci';
+import { HiOutlineTrash } from 'react-icons/hi2';
+import ModalCreateFactor from './ModalCreateFactor';
+import ModalUpdateFactor from './ModalUpdateFactor';
+import ModalDeleteFactor from './ModalDeleteFactor';
+import ModalCreateNutrient from './ModalCreateNutrient';
+import ModalUpdateNutrient from './ModalUpdateNutrient';
+import ModalDeleteNutrient from './ModalDeleteNutrient';
 
 function ModalPlantVariable({ isOpen, onOpenChange, id }) {
     const [plant, setPlant] = useState('');
     const [factor, setFactor] = useState([]);
     const [nutrient, setNutrient] = useState([]);
+
+    const [selectedId, setSelectedId] = useState(null);
     const [refresh, setRefresh] = useState(false);
 
-    const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeCreate } = useDisclosure();
+    const { isOpen: isOpenCreateFactor, onOpen: onOpenCreateFactor, onOpenChange: onOpenChangeCreateFactor } = useDisclosure();
+    const { isOpen: isOpenUpdateFactor, onOpen: onOpenUpdateFactor, onOpenChange: onOpenChangeUpdateFactor } = useDisclosure();
+    const { isOpen: isOpenDeleteFactor, onOpen: onOpenDeleteFactor, onOpenChange: onOpenChangeDeleteFactor } = useDisclosure();
+    const { isOpen: isOpenCreateNutrient, onOpen: onOpenCreateNutrient, onOpenChange: onOpenChangeCreateNutrient } = useDisclosure();
+    const { isOpen: isOpenUpdateNutrient, onOpen: onOpenUpdateNutrient, onOpenChange: onOpenChangeUpdateNutrient } = useDisclosure();
+    const { isOpen: isOpenDeleteNutrient, onOpen: onOpenDeleteNutrient, onOpenChange: onOpenChangeDeleteNutrient } = useDisclosure();
     
     const fetchPlant = async () => {
         try {
@@ -30,7 +44,7 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
 
     const fetchFactorData = async () => {
         try {
-            const res = await fetch(`http://localhost:4000/api/getFactorById/${id}`);
+            const res = await fetch(`http://localhost:4000/api/getFactorByPlantId/${id}`);
                 
             if (!res.ok) {
                 throw new Error("Failed to fetch");
@@ -45,7 +59,7 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
 
     const fetchNutrientData = async () => {
         try {
-            const res = await fetch(`http://localhost:4000/api/getNutrientById/${id}`);
+            const res = await fetch(`http://localhost:4000/api/getNutrientByPlantId/${id}`);
                 
             if (!res.ok) {
                 throw new Error("Failed to fetch");
@@ -64,7 +78,7 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
             fetchFactorData();
             fetchNutrientData();
         }
-    }, [isOpen]);
+    }, [isOpen, refresh]);
 
     return (
         <>
@@ -72,17 +86,18 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
                 isOpen={isOpen} 
                 onOpenChange={onOpenChange}
                 placement="top-center"
-                size='4xl'
+                size='5xl'
             >
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">ค่าตัวแปรที่ {plant} ต้องการ</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">ค่าตัวแปรที่พืชต้องการ</ModalHeader>
                             <ModalBody>
                                 <Tabs aria-label="Options">
                                     <Tab key="Factor" title="ค่าตัวแปรที่เกี่ยวข้อง">
-                                        <div className="flex justify-end mb-2">
-                                            <Button  onPress={() => {onOpenCreate()}} color='success' endContent={<FaPlus />}>เพิ่ม</Button>
+                                        <div className="flex justify-between mb-2">
+                                            <p className='text-2xl font-bold'>{plant}</p>
+                                            <Button onPress={() => {onOpenCreateFactor()}} color='success' endContent={<FaPlus />}>เพิ่ม</Button>
                                         </div>
                                         <Table aria-label="Factor Data">
                                             <TableHeader>
@@ -103,15 +118,29 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
                                                         <TableCell>{item.pH}</TableCell>
                                                         <TableCell>{item.salinity}</TableCell>
                                                         <TableCell>{item.lightIntensity}</TableCell>
-                                                        <TableCell>แก้ไข</TableCell>
+                                                        <TableCell>
+                                                            <ButtonGroup>
+                                                                <Tooltip content="แก้ไข" color="warning">
+                                                                    <Button onPress={() => {setSelectedId(item.id); onOpenUpdateFactor();}} variant="light" size='sm'>
+                                                                        <CiEdit className="text-xl text-amber-500" />
+                                                                    </Button>
+                                                                </Tooltip>
+                                                                <Tooltip content="ลบ" color="danger">
+                                                                    <Button onPress={() => {setSelectedId(item.id); onOpenDeleteFactor();}} variant="light" size='sm'>
+                                                                        <HiOutlineTrash className="text-xl text-red-500" />
+                                                                    </Button>
+                                                                </Tooltip>
+                                                            </ButtonGroup>
+                                                        </TableCell>
                                                     </TableRow>
                                                 )}
                                             </TableBody>
                                         </Table>
                                     </Tab>
                                     <Tab key="Nutrient" title="ค่าสารอาหาร">
-                                        <div className="flex justify-end mb-2">
-                                            <Button  onPress={() => {onOpenCreate()}} color='success' endContent={<FaPlus />}>เพิ่ม</Button>
+                                        <div className="flex justify-between mb-2">
+                                        <p className='text-2xl font-bold'>{plant}</p>
+                                            <Button onPress={() => {onOpenCreateNutrient()}} color='success' endContent={<FaPlus />}>เพิ่ม</Button>
                                         </div>
                                         <Table aria-label="Nutrient Data">
                                             <TableHeader>
@@ -128,7 +157,20 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
                                                         <TableCell>{item.nitrogen}</TableCell>
                                                         <TableCell>{item.phosphorus}</TableCell>
                                                         <TableCell>{item.potassium}</TableCell>
-                                                        <TableCell>แก้ไข</TableCell>
+                                                        <TableCell>
+                                                            <ButtonGroup>
+                                                                <Tooltip content="แก้ไข" color="warning">
+                                                                    <Button onPress={() => {setSelectedId(item.id); onOpenUpdateNutrient();}} variant="light" size='sm'>
+                                                                        <CiEdit className="text-xl text-amber-500" />
+                                                                    </Button>
+                                                                </Tooltip>
+                                                                <Tooltip content="ลบ" color="danger">
+                                                                    <Button onPress={() => {setSelectedId(item.id); onOpenDeleteNutrient();}} variant="light" size='sm'>
+                                                                        <HiOutlineTrash className="text-xl text-red-500" />
+                                                                    </Button>
+                                                                </Tooltip>
+                                                            </ButtonGroup>
+                                                        </TableCell>
                                                     </TableRow>
                                                 )}
                                             </TableBody>
@@ -146,8 +188,23 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
                 </ModalContent>
             </Modal>
 
-            {isOpenCreate && (
-                <ModalCreatePlant isOpen={isOpenCreate} onOpenChange={onOpenChangeCreate} setRefresh={setRefresh} />
+            {isOpenCreateFactor && (
+                <ModalCreateFactor isOpen={isOpenCreateFactor} onOpenChange={onOpenChangeCreateFactor} setRefresh={setRefresh} id={id} />
+            )}
+            {isOpenUpdateFactor && (
+                <ModalUpdateFactor isOpen={isOpenUpdateFactor} onOpenChange={onOpenChangeUpdateFactor} setRefresh={setRefresh} id={selectedId} />
+            )}
+            {isOpenDeleteFactor && (
+                <ModalDeleteFactor isOpen={isOpenDeleteFactor} onOpenChange={onOpenChangeDeleteFactor} setRefresh={setRefresh} id={selectedId} />
+            )}
+            {isOpenCreateNutrient && (
+                <ModalCreateNutrient isOpen={isOpenCreateNutrient} onOpenChange={onOpenChangeCreateNutrient} setRefresh={setRefresh} id={id} />
+            )}
+            {isOpenUpdateNutrient && (
+                <ModalUpdateNutrient isOpen={isOpenUpdateNutrient} onOpenChange={onOpenChangeUpdateNutrient} setRefresh={setRefresh} id={selectedId} />
+            )}
+            {isOpenDeleteNutrient && (
+                <ModalDeleteNutrient isOpen={isOpenDeleteNutrient} onOpenChange={onOpenChangeDeleteNutrient} setRefresh={setRefresh} id={selectedId} />
             )}
         </>
     )

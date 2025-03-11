@@ -14,6 +14,7 @@ app.use('/api', require('./router/admin'));
 app.use('/api', require('./router/role'));
 app.use('/api', require('./router/plant'));
 app.use('/api', require('./router/plant_variable'));
+app.use('/api', require('./router/factor_nutrient'));
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
