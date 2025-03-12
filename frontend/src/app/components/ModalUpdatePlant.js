@@ -23,7 +23,7 @@ function ModalUpdatePlant({ isOpen, onOpenChange, id, setRefresh }) {
                 }
             }
 
-            fetchData()
+            fetchData();
         }
     }, [isOpen])
 
@@ -32,7 +32,7 @@ function ModalUpdatePlant({ isOpen, onOpenChange, id, setRefresh }) {
         setIsLoading(true);
 
         if(!plantName) {
-            toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!")
+            toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
             setIsLoading(false);
             return;
         }
@@ -46,10 +46,10 @@ function ModalUpdatePlant({ isOpen, onOpenChange, id, setRefresh }) {
                 body: JSON.stringify({
                     plantName
                 })
-            })
+            });
 
             if(res.status === 200) {
-                const form = e.target
+                const form = e.target;
                 form.reset();
 
                 toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว");
