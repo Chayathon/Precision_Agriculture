@@ -13,7 +13,7 @@ import ModalDeletePlant from "../components/ModalDeletePlant";
 import ModalMultiDeletePlant from "../components/ModalMultiDeletePlant";
 import ModalPlantVariable from "../components/ModalPlantVariable";
 
-export default function ListRole() {
+export default function ListPlant() {
     const [plantAvaliables, setPlantAvaliable] = useState([]);
 
     const [refresh, setRefresh] = useState(false);
@@ -40,8 +40,8 @@ export default function ListRole() {
         let filteredUsers = [...plantAvaliables];
 
         if (filterValue) {
-            filteredUsers = filteredUsers.filter((role) =>
-                role.role_name?.toLowerCase().includes(filterValue.toLowerCase())
+            filteredUsers = filteredUsers.filter((plant) =>
+                plant.plantname?.toLowerCase().includes(filterValue.toLowerCase())
             );
         }
 

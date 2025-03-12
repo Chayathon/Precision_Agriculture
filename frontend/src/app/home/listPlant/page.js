@@ -1,7 +1,6 @@
-'use client';
+"use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
-import Cookies from "js-cookie";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure } from "@nextui-org/react";
 import { FaPlus, FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
@@ -9,25 +8,25 @@ import { CiEdit, CiViewList } from "react-icons/ci";
 import { HiOutlineTrash } from "react-icons/hi2";
 import moment from "moment";
 import 'moment/locale/th';
-import ModalCreatePlant from "../../components/ModalCreatePlant";
-import ModalUpdatePlant from "../../components/ModalUpdatePlant";
-import ModalDeletePlant from "../../components/ModalDeletePlant";
-import ModalMultiDeletePlant from "../../components/ModalMultiDeletePlant";
+import ModalCreatePlant from "@/app/components/ModalCreatePlant";
+import ModalUpdatePlant from "@/app/components/ModalUpdatePlant";
+import ModalDeletePlant from "@/app/components/ModalDeletePlant";
+import ModalMultiDeletePlant from "@/app/components/ModalMultiDeletePlant";
 import ModalPlantVariable from "@/app/components/ModalPlantVariable";
 
 export default function ListPlant() {
-    const [id, setId] = useState('');
+    const [userId, setUserId] = useState(null);
     const [plants, setPlants] = useState([]);
 
     const [refresh, setRefresh] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
     const [selectedId, setSelectedId] = useState(null);
-    const { isOpen: isOpenPlantVariable, onOpen: onOpenPlantVariable, onOpenChange: onOpenChangePlantVariable } = useDisclosure();
     const { isOpen: isOpenCreate, onOpen: onOpenCreate, onOpenChange: onOpenChangeCreate } = useDisclosure();
     const { isOpen: isOpenUpdate, onOpen: onOpenUpdate, onOpenChange: onOpenChangeUpdate } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onOpenChange: onOpenChangeDelete } = useDisclosure();
     const { isOpen: isOpenMultiDelete, onOpen: onOpenMultiDelete, onOpenChange: onOpenChangeMultiDelete } = useDisclosure();
+    const { isOpen: isOpenPlantVariable, onOpen: onOpenPlantVariable, onOpenChange: onOpenChangePlantVariable } = useDisclosure();
 
     const [filterValue, setFilterValue] = useState("");
     const [selectedKeys, setSelectedKeys] = useState(new Set([]));
@@ -51,16 +50,16 @@ export default function ListPlant() {
         return filteredUsers;
     }, [plants, filterValue]);
 
-      // Calculate pagination
-      const pages = Math.ceil(filteredItems.length / rowsPerPage);
-      const items = useMemo(() => {
-          const start = (page - 1) * rowsPerPage;
-          const end = start + rowsPerPage;
-  
-          return filteredItems.slice(start, end);
-      }, [page, filteredItems, rowsPerPage]);
+    // Calculate pagination
+    const pages = Math.ceil(filteredItems.length / rowsPerPage);
+    const items = useMemo(() => {
+        const start = (page - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
 
-       // Sort items
+        return filteredItems.slice(start, end);
+    }, [page, filteredItems, rowsPerPage]);
+
+    // Sort items
     const sortedItems = useMemo(() => {
         if (!sortDescriptor.column) return items;
 
@@ -118,36 +117,32 @@ export default function ListPlant() {
         setPage(1)
     }, []);
 
-     // Fetch plant data
-    const fetchPlant = async (id) => {
+    // Fetch users data
+    const fetchPlant = async () => {
         try {
-            const res = await fetch(`http://localhost:4000/api/listPlant/${id}`);
+            const res = await fetch(`http://localhost:4000/api/listPlant/${userId}`);
 
             if (res.status === 200) {
                 const data = await res.json();
                 setPlants(data.resultData);
+                setIsLoading(false);
                 setPage(1);
             }
         } catch (error) {
             console.error("Error fetching data: ", error);
-        } finally {
-            setIsLoading(false);
         }
     };
 
     useEffect(() => {
-        if(localStorage.getItem('UserData')) {
-            const user = JSON.parse(localStorage.getItem('UserData') || '{}')
-
-            if(user) {
-                setId(user.id);
-            }
+        if (typeof window !== "undefined") {
+            const userData = JSON.parse(localStorage.getItem("UserData") || "{}");
+            setUserId(userData.id);
         }
-    }, [])
+    }, []);
 
     useEffect(() => {
-        fetchPlant(id);
-    }, [id, refresh]);
+        fetchPlant();
+    }, [userId, refresh]);
 
     const convertDate = (dateConvert) => {
         const date = moment(dateConvert).locale('th');
@@ -209,8 +204,8 @@ export default function ListPlant() {
         );
     }, [filterValue, onRowsPerPageChange, plants.length, onSearchChange, selectedKeys.size]);
 
-     // Bottom content of table
-     const bottomContent = useMemo(() => {
+    // Bottom content of table
+    const bottomContent = useMemo(() => {
         return (
             <div className="py-2 px-2 flex justify-between items-center">
                 <span className="w-[30%] text-small text-default-400">
@@ -241,6 +236,17 @@ export default function ListPlant() {
         );
     }, [selectedKeys, items.length, page, pages, onPreviousPage, onNextPage]);
 
+    if (!userId) {
+        return <div className="flex flex-col pt-16">
+            <div className="flex justify-center">
+                <div className="w-16 h-16 border-t-2 border-black rounded-full animate-spin"></div>
+            </div>
+            <div>
+                <p className="text-center text-xl py-2">กำลังโหลดข้อมูล...</p>
+            </div>
+      </div>
+    }
+
     return (
         <div className='m-4'>
             <Table
@@ -260,7 +266,6 @@ export default function ListPlant() {
                 onSortChange={setSortDescriptor}
             >
                 <TableHeader>
-                    <TableColumn allowsSorting key="id">ไอดี</TableColumn>
                     <TableColumn allowsSorting key="plantedAt">วันที่ปลูก</TableColumn>
                     <TableColumn allowsSorting key="plantname">ชื่อพืช</TableColumn>
                     <TableColumn key="tools">จัดการ</TableColumn>
@@ -271,14 +276,13 @@ export default function ListPlant() {
                     emptyContent={!isLoading ? "ไม่มีข้อมูล" : null}
                     items={sortedItems}
                 >
-                     {(item) => (
+                    {(item) => (
                         <TableRow key={item.id}>
-                            <TableCell>{item.id}</TableCell>
                             <TableCell>{convertDate(item.plantedAt)}</TableCell>
                             <TableCell>{item.plantname}</TableCell>
                             <TableCell>
                                 <ButtonGroup>
-                                    {item.plant_id === 0 && (
+                                    {item.id === 0 && (
                                         <Tooltip content="เพิ่มค่าตัวแปร" color="success">
                                             <Button onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}} variant="light" size='sm'>
                                                 <CiViewList  className="text-xl text-success-500" />
@@ -299,15 +303,11 @@ export default function ListPlant() {
                             </TableCell>
                         </TableRow>
                     )}
-                
                 </TableBody>
-            </Table> 
-
-            {isOpenPlantVariable && (
-                <ModalPlantVariable isOpen={isOpenPlantVariable} onOpenChange={onOpenChangePlantVariable} id={selectedId} />
-            )}
+            </Table>
+            
             {isOpenCreate && (
-                <ModalCreatePlant isOpen={isOpenCreate} onOpenChange={onOpenChangeCreate} setRefresh={setRefresh} userId={Cookies.get("UserData")} />
+                <ModalCreatePlant isOpen={isOpenCreate} onOpenChange={onOpenChangeCreate} setRefresh={setRefresh} />
             )}
             {isOpenUpdate && (
                 <ModalUpdatePlant isOpen={isOpenUpdate} onOpenChange={onOpenChangeUpdate} id={selectedId} setRefresh={setRefresh} />
@@ -325,6 +325,9 @@ export default function ListPlant() {
                         setSelectedKeys(new Set());
                     }}
                 />
+            )}
+            {isOpenPlantVariable && (
+                <ModalPlantVariable isOpen={isOpenPlantVariable} onOpenChange={onOpenChangePlantVariable} id={selectedId} />
             )}
         </div>
     );

@@ -66,7 +66,7 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
             return;
         }
 
-        const plantName = selectedPlant.plantname === "อื่นๆ" ? customPlant : selectedPlant;
+        const plantName = selectedPlant.id === 0 ? customPlant : selectedPlant;
 
         if (!plantName) {
             toast.error("กรุณาระบุชื่อพืช!");
@@ -90,7 +90,7 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    plantName: selectedPlant.plantname === "อื่นๆ" ? customPlant : selectedPlant.plantname,
+                    plantName: selectedPlant.id === 0 ? customPlant : selectedPlant.plantname,
                     plantAt,
                     plantId: selectedPlant.id,
                     userId: parsedUserData.id,  // ส่ง userId ที่ได้จาก parsedUserData
