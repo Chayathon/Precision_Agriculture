@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Select, SelectSection, SelectItem, DateInput, Badge, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
 import { FaBell, FaUserGear, FaArrowRightFromBracket } from "react-icons/fa6";
 import { toast } from 'react-toastify';
-import Dashboard from '../home/dashboard/page';
+import Dashboard from '../home/dashboard/[id]/page';
 
 function UserNavbar() {
     const router = useRouter();
@@ -15,23 +15,28 @@ function UserNavbar() {
 
     const [currentDateTime, setCurrentDateTime] = useState({ date: '', time: '' });
 
-    const [id, setId] = useState('')
-    const [name, setName] = useState('')
-    const [userEmail, setUserEmail] = useState('')
+    const [id, setId] = useState('');
+    const [name, setName] = useState('');
+    const [userEmail, setUserEmail] = useState('');
 
+    const [plants, setPlants] = useState([]);
     const [selectedPlantId, setSelectedPlantId] = useState(null);
     const [selectedKeys, setSelectedKeys] = useState(new Set([]));
-    const [plants, setPlants] = useState([]);
 
-    const selectedValue = useMemo(
-        () => {
-            if (selectedKeys.size === 0) return 'เลือกพืช';
-            const selectedPlantId = Array.from(selectedKeys)[0];
-            const selectedPlant = plants.find(item => item.id.toString() === selectedPlantId);
-            return selectedPlant ? selectedPlant.plantname : 'เลือกพืช';
-        },
-        [selectedKeys, plants]
-    );
+    // const selectedValue = useMemo(
+    //     () => Array.from(selectedKeys).join(", ").replace(/_/g, ""),
+    //     [selectedKeys],
+    // );
+
+    // console.log("Key: ", Array.from(selectedKeys)[0]);
+
+    const selectedValue = useMemo(() => {
+        const selectedId = Array.from(selectedKeys)[0];
+        const selectedPlant = plants.find(plant => plant.id.toString() === selectedId);
+        setSelectedPlantId(selectedId); // ถ้ายังต้องการเก็บ ID
+        
+        return selectedPlant ? selectedPlant.plantname : "เลือกพืช"; // Default text
+    }, [selectedKeys, plants]);
 
     const [notifications, setNotifications] = useState([]);
 
@@ -75,7 +80,7 @@ function UserNavbar() {
                 setUserEmail(user.email);
             }
         }
-    }, [])
+    }, []);
 
     useEffect(() => {
         const updateDateTime = () => {
@@ -90,14 +95,33 @@ function UserNavbar() {
         updateDateTime();
         const intervalId = setInterval(updateDateTime, 1000);
         return () => clearInterval(intervalId);
-      }, []);
+    }, []);
 
     useEffect(() => {
-        if(pathname !== "/home/dashboard") {
+        // แยก pathname ออกเป็น array โดยใช้ "/"
+        const pathParts = pathname.split('/');
+        
+        // หา index ของ "dashboard" ใน path
+        const dashboardIndex = pathParts.indexOf('dashboard');
+        
+        // ถ้ามี id หลัง dashboard (index + 1)
+        if (dashboardIndex !== -1 && dashboardIndex + 1 < pathParts.length) {
+            const id = pathParts[dashboardIndex + 1];
+            
+            // ถ้าเป็นหน้า dashboard และมี id
+            if (pathname.includes('/home/dashboard') && id) {
+                setSelectedKeys(new Set([id])); // set id เป็น selected key
+                setSelectedPlantId(id); // set id เข้า plantId ด้วย
+            } else {
+                setSelectedKeys(new Set([]));
+                setSelectedPlantId(null);
+            }
+        } else {
+            // ถ้าไม่มี id
             setSelectedKeys(new Set([]));
             setSelectedPlantId(null);
         }
-    }, [pathname])
+    }, [pathname]);
 
     useEffect(() => {
         if(id) {
@@ -107,8 +131,7 @@ function UserNavbar() {
 
     useEffect(() => {
         if (selectedKeys.size > 0) {
-            setSelectedPlantId(Array.from(selectedKeys)[0]);
-            router.push('/home/dashboard');
+            router.push(`/home/dashboard/${selectedPlantId}`);
         }
     }, [selectedKeys]);
 
@@ -164,7 +187,7 @@ function UserNavbar() {
             }
             fetchData();
         }
-    }, [isOpenEdit])
+    }, [isOpenEdit]);
 
     const handleSubmitEdit = async (e) => {
         e.preventDefault();
@@ -187,7 +210,7 @@ function UserNavbar() {
                 })
             });
 
-            if(res.ok) {
+            if(res.status === 200) {
                 const form = e.target;
                 form.reset();
 
@@ -246,14 +269,15 @@ function UserNavbar() {
                         <DropdownMenu 
                             aria-label="Select plant"
                             variant="flat"
-                            disallowEmptySelection
                             selectionMode="single"
+                            items={plants}
                             selectedKeys={selectedKeys}
                             onSelectionChange={setSelectedKeys}
+                            disallowEmptySelection
                         >
-                            {plants.map((item) => (
+                            {(item) => (
                                 <DropdownItem key={item.id}>{item.plantname}</DropdownItem>
-                            ))}
+                            )}
                         </DropdownMenu>
                     </Dropdown>
                 </NavbarContent>
@@ -395,7 +419,7 @@ function UserNavbar() {
                     </Modal>
                 </NavbarContent>
             </Navbar>
-            {selectedPlantId && <Dashboard id={selectedPlantId} />}
+            {/* {selectedPlantId ? <Dashboard id={selectedPlantId} /> : "กรุณาเลือกพืช"} */}
         </>
     )
 }
