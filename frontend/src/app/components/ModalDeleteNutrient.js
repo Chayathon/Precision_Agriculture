@@ -26,7 +26,10 @@ function ModalDeleteNutrient({ isOpen, onOpenChange, id, setRefresh }) {
             console.error("Error: ", err);
         } finally {
             setIsLoading(false);
-            setRefresh(false);
+
+            setTimeout(() => {
+                setRefresh(false);
+            }, 1000);
         }
     }
 

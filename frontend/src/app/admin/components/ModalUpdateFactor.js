@@ -69,7 +69,10 @@ function ModalUpdateFactor({ isOpen, onOpenChange, id, setRefresh }) {
             console.log(err);
         } finally {
             setIsLoading(false);
-            setRefresh(false);
+
+            setTimeout(() => {
+                setRefresh(false);
+            }, 1000);
         }
     }
 

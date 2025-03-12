@@ -52,13 +52,9 @@ function ModalUpdatePlant({ isOpen, onOpenChange, id, setRefresh }) {
                 const form = e.target
                 form.reset();
 
-                toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว")  ;
+                toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว");
                 onOpenChange(false);
                 setRefresh(true);
-
-                setTimeout(() => {
-                    setRefresh(false);
-                }, 1000);
             }
             else {
                 toast.error("แก้ไขข้อมูลล้มเหลว");
@@ -68,6 +64,10 @@ function ModalUpdatePlant({ isOpen, onOpenChange, id, setRefresh }) {
             console.log(err);
         } finally {
             setIsLoading(false);
+
+            setTimeout(() => {
+                setRefresh(false);
+            }, 1000);
         }
     }
 
@@ -86,7 +86,7 @@ function ModalUpdatePlant({ isOpen, onOpenChange, id, setRefresh }) {
                             <form onSubmit={handleSubmit}>
                                 <Input
                                     autoFocus
-                                    label="พืช"
+                                    label="ชื่อพืช"
                                     variant="bordered"
                                     value={plantName}
                                     onChange={(e) => setPlantName(e.target.value)}
@@ -98,6 +98,8 @@ function ModalUpdatePlant({ isOpen, onOpenChange, id, setRefresh }) {
                                     <Button
                                         type='submit'
                                         color='warning'
+                                        isLoading={isLoading}
+                                        disabled={isLoading}
                                     >
                                         {isLoading ? 'กำลังแก้ไขข้อมูล...' : 'แก้ไข'}
                                     </Button>

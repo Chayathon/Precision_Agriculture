@@ -142,7 +142,7 @@ export default function ListPlant() {
 
     useEffect(() => {
         fetchPlant();
-    }, [userId, refresh]);
+    }, [refresh, userId]);
 
     const convertDate = (dateConvert) => {
         const date = moment(dateConvert).locale('th');
@@ -282,18 +282,20 @@ export default function ListPlant() {
                             <TableCell>{item.plantname}</TableCell>
                             <TableCell>
                                 <ButtonGroup>
-                                    {item.id === 0 && (
-                                        <Tooltip content="เพิ่มค่าตัวแปร" color="success">
-                                            <Button onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}} variant="light" size='sm'>
-                                                <CiViewList  className="text-xl text-success-500" />
-                                            </Button>
-                                        </Tooltip>
+                                    {item.plant_id === 0 && (
+                                        <>
+                                            <Tooltip content="เพิ่มค่าตัวแปร" color="success">
+                                                <Button onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}} variant="light" size='sm'>
+                                                    <CiViewList  className="text-xl text-success-500" />
+                                                </Button>
+                                            </Tooltip>
+                                            <Tooltip content="แก้ไข" color="warning">
+                                                <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}} variant="light" size='sm'>
+                                                    <CiEdit className="text-xl text-amber-500" />
+                                                </Button>
+                                            </Tooltip>
+                                        </>
                                     )}
-                                    <Tooltip content="แก้ไข" color="warning">
-                                        <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}} variant="light" size='sm'>
-                                            <CiEdit className="text-xl text-amber-500" />
-                                        </Button>
-                                    </Tooltip>
                                     <Tooltip content="ลบ" color="danger">
                                         <Button onPress={() => {setSelectedId(item.id); onOpenDelete();}} variant="light" size='sm'>
                                             <HiOutlineTrash className="text-xl text-red-500" />

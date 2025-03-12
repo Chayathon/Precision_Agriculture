@@ -35,14 +35,10 @@ function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
                 method: 'DELETE'
             });
 
-            if (res.ok) {
+            if (res.status === 200) {
                 toast.success("ลบข้อมูลเรียบร้อยแล้ว")  
                 onOpenChange(false);
                 setRefresh(true)
-
-                setTimeout(() => {
-                    setRefresh(false)
-                }, 1000)
             }
             else {
                 toast.error("ลบข้อมูลล้มเหลว")
@@ -52,6 +48,10 @@ function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
             console.error("Error: ", err);
         } finally {
             setIsLoading(false);
+
+            setTimeout(() => {
+                setRefresh(false)
+            }, 1000)
         }
     }
 

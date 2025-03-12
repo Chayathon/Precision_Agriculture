@@ -50,7 +50,10 @@ function ModalCreateFactor({ isOpen, onOpenChange, setRefresh, id }) {
             console.log("Error:", err);
         } finally {
             setIsLoading(false);
-            setRefresh(false);
+            
+            setTimeout(() => {
+                setRefresh(false);
+            }, 1000);
         }
     };
 

@@ -28,15 +28,15 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
         fetchPlantAvaliable();
     }, []);
 
-    // ฟังก์ชัน handleDateChange ถูกประกาศในขอบเขตเดียวกับคอมโพเนนต์
-    const handleDateChange = (date) => {
-        setPlantAt(date?.toString() || ''); // แปลงเป็น string หรือฟอร์แมตตามที่ต้องการ
-    };
-
     useEffect(() => {
         const dateNow = today(getLocalTimeZone()).toString();
         setPlantAt(dateNow);
     }, []);
+
+    // ฟังก์ชัน handleDateChange ถูกประกาศในขอบเขตเดียวกับคอมโพเนนต์
+    const handleDateChange = (date) => {
+        setPlantAt(date?.toString() || ''); // แปลงเป็น string หรือฟอร์แมตตามที่ต้องการ
+    };
 
     const handleSelectionChange = (key) => {
         // หา item ที่ตรงกับ key ที่เลือก
@@ -53,7 +53,6 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                 plantname: "",
             })
         }
-        console.log(selectedPlant);
     };
 
     const handleSubmit = async (e) => {
@@ -105,10 +104,6 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                 onOpenChange(false);
                 setRefresh(true);
 
-                setTimeout(() => {
-                    setRefresh(false);
-                }, 1000);
-
             } else {
                 toast.warn("เพิ่มข้อมูลล้มเหลว");
                 return;
@@ -117,6 +112,10 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
             console.log("Error", err);
         } finally {
             setIsLoading(false);
+
+            setTimeout(() => {
+                setRefresh(false);
+            }, 1000);
         }
     };
 
