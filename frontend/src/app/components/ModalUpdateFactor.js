@@ -36,7 +36,7 @@ function ModalUpdateFactor({ isOpen, onOpenChange, id, setRefresh }) {
 
             fetchData();
         }
-    }, [isOpen])
+    }, [isOpen]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -51,7 +51,7 @@ function ModalUpdateFactor({ isOpen, onOpenChange, id, setRefresh }) {
                 body: JSON.stringify({
                     age, ph, temperature, humidity, salinity, lightIntensity
                 })
-            })
+            });
 
             if(res.status === 200) {
                 const form = e.target;

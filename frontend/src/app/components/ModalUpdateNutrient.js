@@ -47,7 +47,7 @@ function ModalUpdateNutrient({ isOpen, onOpenChange, id, setRefresh }) {
                 body: JSON.stringify({
                     age, nitrogen, phosphorus, potassium
                 })
-            })
+            });
 
             if(res.status === 200) {
                 const form = e.target;

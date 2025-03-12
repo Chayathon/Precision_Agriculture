@@ -257,22 +257,24 @@ export default function ListPlant() {
                             <TableCell>
                                 <ButtonGroup>
                                     {item.id > 0 && (
-                                        <Tooltip content="เพิ่มค่าตัวแปร" color="success">
-                                            <Button onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}} variant="light" size='sm'>
-                                                <CiViewList  className="text-xl text-success-500" />
-                                            </Button>
-                                        </Tooltip>
+                                        <>
+                                            <Tooltip content="เพิ่มค่าตัวแปร" color="success">
+                                                <Button onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}} variant="light" size='sm'>
+                                                    <CiViewList  className="text-xl text-success-500" />
+                                                </Button>
+                                            </Tooltip>
+                                            <Tooltip content="แก้ไข" color="warning">
+                                                <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}} variant="light" size='sm'>
+                                                    <CiEdit className="text-xl text-amber-500" />
+                                                </Button>
+                                            </Tooltip>
+                                            <Tooltip content="ลบ" color="danger">
+                                                <Button onPress={() => {setSelectedId(item.id); onOpenDelete();}} variant="light" size='sm'>
+                                                    <HiOutlineTrash className="text-xl text-red-500" />
+                                                </Button>
+                                            </Tooltip>
+                                        </>
                                     )}
-                                    <Tooltip content="แก้ไข" color="warning">
-                                        <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}} variant="light" size='sm'>
-                                            <CiEdit className="text-xl text-amber-500" />
-                                        </Button>
-                                    </Tooltip>
-                                    <Tooltip content="ลบ" color="danger">
-                                        <Button onPress={() => {setSelectedId(item.id); onOpenDelete();}} variant="light" size='sm'>
-                                            <HiOutlineTrash className="text-xl text-red-500" />
-                                        </Button>
-                                    </Tooltip>
                                 </ButtonGroup>
                             </TableCell>
                         </TableRow>

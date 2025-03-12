@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure, Spinner } from "@nextui-org/react";
 import { FaPlus, FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { CiEdit, CiViewList } from "react-icons/ci";
@@ -239,10 +239,7 @@ export default function ListPlant() {
     if (!userId) {
         return <div className="flex flex-col pt-16">
             <div className="flex justify-center">
-                <div className="w-16 h-16 border-t-2 border-black rounded-full animate-spin"></div>
-            </div>
-            <div>
-                <p className="text-center text-xl py-2">กำลังโหลดข้อมูล...</p>
+                <Spinner size="lg" label="กำลังโหลดข้อมูล..." />
             </div>
       </div>
     }
