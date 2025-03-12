@@ -30,7 +30,7 @@ function Dashboard({ params }) {
   const [nutrientData, setNutrientData] = useState(null);
   const [factorData, setFactorData] = useState(null);
   const [otherPlant, setOtherPlant] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [selectedId, setSelectedId] = useState(null);
 
@@ -405,7 +405,7 @@ function Dashboard({ params }) {
         <div className="flex justify-center pt-16">
           <Spinner size="lg" label="กำลังโหลดข้อมูล..." />
         </div>
-      ) : (plantData && plantDatas && nutrientData && factorData) ? (
+      ) : (!isLoading && plantData && plantDatas && nutrientData && factorData) ? (
         <>
           <div className="grid grid-cols-3 gap-4 mb-4">
             <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
