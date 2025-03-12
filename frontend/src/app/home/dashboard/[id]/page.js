@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Card, CardHeader, CardBody, CardFooter, Button, useDisclosure, ButtonGroup } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter, Button, useDisclosure, ButtonGroup, Spinner } from "@nextui-org/react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -30,6 +30,7 @@ function Dashboard({ params }) {
   const [nutrientData, setNutrientData] = useState(null);
   const [factorData, setFactorData] = useState(null);
   const [otherPlant, setOtherPlant] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [selectedId, setSelectedId] = useState(null);
 
@@ -54,6 +55,7 @@ function Dashboard({ params }) {
 
   const fetchNutrient = async (plantId) => {
     try {
+      setIsLoading(true);
       const res = await fetch(
         `http://localhost:4000/api/getNutrient/${plantId}/${plantAge}`
       );
@@ -64,11 +66,14 @@ function Dashboard({ params }) {
       }
     } catch (err) {
       console.error("Failed to fetch", err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const fetchFactor = async (plantId) => {
     try {
+      setIsLoading(true);
       const res = await fetch(
         `http://localhost:4000/api/getFactor/${plantId}/${plantAge}`
       );
@@ -79,11 +84,14 @@ function Dashboard({ params }) {
       }
     } catch (err) {
       console.error("Failed to fetch", err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const fetchOtherNutrient = async (plantId) => {
     try {
+      setIsLoading(true);
       const res = await fetch(
         `http://localhost:4000/api/getOtherNutrient/${plantId}/${plantAge}`
       );
@@ -94,11 +102,14 @@ function Dashboard({ params }) {
       }
     } catch (err) {
       console.error("Failed to fetch", err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const fetchOtherFactor = async (plantId) => {
     try {
+      setIsLoading(true);
       const res = await fetch(
         `http://localhost:4000/api/getOtherFactor/${plantId}/${plantAge}`
       );
@@ -109,11 +120,14 @@ function Dashboard({ params }) {
       }
     } catch (err) {
       console.error("Failed to fetch", err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const fetchPlant = async (plantId) => {
     try {
+      setIsLoading(true);
       const res = await fetch(`http://localhost:4000/api/getPlant/${plantId}`);
 
       if(res.status === 200) {
@@ -128,11 +142,14 @@ function Dashboard({ params }) {
       }
     } catch (err) {
       console.error("Failed to fetch", err);
+    } finally {
+      setIsLoading(false);
     }
   }
 
   const fetchPlantVariable = async (plantId) => {
     try {
+      setIsLoading(true);
       const res = await fetch(
         `http://localhost:4000/api/getPlantVariable/${plantId}`
       );
@@ -143,6 +160,8 @@ function Dashboard({ params }) {
       }
     } catch (err) {
       console.error("Failed to fetch", err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -382,7 +401,11 @@ function Dashboard({ params }) {
   
   return (
     <div className="m-4">
-      {plantData && plantDatas && nutrientData && factorData ? (
+      {isLoading ? (
+        <div className="flex justify-center pt-16">
+          <Spinner size="lg" label="กำลังโหลดข้อมูล..." />
+        </div>
+      ) : (plantData && plantDatas && nutrientData && factorData) ? (
         <>
           <div className="grid grid-cols-3 gap-4 mb-4">
             <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">

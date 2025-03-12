@@ -237,10 +237,8 @@ export default function ListPlant() {
     }, [selectedKeys, items.length, page, pages, onPreviousPage, onNextPage]);
 
     if (!userId) {
-        return <div className="flex flex-col pt-16">
-            <div className="flex justify-center">
-                <Spinner size="lg" label="กำลังโหลดข้อมูล..." />
-            </div>
+        return <div className="flex justify-center pt-16">
+            <Spinner size="lg" label="กำลังโหลดข้อมูล..." />
       </div>
     }
 

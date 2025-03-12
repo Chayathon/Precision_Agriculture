@@ -86,7 +86,7 @@ router.post("/login", async (req, res) => {
                 message: "Login Successfully",
                 token: token,
                 resultData: rest,
-                path: rest.role.role_name == "admin" ? "/admin" : "/home/dashboard",
+                path: rest.role.role_name == "admin" ? "/admin" : "/home",
             });
         }
         else {
