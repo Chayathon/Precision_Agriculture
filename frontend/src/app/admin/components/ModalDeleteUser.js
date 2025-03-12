@@ -3,7 +3,8 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from
 import { toast } from 'react-toastify'
 
 function ModalDeleteUser({ isOpen, onOpenChange, id, setRefresh }) {
-    const [username, setUsername] = useState('')
+    const [username, setUsername] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if(isOpen) {
@@ -16,30 +17,28 @@ function ModalDeleteUser({ isOpen, onOpenChange, id, setRefresh }) {
                     }
 
                     const data = await res.json();
-                    setUsername(data.resultData.username)
+                    setUsername(data.resultData.username);
                 } catch (err) {
                     console.error("Error fetching data: ", err);
                 }
             }
 
-            fetchData()
+            fetchData();
         }
     }, [isOpen])
 
-    const handleClick = async () => {
-        try{
+    const handleDelete = async () => {
+        setIsLoading(true);
+
+        try {
             const res = await fetch(`http://localhost:4000/api/deleteUser/${id}`, {
                 method: 'DELETE'
             });
 
-            if (res.ok) {
-                toast.success("ลบข้อมูลเรียบร้อยแล้ว")
+            if (res.status === 200) {
+                toast.success("ลบข้อมูลเรียบร้อยแล้ว");
                 onOpenChange(false);
-                setRefresh(true)
-
-                setTimeout(() => {
-                    setRefresh(false)
-                }, 1000)
+                setRefresh(true);
             }
             else {
                 toast.error("ลบข้อมูลล้มเหลว")
@@ -47,6 +46,12 @@ function ModalDeleteUser({ isOpen, onOpenChange, id, setRefresh }) {
             }
         } catch (err) {
             console.error("Error: ", err);
+        } finally {
+            setIsLoading(false);
+
+            setTimeout(() => {
+                setRefresh(false);
+            }, 1000);
         }
     }
 
@@ -64,8 +69,13 @@ function ModalDeleteUser({ isOpen, onOpenChange, id, setRefresh }) {
                             <Button variant="flat" onPress={onClose}>
                                 ยกเลิก
                             </Button>
-                            <Button color="danger" onPress={handleClick}>
-                                ลบ
+                            <Button
+                                color="danger"
+                                onPress={handleDelete}
+                                isLoading={isLoading}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
                             </Button>
                         </ModalFooter>
                     </>

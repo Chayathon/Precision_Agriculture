@@ -53,7 +53,7 @@ function ModalDeleteNutrient({ isOpen, onOpenChange, id, setRefresh }) {
                                     isLoading={isLoading}
                                     disabled={isLoading}
                                 >
-                                    ลบ
+                                    {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
                                 </Button>
                             </ModalFooter>
                         </>

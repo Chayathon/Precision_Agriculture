@@ -6,25 +6,30 @@ function ModalCreateAdmin({ isOpen, onOpenChange, setRefresh }) {
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
 
-    const [firstname, setFirstname] = useState('')
-    const [lastname, setLastname] = useState('')
-    const [email, setEmail] = useState('')
-    const [tel, setTel] = useState('')
-    const [address, setAddress] = useState('')
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [email, setEmail] = useState('');
+    const [tel, setTel] = useState('');
+    const [address, setAddress] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         if(password != confirmPassword) {
-            toast.error("รหัสผ่านไม่ตรงกัน!")
+            toast.error("รหัสผ่านไม่ตรงกัน!");
+            setIsLoading(false);
             return;
         }
 
         if(!firstname || !lastname || !email || !tel || !address || !username || !password || !confirmPassword) {
-            toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!")
+            toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
+            setIsLoading(false);
             return;
         }
 
@@ -37,28 +42,29 @@ function ModalCreateAdmin({ isOpen, onOpenChange, setRefresh }) {
                 body: JSON.stringify({
                     firstname, lastname, email, tel, address, username, password
                 })
-            })
+            });
 
-            if(res.ok) {
+            if(res.status === 200) {
                 const form = e.target
-                form.reset()
+                form.reset();
 
-                toast.success("เพิ่มข้อมูลเรียบร้อยแล้ว")
+                toast.success("เพิ่มข้อมูลเรียบร้อยแล้ว");
                 onOpenChange(false);
-                setRefresh(true)
-
-                setTimeout(() => {
-                    setRefresh(false)
-                }, 1000)
-                    
+                setRefresh(true);
             }
             else {
-                toast.warn("อีเมลหรือชื่อผู้ใช้นี้ มีอยู่แล้ว")
+                toast.warn("อีเมลหรือชื่อผู้ใช้นี้ มีอยู่แล้ว");
                 return;
             }
         }
         catch (err) {
-            console.log("Error", err)
+            console.log("Error", err);
+        } finally {
+            setIsLoading(false);
+
+            setTimeout(() => {
+                setRefresh(false);
+            }, 1000);
         }
     }
 
@@ -129,8 +135,13 @@ function ModalCreateAdmin({ isOpen, onOpenChange, setRefresh }) {
                                         <Button variant="flat" onPress={onClose}>
                                             ยกเลิก
                                         </Button>
-                                        <Button type='submit' color="success">
-                                            เพิ่ม
+                                        <Button
+                                            type='submit'
+                                            color="success"
+                                            isLoading={isLoading}
+                                            disabled={isLoading}
+                                        >
+                                            {isLoading ? 'กำลังเพิ่มข้อมูล...' : 'เพิ่ม'}
                                         </Button>
                                     </ModalFooter>
                                 </form>

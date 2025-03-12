@@ -13,7 +13,7 @@ function ModalDeleteNutrient({ isOpen, onOpenChange, id, setRefresh }) {
                 method: 'DELETE'
             });
 
-            if (res.ok) {
+            if (res.status === 200) {
                 toast.success("ลบข้อมูลค่าสารอาหารเรียบร้อยแล้ว");
                 onOpenChange(false);
                 setRefresh(true);
@@ -53,7 +53,7 @@ function ModalDeleteNutrient({ isOpen, onOpenChange, id, setRefresh }) {
                                     isLoading={isLoading}
                                     disabled={isLoading}
                                 >
-                                    ลบ
+                                    {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
                                 </Button>
                             </ModalFooter>
                         </>

@@ -3,7 +3,8 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from
 import { toast } from 'react-toastify'
 
 function ModalDeleteRole({ isOpen, onOpenChange, id, setRefresh }) {
-    const [roleName, setRoleName] = useState('')
+    const [roleName, setRoleName] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if(isOpen) {
@@ -27,19 +28,17 @@ function ModalDeleteRole({ isOpen, onOpenChange, id, setRefresh }) {
     }, [isOpen])
 
     const handleSubmit = async () => {
-        try{
+        setIsLoading(true);
+
+        try {
             const res = await fetch(`http://localhost:4000/api/deleteRole/${id}`, {
                 method: 'DELETE'
             });
 
-            if (res.ok) {
+            if (res.status === 200) {
                 toast.success("ลบข้อมูลเรียบร้อยแล้ว")  
                 onOpenChange(false);
-                setRefresh(true)
-
-                setTimeout(() => {
-                    setRefresh(false)
-                }, 1000)
+                setRefresh(true);
             }
             else {
                 toast.error("ลบข้อมูลล้มเหลว")
@@ -47,6 +46,12 @@ function ModalDeleteRole({ isOpen, onOpenChange, id, setRefresh }) {
             }
         } catch (err) {
             console.error("Error: ", err);
+        } finally {
+            setIsLoading(false);
+
+            setTimeout(() => {
+                setRefresh(false);
+            }, 1000);
         }
     }
 
@@ -64,8 +69,13 @@ function ModalDeleteRole({ isOpen, onOpenChange, id, setRefresh }) {
                         <Button variant="light" onPress={onClose}>
                             ยกเลิก
                         </Button>
-                        <Button color="danger" onPress={handleSubmit}>
-                            ลบ
+                        <Button
+                            color="danger"
+                            onPress={handleSubmit}
+                            isLoading={isLoading}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
                         </Button>
                     </ModalFooter>
                     </>

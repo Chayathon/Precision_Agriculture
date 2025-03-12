@@ -127,7 +127,7 @@ function ModalUpdateNutrient({ isOpen, onOpenChange, id, setRefresh }) {
                                             isLoading={isLoading}
                                             disabled={isLoading}
                                         >
-                                            แก้ไข
+                                            {isLoading ? 'กำลังแก้ไขข้อมูล...' : 'แก้ไข'}
                                         </Button>
                                     </ModalFooter>
                                 </form>

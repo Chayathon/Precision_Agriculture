@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 function ModalMultiDeletePlant({ isOpen, onOpenChange, selectedKeys, setRefresh, deleteSuccess }) {
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleClick = async () => {
+    const handleDelete = async () => {
         setIsLoading(true);
 
         try {
@@ -23,15 +23,15 @@ function ModalMultiDeletePlant({ isOpen, onOpenChange, selectedKeys, setRefresh,
             onOpenChange(false);
             setRefresh(true)
             deleteSuccess && deleteSuccess();
-
-            setTimeout(() => {
-                setRefresh(false)
-            }, 1000)
             
         } catch (error) {
             console.error("Error deleting users: ", error);
         } finally {
             setIsLoading(false);
+
+            setTimeout(() => {
+                setRefresh(false);
+            }, 1000);
         }
     };
 
@@ -50,7 +50,7 @@ function ModalMultiDeletePlant({ isOpen, onOpenChange, selectedKeys, setRefresh,
                         </Button>
                         <Button
                             color="danger"
-                            onPress={handleClick}
+                            onPress={handleDelete}
                             isLoading={isLoading}
                             disabled={isLoading}
                         >

@@ -3,7 +3,8 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input
 import { toast } from 'react-toastify'
 
 function ModalUpdateRole({ isOpen, onOpenChange, id, setRefresh }) {
-    const [roleName, setRoleName] = useState('')
+    const [roleName, setRoleName] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if(isOpen) {
@@ -24,13 +25,15 @@ function ModalUpdateRole({ isOpen, onOpenChange, id, setRefresh }) {
 
             fetchData()
         }
-    }, [isOpen])
+    }, [isOpen]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         if(!roleName) {
-            toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!")
+            toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
+            setIsLoading(false);
             return;
         }
 
@@ -43,26 +46,28 @@ function ModalUpdateRole({ isOpen, onOpenChange, id, setRefresh }) {
                 body: JSON.stringify({
                     roleName
                 })
-            })
+            });
 
-            if(res.ok) {
-                const form = e.target
-                form.reset()
+            if(res.status === 200) {
+                const form = e.target;
+                form.reset();
 
-                toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว")  
+                toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว")  ;
                 onOpenChange(false);
-                setRefresh(true)
-
-                setTimeout(() => {
-                    setRefresh(false)
-                }, 1000)
+                setRefresh(true);
             }
             else {
-                toast.error("แก้ไขข้อมูลล้มเหลว")
+                toast.error("แก้ไขข้อมูลล้มเหลว");
                 return;
             }
         } catch (err) {
             console.log(err);
+        } finally {
+            setIsLoading(false);
+
+            setTimeout(() => {
+                setRefresh(false);
+            }, 1000);
         }
     }
 
@@ -90,8 +95,13 @@ function ModalUpdateRole({ isOpen, onOpenChange, id, setRefresh }) {
                                     <Button variant="flat" onPress={onClose}>
                                         ยกเลิก
                                     </Button>
-                                    <Button type='submit' color="warning">
-                                        แก้ไข
+                                    <Button
+                                        type='submit'
+                                        color="warning"
+                                        isLoading={isLoading}
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? 'กำลังแก้ไขข้อมูล...' : 'แก้ไข'}
                                     </Button>
                                 </ModalFooter>
                             </form>

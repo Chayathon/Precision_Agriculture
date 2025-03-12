@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from '@nextui-org/react';
 import { toast } from 'react-toastify';
 
@@ -113,7 +113,7 @@ function ModalCreateFactor({ isOpen, onOpenChange, setRefresh, id }) {
                                 isLoading={isLoading}
                                 disabled={isLoading}
                             >
-                                เพิ่ม
+                                {isLoading ? 'กำลังเพิ่มข้อมูล...' : 'เพิ่ม'}
                             </Button>
                         </ModalFooter>
                     </form>

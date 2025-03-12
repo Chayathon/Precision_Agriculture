@@ -113,7 +113,7 @@ function ModalCreateFactor({ isOpen, onOpenChange, setRefresh, id }) {
                                 isLoading={isLoading}
                                 disabled={isLoading}
                             >
-                                เพิ่ม
+                                {isLoading ? 'กำลังเพิ่มข้อมูล...' : 'เพิ่ม'}
                             </Button>
                         </ModalFooter>
                     </form>

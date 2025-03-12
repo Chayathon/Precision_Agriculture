@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 
 function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
     const [plantName, setPlantName] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if(isOpen) {
@@ -27,7 +28,9 @@ function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
     }, [isOpen])
 
     const handleSubmit = async () => {
-        try{
+        setIsLoading(true);
+
+        try {
             const res = await fetch(`http://localhost:4000/api/deletePlantAvaliable/${id}`, {
                 method: 'DELETE'
             });
@@ -36,10 +39,6 @@ function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
                 toast.success("ลบข้อมูลเรียบร้อยแล้ว");
                 onOpenChange(false);
                 setRefresh(true);
-
-                setTimeout(() => {
-                    setRefresh(false);
-                }, 1000);
             }
             else {
                 toast.error("ลบข้อมูลล้มเหลว");
@@ -47,6 +46,12 @@ function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
             }
         } catch (err) {
             console.error("Error: ", err);
+        } finally {
+            setIsLoading(false);
+
+            setTimeout(() => {
+                setRefresh(false);
+            }, 1000);
         }
     }
 
@@ -64,8 +69,13 @@ function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
                             <Button variant="light" onPress={onClose}>
                                 ยกเลิก
                             </Button>
-                            <Button color="danger" onPress={handleSubmit}>
-                                ลบ
+                            <Button
+                                color="danger"
+                                onPress={handleSubmit}
+                                isLoading={isLoading}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
                             </Button>
                         </ModalFooter>
                         </>

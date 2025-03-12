@@ -4,12 +4,15 @@ import { toast } from 'react-toastify'
 
 function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
     const [plantName, setPlantName] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         if(!plantName) {
             toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
+            setIsLoading(false);
             return;
         }
 
@@ -31,10 +34,6 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                 toast.success("เพิ่มข้อมูลเรียบร้อยแล้ว");
                 onOpenChange(false);
                 setRefresh(true);
-
-                setTimeout(() => {
-                    setRefresh(false);
-                }, 1000);
                     
             }
             else {
@@ -44,6 +43,12 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
         }
         catch (err) {
             console.log("Error", err);
+        } finally {
+            setIsLoading(false);
+
+            setTimeout(() => {
+                setRefresh(false);
+            }, 1000);
         }
     }
 
@@ -69,8 +74,13 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                                     <Button variant="flat" onPress={onClose}>
                                         ยกเลิก
                                     </Button>
-                                    <Button type='submit' color="primary">
-                                        เพิ่ม
+                                    <Button
+                                        type='submit'
+                                        color="primary"
+                                        isLoading={isLoading}
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? 'กำลังเพิ่มข้อมูล...' : 'เพิ่ม'}
                                     </Button>
                                 </ModalFooter>
                             </form>

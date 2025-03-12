@@ -3,7 +3,11 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from
 import { toast } from 'react-toastify'
 
 function ModalMultiDeleteRole({ isOpen, onOpenChange, selectedKeys, setRefresh, deleteSuccess }) {
-    const handleClick = async () => {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleDelete = async () => {
+        setIsLoading(true);
+
         try {
             // สร้าง array ของ promises สำหรับการลบแต่ละ user
             const deletePromises = selectedKeys.map(roleId => 
@@ -19,13 +23,15 @@ function ModalMultiDeleteRole({ isOpen, onOpenChange, selectedKeys, setRefresh, 
             onOpenChange(false);
             setRefresh(true)
             deleteSuccess && deleteSuccess();
-
-            setTimeout(() => {
-                setRefresh(false)
-            }, 1000)
             
         } catch (error) {
             console.error("Error deleting users: ", error);
+        } finally {
+            setIsLoading(false);
+
+            setTimeout(() => {
+                setRefresh(false);
+            }, 1000);
         }
     };
 
@@ -42,8 +48,13 @@ function ModalMultiDeleteRole({ isOpen, onOpenChange, selectedKeys, setRefresh, 
                         <Button variant="flat" onPress={onClose}>
                             ยกเลิก
                         </Button>
-                        <Button color="danger" onPress={handleClick}>
-                            ลบ
+                        <Button
+                            color="danger"
+                            onPress={handleDelete}
+                            isLoading={isLoading}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
                         </Button>
                     </ModalFooter>
                 </>

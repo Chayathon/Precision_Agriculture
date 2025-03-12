@@ -6,13 +6,15 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
 
-    const [firstname, setFirstname] = useState('')
-    const [lastname, setLastname] = useState('')
-    const [email, setEmail] = useState('')
-    const [tel, setTel] = useState('')
-    const [address, setAddress] = useState('')
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [email, setEmail] = useState('');
+    const [tel, setTel] = useState('');
+    const [address, setAddress] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         if(isOpen) {
@@ -25,27 +27,29 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                     }
 
                     const data = await res.json();
-                    setFirstname(data.resultData.firstname)
-                    setLastname(data.resultData.lastname)
-                    setEmail(data.resultData.email)
-                    setTel(data.resultData.tel)
-                    setAddress(data.resultData.address)
-                    setUsername(data.resultData.username)
-                    setPassword(data.resultData.password)
+                    setFirstname(data.resultData.firstname);
+                    setLastname(data.resultData.lastname);
+                    setEmail(data.resultData.email);
+                    setTel(data.resultData.tel);
+                    setAddress(data.resultData.address);
+                    setUsername(data.resultData.username);
+                    setPassword(data.resultData.password);
                 } catch (err) {
                     console.error("Error fetching data: ", err);
                 }
             }
 
-            fetchData()
+            fetchData();
         }
     }, [isOpen])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         if(!firstname || !lastname || !email || !tel || !address) {
-            toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!")
+            toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
+            setIsLoading(false);
             return;
         }
 
@@ -58,19 +62,15 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                 body: JSON.stringify({
                     firstname, lastname, email, tel, address
                 })
-            })
+            });
 
-            if(res.ok) {
-                const form = e.target
-                form.reset()
+            if(res.status === 200) {
+                const form = e.target;
+                form.reset();
 
-                toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว")
+                toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว");
                 onOpenChange(false);
-                setRefresh(true)
-
-                setTimeout(() => {
-                    setRefresh(false)
-                }, 1000)
+                setRefresh(true);
             }
             else {
                 toast.error("แก้ไขข้อมูลล้มเหลว")
@@ -78,6 +78,12 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
             }
         } catch (err) {
             console.log(err);
+        } finally {
+            setIsLoading(false);
+
+            setTimeout(() => {
+                setRefresh(false);
+            }, 1000);
         }
     }
 
@@ -132,8 +138,13 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                                         <Button variant="flat" onPress={onClose}>
                                             ยกเลิก
                                         </Button>
-                                        <Button type='submit' color="warning">
-                                            แก้ไข
+                                        <Button
+                                            type='submit'
+                                            color="warning"
+                                            isLoading={isLoading}
+                                            disabled={isLoading}
+                                        >
+                                            {isLoading ? 'กำลังแก้ไขข้อมูล...' : 'แก้ไข'}
                                         </Button>
                                     </ModalFooter>
                                 </form>

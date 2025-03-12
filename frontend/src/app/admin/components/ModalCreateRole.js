@@ -3,13 +3,15 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input
 import { toast } from 'react-toastify'
 
 function ModalCreateRole({ isOpen, onOpenChange, setRefresh }) {
-    const [roleName, setRoleName] = useState('')
+    const [roleName, setRoleName] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
 
         if(!roleName) {
-            toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!")
+            toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
             return;
         }
 
@@ -22,28 +24,30 @@ function ModalCreateRole({ isOpen, onOpenChange, setRefresh }) {
                 body: JSON.stringify({
                     roleName
                 })
-            })
+            });
 
-            if(res.ok) {
-                const form = e.target
-                form.reset()
+            if(res.status === 200) {
+                const form = e.target;
+                form.reset();
 
-                toast.success("เพิ่มข้อมูลเรียบร้อยแล้ว")
+                toast.success("เพิ่มข้อมูลเรียบร้อยแล้ว");
                 onOpenChange(false);
-                setRefresh(true)
-
-                setTimeout(() => {
-                    setRefresh(false)
-                }, 1000)
+                setRefresh(true);
                     
             }
             else {
-                toast.warn("เพิ่มข้อมูลล้มเหลว")
+                toast.warn("เพิ่มข้อมูลล้มเหลว");
                 return;
             }
         }
         catch (err) {
             console.log("Error", err)
+        } finally {
+            setIsLoading(false);
+
+            setTimeout(() => {
+                setRefresh(false);
+            }, 1000);
         }
     }
 
@@ -69,8 +73,13 @@ function ModalCreateRole({ isOpen, onOpenChange, setRefresh }) {
                                     <Button variant="flat" onPress={onClose}>
                                         ยกเลิก
                                     </Button>
-                                    <Button type='submit' color="primary">
-                                        เพิ่ม
+                                    <Button
+                                        type='submit'
+                                        color="primary"
+                                        isLoading={isLoading}
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? 'กำลังเพิ่มข้อมูล...' : 'เพิ่ม'}
                                     </Button>
                                 </ModalFooter>
                             </form>
