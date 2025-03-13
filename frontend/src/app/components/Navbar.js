@@ -5,9 +5,8 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Select, SelectSection, SelectItem, DateInput, Badge, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
-import { FaBell, FaUserGear, FaArrowRightFromBracket } from "react-icons/fa6";
+import { FaBell, FaUserGear, FaArrowRightFromBracket, FaDownload } from "react-icons/fa6";
 import { toast } from 'react-toastify';
-import { HiMiniArrowDownTray } from 'react-icons/hi2';
 
 function UserNavbar() {
     const router = useRouter();
@@ -346,7 +345,7 @@ function UserNavbar() {
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Profile Actions" variant="flat">
                             <DropdownItem key="download" onPress={handleDownload}>
-                                <p className='flex justify-between'>ดาวน์โหลดแอปพลิเคชัน<HiMiniArrowDownTray className='text-lg' /></p>
+                                <p className='flex justify-between'>ดาวน์โหลดแอปพลิเคชัน<FaDownload className='text-lg' /></p>
                             </DropdownItem>
                             <DropdownItem key="settings" onPress={onOpenEdit}>
                                 <p className='flex justify-between'>แก้ไขโปรไฟล์<FaUserGear className='text-lg' /></p>
