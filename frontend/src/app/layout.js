@@ -1,26 +1,25 @@
-import { Kanit } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/react";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export const metadata = {
-    title: 'Precision Agriculture',
-    icons: {
-      icon: '/favicon.ico',
-    },
-};
-
-const kanit = Kanit({
-    weight: ["400", "500", "600"],
-    subsets: ["latin-ext", "thai"],
+const geistSans = localFont({
+    src: "./fonts/GeistVF.woff",
+    variable: "--font-geist-sans",
+    weight: "100 900",
+});
+const geistMono = localFont({
+    src: "./fonts/GeistMonoVF.woff",
+    variable: "--font-geist-mono",
+    weight: "100 900",
 });
 
 export default function RootLayout({ children }) {
     return (
         <html lang="en">
             <body
-                className={`${kanit.className} antialiased`}
+                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
                 <NextUIProvider>
                     {children}
@@ -29,4 +28,4 @@ export default function RootLayout({ children }) {
             </body>
         </html>
     );
-}
+  }
