@@ -10,7 +10,7 @@ function ModalUpdateRole({ isOpen, onOpenChange, id, setRefresh }) {
         if(isOpen) {
             const fetchData = async () => {
                 try {
-                    const res = await fetch(`http://localhost:4000/api/getRole/${id}`);
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getRole/${id}`);
                         
                     if (!res.ok) {
                         throw new Error("Failed to fetch");
@@ -38,7 +38,7 @@ function ModalUpdateRole({ isOpen, onOpenChange, id, setRefresh }) {
         }
 
         try {
-            const res = await fetch(`http://localhost:4000/api/updateRole/${id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/updateRole/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

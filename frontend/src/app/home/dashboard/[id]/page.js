@@ -58,7 +58,7 @@ function Dashboard({ params }) {
       setIsLoading(true);
       try {
         const res = await fetch(
-          `http://localhost:4000/api/getNutrient/${plantId}/${plantAge}`
+          `${process.env.NEXT_PUBLIC_ENDPOINT}/getNutrient/${plantId}/${plantAge}`
         );
   
         if (res.status === 200) {
@@ -76,7 +76,7 @@ function Dashboard({ params }) {
       setIsLoading(true);
       try {
         const res = await fetch(
-          `http://localhost:4000/api/getFactor/${plantId}/${plantAge}`
+          `${process.env.NEXT_PUBLIC_ENDPOINT}/getFactor/${plantId}/${plantAge}`
         );
   
         if (res.status === 200) {
@@ -94,7 +94,7 @@ function Dashboard({ params }) {
       setIsLoading(true);
       try {
         const res = await fetch(
-          `http://localhost:4000/api/getOtherNutrient/${plantId}/${plantAge}`
+          `${process.env.NEXT_PUBLIC_ENDPOINT}/getOtherNutrient/${plantId}/${plantAge}`
         );
   
         if (res.status === 200) {
@@ -112,7 +112,7 @@ function Dashboard({ params }) {
       setIsLoading(true);
       try {
         const res = await fetch(
-          `http://localhost:4000/api/getOtherFactor/${plantId}/${plantAge}`
+          `${process.env.NEXT_PUBLIC_ENDPOINT}/getOtherFactor/${plantId}/${plantAge}`
         );
   
         if (res.status === 200) {
@@ -141,7 +141,7 @@ function Dashboard({ params }) {
     const fetchPlant = async (plantId) => {
       try {
         setIsLoading(true);
-        const res = await fetch(`http://localhost:4000/api/getPlant/${plantId}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getPlant/${plantId}`);
   
         if(res.status === 200) {
           const data = await res.json();
@@ -164,7 +164,7 @@ function Dashboard({ params }) {
       try {
         setIsLoading(true);
         const res = await fetch(
-          `http://localhost:4000/api/getPlantVariable/${plantId}`
+          `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariable/${plantId}`
         );
   
         if (res.status === 200) {
@@ -181,7 +181,7 @@ function Dashboard({ params }) {
     const fetchPlantVariables7day = async (plantId) => {
       try {
         const res = await fetch(
-          `http://localhost:4000/api/getPlantVariables7day/${plantId}`
+          `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables7day/${plantId}`
         );
   
         if (res.status === 200) {
@@ -202,7 +202,7 @@ function Dashboard({ params }) {
   const fetchPlantVariables14day = async (plantId) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/getPlantVariables14day/${plantId}`
+        `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables14day/${plantId}`
       );
 
       if (res.status === 200) {
@@ -217,7 +217,7 @@ function Dashboard({ params }) {
   const fetchPlantVariables1month = async (plantId) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/getPlantVariables1month/${plantId}`
+        `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables1month/${plantId}`
       );
 
       if (res.status === 200) {
@@ -232,7 +232,7 @@ function Dashboard({ params }) {
   const fetchPlantVariables3month = async (plantId) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/getPlantVariables3month/${plantId}`
+        `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables3month/${plantId}`
       );
 
       if (res.status === 200) {
@@ -247,7 +247,7 @@ function Dashboard({ params }) {
   const fetchPlantVariables6month = async (plantId) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/getPlantVariables6month/${plantId}`
+        `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables6month/${plantId}`
       );
 
       if (res.status === 200) {
@@ -262,7 +262,7 @@ function Dashboard({ params }) {
   const fetchPlantVariables9month = async (plantId) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/getPlantVariables9month/${plantId}`
+        `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables9month/${plantId}`
       );
 
       if (res.status === 200) {
@@ -277,7 +277,7 @@ function Dashboard({ params }) {
   const fetchPlantVariables1year = async (plantId) => {
     try {
       const res = await fetch(
-        `http://localhost:4000/api/getPlantVariables1year/${plantId}`
+        `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables1year/${plantId}`
       );
 
       if (res.status === 200) {

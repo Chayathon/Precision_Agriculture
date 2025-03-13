@@ -11,7 +11,7 @@ function ModalInfoUser({ isOpen, onOpenChange, id }) {
         if(isOpen) {
             const fetchData = async () => {
                 try {
-                    const res = await fetch(`http://localhost:4000/api/getPlantUserId/${id}`);
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantUserId/${id}`);
                         
                     if (!res.ok) {
                         throw new Error("Failed to fetch");

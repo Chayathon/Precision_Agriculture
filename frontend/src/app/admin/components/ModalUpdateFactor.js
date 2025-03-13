@@ -16,7 +16,7 @@ function ModalUpdateFactor({ isOpen, onOpenChange, id, setRefresh }) {
         if(isOpen) {
             const fetchData = async () => {
                 try {
-                    const res = await fetch(`http://localhost:4000/api/getFactorById/${id}`);
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getFactorById/${id}`);
                         
                     if (!res.ok) {
                         throw new Error("Failed to fetch");
@@ -43,7 +43,7 @@ function ModalUpdateFactor({ isOpen, onOpenChange, id, setRefresh }) {
         setIsLoading(true);
 
         try {
-            const res = await fetch(`http://localhost:4000/api/updateFactor/${id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/updateFactor/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

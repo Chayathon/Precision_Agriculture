@@ -13,7 +13,7 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
 
     const fetchPlantAvaliable = async () => {
         try {
-            const res = await fetch(`http://localhost:4000/api/getPlantAvaliable`);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantAvaliable`);
 
             if(res.status === 200) {
                 const data = await res.json();
@@ -83,7 +83,7 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
         }
 
         try {
-            const res = await fetch('http://localhost:4000/api/createPlant', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/createPlant`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

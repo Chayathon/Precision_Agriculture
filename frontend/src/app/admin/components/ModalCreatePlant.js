@@ -17,7 +17,7 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
         }
 
         try {
-            const res = await fetch('http://localhost:4000/api/createPlantAvaliable', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/createPlantAvaliable`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -11,7 +11,7 @@ function ModalMultiDeletePlant({ isOpen, onOpenChange, selectedKeys, setRefresh,
         try {
             // สร้าง array ของ promises สำหรับการลบแต่ละ user
             const deletePromises = selectedKeys.map(plantId => 
-                fetch(`http://localhost:4000/api/deleteRole/${plantId}`, {
+                fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/deleteRole/${plantId}`, {
                     method: 'DELETE'
                 })
             );

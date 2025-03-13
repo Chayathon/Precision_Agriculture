@@ -46,7 +46,7 @@ function NewPassword() {
         }
 
         try {
-            const res = await fetch(`http://localhost:4000/api/updatePassword`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/updatePassword`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

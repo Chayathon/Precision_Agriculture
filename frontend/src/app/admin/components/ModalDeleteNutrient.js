@@ -9,7 +9,7 @@ function ModalDeleteNutrient({ isOpen, onOpenChange, id, setRefresh }) {
         setIsLoading(true);
 
         try {
-            const res = await fetch(`http://localhost:4000/api/deleteNutrient/${id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/deleteNutrient/${id}`, {
                 method: 'DELETE'
             });
 

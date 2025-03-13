@@ -120,7 +120,7 @@ export default function ListPlant() {
     useEffect(() => {
         const fetchPlant = async () => {
             try {
-                const res = await fetch(`http://localhost:4000/api/listPlant/${userId}`);
+                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listPlant/${userId}`);
     
                 if (res.status === 200) {
                     const data = await res.json();

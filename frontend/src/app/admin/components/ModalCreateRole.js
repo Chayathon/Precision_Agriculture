@@ -16,7 +16,7 @@ function ModalCreateRole({ isOpen, onOpenChange, setRefresh }) {
         }
 
         try {
-            const res = await fetch('http://localhost:4000/api/createRole', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/createRole`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

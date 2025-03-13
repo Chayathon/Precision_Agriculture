@@ -21,7 +21,7 @@ function ForgotPassword() {
 
         try {
             if (!isCheck) {
-                const res = await fetch(`http://localhost:4000/api/forgotPassword/${email}`);
+                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/forgotPassword/${email}`);
 
                 if(res.status === 200) {
                     const data = await res.json();

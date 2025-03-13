@@ -10,7 +10,7 @@ function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
         if(isOpen) {
             const fetchData = async () => {
                 try {
-                    const res = await fetch(`http://localhost:4000/api/getPlant/${id}`);
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getPlant/${id}`);
                         
                     if (!res.ok) {
                         throw new Error("Failed to fetch");
@@ -31,7 +31,7 @@ function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
         setIsLoading(true);
 
         try{
-            const res = await fetch(`http://localhost:4000/api/deletePlant/${id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/deletePlant/${id}`, {
                 method: 'DELETE'
             });
 

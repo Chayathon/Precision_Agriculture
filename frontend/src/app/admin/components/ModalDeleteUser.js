@@ -10,7 +10,7 @@ function ModalDeleteUser({ isOpen, onOpenChange, id, setRefresh }) {
         if(isOpen) {
             const fetchData = async () => {
                 try {
-                    const res = await fetch(`http://localhost:4000/api/getUser/${id}`);
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getUser/${id}`);
                         
                     if (!res.ok) {
                         throw new Error("Failed to fetch");
@@ -31,7 +31,7 @@ function ModalDeleteUser({ isOpen, onOpenChange, id, setRefresh }) {
         setIsLoading(true);
 
         try {
-            const res = await fetch(`http://localhost:4000/api/deleteUser/${id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/deleteUser/${id}`, {
                 method: 'DELETE'
             });
 

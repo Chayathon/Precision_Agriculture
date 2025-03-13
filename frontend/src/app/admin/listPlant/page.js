@@ -119,7 +119,7 @@ export default function ListPlant() {
     const fetchPlant = async () => {
         try {
             const token = Cookies.get("Token");
-            const res = await fetch(`http://localhost:4000/api/listPlantAvaliable`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listPlantAvaliable`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 

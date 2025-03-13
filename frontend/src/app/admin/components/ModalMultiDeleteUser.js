@@ -11,7 +11,7 @@ function ModalMultiDeleteUser({ isOpen, onOpenChange, selectedKeys, setRefresh, 
         try {
             // สร้าง array ของ promises สำหรับการลบแต่ละ user
             const deletePromises = selectedKeys.map(userId => 
-                fetch(`http://localhost:4000/api/deleteUser/${userId}`, {
+                fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/deleteUser/${userId}`, {
                     method: 'DELETE'
                 })
             );

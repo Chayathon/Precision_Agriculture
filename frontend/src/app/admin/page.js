@@ -13,7 +13,7 @@ function Page() {
     const fetchAdmin = async (role_id) => {
         try {
             const token = Cookies.get("Token");
-            const res = await fetch(`http://localhost:4000/api/listUser/${role_id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listUser/${role_id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -29,7 +29,7 @@ function Page() {
     const fetchUser = async (role_id) => {
         try {
             const token = Cookies.get("Token");
-            const res = await fetch(`http://localhost:4000/api/listUser/${role_id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listUser/${role_id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -45,7 +45,7 @@ function Page() {
     const fetchRole = async () => {
         try {
             const token = Cookies.get("Token");
-            const res = await fetch(`http://localhost:4000/api/listRole`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listRole`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 

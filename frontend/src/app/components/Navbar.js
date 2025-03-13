@@ -49,7 +49,7 @@ function UserNavbar() {
 
     const fetchPlantByUserId = async (id) => {
         try {
-            const res = await fetch(`http://localhost:4000/api/getPlantUserId/${id}`);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantUserId/${id}`);
                 
             if (!res.ok) {
                 throw new Error("Failed to fetch");
@@ -158,7 +158,7 @@ function UserNavbar() {
         if(isOpenEdit) {
             const fetchData = async () => {
                 try {
-                    const res = await fetch(`http://localhost:4000/api/getUser/${id}`);
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getUser/${id}`);
                         
                     if (!res.ok) {
                         throw new Error("Failed to fetch");
@@ -191,7 +191,7 @@ function UserNavbar() {
         }
 
         try {
-            const res = await fetch(`http://localhost:4000/api/updateUser/${id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/updateUser/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

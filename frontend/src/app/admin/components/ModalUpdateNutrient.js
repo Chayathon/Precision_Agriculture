@@ -14,7 +14,7 @@ function ModalUpdateNutrient({ isOpen, onOpenChange, id, setRefresh }) {
         if(isOpen) {
             const fetchData = async () => {
                 try {
-                    const res = await fetch(`http://localhost:4000/api/getNutrientById/${id}`);
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getNutrientById/${id}`);
                         
                     if (!res.ok) {
                         throw new Error("Failed to fetch");
@@ -39,7 +39,7 @@ function ModalUpdateNutrient({ isOpen, onOpenChange, id, setRefresh }) {
         setIsLoading(true);
 
         try {
-            const res = await fetch(`http://localhost:4000/api/updateNutrient/${id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/updateNutrient/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

@@ -23,7 +23,7 @@ function ModalCreateFactor({ isOpen, onOpenChange, setRefresh, id }) {
         }
 
         try {
-            const res = await fetch("http://localhost:4000/api/createOtherFactor", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/createOtherFactor`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

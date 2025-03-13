@@ -21,7 +21,7 @@ function ModalCreateNutrient({ isOpen, onOpenChange, setRefresh, id }) {
         }
 
         try {
-            const res = await fetch("http://localhost:4000/api/createNutrient", {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/createNutrient`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

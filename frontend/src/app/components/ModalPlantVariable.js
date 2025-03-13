@@ -31,9 +31,9 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
             
             try {
                 const [plantRes, factorRes, nutrientRes] = await Promise.all([
-                    fetch(`http://localhost:4000/api/getPlant/${id}`),
-                    fetch(`http://localhost:4000/api/getOtherFactorByPlantId/${id}`),
-                    fetch(`http://localhost:4000/api/getOtherNutrientByPlantId/${id}`)
+                    fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getPlant/${id}`),
+                    fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getOtherFactorByPlantId/${id}`),
+                    fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getOtherNutrientByPlantId/${id}`)
                 ]);
     
                 if (!plantRes.ok || !factorRes.ok || !nutrientRes.ok) {

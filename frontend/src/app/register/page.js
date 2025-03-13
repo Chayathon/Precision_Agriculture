@@ -34,7 +34,7 @@ function Page() {
 
     const fetchProvinces = async () => {
         try {
-            const res = await fetch(`http://localhost:4000/api/provinces`);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/provinces`);
 
             if(res.status === 200) {
                 const data = await res.json();
@@ -47,7 +47,7 @@ function Page() {
 
     const fetchDistricts = async (provinceId) => {
         try {
-            const res = await fetch(`http://localhost:4000/api/province/${provinceId}/districts`);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/province/${provinceId}/districts`);
 
             if(res.status === 200) {
                 const data = await res.json();
@@ -60,7 +60,7 @@ function Page() {
 
     const fetchSubdistricts = async (districtId) => {
         try {
-            const res = await fetch(`http://localhost:4000/api/district/${districtId}/subdistricts`);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/district/${districtId}/subdistricts`);
 
             if(res.status === 200) {
                 const data = await res.json();
@@ -129,7 +129,7 @@ function Page() {
         }
 
         try {
-            const res = await fetch('http://localhost:4000/api/register', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

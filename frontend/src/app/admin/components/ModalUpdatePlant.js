@@ -10,7 +10,7 @@ function ModalUpdateRole({ isOpen, onOpenChange, id, setRefresh }) {
         if(isOpen) {
             const fetchData = async () => {
                 try {
-                    const res = await fetch(`http://localhost:4000/api/getPlantAvaliableById/${id}`);
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantAvaliableById/${id}`);
                         
                     if (!res.ok) {
                         throw new Error("Failed to fetch");
@@ -38,7 +38,7 @@ function ModalUpdateRole({ isOpen, onOpenChange, id, setRefresh }) {
         }
 
         try {
-            const res = await fetch(`http://localhost:4000/api/updatePlantAvaliable/${id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/updatePlantAvaliable/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
