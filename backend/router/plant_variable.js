@@ -58,6 +58,7 @@ const prisma = new PrismaClient();
 
 router.post('/recievedVariable', async (req, res) => {
     try {
+        // const { id } = req.params;
         // const { id, temperature, humidity, pH, salinity, lightIntensity, nitrogen, phosphorus, potassium } = req.body;
 
         const now = new Date();
@@ -66,14 +67,14 @@ router.post('/recievedVariable', async (req, res) => {
         const plantVariable = await prisma.p_variable.create({
             data: {
                 plant_id: Number(req.body.id),
-                temperature: req.body.temperature,
-                humidity: req.body.humidity,
-                pH: req.body.pH,
-                salinity: req.body.salinity,
-                lightIntensity: req.body.lightIntensity,
-                nitrogen: req.body.nitrogen,
-                phosphorus: req.body.phosphorus,
-                potassium: req.body.potassium,
+                temperature: parseFloat(req.body.temperature),
+                humidity: parseFloat(req.body.humidity),
+                pH: parseFloat(req.body.pH),
+                salinity: parseFloat(req.body.salinity),
+                lightIntensity: parseFloat(req.body.lightIntensity),
+                nitrogen: parseFloat(req.body.nitrogen),
+                phosphorus: parseFloat(req.body.phosphorus),
+                potassium: parseFloat(req.body.potassium),
                 receivedAt: recievedTime
             }
         });
