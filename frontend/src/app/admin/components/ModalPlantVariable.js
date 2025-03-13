@@ -25,58 +25,39 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
     const { isOpen: isOpenUpdateNutrient, onOpen: onOpenUpdateNutrient, onOpenChange: onOpenChangeUpdateNutrient } = useDisclosure();
     const { isOpen: isOpenDeleteNutrient, onOpen: onOpenDeleteNutrient, onOpenChange: onOpenChangeDeleteNutrient } = useDisclosure();
     
-    const fetchPlant = async () => {
-        try {
-            const res = await fetch(`http://localhost:4000/api/getPlantAvaliableById/${id}`);
-                
-            if (!res.ok) {
-                throw new Error("Failed to fetch");
-            }
-
-            const data = await res.json();
-            setPlant(data.resultData.plantname);
-        } catch (err) {
-            console.error("Error fetching data: ", err);
-        }
-    }
-
-    const fetchFactorData = async () => {
-        try {
-            const res = await fetch(`http://localhost:4000/api/getFactorByPlantId/${id}`);
-                
-            if (!res.ok) {
-                throw new Error("Failed to fetch");
-            }
-
-            const data = await res.json();
-            setFactor(data.resultData);
-        } catch (err) {
-            console.error("Error fetching data: ", err);
-        }
-    }
-
-    const fetchNutrientData = async () => {
-        try {
-            const res = await fetch(`http://localhost:4000/api/getNutrientByPlantId/${id}`);
-                
-            if (!res.ok) {
-                throw new Error("Failed to fetch");
-            }
-
-            const data = await res.json();
-            setNutrient(data.resultData);
-        } catch (err) {
-            console.error("Error fetching data: ", err);
-        }
-    }
-
     useEffect(() => {
-        if(isOpen) {
-            fetchPlant();
-            fetchFactorData();
-            fetchNutrientData();
-        }
-    }, [isOpen, refresh]);
+        const fetchAllData = async () => {
+            if (!isOpen) return;
+            
+            try {
+                const [plantRes, factorRes, nutrientRes] = await Promise.all([
+                    fetch(`http://localhost:4000/api/getPlantAvaliableById/${id}`),
+                    fetch(`http://localhost:4000/api/getFactorByPlantId/${id}`),
+                    fetch(`http://localhost:4000/api/getNutrientByPlantId/${id}`)
+                ]);
+    
+                if (!plantRes.ok || !factorRes.ok || !nutrientRes.ok) {
+                    throw new Error("Failed to fetch data");
+                }
+    
+                const [plantData, factorData, nutrientData] = await Promise.all([
+                    plantRes.json(),
+                    factorRes.json(),
+                    nutrientRes.json()
+                ]);
+    
+                setPlant(plantData.resultData.plantname);
+                setFactor(factorData.resultData);
+                setNutrient(nutrientData.resultData);
+    
+            } catch (err) {
+                console.error("Error fetching data: ", err);
+            }
+        };
+    
+        fetchAllData();
+    
+    }, [isOpen, refresh, id]);
 
     return (
         <>

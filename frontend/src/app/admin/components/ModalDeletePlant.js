@@ -25,7 +25,7 @@ function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
 
             fetchData()
         }
-    }, [isOpen])
+    }, [isOpen, id])
 
     const handleSubmit = async () => {
         setIsLoading(true);
@@ -35,7 +35,7 @@ function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
                 method: 'DELETE'
             });
 
-            if (res.ok) {
+            if (res.status === 200) {
                 toast.success("ลบข้อมูลเรียบร้อยแล้ว");
                 onOpenChange(false);
                 setRefresh(true);

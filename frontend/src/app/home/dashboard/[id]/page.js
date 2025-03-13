@@ -21,7 +21,7 @@ import ModalLightIntensityGraph from "../../../components/ModalLightIntensityGra
 import Link from "next/link";
 
 function Dashboard({ params }) {
-  const { id } = React.use(params);
+  const { id } = params;
 
   const [plantId, setPlantId] = useState(null);
   const [plantAge, setPlantAge] = useState("");
@@ -53,132 +53,151 @@ function Dashboard({ params }) {
     return ageInDays;
   };
 
-  const fetchNutrient = async (plantId) => {
-    try {
+  useEffect(() => {
+    const fetchNutrient = async (plantId) => {
       setIsLoading(true);
-      const res = await fetch(
-        `http://localhost:4000/api/getNutrient/${plantId}/${plantAge}`
-      );
-
-      if (res.status === 200) {
-        const data = await res.json();
-        setNutrientData(data.resultData[0]);
+      try {
+        const res = await fetch(
+          `http://localhost:4000/api/getNutrient/${plantId}/${plantAge}`
+        );
+  
+        if (res.status === 200) {
+          const data = await res.json();
+          setNutrientData(data.resultData[0]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch", err);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      console.error("Failed to fetch", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const fetchFactor = async (plantId) => {
-    try {
+    };
+  
+    const fetchFactor = async (plantId) => {
       setIsLoading(true);
-      const res = await fetch(
-        `http://localhost:4000/api/getFactor/${plantId}/${plantAge}`
-      );
-
-      if (res.status === 200) {
-        const data = await res.json();
-        setFactorData(data.resultData[0]);
+      try {
+        const res = await fetch(
+          `http://localhost:4000/api/getFactor/${plantId}/${plantAge}`
+        );
+  
+        if (res.status === 200) {
+          const data = await res.json();
+          setFactorData(data.resultData[0]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch", err);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      console.error("Failed to fetch", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const fetchOtherNutrient = async (plantId) => {
-    try {
+    };
+  
+    const fetchOtherNutrient = async (plantId) => {
       setIsLoading(true);
-      const res = await fetch(
-        `http://localhost:4000/api/getOtherNutrient/${plantId}/${plantAge}`
-      );
-
-      if (res.status === 200) {
-        const data = await res.json();
-        setNutrientData(data.resultData[0]);
+      try {
+        const res = await fetch(
+          `http://localhost:4000/api/getOtherNutrient/${plantId}/${plantAge}`
+        );
+  
+        if (res.status === 200) {
+          const data = await res.json();
+          setNutrientData(data.resultData[0]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch", err);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      console.error("Failed to fetch", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const fetchOtherFactor = async (plantId) => {
-    try {
+    };
+  
+    const fetchOtherFactor = async (plantId) => {
       setIsLoading(true);
-      const res = await fetch(
-        `http://localhost:4000/api/getOtherFactor/${plantId}/${plantAge}`
-      );
-
-      if (res.status === 200) {
-        const data = await res.json();
-        setFactorData(data.resultData[0]);
+      try {
+        const res = await fetch(
+          `http://localhost:4000/api/getOtherFactor/${plantId}/${plantAge}`
+        );
+  
+        if (res.status === 200) {
+          const data = await res.json();
+          setFactorData(data.resultData[0]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch", err);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      console.error("Failed to fetch", err);
-    } finally {
-      setIsLoading(false);
+    };
+
+    if (otherPlant) {
+      if (id) Promise.all([fetchOtherNutrient(id), fetchOtherFactor(id)]);
+      
+      console.log("Fetching other Plant");
+    } else {
+      if (plantId) Promise.all([fetchNutrient(plantId), fetchFactor(plantId)]);
+      
+      console.log("Fetching Plant");
     }
-  };
+  }, [id, plantId, otherPlant, plantAge]);
 
-  const fetchPlant = async (plantId) => {
-    try {
-      setIsLoading(true);
-      const res = await fetch(`http://localhost:4000/api/getPlant/${plantId}`);
-
-      if(res.status === 200) {
-        const data = await res.json();
-        setPlantId(data.resultData.plant_id);
-
-        const plantedAt = data.resultData.plantedAt;
-        const ageInDays = calculateAge(plantedAt);
-        setPlantAge(ageInDays);
-
-        data.resultData.plant_id > 0 ? setOtherPlant(false) : setOtherPlant(true);
+  useEffect(() => {
+    const fetchPlant = async (plantId) => {
+      try {
+        setIsLoading(true);
+        const res = await fetch(`http://localhost:4000/api/getPlant/${plantId}`);
+  
+        if(res.status === 200) {
+          const data = await res.json();
+          setPlantId(data.resultData.plant_id);
+  
+          const plantedAt = data.resultData.plantedAt;
+          const ageInDays = calculateAge(plantedAt);
+          setPlantAge(ageInDays);
+  
+          data.resultData.plant_id > 0 ? setOtherPlant(false) : setOtherPlant(true);
+        }
+      } catch (err) {
+        console.error("Failed to fetch", err);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      console.error("Failed to fetch", err);
-    } finally {
-      setIsLoading(false);
     }
-  }
-
-  const fetchPlantVariable = async (plantId) => {
-    try {
-      setIsLoading(true);
-      const res = await fetch(
-        `http://localhost:4000/api/getPlantVariable/${plantId}`
-      );
-
-      if (res.status === 200) {
-        const data = await res.json();
-        setPlantData(data.resultData[0]);
+  
+    const fetchPlantVariable = async (plantId) => {
+      try {
+        setIsLoading(true);
+        const res = await fetch(
+          `http://localhost:4000/api/getPlantVariable/${plantId}`
+        );
+  
+        if (res.status === 200) {
+          const data = await res.json();
+          setPlantData(data.resultData[0]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch", err);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      console.error("Failed to fetch", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const fetchPlantVariables7day = async (plantId) => {
-    try {
-      const res = await fetch(
-        `http://localhost:4000/api/getPlantVariables7day/${plantId}`
-      );
-
-      if (res.status === 200) {
-        const data = await res.json();
-        setPlantDatas(data.resultData);
+    };
+  
+    const fetchPlantVariables7day = async (plantId) => {
+      try {
+        const res = await fetch(
+          `http://localhost:4000/api/getPlantVariables7day/${plantId}`
+        );
+  
+        if (res.status === 200) {
+          const data = await res.json();
+          setPlantDatas(data.resultData);
+        }
+      } catch (err) {
+        console.error("Failed to fetch", err);
       }
-    } catch (err) {
-      console.error("Failed to fetch", err);
-    }
-  };
+    };
+
+    fetchPlant(id);
+    fetchPlantVariable(id);
+    fetchPlantVariables7day(id);
+  }, [id]);
+  
 
   const fetchPlantVariables14day = async (plantId) => {
     try {
@@ -269,26 +288,6 @@ function Dashboard({ params }) {
       console.error("Failed to fetch", err);
     }
   };
-    
-  useEffect(() => {
-    if (id) {
-      fetchPlant(id);
-      fetchPlantVariable(id);
-      fetchPlantVariables7day(id);
-    }
-  }, [id]);
-
-  useEffect(() => {
-    if (id && otherPlant !== null) {
-      if (otherPlant) {
-        fetchOtherNutrient(id);
-        fetchOtherFactor(id);
-      } else {
-        fetchNutrient(plantId);
-        fetchFactor(plantId);
-      }
-    }
-  }, [id, otherPlant]);
 
   useEffect(() => {
     if(plantData && factorData && nutrientData) {
@@ -301,7 +300,7 @@ function Dashboard({ params }) {
       plantData.salinity < factorData.salinity ? localStorage.setItem('salinity', 'ค่าการนำไฟฟ้าต่ำกว่าค่าที่ต้องการ') : localStorage.removeItem('salinity');
       plantData.lightIntensity < factorData.lightIntensity ? localStorage.setItem('lightIntensity', 'ค่าความเข้มแสงต่ำกว่าค่าที่ต้องการ') : localStorage.removeItem('lightIntensity');
     }
-  }, [plantData, factorData])
+  }, [plantData, factorData, nutrientData]);
 
   ChartJS.register(
     CategoryScale,

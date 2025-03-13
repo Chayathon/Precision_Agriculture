@@ -8,7 +8,7 @@ import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 
 function ListNutrients({ params }) {
-    const { id } = React.use(params);
+    const { id } = params;
     
     const [plantData, setPlantData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -121,7 +121,7 @@ function ListNutrients({ params }) {
 
     useEffect(() => {
         fetchPlantVariables7day(id);
-    }, []);
+    }, [id]);
 
     const convertDate = (dateConvert) => {
         if (!dateConvert) return "วันที่ไม่ระบุ";

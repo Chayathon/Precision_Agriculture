@@ -27,7 +27,7 @@ function ModalInfoUser({ isOpen, onOpenChange, id }) {
 
             fetchData();
         }
-    }, [isOpen]);
+    }, [isOpen, id]);
 
     const convertDate = (dateConvert) => {
         const date = moment(dateConvert).locale('th');

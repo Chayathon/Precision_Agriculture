@@ -35,7 +35,8 @@ function ForgotPassword() {
             } else {
                 if(inputOTP == otp) {
                     toast.success("OTP ถูกต้อง!");
-                    router.push(`/forgotPassword/newPassword?email=${encodeURIComponent(email)}`);
+                    sessionStorage.setItem('resetEmail', email);
+                    router.push('/forgotPassword/newPassword');
                 } else {
                     toast.warn("OTP ไม่ถูกต้อง!");
                 }

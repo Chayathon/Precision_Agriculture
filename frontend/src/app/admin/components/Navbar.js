@@ -59,13 +59,15 @@ function AdminNavbar() {
 
     useEffect(() => {
         if(localStorage.getItem('UserData')) {
-            const user = JSON.parse(localStorage.getItem('UserData'))
+            const user = JSON.parse(localStorage.getItem('UserData') || '{}')
             
-            setId(user.id);
-            setName(user.username);
-            setUserEmail(user.email);
+            if(user) {
+                setId(user.id);
+                setName(user.username);
+                setUserEmail(user.email);
+            }
         }
-    }, [localStorage.getItem('UserData')])
+    }, [])
 
     useEffect(() => {
         if(isOpen) {
@@ -90,9 +92,9 @@ function AdminNavbar() {
                 }
             }
 
-            fetchData()
+            fetchData();
         }
-    }, [isOpen])
+    }, [isOpen, id])
 
     const handleSubmit = async (e) => {
         e.preventDefault();

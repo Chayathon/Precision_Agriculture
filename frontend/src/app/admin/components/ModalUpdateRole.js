@@ -23,9 +23,9 @@ function ModalUpdateRole({ isOpen, onOpenChange, id, setRefresh }) {
                 }
             }
 
-            fetchData()
+            fetchData();
         }
-    }, [isOpen]);
+    }, [isOpen, id]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

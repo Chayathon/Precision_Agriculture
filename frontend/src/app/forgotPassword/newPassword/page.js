@@ -1,14 +1,13 @@
 "use client";
 
-import { Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useState } from 'react'
+import { Button, Card, CardBody, CardHeader, Input, Spinner } from '@nextui-org/react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 
 function NewPassword() {
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const email = searchParams.get("email");
+    const [email, setEmail] = useState(null);
 
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -16,6 +15,21 @@ function NewPassword() {
 
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
+
+    useEffect(() => {
+        const resetEmail = sessionStorage.getItem('resetEmail');
+        if (resetEmail) {
+            setEmail(resetEmail);
+        } else {
+            router.push('/forgotPassword');
+        }
+    }, [router]);
+
+    if (!email) {
+        return <div className="flex justify-center pt-16">
+            <Spinner size="lg" label="กำลังโหลดข้อมูล..." />
+      </div>
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -44,6 +58,7 @@ function NewPassword() {
 
             if(res.status === 200) {
                 toast.success("เปลี่ยนรหัสผ่านสำเร็จแล้ว");
+                sessionStorage.removeItem('resetEmail');
 
                 setTimeout(() => {
                     router.push('/');
@@ -72,11 +87,7 @@ function NewPassword() {
                                 label="รหัสผ่าน"
                                 endContent={
                                     <Button type="button" size="sm" className='bg-gray-300' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                    {isVisible ? (
-                                        'ซ่อน'
-                                    ) : (
-                                        'แสดง'
-                                    )}
+                                        {isVisible ? 'ซ่อน' : 'แสดง'}
                                     </Button>
                                 }
                                 type={isVisible ? "text" : "password"}
@@ -90,11 +101,7 @@ function NewPassword() {
                                 label="ยืนยันรหัสผ่าน"
                                 endContent={
                                     <Button type="button" size="sm" className='bg-gray-300' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                    {isVisible ? (
-                                        'ซ่อน'
-                                    ) : (
-                                        'แสดง'
-                                    )}
+                                        {isVisible ? 'ซ่อน' : 'แสดง'}
                                     </Button>
                                 }
                                 type={isVisible ? "text" : "password"}
@@ -107,6 +114,7 @@ function NewPassword() {
                             className='w-full'
                             isLoading={isLoading}
                             disabled={isLoading}
+                            aria-label={isLoading ? 'กำลังดำเนินการ...' : 'ยืนยัน'}
                         >
                             {isLoading ? 'กำลังดำเนินการ...' : 'ยืนยัน'}
                         </Button>

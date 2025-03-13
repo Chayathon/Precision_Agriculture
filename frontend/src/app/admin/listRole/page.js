@@ -185,7 +185,7 @@ export default function ListRole() {
                 </div>
             </div>
         );
-    }, [filterValue, onRowsPerPageChange, roles.length, onSearchChange, selectedKeys.size]);
+    }, [filterValue, onRowsPerPageChange, roles.length, onSearchChange, selectedKeys.size, onClear, onOpenCreate, onOpenMultiDelete]);
 
     // Bottom content of table
     const bottomContent = useMemo(() => {
@@ -217,7 +217,7 @@ export default function ListRole() {
                 </div>
             </div>
         );
-    }, [selectedKeys, items.length, page, pages, onPreviousPage, onNextPage]);
+    }, [selectedKeys, filteredItems.length, isLoading, page, pages, onPreviousPage, onNextPage]);
 
     return (
         <div className='m-4'>

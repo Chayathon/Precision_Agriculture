@@ -25,7 +25,7 @@ function ModalDeleteUser({ isOpen, onOpenChange, id, setRefresh }) {
 
             fetchData();
         }
-    }, [isOpen])
+    }, [isOpen, id])
 
     const handleDelete = async () => {
         setIsLoading(true);

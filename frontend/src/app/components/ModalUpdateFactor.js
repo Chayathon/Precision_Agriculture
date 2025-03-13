@@ -36,7 +36,7 @@ function ModalUpdateFactor({ isOpen, onOpenChange, id, setRefresh }) {
 
             fetchData();
         }
-    }, [isOpen]);
+    }, [isOpen, id]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

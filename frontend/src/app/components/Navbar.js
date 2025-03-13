@@ -126,7 +126,7 @@ function UserNavbar() {
         if (selectedKeys.size > 0) {
             router.push(`/home/dashboard/${selectedPlantId}`);
         }
-    }, [selectedKeys]);
+    }, [selectedKeys, router, selectedPlantId]);
 
     useEffect(() => {
         const loadNotifications = () => {
@@ -141,7 +141,6 @@ function UserNavbar() {
                 'salinity',
                 'lightIntensity'
             ];
-        
             // ดึงข้อมูลจาก localStorage และกรองเฉพาะที่มีค่า
             const items = keys
                 .map(key => ({
@@ -149,13 +148,13 @@ function UserNavbar() {
                     message: localStorage.getItem(key)
                 }))
                 .filter(item => item.message !== null); // กรองเฉพาะที่มีข้อความ
-        
-            setNotifications(items);
+
+                setNotifications(items);
         };
-    
+        
         loadNotifications();
     }, []);
-
+        
     useEffect(() => {
         if(isOpenEdit) {
             const fetchData = async () => {
@@ -180,7 +179,7 @@ function UserNavbar() {
             }
             fetchData();
         }
-    }, [isOpenEdit]);
+    }, [isOpenEdit, id]);
 
     const handleSubmitEdit = async (e) => {
         e.preventDefault();

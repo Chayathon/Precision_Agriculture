@@ -117,21 +117,25 @@ export default function ListPlant() {
         setPage(1)
     }, []);
 
-    // Fetch users data
-    const fetchPlant = async () => {
-        try {
-            const res = await fetch(`http://localhost:4000/api/listPlant/${userId}`);
-
-            if (res.status === 200) {
-                const data = await res.json();
-                setPlants(data.resultData);
-                setIsLoading(false);
-                setPage(1);
+    useEffect(() => {
+        const fetchPlant = async () => {
+            try {
+                const res = await fetch(`http://localhost:4000/api/listPlant/${userId}`);
+    
+                if (res.status === 200) {
+                    const data = await res.json();
+                    setPlants(data.resultData);
+                    setIsLoading(false);
+                    setPage(1);
+                }
+            } catch (error) {
+                console.error("Error fetching data: ", error);
             }
-        } catch (error) {
-            console.error("Error fetching data: ", error);
-        }
-    };
+        };
+
+        fetchPlant();
+    }, [refresh, userId])
+    
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -139,10 +143,6 @@ export default function ListPlant() {
             setUserId(userData.id);
         }
     }, []);
-
-    useEffect(() => {
-        fetchPlant();
-    }, [refresh, userId]);
 
     const convertDate = (dateConvert) => {
         const date = moment(dateConvert).locale('th');
@@ -202,7 +202,7 @@ export default function ListPlant() {
                 </div>
             </div>
         );
-    }, [filterValue, onRowsPerPageChange, plants.length, onSearchChange, selectedKeys.size]);
+    }, [filterValue, onRowsPerPageChange, plants.length, onSearchChange, selectedKeys.size, onClear, onOpenCreate, onOpenMultiDelete]);
 
     // Bottom content of table
     const bottomContent = useMemo(() => {
@@ -234,7 +234,7 @@ export default function ListPlant() {
                 </div>
             </div>
         );
-    }, [selectedKeys, items.length, page, pages, onPreviousPage, onNextPage]);
+    }, [selectedKeys, filteredItems.length, isLoading, page, pages, onPreviousPage, onNextPage]);
 
     if (!userId) {
         return <div className="flex justify-center pt-16">
