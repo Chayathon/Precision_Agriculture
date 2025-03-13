@@ -233,8 +233,8 @@ function UserNavbar() {
 
     const handleDownload = () => {
         const link = document.createElement("a");
-        link.href = "/apk/app-release.apk";
-        link.download = "app-release.apk";
+        link.href = "/precision-agriculture.apk";
+        link.download = "precision-agriculture.apk";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
