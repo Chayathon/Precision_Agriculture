@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Select, SelectSection, SelectItem, DateInput, Badge, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
 import { FaBell, FaUserGear, FaArrowRightFromBracket } from "react-icons/fa6";
 import { toast } from 'react-toastify';
-import Dashboard from '../home/dashboard/[id]/page';
+import { HiMiniArrowDownTray } from 'react-icons/hi2';
 
 function UserNavbar() {
     const router = useRouter();
@@ -22,13 +22,6 @@ function UserNavbar() {
     const [plants, setPlants] = useState([]);
     const [selectedPlantId, setSelectedPlantId] = useState(null);
     const [selectedKeys, setSelectedKeys] = useState(new Set([]));
-
-    // const selectedValue = useMemo(
-    //     () => Array.from(selectedKeys).join(", ").replace(/_/g, ""),
-    //     [selectedKeys],
-    // );
-
-    // console.log("Key: ", Array.from(selectedKeys)[0]);
 
     const selectedValue = useMemo(() => {
         const selectedId = Array.from(selectedKeys)[0];
@@ -231,7 +224,21 @@ function UserNavbar() {
         } finally {
             setIsLoading(false);
         }
-    }
+    };
+
+    const handleRemoveItem = (key) => {
+        localStorage.removeItem(key); // ลบจาก localStorage
+        setNotifications(prev => prev.filter(item => item.key !== key)); // อัพเดท state
+    };
+
+    const handleDownload = () => {
+        const link = document.createElement("a");
+        link.href = "/apk/app-release.apk";
+        link.download = "app-release.apk";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
     const handleLogout = () => {
         Cookies.remove('UserData');
@@ -239,11 +246,6 @@ function UserNavbar() {
 
         toast.success("ออกจากระบบแล้ว");
         router.push('/');
-    }
-
-    const handleRemoveItem = (key) => {
-        localStorage.removeItem(key); // ลบจาก localStorage
-        setNotifications(prev => prev.filter(item => item.key !== key)); // อัพเดท state
     };
 
     return (
@@ -344,6 +346,9 @@ function UserNavbar() {
                             </div>
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Profile Actions" variant="flat">
+                            <DropdownItem key="download" onPress={handleDownload}>
+                                <p className='flex justify-between'>ดาวน์โหลดแอปพลิเคชัน<HiMiniArrowDownTray className='text-lg' /></p>
+                            </DropdownItem>
                             <DropdownItem key="settings" onPress={onOpenEdit}>
                                 <p className='flex justify-between'>แก้ไขโปรไฟล์<FaUserGear className='text-lg' /></p>
                             </DropdownItem>
