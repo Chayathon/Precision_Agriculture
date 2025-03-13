@@ -29,7 +29,7 @@ function Page() {
         }
 
         try {
-            const res = await fetch(`http://202.44.47.45:4000/api/login`, {
+            const res = await fetch('http://localhost:4000/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -42,19 +42,24 @@ function Page() {
             const data = await res.json();
 
             if(res.status === 200 && data.message == 'Login Successfully') {
-                Cookies.set('Token', data.token, { expires: 1 });
+                Cookies.set('Token', data.token, { expires: 1, secure: true });
                 Cookies.set('UserData', JSON.stringify(data.resultData), { expires: 1 });
                 localStorage.setItem("Token", data.token);
                 localStorage.setItem("UserData", JSON.stringify(data.resultData));
                 
                 toast.success("เข้าสู่ระบบสำเร็จ");
                 router.push(data.path);
+            } else if (res.status === 400) {
+                toast.warn("ชื่อผู้ใช้ไม่ถูกต้อง");
             }
-            else {
-                toast.error("ชื่อผู้ใช้ หรือ รหัสผ่านไม่ถูกต้อง!");
+            else if (res.status === 401) {
+                toast.warn("รหัสผ่านไม่ถูกต้อง");
+            } else {
+                toast.error(data.message || "เกิดข้อผิดพลาด");
             }
         } catch (error) {
-            console.log("Error", error);
+            console.error("Login Error:", error.message, error.stack);
+            toast.error("เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่");
         } finally {
             setIsLoading(false);
         }
@@ -74,6 +79,7 @@ function Page() {
                             label='ชื่อผู้ใช้'
                             variant='faded'
                             autoFocus
+                            required
                         />
                         <Input
                             onChange={(e) => setPassword(e.target.value)}
@@ -81,15 +87,12 @@ function Page() {
                             variant='faded'
                             endContent={
                                 <Button type="button" size="sm" className='bg-gray-300' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                {isVisible ? (
-                                    'ซ่อน'
-                                ) : (
-                                    'แสดง'
-                                )}
+                                    {isVisible ? 'ซ่อน' : 'แสดง'}
                                 </Button>
                             }
                             type={isVisible ? "text" : "password"}
                             className='my-4'
+                            required
                         />
                         <Button
                             type='submit'
@@ -97,6 +100,7 @@ function Page() {
                             className='w-full'
                             isLoading={isLoading}
                             disabled={isLoading}
+                            aria-label={isLoading ? 'กำลังเข้าสู่ระบบ' : 'เข้าสู่ระบบ'}
                         >
                             {isLoading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'}
                         </Button>

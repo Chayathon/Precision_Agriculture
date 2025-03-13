@@ -10,48 +10,64 @@ const jwt = require("jsonwebtoken");
 const keyauth = "lovemymom";
 
 router.post("/register", async (req, res) => {
-    const password = req.body.password
-    const hashPassword = await bcrypt.hash(password, 10);
+    try {
+        const password = req.body.password
+        const hashPassword = await bcrypt.hash(password, 10);
 
-    const checkUser = await prisma.user.findFirst({
-        where: {
-            OR : [
-                { email: req.body.email },
-                { username: req.body.username}
-            ]
-        },
-    });
-
-    if (!checkUser) {
-        const user = await prisma.user.create({
-            data: {
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
-                email: req.body.email,
-                tel: req.body.tel,
-                address: req.body.address,
-                province: Number(req.body.province),
-                district: Number(req.body.district),
-                subdistrict: Number(req.body.subdistrict),
-                username: req.body.username,
-                password: hashPassword,
-                role_id: 1,
+        const checkUser = await prisma.user.findFirst({
+            where: {
+                OR : [
+                    { email: req.body.email },
+                    { username: req.body.username}
+                ]
             },
         });
 
-        if (user) {
-            res.json("Registered Success");
+        if (!checkUser) {
+            const user = await prisma.user.create({
+                data: {
+                    firstname: req.body.firstname,
+                    lastname: req.body.lastname,
+                    email: req.body.email,
+                    tel: req.body.tel,
+                    address: req.body.address,
+                    province: Number(req.body.province),
+                    district: Number(req.body.district),
+                    subdistrict: Number(req.body.subdistrict),
+                    username: req.body.username,
+                    password: hashPassword,
+                    role_id: 1,
+                },
+            });
+
+            if (user) {
+                res.status(200).json({
+                    message: "Registered Success"
+                });
+            }
         }
-    }
-    else {
-        res.status(400).json({ error: "User already exists" });
+        else {
+            res.status(400).json({
+                message: "User already exists"
+            });
+        }
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Server Error");
     }
 });
 
 router.post("/login", async (req, res) => {
     try {
         const { username, password } = req.body;
-        const isUser = await prisma.user.findFirst({
+
+        if (!username || !password) {
+            return res.status(400).json({
+                message: "กรุณาระบุชื่อผู้ใช้และรหัสผ่าน",
+            });
+        }
+
+        const user = await prisma.user.findFirst({
             where: {
                 username,
             },
@@ -60,22 +76,22 @@ router.post("/login", async (req, res) => {
             },
         });
 
-        if (!isUser) {
+        if (!user) {
             return res.status(400).json({
                 message: "User not found",
             });
         }
 
-        const isCheckPassword = await bcrypt.compare(password, isUser.password);
+        const checkPassword = await bcrypt.compare(password, user.password);
 
-        if (isCheckPassword) {
-            const { password, ...rest } = isUser;
+        if (checkPassword) {
+            const { password, ...rest } = user;
             const token = jwt.sign(
                 {
                     data: {
-                        username: isUser.username,
-                        role: isUser.role.role_name,
-                        id: isUser.id,
+                        username: user.username,
+                        role: user.role.role_name,
+                        id: user.id,
                     },
                 },
                 `${keyauth}`,
@@ -90,7 +106,7 @@ router.post("/login", async (req, res) => {
             });
         }
         else {
-            res.status(400).json({
+            res.status(401).json({
                 message: "Password invalid",
             });
         }
@@ -100,4 +116,4 @@ router.post("/login", async (req, res) => {
     }
 });
 
-module.exports = router
+module.exports = router;

@@ -148,7 +148,7 @@ function Page() {
                 })
             });
 
-            if(res.ok) {
+            if(res.status === 200) {
                 const form = e.target;
                 form.reset();
                 toast.success("ลงทะเบียนสำเร็จแล้ว", {
@@ -157,16 +157,16 @@ function Page() {
 
                 setTimeout(() => {
                     router.push('/');
-                }, 1500)
-                    
+                }, 1500);
             }
-            else {
-                toast.warn("อีเมลหรือชื่อผู้ใช้นี้ ได้รับการลงทะเบียนแล้ว", {
-                    autoClose: 3000,
-                });
+            else if (res.status === 400) {
+                toast.warn("อีเมลหรือชื่อผู้ใช้นี้ ได้รับการลงทะเบียนแล้ว");
+            } else {
+                toast.error(data.message || "เกิดข้อผิดพลาด");
             }
-        } catch (err) {
-            console.log("Error", err)
+        } catch (error) {
+            console.error("Register Error:", error.message, error.stack);
+            toast.error("เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่");
         } finally {
             setIsLoading(false);
         }
@@ -190,9 +190,6 @@ function Page() {
 
                             <Input onChange={(e) => setTel(e.target.value)} type='text' label='เบอร์โทรศัพท์' maxLength='10' isClearable isRequired />
                         </div>
-                        {/* <div className='my-4'>
-                            <Textarea onChange={(e) => setAddress(e.target.value)} label='ที่อยู่' isRequired />
-                        </div> */}
                         <div className='my-4'>
                             <Textarea
                                 onChange={(e) => setAddress(prev => ({
@@ -203,6 +200,7 @@ function Page() {
                                 label='ที่อยู่'
                                 placeholder='บ้านเลขที่, ซอย, ถนน, หมู่ที่...'
                                 maxRows={2}
+                                isClearable
                                 isRequired
                             />
                         </div>
@@ -259,11 +257,7 @@ function Page() {
                                 label="รหัสผ่าน"
                                 endContent={
                                     <Button type="button" size="sm" className='bg-gray-300' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                    {isVisible ? (
-                                        'ซ่อน'
-                                    ) : (
-                                        'แสดง'
-                                    )}
+                                        {isVisible ? 'ซ่อน' : 'แสดง'}
                                     </Button>
                                 }
                                 type={isVisible ? "text" : "password"}
@@ -276,11 +270,7 @@ function Page() {
                                 label="ยืนยันรหัสผ่าน"
                                 endContent={
                                     <Button type="button" size="sm" className='bg-gray-300' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                    {isVisible ? (
-                                        'ซ่อน'
-                                    ) : (
-                                        'แสดง'
-                                    )}
+                                        {isVisible ? 'ซ่อน' : 'แสดง'}
                                     </Button>
                                 }
                                 type={isVisible ? "text" : "password"}
@@ -293,6 +283,7 @@ function Page() {
                             className='w-full'
                             isLoading={isLoading}
                             disabled={isLoading}
+                            aria-label={isLoading ? 'กำลังสมัครสมาชิก' : 'สมัครสมาชิก'}
                         >
                             {isLoading ? 'กำลังสมัครสมาชิก' : 'สมัครสมาชิก'}
                         </Button>
