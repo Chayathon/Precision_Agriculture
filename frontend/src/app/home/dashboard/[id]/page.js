@@ -307,7 +307,6 @@ function Dashboard({ params }) {
     LinearScale,
     LineElement,
     PointElement,
-    Title,
     Tooltip,
     Legend
   );
