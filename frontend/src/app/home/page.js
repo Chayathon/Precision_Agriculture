@@ -12,6 +12,7 @@ function Page() {
     const [id, setId] = useState(null);
     const [lat, setLat] = useState(0);
     const [lon, setLon] = useState(0);
+    const [localtion, setLocation] = useState('');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [temp, setTemp] = useState(0);
@@ -27,6 +28,7 @@ function Page() {
                     const data = await res.json();
                     setLat(data.resultData.subdistrictRel.lat);
                     setLon(data.resultData.subdistrictRel.long);
+                    setLocation(data.resultData.subdistrictRel.name_th);
                 }
             } catch (error) {
                 console.error("Error fetching data: ", error);
@@ -82,7 +84,7 @@ function Page() {
         <div className='flex flex-col items-center justify-center mt-10'>
             <p className='text-3xl pb-6'>กรุณาเลือกพืช</p>
 
-            <p>ข้อมูลอุณหภูมิและความชื้น</p>
+            <p>ข้อมูลอุณหภูมิและความชื้น ตำบล {localtion}</p>
             <p>วันที่ {date} เวลา {time}.00 น.</p>
             <div className='flex justify-center space-around'>
                 {/* อุณหภูมิ Gauge */}

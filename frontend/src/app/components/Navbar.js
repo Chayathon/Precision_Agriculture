@@ -257,6 +257,11 @@ function UserNavbar() {
                 </NavbarBrand>
 
                 <NavbarContent className="flex gap-4" justify="center">
+                    <NavbarItem>
+                        <Link href="/home">
+                            หน้าแรก
+                        </Link>
+                    </NavbarItem>
                     <Dropdown>
                         <DropdownTrigger>
                             <Button 
@@ -280,13 +285,12 @@ function UserNavbar() {
                             )}
                         </DropdownMenu>
                     </Dropdown>
+                    <NavbarItem>
+                        <Link href="/home/listPlant">
+                            ข้อมูลพืช
+                        </Link>
+                    </NavbarItem>
                 </NavbarContent>
-
-                <NavbarItem>
-                    <Link href="/home/listPlant">
-                        ข้อมูลพืช
-                    </Link>
-                </NavbarItem>
 
                 <NavbarContent as="div" justify="end">
                     <Dropdown placement="bottom-end">
