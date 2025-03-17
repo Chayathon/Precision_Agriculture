@@ -174,19 +174,19 @@ function Page() {
 
     return (
         <div className="grid w-[100vw] h-[100vh]">
-            <Card className="m-auto w-1/2 drop-shadow-2xl bg-blend-darken">
+            <Card className="m-auto drop-shadow-2xl bg-blend-darken w-11/12 max-sm:my-4 sm:w-2/3 md:w-3/4 lg:w-4/5 xl:w-1/2">
                 <CardHeader className='text-2xl font-bold justify-center'>
                     สมัครสมาชิก
                 </CardHeader>
                 <CardBody>
                     <form onSubmit={handleSubmit}>
-                        <div className='flex my-4 gap-4'>
-                            <Input onChange={(e) => setFirstname(e.target.value)} type='text' label='ชื่อจริง' autoFocus isClearable isRequired />
+                        <div className='sm:flex my-4 gap-4'>
+                            <Input className='max-sm:my-4' onChange={(e) => setFirstname(e.target.value)} type='text' label='ชื่อจริง' autoFocus isClearable isRequired />
 
                             <Input onChange={(e) => setLastname(e.target.value)} type='text' label='นามสกุล' isClearable isRequired />
                         </div>
-                        <div className='flex my-4 gap-4'>
-                            <Input onChange={(e) => setEmail(e.target.value)} type='email' label='อีเมล' isClearable isRequired />
+                        <div className='sm:flex my-4 gap-4'>
+                            <Input className='max-sm:my-4' onChange={(e) => setEmail(e.target.value)} type='email' label='อีเมล' isClearable isRequired />
 
                             <Input onChange={(e) => setTel(e.target.value)} type='text' label='เบอร์โทรศัพท์' maxLength='10' isClearable isRequired />
                         </div>
@@ -204,7 +204,7 @@ function Page() {
                                 isRequired
                             />
                         </div>
-                        <div className='flex my-4 gap-4'>
+                        <div className='md:flex my-4 gap-4'>
                             <Select
                                 onChange={(e) => setAddress(prev => ({
                                     ...prev,
@@ -219,6 +219,7 @@ function Page() {
                             </Select>
                             
                             <Select
+                                className='max-md:my-4'
                                 onChange={(e) => setAddress(prev => ({
                                     ...prev,
                                     district: e.target.value
@@ -251,8 +252,9 @@ function Page() {
                         <div className='my-4'>
                             <Input onChange={(e) => setUsername(e.target.value)} type='text' label='ชื่อผู้ใช้' isClearable isRequired />
                         </div>
-                        <div className='my-4'>
+                        <div className='sm:flex my-4 gap-4'>
                             <Input
+                                className='max-sm:my-4'
                                 onChange={(e) => setPassword(e.target.value)}
                                 label="รหัสผ่าน"
                                 endContent={
@@ -263,8 +265,7 @@ function Page() {
                                 type={isVisible ? "text" : "password"}
                                 isRequired
                             />
-                        </div>
-                        <div className='my-4'>
+
                             <Input
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 label="ยืนยันรหัสผ่าน"

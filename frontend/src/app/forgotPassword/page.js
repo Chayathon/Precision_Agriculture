@@ -51,7 +51,7 @@ function ForgotPassword() {
 
     return (
         <div className="grid w-[100vw] h-[100vh]">
-            <Card className="m-auto w-1/3 drop-shadow-2xl bg-blend-darken">
+            <Card className="m-auto drop-shadow-2xl bg-blend-darken w-11/12 sm:w-2/3 md:w-2/4 lg:w-2/6">
                 <CardHeader className='text-2xl font-bold justify-center'>
                     ลืมรหัสผ่าน
                 </CardHeader>
