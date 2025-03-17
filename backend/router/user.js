@@ -33,9 +33,13 @@ router.get("/listUser/:role_id", authIsCheck, isAdmin, async (req, res) => {
 
 router.get("/getUser/:id", async (req, res) => {
     const { id } = req.params;
+    
     const getUser = await prisma.user.findFirst({
         where: {
             id: Number(id),
+        },
+        include: {
+            subdistrictRel: true,
         },
     });
 
