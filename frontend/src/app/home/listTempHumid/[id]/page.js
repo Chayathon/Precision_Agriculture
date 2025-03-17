@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { Button, ButtonGroup, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@nextui-org/react';
+import { Button, ButtonGroup, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Select, SelectItem } from '@nextui-org/react';
 import moment from "moment";
 import 'moment/locale/th';
 import { jsPDF } from "jspdf";
@@ -156,23 +156,51 @@ function ListTempHumid({ params }) {
             id='content-to-export'
             topContent={
               <div className='flex justify-between'>
+                <div className="hidden md:block">
+                  <ButtonGroup>
+                      <Button onPress={() => fetchPlantVariables7day(id)} className="focus:bg-gray-400">7 วัน</Button>
+                      <Button onPress={() => fetchPlantVariables14day(id)} className="focus:bg-gray-400">14 วัน</Button>
+                      <Button onPress={() => fetchPlantVariables1month(id)} className="focus:bg-gray-400">1 เดือน</Button>
+                      <Button onPress={() => fetchPlantVariables3month(id)} className="focus:bg-gray-400">3 เดือน</Button>
+                      <Button onPress={() => fetchPlantVariables6month(id)} className="focus:bg-gray-400">6 เดือน</Button>
+                      <Button onPress={() => fetchPlantVariables9month(id)} className="focus:bg-gray-400">9 เดือน</Button>
+                      <Button onPress={() => fetchPlantVariables1year(id)} className="focus:bg-gray-400">1 ปี</Button>
+                  </ButtonGroup>
+                </div>
+
+                <div className="block md:hidden w-full">
+                  <Select
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (value === '7day') fetchPlantVariables7day(id);
+                      if (value === '14day') fetchPlantVariables14day(id);
+                      if (value === '1month') fetchPlantVariables1month(id);
+                      if (value === '3month') fetchPlantVariables3month(id);
+                      if (value === '6month') fetchPlantVariables6month(id);
+                      if (value === '9month') fetchPlantVariables9month(id);
+                      if (value === '1year') fetchPlantVariables1year(id);
+                    }}
+                    className="w-full"
+                    placeholder="เลือกช่วงเวลา"
+                  >
+                    <SelectItem key="7day">7 วัน</SelectItem>
+                    <SelectItem key="14day">14 วัน</SelectItem>
+                    <SelectItem key="1month">1 เดือน</SelectItem>
+                    <SelectItem key="3month">3 เดือน</SelectItem>
+                    <SelectItem key="6month">6 เดือน</SelectItem>
+                    <SelectItem key="9month">9 เดือน</SelectItem>
+                    <SelectItem key="1year">1 ปี</SelectItem>
+                  </Select>
+                </div>
+
                 <ButtonGroup>
-                    <Button onPress={() => fetchPlantVariables7day(id)} className="focus:bg-gray-400">7 วัน</Button>
-                    <Button onPress={() => fetchPlantVariables14day(id)} className="focus:bg-gray-400">14 วัน</Button>
-                    <Button onPress={() => fetchPlantVariables1month(id)} className="focus:bg-gray-400">1 เดือน</Button>
-                    <Button onPress={() => fetchPlantVariables3month(id)} className="focus:bg-gray-400">3 เดือน</Button>
-                    <Button onPress={() => fetchPlantVariables6month(id)} className="focus:bg-gray-400">6 เดือน</Button>
-                    <Button onPress={() => fetchPlantVariables9month(id)} className="focus:bg-gray-400">9 เดือน</Button>
-                    <Button onPress={() => fetchPlantVariables1year(id)} className="focus:bg-gray-400">1 ปี</Button>
-                </ButtonGroup>
-                <ButtonGroup>
-                <Button 
-                  onPress={exportToPDF}
-                  isLoading={isLoading}
-                  disabled={isLoading || !plantData?.length}
-                >
-                  {isLoading ? 'กำลังสร้าง PDF...' : 'PDF'}
-                </Button>
+                  <Button
+                    onPress={exportToPDF}
+                    isLoading={isLoading}
+                    disabled={isLoading || !plantData?.length}
+                  >
+                    {isLoading ? 'กำลังสร้าง PDF...' : 'PDF'}
+                  </Button>
                 </ButtonGroup>
               </div>
             }

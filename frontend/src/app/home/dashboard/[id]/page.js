@@ -1,14 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Card, CardHeader, CardBody, CardFooter, Button, useDisclosure, ButtonGroup, Spinner } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Button, useDisclosure, ButtonGroup, Select, SelectItem, Spinner } from "@nextui-org/react";
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   LineElement,
   PointElement,
-  Title,
   Tooltip,
   Legend,
 } from "chart.js";
@@ -178,7 +177,7 @@ function Dashboard({ params }) {
       }
     };
   
-    const fetchPlantVariables7day = async (plantId) => {
+    const fetchPlantVariables = async (plantId) => {
       try {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables7day/${plantId}`
@@ -195,9 +194,23 @@ function Dashboard({ params }) {
 
     fetchPlant(id);
     fetchPlantVariable(id);
-    fetchPlantVariables7day(id);
+    fetchPlantVariables(id);
   }, [id]);
   
+  const fetchPlantVariables7day = async (plantId) => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables7day/${plantId}`
+      );
+
+      if (res.status === 200) {
+        const data = await res.json();
+        setPlantDatas(data.resultData);
+      }
+    } catch (err) {
+      console.error("Failed to fetch", err);
+    }
+  };
 
   const fetchPlantVariables14day = async (plantId) => {
     try {
@@ -405,8 +418,8 @@ function Dashboard({ params }) {
         </div>
       ) : (!isLoading && plantData && plantDatas && nutrientData && factorData) ? (
         <>
-          <div className="grid grid-cols-3 gap-4 mb-4">
-            <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+            <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer md:col-span-2 lg:col-span-1">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">อายุ (วัน)</p>
               </CardHeader>
@@ -414,25 +427,19 @@ function Dashboard({ params }) {
                 <p className="text-center text-6xl font-bold">{plantAge}</p>
               </CardBody>
             </Card>
-
-            <Card
-              className="drop-shadow-xl hover:-translate-y-1 cursor-pointer"
-            >
+            <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">อุณหภูมิ (°C)</p>
               </CardHeader>
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
-                  {" "}
-                  {/* ไม่มี gap */}
-                  {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
                     <p className={`text-5xl font-bold ${plantData.temperature < factorData.temperature ? 'text-red-500' : 'text-green-500'}`}>
                       {plantData.temperature}
                     </p>
                   </div>
-                  {/* ชุดข้อมูลที่ 2 */}
+                  
                   <div className="text-center">
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
                     <p className="text-5xl font-bold">{factorData.temperature}</p>
@@ -440,23 +447,19 @@ function Dashboard({ params }) {
                 </div>
               </CardBody>
             </Card>
-
             <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">ความชื้น (%)</p>
               </CardHeader>
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
-                  {" "}
-                  {/* ไม่มี gap */}
-                  {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
                     <p className={`text-5xl font-bold ${plantData.humidity < factorData.humidity ? 'text-red-500' : 'text-green-500'}`}>
                       {plantData.humidity}
                     </p>
                   </div>
-                  {/* ชุดข้อมูลที่ 2 */}
+                  
                   <div className="text-center">
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
                     <p className="text-5xl font-bold">{factorData.humidity}</p>
@@ -464,25 +467,20 @@ function Dashboard({ params }) {
                 </div>
               </CardBody>
             </Card>
-          </div>
 
-          <div className="grid grid-cols-3 gap-4 mb-4">
             <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">ไนโตรเจน (mg/L)</p>
               </CardHeader>
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
-                  {" "}
-                  {/* ไม่มี gap */}
-                  {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
                     <p className={`text-5xl font-bold ${plantData.nitrogen < nutrientData.nitrogen ? 'text-red-500' : 'text-green-500'}`}>
                       {plantData.nitrogen}
                     </p>
                   </div>
-                  {/* ชุดข้อมูลที่ 2 */}
+                  
                   <div className="text-center">
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
                     <p className="text-5xl font-bold">{nutrientData.nitrogen}</p>
@@ -496,16 +494,13 @@ function Dashboard({ params }) {
               </CardHeader>
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
-                  {" "}
-                  {/* ไม่มี gap */}
-                  {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
                     <p className={`text-5xl font-bold ${plantData.phosphorus < nutrientData.phosphorus ? 'text-red-500' : 'text-green-500'}`}>
                       {plantData.phosphorus}
                     </p>
                   </div>
-                  {/* ชุดข้อมูลที่ 2 */}
+                  
                   <div className="text-center">
                     <p className="text-2xl">ค่ามาตรฐาน</p>
                     <p className="text-5xl font-bold"> {nutrientData.phosphorus}</p>
@@ -519,16 +514,13 @@ function Dashboard({ params }) {
               </CardHeader>
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
-                  {" "}
-                  {/* ไม่มี gap */}
-                  {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
                     <p className={`text-5xl font-bold ${plantData.potassium < nutrientData.potassium ? 'text-red-500' : 'text-green-500'}`}>
                       {plantData.potassium}
                     </p>
                   </div>
-                  {/* ชุดข้อมูลที่ 2 */}
+                  
                   <div className="text-center">
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
                     <p className="text-5xl font-bold">{nutrientData.potassium}</p>
@@ -536,9 +528,7 @@ function Dashboard({ params }) {
                 </div>
               </CardBody>
             </Card>
-          </div>
 
-          <div className="grid grid-cols-3 gap-4 mb-4">
             <Card className="drop-shadow-xl hover:-translate-y-1 cursor-pointer">
               <CardHeader className="flex justify-between items-center">
                 <div className="flex justify-center flex-1"> 
@@ -552,16 +542,13 @@ function Dashboard({ params }) {
               </CardHeader>
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
-                  {" "}
-                  {/* ไม่มี gap */}
-                  {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
                     <p className={`text-5xl font-bold ${plantData.pH < factorData.pH ? 'text-red-500' : 'text-green-500'}`}>
                       {plantData.pH}
                     </p>
                   </div>
-                  {/* ชุดข้อมูลที่ 2 */}
+                  
                   <div className="text-center">
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
                     <p className="text-5xl font-bold">{factorData.pH}</p>
@@ -582,16 +569,13 @@ function Dashboard({ params }) {
               </CardHeader>
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
-                  {" "}
-                  {/* ไม่มี gap */}
-                  {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
                     <p className={`text-5xl font-bold ${plantData.salinity < factorData.salinity ? 'text-red-500' : 'text-green-500'}`}>
                       {plantData.salinity}
                     </p>
                   </div>
-                  {/* ชุดข้อมูลที่ 2 */}
+                  
                   <div className="text-center">
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
                     <p className="text-5xl font-bold">{factorData.salinity}</p>
@@ -612,16 +596,13 @@ function Dashboard({ params }) {
               </CardHeader>
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
-                  {" "}
-                  {/* ไม่มี gap */}
-                  {/* ชุดข้อมูลที่ 1 */}
                   <div className="text-center">
                     <p className="text-2xl">ค่าที่วัดได้</p>
                     <p className={`text-5xl font-bold ${plantData.lightIntensity < factorData.lightIntensity ? 'text-red-500' : 'text-green-500'}`}>
                       {plantData.lightIntensity}
                     </p>
                   </div>
-                  {/* ชุดข้อมูลที่ 2 */}
+                  
                   <div className="text-center">
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
                     <p className="text-5xl font-bold">{factorData.lightIntensity}</p>
@@ -641,8 +622,8 @@ function Dashboard({ params }) {
             <ModalLightIntensityGraph isOpen={isOpenLightIntensityGraph} onOpenChange={onOpenLightIntensityChangeGraph} id={selectedId} />
           )}
 
-          <div className="flex justify-end mb-4">
-            <ButtonGroup>
+          <div className="hidden justify-end mb-4 md:flex">
+            <ButtonGroup className='flex flex-row flex-wrap max-sm:gap-y-2'>
               <Button onPress={() => fetchPlantVariables7day(id)} className="focus:bg-gray-400">7 วัน</Button>
               <Button onPress={() => fetchPlantVariables14day(id)} className="focus:bg-gray-400">14 วัน</Button>
               <Button onPress={() => fetchPlantVariables1month(id)} className="focus:bg-gray-400">1 เดือน</Button>
@@ -653,7 +634,32 @@ function Dashboard({ params }) {
             </ButtonGroup>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="block w-full mb-4 md:hidden">
+            <Select
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value === '7day') fetchPlantVariables7day(id);
+                if (value === '14day') fetchPlantVariables14day(id);
+                if (value === '1month') fetchPlantVariables1month(id);
+                if (value === '3month') fetchPlantVariables3month(id);
+                if (value === '6month') fetchPlantVariables6month(id);
+                if (value === '9month') fetchPlantVariables9month(id);
+                if (value === '1year') fetchPlantVariables1year(id);
+              }}
+              className="w-full"
+              placeholder="เลือกช่วงเวลา"
+            >
+              <SelectItem key="7day">7 วัน</SelectItem>
+              <SelectItem key="14day">14 วัน</SelectItem>
+              <SelectItem key="1month">1 เดือน</SelectItem>
+              <SelectItem key="3month">3 เดือน</SelectItem>
+              <SelectItem key="6month">6 เดือน</SelectItem>
+              <SelectItem key="9month">9 เดือน</SelectItem>
+              <SelectItem key="1year">1 ปี</SelectItem>
+            </Select>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
               <CardHeader className="flex justify-between items-center">
                 <div className="flex justify-center flex-1"> 

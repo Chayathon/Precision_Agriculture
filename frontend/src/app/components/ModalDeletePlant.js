@@ -59,27 +59,27 @@ function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
         <>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
-                {(onClose) => (
-                    <>
-                    <ModalHeader className="flex flex-col gap-1">ลบข้อมูล</ModalHeader>
-                    <ModalBody>
-                        <p>ยืนยันที่จะลบพืช <b>{plantName}</b> ?</p>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button variant="light" onPress={onClose}>
-                            ยกเลิก
-                        </Button>
-                        <Button
-                            color="danger"
-                            onPress={handleSubmit}
-                            isLoading={isLoading}
-                            disabled={isLoading}
-                        >
-                            {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
-                        </Button>
-                    </ModalFooter>
-                    </>
-                )}
+                    {(onClose) => (
+                        <>
+                        <ModalHeader className="flex flex-col gap-1">ลบข้อมูล</ModalHeader>
+                        <ModalBody>
+                            <p>ยืนยันที่จะลบพืช <b>{plantName}</b> ?</p>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button variant="light" onPress={onClose}>
+                                ยกเลิก
+                            </Button>
+                            <Button
+                                color="danger"
+                                onPress={handleSubmit}
+                                isLoading={isLoading}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
+                            </Button>
+                        </ModalFooter>
+                        </>
+                    )}
                 </ModalContent>
             </Modal>
         </>

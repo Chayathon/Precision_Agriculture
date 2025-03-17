@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure, Spinner } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure, Spinner, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
 import { FaPlus, FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
-import { CiEdit, CiViewList } from "react-icons/ci";
+import { CiEdit, CiMenuKebab, CiViewList } from "react-icons/ci";
 import { HiOutlineTrash } from "react-icons/hi2";
 import moment from "moment";
 import 'moment/locale/th';
@@ -254,6 +254,7 @@ export default function ListPlant() {
                 }}
                 selectedKeys={selectedKeys}
                 selectionMode="multiple"
+                selectionBehavior="replace"
                 sortDescriptor={sortDescriptor}
                 topContent={topContent}
                 topContentPlacement="outside"
@@ -276,27 +277,67 @@ export default function ListPlant() {
                             <TableCell>{convertDate(item.plantedAt)}</TableCell>
                             <TableCell>{item.plantname}</TableCell>
                             <TableCell>
-                                <ButtonGroup>
-                                    {item.plant_id === 0 && (
-                                        <>
-                                            <Tooltip content="เพิ่มค่าตัวแปร" color="success">
-                                                <Button onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}} variant="light" size='sm'>
-                                                    <CiViewList  className="text-xl text-success-500" />
-                                                </Button>
-                                            </Tooltip>
-                                            <Tooltip content="แก้ไข" color="warning">
-                                                <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}} variant="light" size='sm'>
-                                                    <CiEdit className="text-xl text-amber-500" />
-                                                </Button>
-                                            </Tooltip>
-                                        </>
-                                    )}
-                                    <Tooltip content="ลบ" color="danger">
-                                        <Button onPress={() => {setSelectedId(item.id); onOpenDelete();}} variant="light" size='sm'>
-                                            <HiOutlineTrash className="text-xl text-red-500" />
-                                        </Button>
-                                    </Tooltip>
-                                </ButtonGroup>
+                                <div className="hidden sm:block">
+                                    <ButtonGroup>
+                                        {item.plant_id === 0 && (
+                                            <>
+                                                <Tooltip content="เพิ่มค่าตัวแปร" color="success">
+                                                    <Button onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}} variant="light" size='sm'>
+                                                        <CiViewList  className="text-xl text-success-500" />
+                                                    </Button>
+                                                </Tooltip>
+                                                <Tooltip content="แก้ไข" color="warning">
+                                                    <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}} variant="light" size='sm'>
+                                                        <CiEdit className="text-xl text-amber-500" />
+                                                    </Button>
+                                                </Tooltip>
+                                            </>
+                                        )}
+                                        <Tooltip content="ลบ" color="danger">
+                                            <Button onPress={() => {setSelectedId(item.id); onOpenDelete();}} variant="light" size='sm'>
+                                                <HiOutlineTrash className="text-xl text-red-500" />
+                                            </Button>
+                                        </Tooltip>
+                                    </ButtonGroup>
+                                </div>
+
+                                <div className="block sm:hidden">
+                                    <Dropdown>
+                                        <DropdownTrigger>
+                                            <Button variant="light" size="sm">
+                                                <CiMenuKebab className="text-xl" />
+                                            </Button>
+                                        </DropdownTrigger>
+                                        <DropdownMenu aria-label="ตัวเลือกการจัดการ">
+                                            {item.plant_id === 0 && (
+                                                <>
+                                                    <DropdownItem
+                                                        key="add-variable" 
+                                                        onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}}
+                                                        startContent={<CiViewList className="text-success-500" />}
+                                                    >
+                                                        เพิ่มค่าตัวแปร
+                                                    </DropdownItem>
+                                                    <DropdownItem 
+                                                        key="edit" 
+                                                        onPress={() => {setSelectedId(item.id); onOpenUpdate();}}
+                                                        startContent={<CiEdit className="text-amber-500" />}
+                                                    >
+                                                        แก้ไข
+                                                    </DropdownItem>
+                                                </>
+                                            )}
+                                            <DropdownItem 
+                                                key="delete" 
+                                                onPress={() => {setSelectedId(item.id); onOpenDelete();}}
+                                                className="text-danger"
+                                                startContent={<HiOutlineTrash className="text-red-500" />}
+                                            >
+                                                ลบ
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </Dropdown>
+                                </div>
                             </TableCell>
                         </TableRow>
                     )}

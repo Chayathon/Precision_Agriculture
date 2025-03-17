@@ -250,13 +250,13 @@ function UserNavbar() {
         <>
             <Navbar className='bg-gray-800 text-white'>
                 <NavbarBrand>
-                    <div className='flex flex-col'>
+                    <div className='flex-col hidden sm:flex'>
                         <div className='text-sm'>{currentDateTime.date}</div>
                         <div className='text-lg font-bold'>{currentDateTime.time}</div>
                     </div>
                 </NavbarBrand>
 
-                <NavbarContent className="hidden sm:flex gap-4" justify="center">
+                <NavbarContent className="flex gap-4" justify="center">
                     <Dropdown>
                         <DropdownTrigger>
                             <Button 
@@ -337,8 +337,8 @@ function UserNavbar() {
                                 <User
                                     showFallback src='https://images.unsplash.com/broken'
                                     as="button"
-                                    name={name}
-                                    description={userEmail}
+                                    name={<span className="sm:inline hidden">{name}</span>}
+                                    description={<span className="sm:inline hidden">{userEmail}</span>}
                                     className="transition-transform"
                                 />
                             </div>
