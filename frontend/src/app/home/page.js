@@ -118,7 +118,7 @@ function Home() {
 
             // ดึงวันที่และเวลาปัจจุบัน
             const date = thaiTime.toISODate();
-            const duration = 14;
+            const duration = 10;
 
             const url = `https://data.tmd.go.th/nwpapi/v1/forecast/location/daily/at?lat=${lat}&lon=${lon}&fields=tc_max,tc_min,rh,rain,cond&date=${date}&duration=${duration}`;
 
@@ -243,7 +243,7 @@ function Home() {
                             id="temp-gauge"
                             nrOfLevels={20}
                             percent={temp / 50}
-                            textColor="#000000"
+                            textColor="#A0A0A0"
                             formatTextValue={() => `${temp.toFixed(2)}°C`}
                         />
                     </div>
@@ -255,7 +255,7 @@ function Home() {
                             id="humidity-gauge"
                             nrOfLevels={10}
                             percent={humidity / 100}
-                            textColor="#000000"
+                            textColor="#A0A0A0"
                             formatTextValue={() => `${humidity.toFixed(2)}%`}
                         />
                     </div>
