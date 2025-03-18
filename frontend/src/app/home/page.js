@@ -230,66 +230,76 @@ function Home() {
     }
 
     return (
-        <div className='flex flex-col items-center justify-center m-4'>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <Card className="col-span-1 lg:col-span-2 p-4 pb-4 drop-shadow-xl items-center">
+        <div className="container mx-auto max-w-[1200px]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 m-4">
+                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl items-center">
                     <p>ข้อมูลสภาพอากาศ ตำบล {localtion}</p>
                     <p>วันที่ {date} เวลา {time}.00 น.</p>
                     <p className='pt-4 text-lg font-bold sm:text-xl md:text-2xl lg:text-4xl'>{weatherCondition(condition)}</p>
                 </Card>
-                <Card className="items-center p-4 pb-4 drop-shadow-xl">
-                    <GaugeChart
-                        id="temp-gauge"
-                        nrOfLevels={20}
-                        percent={temp / 50}
-                        textColor="#000000"
-                        formatTextValue={() => `${temp.toFixed(2)}°C`}
-                        style={{
-                            width: '400px'
-                        }}
-                    />
+                <Card className="items-center p-4 drop-shadow-xl">
+                    <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
+                        <GaugeChart
+                            id="temp-gauge"
+                            nrOfLevels={20}
+                            percent={temp / 50}
+                            textColor="#000000"
+                            formatTextValue={() => `${temp.toFixed(2)}°C`}
+                        />
+                    </div>
                     <p className='flex justify-center'>อุณหภูมิ (°C)</p>
                 </Card>
-                <Card className="items-center p-4 pb-4 drop-shadow-xl">
-                    <GaugeChart
-                        id="humidity-gauge"
-                        nrOfLevels={10}
-                        percent={humidity / 100}
-                        textColor="#000000"
-                        formatTextValue={() => `${humidity.toFixed(2)}%`}
-                        style={{
-                            width: '400px'
-                        }}
-                    />
+                <Card className="items-center p-4 drop-shadow-xl">
+                    <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
+                        <GaugeChart
+                            id="humidity-gauge"
+                            nrOfLevels={10}
+                            percent={humidity / 100}
+                            textColor="#000000"
+                            formatTextValue={() => `${humidity.toFixed(2)}%`}
+                        />
+                    </div>
                     <p className='flex justify-center'>ความชื้นสัมพัทธ์ (%)</p>
                 </Card>
-                <Card className="col-span-1 lg:col-span-2 p-4 pb-4 drop-shadow-xl">
+                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl">
                     <p className='flex justify-center'>พยากรณ์อากาศรายชั่วโมง</p>
                     <Line
                         options={options}
                         data={weatherHourlyChart(weatherHourly)}
                     />
                 </Card>
-                <Card className="col-span-1 lg:col-span-2 p-4 pb-4 drop-shadow-xl">
+                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl">
                     <p className='flex justify-center pb-2'>พยากรณ์อากาศรายวัน</p>
                     <Table removeWrapper aria-label="Weather Daily">
                         <TableHeader>
                             <TableColumn>วันที่</TableColumn>
-                            <TableColumn>อุณหภูมิสูงสุด</TableColumn>
-                            <TableColumn>อุณหภูมิต่ำสุด</TableColumn>
-                            <TableColumn>ความชื้นเฉลี่ย</TableColumn>
-                            <TableColumn>ปริมาณฝน</TableColumn>
-                            <TableColumn>สภาพอากาศโดยรวม</TableColumn>
+                            <TableColumn>
+                                <span className="hidden sm:inline">อุณหภูมิสูงสุด</span>
+                                <span className="text-lg sm:hidden">☀️</span> {/* แสดงไอคอนเมื่อเล็กกว่า sm */}
+                            </TableColumn>
+                            <TableColumn>
+                                <span className="hidden sm:inline">อุณหภูมิต่ำสุด</span>
+                                <span className="text-lg sm:hidden">🌙</span>
+                            </TableColumn>
+                            <TableColumn>
+                                <span className="hidden sm:inline">ความชื้นเฉลี่ย</span>
+                                <span className="text-lg sm:hidden">💧</span>
+                            </TableColumn>
+                            <TableColumn className='hidden sm:table-cell'>ปริมาณฝน</TableColumn>
+                            <TableColumn className='hidden md:table-cell'>สภาพอากาศโดยรวม</TableColumn>
                         </TableHeader>
                         <TableBody>
                             {weatherDaily.map((item, index) => (
                                 <TableRow key={index}>
-                                    <TableCell>{moment(item.time).format('DD MMMM') + ' ' + (parseInt(moment(item.time).format('YYYY')) + 543)}</TableCell>
+                                    <TableCell>
+                                        <span className='hidden sm:inline'>{moment(item.time).format('DD MMMM') + ' ' + (parseInt(moment(item.time).format('YYYY')) + 543)}</span>
+                                        <span className='sm:hidden'>{moment(item.time).format('DD/MM/') + '' + (parseInt(moment(item.time).format('YY')) + 43)}</span>
+                                    </TableCell>
                                     <TableCell>{item.data.tc_max}°C</TableCell>
                                     <TableCell>{item.data.tc_min}°C</TableCell>
                                     <TableCell>{item.data.rh}%</TableCell>
-                                    <TableCell>{item.data.rain}mm</TableCell>
-                                    <TableCell>{weatherCondition(item.data.cond)}</TableCell>
+                                    <TableCell className='hidden sm:table-cell'>{item.data.rain}mm</TableCell>
+                                    <TableCell className='hidden md:table-cell'>{weatherCondition(item.data.cond)}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
