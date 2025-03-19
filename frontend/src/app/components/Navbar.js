@@ -249,12 +249,14 @@ function UserNavbar() {
     return (
         <>
             <Navbar className='bg-gray-800 text-white'>
-                <NavbarBrand>
-                    <div className='flex-col hidden sm:flex'>
-                        <div className='text-sm'>{currentDateTime.date}</div>
-                        <div className='text-lg font-bold'>{currentDateTime.time}</div>
-                    </div>
-                </NavbarBrand>
+                <NavbarContent>
+                    <NavbarBrand>
+                        <div className='flex-col hidden sm:flex'>
+                            <div className='text-sm'>{currentDateTime.date}</div>
+                            <div className='text-lg font-bold'>{currentDateTime.time}</div>
+                        </div>
+                    </NavbarBrand>
+                </NavbarContent>
 
                 <NavbarContent className="flex gap-4" justify="center">
                     <NavbarItem>
@@ -301,7 +303,7 @@ function UserNavbar() {
                                 </Badge>
                             </div>
                         </DropdownTrigger>
-                        <DropdownMenu>
+                        <DropdownMenu aria-label='Notifications'>
                             {notifications.length > 0 ? (
                                 notifications.map((item, index) => (
                                     <DropdownItem
@@ -426,7 +428,6 @@ function UserNavbar() {
                     </Modal>
                 </NavbarContent>
             </Navbar>
-            {/* {selectedPlantId ? <Dashboard id={selectedPlantId} /> : "กรุณาเลือกพืช"} */}
         </>
     )
 }

@@ -4,12 +4,13 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure, NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from "@nextui-org/react";
 import { FaArrowRightFromBracket, FaUserGear } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 
 function AdminNavbar() {
-    const router = useRouter()
+    const router = useRouter();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [currentDate, setCurrentDate] = useState('');
     const [currentTime, setCurrentTime] = useState('');
     
@@ -145,15 +146,26 @@ function AdminNavbar() {
     }
     
     return (
-        <Navbar className='bg-gray-800 text-white'>
-            <NavbarBrand>
-                <div className='flex flex-col'>
-                    <div className='text-sm'>{currentDate}</div>
-                    <div className='text-lg font-bold'>{currentTime}</div>
-                </div>
-            </NavbarBrand>
+        <Navbar className='bg-gray-800 text-white' isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
+            <NavbarContent>
+                <NavbarMenuToggle
+                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                    className="sm:hidden"
+                />
+                <NavbarBrand>
+                    <div className='flex flex-col'>
+                        <div className='text-sm'>{currentDate}</div>
+                        <div className='text-lg font-bold'>{currentTime}</div>
+                    </div>
+                </NavbarBrand>
+            </NavbarContent>
 
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
+                <NavbarItem>
+                    <Link href="/admin">
+                        หน้าแรก
+                    </Link>
+                </NavbarItem>
                 <NavbarItem>
                     <Link href="/admin/listPlant">
                         ข้อมูลพืช
@@ -181,10 +193,11 @@ function AdminNavbar() {
                     <DropdownTrigger>
                         <div className="flex items-center gap-2 cursor-pointer">
                             <User
-                                showFallback src='https://images.unsplash.com/broken'
+                                showFallback
+                                src='https://images.unsplash.com/broken'
                                 as="button"
-                                name={name}
-                                description={userEmail}
+                                name={<span className="md:inline hidden">{name}</span>}
+                                description={<span className="md:inline hidden">{userEmail}</span>}
                                 className="transition-transform"
                             />
                         </div>
@@ -193,7 +206,7 @@ function AdminNavbar() {
                         <DropdownItem key="settings" onPress={onOpen}>
                             <p className='flex justify-between'>แก้ไขโปรไฟล์<FaUserGear className='text-lg' /></p>
                         </DropdownItem>
-                        <DropdownItem key="logout" color="danger" onClick={handleLogout}>
+                        <DropdownItem key="logout" color="danger" onPress={handleLogout}>
                             <p className='flex justify-between'>ออกจากระบบ<FaArrowRightFromBracket className='text-lg' /></p>
                         </DropdownItem>
                     </DropdownMenu>
@@ -259,6 +272,23 @@ function AdminNavbar() {
                     </ModalContent>
                 </Modal>
             </NavbarContent>
+            <NavbarMenu>
+                <Link href="/admin" className='w-full px-1' size='lg' onClick={() => setIsMenuOpen(false)}>
+                    <NavbarMenuItem>หน้าแรก</NavbarMenuItem>
+                </Link>
+                <Link href="/admin/listPlant" className='w-full px-1' size='lg' onClick={() => setIsMenuOpen(false)}>
+                    <NavbarMenuItem>ข้อมูลพืช</NavbarMenuItem>
+                </Link>
+                <Link href="/admin/listAdmin" className='w-full px-1' size='lg' onClick={() => setIsMenuOpen(false)}>
+                    <NavbarMenuItem>ข้อมูลผู้ดูแลระบบ</NavbarMenuItem>
+                </Link>
+                <Link href="/admin/listUser" className='w-full px-1' size='lg' onClick={() => setIsMenuOpen(false)}>
+                    <NavbarMenuItem>ข้อมูลสมาชิก</NavbarMenuItem>
+                </Link>
+                <Link href="/admin/listRole" className='w-full px-1' size='lg' onClick={() => setIsMenuOpen(false)}>
+                    <NavbarMenuItem>ข้อมูลตำแหน่ง</NavbarMenuItem>
+                </Link>
+            </NavbarMenu>
         </Navbar>
     )
 }
