@@ -1,14 +1,57 @@
-'use client'
+'use client';
 
 import React, { useEffect, useState } from 'react'
 import Cookies from "js-cookie";
+import axios from 'axios';
+import { DateTime } from 'luxon';
+import moment from 'moment';
+import 'moment/locale/th';
 import Link from 'next/link';
-import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import GaugeChart from 'react-gauge-chart';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  LineElement,
+  PointElement,
+  Tooltip,
+  Legend,
+} from "chart.js";
+import { Line } from 'react-chartjs-2';
 
-function Page() {
+function Home() {
+    const [plants, setPlants] = useState(0);
     const [admins, setAdmins] = useState(0);
     const [users, setUsers] = useState(0);
     const [roles, setRoles] = useState(0);
+
+    const [lat, setLat] = useState(0);
+    const [lon, setLon] = useState(0);
+
+    const [localtion, setLocation] = useState('');
+    const [date, setDate] = useState('');
+    const [time, setTime] = useState('');
+
+    const [temp, setTemp] = useState(0);
+    const [humidity, setHumidity] = useState(0);
+    const [condition, setCondition] = useState('');
+
+    const [weatherHourly, setWeatherHourly] = useState([]);
+    const [weatherDaily, setWeatherDaily] = useState([]);
+
+    const fetchPlant = async () => {
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listPlantAvaliable`);
+
+            if (res.ok) {
+                const data = await res.json();
+                setPlants(data.resultData.length);
+            }
+        } catch (error) {
+            console.error("Error fetching data: ", error);
+        }
+    };
 
     const fetchAdmin = async (role_id) => {
         try {
@@ -59,14 +102,224 @@ function Page() {
     };
 
     useEffect(() => {
+        const fetchUserById = async () => {
+            const user = JSON.parse(localStorage.getItem('UserData') || '{}')
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getUser/${user.id}`);
+    
+                if (res.status === 200) {
+                    const data = await res.json();
+                    setLat(data.resultData.subdistrictRel.lat);
+                    setLon(data.resultData.subdistrictRel.long);
+                    setLocation(data.resultData.subdistrictRel.name_th);
+                }
+            } catch (error) {
+                console.error("Error fetching data: ", error);
+            }
+        };
+
+        fetchUserById();
+    }, []);
+
+    useEffect(() => {
+        const thaiTime = DateTime.now().setZone('Asia/Bangkok');
+
+        const fetchTMDDataNow = async () => {
+            if (!lat || !lon) return;
+
+            // ดึงวันที่และเวลาปัจจุบัน
+            const date = thaiTime.toISODate();
+            const hour = thaiTime.hour;
+            const duration = 1;
+
+            const url = `https://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=${lat}&lon=${lon}&fields=tc,rh,cond&date=${date}&hour=${hour}&duration=${duration}`;
+
+            moment.locale('th');
+            setDate(moment(date).format('DD MMMM') + ' ' + (parseInt(moment(date).format('YYYY')) + 543));
+            setTime(hour);
+
+            try {
+                const response = await axios.get(url, {
+                headers: {
+                    accept: 'application/json',
+                    authorization: `Bearer ${process.env.NEXT_PUBLIC_TMD_TOKEN}`,
+                },
+                });
+        
+                const forecasts = await response.data.WeatherForecasts[0].forecasts;
+                // ใช้ข้อมูลล่าสุด (ชั่วโมงแรก)
+                setTemp(forecasts[0].data.tc || 0); // อุณหภูมิ (°C)
+                setHumidity(forecasts[0].data.rh || 0); // ความชื้นสัมพัทธ์ (%)
+                setCondition(forecasts[0].data.cond || 0); // สภาพอากาศโดยทั่วไป
+            } catch (error) {
+                console.error('Error fetching TMD data:', error);
+            }
+        };
+
+        const fetchTMDDataHourly = async () => {
+            if (!lat || !lon) return;
+
+            // ดึงวันที่และเวลาปัจจุบัน
+            const date = thaiTime.toISODate();
+            const hour = thaiTime.hour;
+            const duration = 24;
+
+            const url = `https://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=${lat}&lon=${lon}&fields=tc,rh,rain&date=${date}&hour=${hour}&duration=${duration}`;
+
+            try {
+                const response = await axios.get(url, {
+                headers: {
+                    accept: 'application/json',
+                    authorization: `Bearer ${process.env.NEXT_PUBLIC_TMD_TOKEN}`,
+                },
+                });
+        
+                const forecasts = await response.data.WeatherForecasts[0].forecasts;
+                setWeatherHourly(forecasts || []);
+            } catch (error) {
+                console.error('Error fetching TMD data:', error);
+            }
+        };
+
+        const fetchTMDDataDaily = async () => {
+            if (!lat || !lon) return;
+
+            // ดึงวันที่และเวลาปัจจุบัน
+            const date = thaiTime.toISODate();
+            const duration = 10;
+
+            const url = `https://data.tmd.go.th/nwpapi/v1/forecast/location/daily/at?lat=${lat}&lon=${lon}&fields=tc_max,tc_min,rh,rain,cond&date=${date}&duration=${duration}`;
+
+            try {
+                const response = await axios.get(url, {
+                headers: {
+                    accept: 'application/json',
+                    authorization: `Bearer ${process.env.NEXT_PUBLIC_TMD_TOKEN}`,
+                },
+                });
+        
+                const forecasts = await response.data.WeatherForecasts[0].forecasts;
+                setWeatherDaily(forecasts || []);
+            } catch (error) {
+                console.error('Error fetching TMD data:', error);
+            }
+        };
+    
+        fetchTMDDataNow();
+        fetchTMDDataHourly();
+        fetchTMDDataDaily();
+    }, [lat, lon]);
+
+    useEffect(() => {
+        fetchPlant();
         fetchAdmin(2);
         fetchUser(1);
         fetchRole();
     }, []);
 
+    ChartJS.register(
+        CategoryScale,
+        LinearScale,
+        LineElement,
+        PointElement,
+        Tooltip,
+        Legend
+    );
+    
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "top",
+            },
+        },
+    };
+
+    const weatherHourlyChart = (data) => {
+        if (!data) {
+            return {
+                labels: [],
+                datasets: []
+            };
+        }
+        return {
+            labels: data.map(item => moment(item.time).format('HH:MM')),
+            datasets: [
+                {
+                    label: "อุณหภูมิ (°C)",
+                    data: data.map(item => item.data.tc),
+                    backgroundColor: "rgba(255, 0, 0, 0.5)",
+                    borderColor: "rgba(255, 0, 0, 1)",
+                },
+                {
+                    label: "ความชื้น (%)",
+                    data: data.map(item => item.data.rh),
+                    backgroundColor: "rgba(0, 200, 255, 0.5)",
+                    borderColor: "rgba(0, 200, 255, 1)",
+                },
+                {
+                    label: "ปริมาณฝน (mm)",
+                    data: data.map(item => item.data.rain),
+                    backgroundColor: "rgba(0, 0, 255, 0.5)",
+                    borderColor: "rgba(0, 0, 255, 1)",
+                },
+            ],
+        }
+    };
+
+    const weatherCondition = (conditionCode) => {
+        switch (conditionCode) {
+            case 1:
+                return "ท้องฟ้าแจ่มใส (Clear)";
+            case 2:
+                return "มีเมฆบางส่วน (Partly cloudy)";
+            case 3:
+                return "มีเมฆเป็นส่วนมาก (Cloudy)";
+            case 4:
+                return "มีเมฆมาก (Overcast)";
+            case 5:
+                return "ฝนตกเล็กน้อย (Light rain)";
+            case 6:
+                return "ฝนปานกลาง (Moderate rain)";
+            case 7:
+                return "ฝนตกหนัก (Heavy rain)";
+            case 8:
+                return "ฝนฟ้าคะนอง (Thunderstorm)";
+            case 9:
+                return "อากาศหนาวจัด (Very cold)";
+            case 10:
+                return "อากาศหนาว (Cold)";
+            case 11:
+                return "อากาศเย็น (Cool)";
+            case 12:
+                return "อากาศร้อนจัด (Very hot)";
+            default:
+                return "ไม่ทราบสภาพอากาศ";
+        }
+    };
+
+    if (!temp || !humidity || !condition) {
+        return <div className="flex justify-center pt-16">
+            <Spinner size="lg" label="กำลังโหลดข้อมูล..." />
+        </div>
+    }
+
     return (
-        <div className='m-4'>
-            <div className='grid grid-cols-3 gap-4 mb-4'>
+        <div className='container mx-auto max-w-[1400px]'>
+            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 m-4'>
+                <Link href='/admin/listPlant'>
+                    <Card className='drop-shadow-xl hover:-translate-y-1'>
+                        <CardHeader className='flex justify-center'>
+                            <p className='text-gray-500'>พืช</p>
+                        </CardHeader>
+                        <CardBody>
+                            <p className='text-center text-6xl font-bold'>{plants}</p>
+                        </CardBody>
+                        <CardFooter className='flex justify-center'>
+                            <p className='text-gray-500'>ชนิด</p>
+                        </CardFooter>
+                    </Card>
+                </Link>
                 <Link href='/admin/listAdmin'>
                     <Card className='drop-shadow-xl hover:-translate-y-1'>
                         <CardHeader className='flex justify-center'>
@@ -106,9 +359,82 @@ function Page() {
                         </CardFooter>
                     </Card>
                 </Link>
+                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl items-center">
+                    <p>ข้อมูลสภาพอากาศ ตำบล {localtion}</p>
+                    <p>วันที่ {date} เวลา {time}.00 น.</p>
+                    <p className='pt-4 text-lg font-bold sm:text-xl md:text-2xl lg:text-4xl'>{weatherCondition(condition)}</p>
+                </Card>
+                <Card className="md:col-span-2 items-center p-4 drop-shadow-xl">
+                    <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
+                        <GaugeChart
+                            id="temp-gauge"
+                            nrOfLevels={20}
+                            percent={temp / 50}
+                            textColor="#A0A0A0"
+                            formatTextValue={() => `${temp.toFixed(2)}°C`}
+                        />
+                    </div>
+                    <p className='flex justify-center'>อุณหภูมิ (°C)</p>
+                </Card>
+                <Card className="md:col-span-2 items-center p-4 drop-shadow-xl">
+                    <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
+                        <GaugeChart
+                            id="humidity-gauge"
+                            nrOfLevels={10}
+                            percent={humidity / 100}
+                            textColor="#A0A0A0"
+                            formatTextValue={() => `${humidity.toFixed(2)}%`}
+                        />
+                    </div>
+                    <p className='flex justify-center'>ความชื้นสัมพัทธ์ (%)</p>
+                </Card>
+                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl">
+                    <p className='flex justify-center'>พยากรณ์อากาศรายชั่วโมง</p>
+                    <Line
+                        options={options}
+                        data={weatherHourlyChart(weatherHourly)}
+                    />
+                </Card>
+                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl">
+                    <p className='flex justify-center pb-2'>พยากรณ์อากาศรายวัน</p>
+                    <Table removeWrapper aria-label="Weather Daily">
+                        <TableHeader>
+                            <TableColumn>วันที่</TableColumn>
+                            <TableColumn>
+                                <span className="hidden sm:inline">อุณหภูมิสูงสุด</span>
+                                <span className="text-lg sm:hidden">☀️</span>
+                            </TableColumn>
+                            <TableColumn>
+                                <span className="hidden sm:inline">อุณหภูมิต่ำสุด</span>
+                                <span className="text-lg sm:hidden">🌙</span>
+                            </TableColumn>
+                            <TableColumn>
+                                <span className="hidden sm:inline">ความชื้นเฉลี่ย</span>
+                                <span className="text-lg sm:hidden">💧</span>
+                            </TableColumn>
+                            <TableColumn className='hidden sm:table-cell'>ปริมาณฝน</TableColumn>
+                            <TableColumn className='hidden md:table-cell'>สภาพอากาศโดยรวม</TableColumn>
+                        </TableHeader>
+                        <TableBody>
+                            {weatherDaily.map((item, index) => (
+                                <TableRow key={index}>
+                                    <TableCell>
+                                        <span className='hidden sm:inline'>{moment(item.time).format('DD MMMM') + ' ' + (parseInt(moment(item.time).format('YYYY')) + 543)}</span>
+                                        <span className='sm:hidden'>{moment(item.time).format('DD/MM/') + '' + (parseInt(moment(item.time).format('YY')) + 43)}</span>
+                                    </TableCell>
+                                    <TableCell>{item.data.tc_max}°C</TableCell>
+                                    <TableCell>{item.data.tc_min}°C</TableCell>
+                                    <TableCell>{item.data.rh}%</TableCell>
+                                    <TableCell className='hidden sm:table-cell'>{item.data.rain}mm</TableCell>
+                                    <TableCell className='hidden md:table-cell'>{weatherCondition(item.data.cond)}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </Card>
             </div>
         </div>
     )
 }
 
-export default Page
+export default Home

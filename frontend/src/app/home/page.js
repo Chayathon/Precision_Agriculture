@@ -275,7 +275,7 @@ function Home() {
                             <TableColumn>วันที่</TableColumn>
                             <TableColumn>
                                 <span className="hidden sm:inline">อุณหภูมิสูงสุด</span>
-                                <span className="text-lg sm:hidden">☀️</span> {/* แสดงไอคอนเมื่อเล็กกว่า sm */}
+                                <span className="text-lg sm:hidden">☀️</span>
                             </TableColumn>
                             <TableColumn>
                                 <span className="hidden sm:inline">อุณหภูมิต่ำสุด</span>
