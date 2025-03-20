@@ -4,32 +4,42 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure, NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure, NavbarMenu, NavbarMenuItem, NavbarMenuToggle, Select, SelectItem } from "@nextui-org/react";
 import { FaArrowRightFromBracket, FaUserGear } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 
 function AdminNavbar() {
     const router = useRouter();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     const [currentDate, setCurrentDate] = useState('');
     const [currentTime, setCurrentTime] = useState('');
     
-    const [id, setId] = useState('')
-    const [name, setName] = useState('')
-    const [userEmail, setUserEmail] = useState('')
+    const [id, setId] = useState('');
+    const [name, setName] = useState('');
+    const [userEmail, setUserEmail] = useState('');
 
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
+    const [provinces, setProvinces] = useState([]);
+    const [districts, setDistricts] = useState([]);
+    const [subdistricts, setSubdistricts] = useState([]);
+
+    const [firstname, setFirstname] = useState('');
+    const [lastname, setLastname] = useState('');
+    const [email, setEmail] = useState('');
+    const [tel, setTel] = useState('');
+    const [address, setAddress] = useState({
+        detail: "",
+        province: "",
+        district: "",
+        subdistrict: "",
+    });
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
-
-    const [firstname, setFirstname] = useState('')
-    const [lastname, setLastname] = useState('')
-    const [email, setEmail] = useState('')
-    const [tel, setTel] = useState('')
-    const [address, setAddress] = useState('')
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
 
     useEffect(() => {
         const updateDateTime = () => {
@@ -68,7 +78,75 @@ function AdminNavbar() {
                 setUserEmail(user.email);
             }
         }
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        const fetchProvinces = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/provinces`);
+    
+                if(res.status === 200) {
+                    const data = await res.json();
+                    setProvinces(data.resultData);
+                }
+            } catch (error) {
+                console.error("Failed to fetch", error);
+            }
+        }
+
+        fetchProvinces();
+    }, []);
+
+    useEffect(() => {
+        if (address?.province) {
+            const fetchDistricts = async (provinceId) => {
+                try {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/province/${provinceId}/districts`);
+        
+                    if(res.status === 200) {
+                        const data = await res.json();
+                        setDistricts(data.resultData);
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch", error);
+                }
+            }
+
+            fetchDistricts(address?.province);
+        } else {
+            setAddress(prev => ({
+                ...prev,
+                district: "",
+                subdistrict: ""
+            }));
+        }
+
+    }, [address?.province]);
+
+    useEffect(() => {
+        if (address?.district) {
+            const fetchSubdistricts = async (districtId) => {
+                try {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/district/${districtId}/subdistricts`);
+        
+                    if(res.status === 200) {
+                        const data = await res.json();
+                        setSubdistricts(data.resultData);
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch", error);
+                }
+            }
+
+            fetchSubdistricts(address?.district);
+        } else {
+            setAddress(prev => ({
+                ...prev,
+                subdistrict: ""
+            }));
+        }
+
+    }, [address?.district]);
 
     useEffect(() => {
         if(isOpen) {
@@ -85,7 +163,12 @@ function AdminNavbar() {
                     setLastname(data.resultData.lastname)
                     setEmail(data.resultData.email)
                     setTel(data.resultData.tel)
-                    setAddress(data.resultData.address)
+                    setAddress({
+                        detail: data.resultData.address,
+                        province: data.resultData.province,
+                        district: data.resultData.district,
+                        subdistrict: data.resultData.subdistrict,
+                    });
                     setUsername(data.resultData.username)
                     setPassword(data.resultData.password)
                 } catch (err) {
@@ -112,24 +195,31 @@ function AdminNavbar() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    firstname, lastname, email, tel, address
+                    firstname,
+                    lastname,
+                    email,
+                    tel,
+                    address: address.detail,
+                    province: address.province,
+                    district: address.district,
+                    subdistrict: address.subdistrict,
                 })
             })
 
-            if(res.ok) {
-                const form = e.target
-                form.reset()
+            if(res.status === 200) {
+                const form = e.target;
+                form.reset();
 
-                toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว")
+                toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว");
                 onOpenChange(false);
-                setRefresh(true)
+                setRefresh(true);
 
                 setTimeout(() => {
-                    setRefresh(false)
-                }, 1000)
+                    setRefresh(false);
+                }, 1000);
             }
             else {
-                toast.error("แก้ไขข้อมูลล้มเหลว")
+                toast.error("แก้ไขข้อมูลล้มเหลว");
                 return;
             }
         } catch (err) {
@@ -216,6 +306,7 @@ function AdminNavbar() {
                     isOpen={isOpen} 
                     onOpenChange={onOpenChange}
                     size={"2xl"}
+                    scrollBehavior='inside'
                 >
                     <ModalContent>
                         {(onClose) => (
@@ -223,18 +314,76 @@ function AdminNavbar() {
                                 <ModalHeader className="flex flex-col gap-1">แก้ไขข้อมูล</ModalHeader>
                                 <ModalBody>
                                     <form onSubmit={handleSubmit}>
-                                        <div className='flex mb-4 gap-4'>
-                                            <Input onChange={(e) => setFirstname(e.target.value)} type='text' value={firstname} label='ชื่อจริง' isClearable isRequired />
+                                        <div className='sm:flex  mb-4 gap-4'>
+                                            <Input onChange={(e) => setFirstname(e.target.value)} className='max-sm:my-4' type='text' value={firstname} label='ชื่อจริง' isClearable isRequired />
 
                                             <Input onChange={(e) => setLastname(e.target.value)} type='text' value={lastname} label='นามสกุล' isClearable isRequired />
                                         </div>
-                                        <div className='flex my-4 gap-4'>
-                                            <Input onChange={(e) => setEmail(e.target.value)} type='email' value={email} label='อีเมล' isClearable isRequired />
+                                        <div className='sm:flex  my-4 gap-4'>
+                                            <Input onChange={(e) => setEmail(e.target.value)} className='max-sm:my-4' type='email' value={email} label='อีเมล' isClearable isRequired />
 
                                             <Input onChange={(e) => setTel(e.target.value)} type='text' value={tel} label='เบอร์โทรศัพท์' maxLength='10' isClearable isRequired />
                                         </div>
                                         <div className='my-4'>
-                                            <Textarea onChange={(e) => setAddress(e.target.value)} value={address} label='ที่อยู่' isRequired />
+                                            <Textarea
+                                                onChange={(e) => setAddress(prev => ({
+                                                    ...prev,
+                                                    detail: e.target.value
+                                                }))}
+                                                type='text'
+                                                value={address.detail}
+                                                label='ที่อยู่'
+                                                placeholder='บ้านเลขที่, ซอย, ถนน, หมู่ที่...'
+                                                maxRows={2}
+                                                isClearable
+                                                isRequired
+                                            />
+                                        </div>
+                                        <div className='md:flex my-4 gap-4'>
+                                            <Select
+                                                onChange={(e) => setAddress(prev => ({
+                                                    ...prev,
+                                                    province: e.target.value
+                                                }))}
+                                                selectedKeys={address.province ? [String(address.province)] : []}
+                                                items={provinces}
+                                                label='จังหวัด'
+                                                placeholder='เลือกจังหวัด'
+                                                isRequired
+                                            >
+                                                {(item) => <SelectItem key={item.province_id}>{item.name_th}</SelectItem>}
+                                            </Select>
+                                            
+                                            <Select
+                                                className='max-md:my-4'
+                                                onChange={(e) => setAddress(prev => ({
+                                                    ...prev,
+                                                    district: e.target.value
+                                                }))}
+                                                items={districts}
+                                                selectedKeys={address.district ? [String(address.district)] : []}
+                                                label='เขต/อำเภอ'
+                                                placeholder='เลือกเขต/อำเภอ'
+                                                isDisabled={!address?.province}
+                                                isRequired
+                                            >
+                                                {(item) => <SelectItem key={item.district_id}>{item.name_th}</SelectItem>}
+                                            </Select>
+                                            
+                                            <Select
+                                                onChange={(e) => setAddress(prev => ({
+                                                    ...prev,
+                                                    subdistrict: e.target.value
+                                                }))}
+                                                items={subdistricts}
+                                                selectedKeys={address.subdistrict ? [String(address.subdistrict)] : []}
+                                                label='แขวง/ตำบล'
+                                                placeholder='เลือกแขวง/ตำบล'
+                                                isDisabled={!address?.district}
+                                                isRequired
+                                            >
+                                                {(item) => <SelectItem key={item.subdistrict_id}>{item.name_th}</SelectItem>}
+                                            </Select>
                                         </div>
                                         <div className='my-4'>
                                             <Input onChange={(e) => setUsername(e.target.value)} type='text' value={username} label='ชื่อผู้ใช้' isClearable isDisabled />
@@ -246,11 +395,7 @@ function AdminNavbar() {
                                                 label="รหัสผ่าน"
                                                 endContent={
                                                     <Button type="button" size="sm" className='bg-gray-300' onClick={toggleVisibility} aria-label="toggle password visibility">
-                                                    {isVisible ? (
-                                                        'ซ่อน'
-                                                    ) : (
-                                                        'แสดง'
-                                                    )}
+                                                        {isVisible ? 'ซ่อน' : 'แสดง'}
                                                     </Button>
                                                 }
                                                 type={isVisible ? "text" : "password"}
