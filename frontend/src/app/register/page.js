@@ -76,7 +76,6 @@ function Page() {
     }, []);
 
     useEffect(() => {
-        console.log("Province:", address?.province);
         if(address?.province) {
             fetchDistricts(address?.province);
 
@@ -96,7 +95,6 @@ function Page() {
     }, [address?.province]);
 
     useEffect(() => {
-        console.log("District:", address?.district);
         if(address?.district) {
             fetchSubdistricts(address?.district);
 

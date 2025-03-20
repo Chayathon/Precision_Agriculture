@@ -1,21 +1,108 @@
-import { useState } from 'react'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea } from '@nextui-org/react'
+import { useEffect, useState } from 'react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, Select, SelectItem } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
 function ModalCreateUser({ isOpen, onOpenChange, setRefresh }) {
-    const [isVisible, setIsVisible] = useState(false);
-    const toggleVisibility = () => setIsVisible(!isVisible);
+    const [provinces, setProvinces] = useState([]);
+    const [districts, setDistricts] = useState([]);
+    const [subdistricts, setSubdistricts] = useState([]);
 
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
     const [email, setEmail] = useState('');
     const [tel, setTel] = useState('');
-    const [address, setAddress] = useState('');
+    const [address, setAddress] = useState({
+        detail: "",
+        province: "",
+        district: "",
+        subdistrict: "",
+    });
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
+    const [isVisible, setIsVisible] = useState(false);
+    const toggleVisibility = () => setIsVisible(!isVisible);
+
     const [isLoading, setIsLoading] = useState(false);
+
+    const fetchProvinces = async () => {
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/provinces`);
+
+            if(res.status === 200) {
+                const data = await res.json();
+                setProvinces(data.resultData);
+            }
+        } catch (error) {
+            console.error("Failed to fetch", error);
+        }
+    }
+
+    const fetchDistricts = async (provinceId) => {
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/province/${provinceId}/districts`);
+
+            if(res.status === 200) {
+                const data = await res.json();
+                setDistricts(data.resultData);
+            }
+        } catch (error) {
+            console.error("Failed to fetch", error);
+        }
+    }
+
+    const fetchSubdistricts = async (districtId) => {
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/district/${districtId}/subdistricts`);
+
+            if(res.status === 200) {
+                const data = await res.json();
+                setSubdistricts(data.resultData);
+            }
+        } catch (error) {
+            console.error("Failed to fetch", error);
+        }
+    }
+
+    useEffect(() => {
+        fetchProvinces();
+    }, []);
+
+    useEffect(() => {
+        if(address?.province) {
+            fetchDistricts(address?.province);
+
+            setAddress(prev => ({
+                ...prev,
+                district: "",
+                subdistrict: ""
+            }));
+        } else {
+            setAddress(prev => ({
+                ...prev,
+                district: "",
+                subdistrict: ""
+            }));
+        }
+        
+    }, [address?.province]);
+
+    useEffect(() => {
+        if(address?.district) {
+            fetchSubdistricts(address?.district);
+
+            setAddress(prev => ({
+                ...prev,
+                subdistrict: ""
+            }));
+        } else {
+            setAddress(prev => ({
+                ...prev,
+                subdistrict: ""
+            }));
+        }
+    }, [address?.district]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,7 +127,16 @@ function ModalCreateUser({ isOpen, onOpenChange, setRefresh }) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    firstname, lastname, email, tel, address, username, password
+                    firstname,
+                    lastname,
+                    email,
+                    tel,
+                    address: address.detail,
+                    province: address.province,
+                    district: address.district,
+                    subdistrict: address.subdistrict,
+                    username,
+                    password
                 })
             });
 
@@ -82,50 +178,97 @@ function ModalCreateUser({ isOpen, onOpenChange, setRefresh }) {
                             <ModalHeader className="flex flex-col gap-1">เพิ่มข้อมูล</ModalHeader>
                             <ModalBody>
                                 <form onSubmit={handleSubmit}>
-                                    <div className='flex mb-4 gap-4'>
+                                    <div className='sm:flex mb-4 gap-4'>
                                         <Input onChange={(e) => setFirstname(e.target.value)} type='text' label='ชื่อจริง' isClearable isRequired />
 
                                         <Input onChange={(e) => setLastname(e.target.value)} type='text' label='นามสกุล' isClearable isRequired />
                                     </div>
-                                    <div className='flex my-4 gap-4'>
+                                    <div className='sm:flex my-4 gap-4'>
                                         <Input onChange={(e) => setEmail(e.target.value)} type='email' label='อีเมล' isClearable isRequired />
 
                                         <Input onChange={(e) => setTel(e.target.value)} type='text' label='เบอร์โทรศัพท์' maxLength='10' isClearable isRequired />
                                     </div>
                                     <div className='my-4'>
-                                        <Textarea onChange={(e) => setAddress(e.target.value)} label='ที่อยู่' isRequired />
+                                        <Textarea
+                                            onChange={(e) => setAddress(prev => ({
+                                                ...prev,
+                                                detail: e.target.value
+                                            }))}
+                                            label='ที่อยู่'
+                                            placeholder='บ้านเลขที่, ซอย, ถนน, หมู่ที่...'
+                                            maxRows={2}
+                                            isClearable
+                                            isRequired
+                                        />
+                                    </div>
+                                    <div className='md:flex my-4 gap-4'>
+                                        <Select
+                                            onChange={(e) => setAddress(prev => ({
+                                                ...prev,
+                                                province: e.target.value
+                                            }))}
+                                            items={provinces}
+                                            label='จังหวัด'
+                                            placeholder='เลือกจังหวัด'
+                                            isRequired
+                                        >
+                                            {(item) => <SelectItem key={item.province_id}>{item.name_th}</SelectItem>}
+                                        </Select>
+                                        
+                                        <Select
+                                            className='max-md:my-4'
+                                            onChange={(e) => setAddress(prev => ({
+                                                ...prev,
+                                                district: e.target.value
+                                            }))}
+                                            items={districts}
+                                            label='เขต/อำเภอ'
+                                            placeholder='เลือกเขต/อำเภอ'
+                                            selectedKeys={address.district ? [address.district] : []}
+                                            isDisabled={!address?.province}
+                                            isRequired
+                                        >
+                                            {(item) => <SelectItem key={item.district_id}>{item.name_th}</SelectItem>}
+                                        </Select>
+                                        
+                                        <Select
+                                            onChange={(e) => setAddress(prev => ({
+                                                ...prev,
+                                                subdistrict: e.target.value
+                                            }))}
+                                            items={subdistricts}
+                                            label='แขวง/ตำบล'
+                                            placeholder='เลือกแขวง/ตำบล'
+                                            selectedKeys={address.subdistrict ? [address.subdistrict] : []}
+                                            isDisabled={!address?.district}
+                                            isRequired
+                                        >
+                                            {(item) => <SelectItem key={item.subdistrict_id}>{item.name_th}</SelectItem>}
+                                        </Select>
                                     </div>
                                     <div className='my-4'>
                                         <Input onChange={(e) => setUsername(e.target.value)} type='text' label='ชื่อผู้ใช้' isClearable isRequired />
                                     </div>
-                                    <div className='my-4'>
+                                    <div className='sm:flex my-4 gap-4'>
                                         <Input
+                                            className='max-sm:my-4'
                                             onChange={(e) => setPassword(e.target.value)}
                                             label="รหัสผ่าน"
                                             endContent={
-                                                <Button type="button" size="sm" className='bg-gray-300' onClick={toggleVisibility} aria-label="toggle password visibility">
-                                                {isVisible ? (
-                                                    'ซ่อน'
-                                                ) : (
-                                                    'แสดง'
-                                                )}
+                                                <Button type="button" size="sm" className='bg-gray-300' onPress={toggleVisibility} aria-label="toggle password visibility">
+                                                    {isVisible ? 'ซ่อน' : 'แสดง'}
                                                 </Button>
                                             }
                                             type={isVisible ? "text" : "password"}
                                             isRequired
                                         />
-                                    </div>
-                                    <div className='mt-4'>
+            
                                         <Input
                                             onChange={(e) => setConfirmPassword(e.target.value)}
                                             label="ยืนยันรหัสผ่าน"
                                             endContent={
-                                                <Button type="button" size="sm" className='bg-gray-300' onClick={toggleVisibility} aria-label="toggle password visibility">
-                                                {isVisible ? (
-                                                    'ซ่อน'
-                                                ) : (
-                                                    'แสดง'
-                                                )}
+                                                <Button type="button" size="sm" className='bg-gray-300' onPress={toggleVisibility} aria-label="toggle password visibility">
+                                                    {isVisible ? 'ซ่อน' : 'แสดง'}
                                                 </Button>
                                             }
                                             type={isVisible ? "text" : "password"}

@@ -39,7 +39,9 @@ router.get("/getUser/:id", async (req, res) => {
             id: Number(id),
         },
         include: {
-            subdistrictRel: true,
+            provinceRel: true, // ดึงข้อมูลจาก province
+            districtRel: true, // ดึงข้อมูลจาก district
+            subdistrictRel: true, // ดึงข้อมูลจาก subdistrict
         },
     });
 
@@ -152,6 +154,9 @@ router.post("/createUser", async (req, res) => {
                 email: req.body.email,
                 tel: req.body.tel,
                 address: req.body.address,
+                province: Number(req.body.province),
+                district: Number(req.body.district),
+                subdistrict: Number(req.body.subdistrict),
                 username: req.body.username,
                 password: hashPassword,
                 role_id: 1,
