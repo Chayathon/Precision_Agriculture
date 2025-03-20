@@ -43,8 +43,8 @@ function ModalInfoUser({ isOpen, onOpenChange, id }) {
             <Modal 
                 isOpen={isOpen} 
                 onOpenChange={onOpenChange}
-                placement="top-center"
                 size='2xl'
+                scrollBehavior='inside'
             >
                 <ModalContent>
                     {(onClose) => (

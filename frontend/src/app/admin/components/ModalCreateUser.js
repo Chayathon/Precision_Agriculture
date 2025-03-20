@@ -26,51 +26,37 @@ function ModalCreateUser({ isOpen, onOpenChange, setRefresh }) {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const fetchProvinces = async () => {
-        try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/provinces`);
-
-            if(res.status === 200) {
-                const data = await res.json();
-                setProvinces(data.resultData);
-            }
-        } catch (error) {
-            console.error("Failed to fetch", error);
-        }
-    }
-
-    const fetchDistricts = async (provinceId) => {
-        try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/province/${provinceId}/districts`);
-
-            if(res.status === 200) {
-                const data = await res.json();
-                setDistricts(data.resultData);
-            }
-        } catch (error) {
-            console.error("Failed to fetch", error);
-        }
-    }
-
-    const fetchSubdistricts = async (districtId) => {
-        try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/district/${districtId}/subdistricts`);
-
-            if(res.status === 200) {
-                const data = await res.json();
-                setSubdistricts(data.resultData);
-            }
-        } catch (error) {
-            console.error("Failed to fetch", error);
-        }
-    }
-
     useEffect(() => {
+        const fetchProvinces = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/provinces`);
+    
+                if(res.status === 200) {
+                    const data = await res.json();
+                    setProvinces(data.resultData);
+                }
+            } catch (error) {
+                console.error("Failed to fetch", error);
+            }
+        }
+
         fetchProvinces();
     }, []);
-
+    
     useEffect(() => {
-        if(address?.province) {
+        if (address?.province) {
+            const fetchDistricts = async (provinceId) => {
+                try {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/province/${provinceId}/districts`);
+        
+                    if(res.status === 200) {
+                        const data = await res.json();
+                        setDistricts(data.resultData);
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch", error);
+                }
+            }
             fetchDistricts(address?.province);
 
             setAddress(prev => ({
@@ -85,11 +71,22 @@ function ModalCreateUser({ isOpen, onOpenChange, setRefresh }) {
                 subdistrict: ""
             }));
         }
-        
     }, [address?.province]);
-
+    
     useEffect(() => {
-        if(address?.district) {
+        if (address?.district) {
+            const fetchSubdistricts = async (districtId) => {
+                try {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/district/${districtId}/subdistricts`);
+        
+                    if(res.status === 200) {
+                        const data = await res.json();
+                        setSubdistricts(data.resultData);
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch", error);
+                }
+            }
             fetchSubdistricts(address?.district);
 
             setAddress(prev => ({
@@ -171,6 +168,7 @@ function ModalCreateUser({ isOpen, onOpenChange, setRefresh }) {
                 isOpen={isOpen} 
                 onOpenChange={onOpenChange}
                 size={"2xl"}
+                scrollBehavior='inside'
             >
                 <ModalContent>
                     {(onClose) => (
@@ -179,12 +177,12 @@ function ModalCreateUser({ isOpen, onOpenChange, setRefresh }) {
                             <ModalBody>
                                 <form onSubmit={handleSubmit}>
                                     <div className='sm:flex mb-4 gap-4'>
-                                        <Input onChange={(e) => setFirstname(e.target.value)} type='text' label='ชื่อจริง' isClearable isRequired />
+                                        <Input onChange={(e) => setFirstname(e.target.value)} className='max-sm:my-4' type='text' label='ชื่อจริง' isClearable isRequired />
 
                                         <Input onChange={(e) => setLastname(e.target.value)} type='text' label='นามสกุล' isClearable isRequired />
                                     </div>
                                     <div className='sm:flex my-4 gap-4'>
-                                        <Input onChange={(e) => setEmail(e.target.value)} type='email' label='อีเมล' isClearable isRequired />
+                                        <Input onChange={(e) => setEmail(e.target.value)} className='max-sm:my-4' type='email' label='อีเมล' isClearable isRequired />
 
                                         <Input onChange={(e) => setTel(e.target.value)} type='text' label='เบอร์โทรศัพท์' maxLength='10' isClearable isRequired />
                                     </div>
