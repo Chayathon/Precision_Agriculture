@@ -1,7 +1,7 @@
 module.exports = {
     apps: [
       {
-        name: "next-app", // ชื่อแอปใน PM2
+        name: "pa-app", // ชื่อแอปใน PM2
         script: "npm", // ใช้ npm เป็น script
         args: "start", // คำสั่งรัน Next.js production server
         env: {
