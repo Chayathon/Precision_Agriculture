@@ -7,6 +7,8 @@ import Cookies from 'js-cookie';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Select, SelectSection, SelectItem, DateInput, Badge, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
 import { FaBell, FaUserGear, FaArrowRightFromBracket, FaDownload } from "react-icons/fa6";
 import { toast } from 'react-toastify';
+import moment from 'moment';
+import 'moment/locale/th';
 
 function UserNavbar() {
     const router = useRouter();
@@ -57,6 +59,33 @@ function UserNavbar() {
     const { isOpen: isOpenEdit, onOpen: onOpenEdit, onOpenChange: onOpenChangeEdit } = useDisclosure();
 
     useEffect(() => {
+        const updateDateTime = () => {
+            const now = moment();
+    
+            setCurrentDateTime({
+                date: 'วัน' + now.locale('th').format('dddd Do MMMM ') + (now.year() + 543),
+                time: now.locale('th').format('LTS')
+            });
+        };
+    
+        updateDateTime();
+        const interval = setInterval(updateDateTime, 1000);
+        return () => clearInterval(interval);
+    }, []);
+    
+    useEffect(() => {
+        if(localStorage.getItem('UserData')) {
+            const user = JSON.parse(localStorage.getItem('UserData') || '{}')
+            
+            if(user) {
+                setId(user.id);
+                setName(user.username);
+                setUserEmail(user.email);
+            }
+        }
+    }, []);
+
+    useEffect(() => {
         if (id) {
             const fetchPlantByUserId = async () => {
                 try {
@@ -76,33 +105,6 @@ function UserNavbar() {
             fetchPlantByUserId();
         }
     }, [id]);
-    
-    useEffect(() => {
-        if(localStorage.getItem('UserData')) {
-            const user = JSON.parse(localStorage.getItem('UserData') || '{}')
-            
-            if(user) {
-                setId(user.id);
-                setName(user.username);
-                setUserEmail(user.email);
-            }
-        }
-    }, []);
-
-    useEffect(() => {
-        const updateDateTime = () => {
-          const now = new Date();
-
-          setCurrentDateTime({
-            date: now.toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' }),
-            time: now.toLocaleTimeString('th-TH', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false })
-          });
-        };
-    
-        updateDateTime();
-        const intervalId = setInterval(updateDateTime, 1000);
-        return () => clearInterval(intervalId);
-    }, []);
 
     useEffect(() => {
         // แยก pathname ออกเป็น array โดยใช้ "/"
@@ -342,7 +344,7 @@ function UserNavbar() {
                     <NavbarBrand>
                         <div className='flex-col hidden sm:flex'>
                             <div className='text-sm'>{currentDateTime.date}</div>
-                            <div className='text-lg font-bold'>{currentDateTime.time}</div>
+                            <div className='text-xl font-bold'>{currentDateTime.time}</div>
                         </div>
                     </NavbarBrand>
                 </NavbarContent>

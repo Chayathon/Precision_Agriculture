@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -7,13 +7,15 @@ import Cookies from 'js-cookie';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure, NavbarMenu, NavbarMenuItem, NavbarMenuToggle, Select, SelectItem } from "@nextui-org/react";
 import { FaArrowRightFromBracket, FaUserGear } from "react-icons/fa6";
 import { toast } from 'react-toastify';
+import moment from 'moment';
+import 'moment/locale/th';
 
 function AdminNavbar() {
     const router = useRouter();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const [currentDate, setCurrentDate] = useState('');
-    const [currentTime, setCurrentTime] = useState('');
+    const [currentDateTime, setCurrentDateTime] = useState({ date: '', time: '' });
+
     
     const [id, setId] = useState('');
     const [name, setName] = useState('');
@@ -40,32 +42,20 @@ function AdminNavbar() {
 
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
-
+    
     useEffect(() => {
         const updateDateTime = () => {
-            const now = new Date();
-            
-            const formattedDate = now.toLocaleDateString('th-TH', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
+            const now = moment();
+    
+            setCurrentDateTime({
+                date: 'วัน' + now.locale('th').format('dddd Do MMMM ') + (now.year() + 543),
+                time: now.locale('th').format('LTS')
             });
-            
-            const formattedTime = now.toLocaleTimeString('th-TH', {
-                hour: 'numeric',
-                minute: 'numeric',
-                second: 'numeric',
-                hour12: false
-            });
-            
-            setCurrentDate(formattedDate);
-            setCurrentTime(formattedTime);
         };
-
+    
         updateDateTime();
-        const intervalId = setInterval(updateDateTime, 1000); // อัพเดททุกวินาที
-
-        return () => clearInterval(intervalId); // เคลียร์ interval เมื่อ unmount
+        const interval = setInterval(updateDateTime, 1000);
+        return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
@@ -244,8 +234,8 @@ function AdminNavbar() {
                 />
                 <NavbarBrand>
                     <div className='flex flex-col'>
-                        <div className='text-sm'>{currentDate}</div>
-                        <div className='text-lg font-bold'>{currentTime}</div>
+                        <div className='text-sm'>{currentDateTime.date}</div>
+                        <div className='text-xl font-bold'>{currentDateTime.time}</div>
                     </div>
                 </NavbarBrand>
             </NavbarContent>
@@ -268,7 +258,7 @@ function AdminNavbar() {
                 </NavbarItem>
                 <NavbarItem>
                     <Link href="/admin/listUser">
-                        ข้อมูลสมาชิก
+                        ข้อมูลเกษตรกร
                     </Link>
                 </NavbarItem>
                 <NavbarItem>
