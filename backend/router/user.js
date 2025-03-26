@@ -53,6 +53,26 @@ router.get("/getUser/:id", async (req, res) => {
     }
 });
 
+router.get("/getUsername/:id", async (req, res) => {
+    const { id } = req.params;
+    
+    const getUsername = await prisma.user.findFirst({
+        where: {
+            id: Number(id),
+        },
+        select: {
+            username: true,
+        }
+    });
+
+    if (getUsername) {
+        res.status(200).json({
+            message: "Get Username by ID",
+            resultData: getUsername,
+        });
+    }
+});
+
 router.get("/forgotPassword/:email", async (req, res) => {
     const { email } = req.params;
 

@@ -35,13 +35,13 @@ model district {
 
 model subdistrict {
   subdistrict_id Int      @id @db.UnsignedInt
-  district_id    Int?     @db.UnsignedInt
+  district_id    Int      @db.UnsignedInt
   name_th        String?  @db.VarChar(120)
   name_en        String?  @db.VarChar(120)
   lat            Decimal? @db.Decimal(5, 3)
   long           Decimal? @db.Decimal(6, 3)
   zipcode        Int?     @db.UnsignedMediumInt
-  districtRel    district? @relation(fields: [district_id], references: [district_id]) // ความสัมพันธ์กับ district
+  districtRel    district @relation(fields: [district_id], references: [district_id]) // ความสัมพันธ์กับ district
   users          user[]  // ความสัมพันธ์ย้อนกลับไปยัง user
 
   @@index([district_id], map: "district_id")
@@ -62,6 +62,7 @@ model user {
   role_id     Int
   otp         Int?
   plant       plant[]
+  plant_avaliable plant_avaliable[]
   role        role     @relation(fields: [role_id], references: [id])
   provinceRel province @relation(fields: [province], references: [province_id]) // ความสัมพันธ์กับ province
   districtRel district @relation(fields: [district], references: [district_id]) // ความสัมพันธ์กับ district
@@ -76,9 +77,11 @@ model user {
 model plant_avaliable {
   id        Int          @id @default(autoincrement())
   plantname String
+  user_id   Int
   factors   p_factor[]
   nutrients p_nutrient[]
   plant     plant[]
+  user      user         @relation(fields: [user_id], references: [id])
 }
 
 model p_other_nutrient {

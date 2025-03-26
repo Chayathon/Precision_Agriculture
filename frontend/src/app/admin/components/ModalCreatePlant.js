@@ -1,10 +1,21 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from '@nextui-org/react'
 import { toast } from 'react-toastify'
 
 function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
+    const [id, setId] = useState(null);
     const [plantName, setPlantName] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        if(localStorage.getItem('UserData')) {
+            const user = JSON.parse(localStorage.getItem('UserData') || '{}')
+            
+            if(user) {
+                setId(user.id);
+            }
+        }
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -23,11 +34,11 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    plantName
+                    plantName, id
                 })
             })
 
-            if(res.ok) {
+            if(res.status === 200) {
                 const form = e.target;
                 form.reset();
 

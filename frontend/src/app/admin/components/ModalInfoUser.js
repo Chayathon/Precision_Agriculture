@@ -9,7 +9,22 @@ function ModalInfoUser({ isOpen, onOpenChange, id }) {
 
     useEffect(() => {
         if(isOpen) {
-            const fetchData = async () => {
+            const fetchUserData = async () => {
+                try {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getUsername/${id}`);
+
+                    if (!res.ok) {
+                        throw new Error("Failed to fetch");
+                    }
+
+                    const data = await res.json();
+                    setUser(data.resultData.username);
+                } catch (err) {
+                    console.error("Error fetching data: ", err);
+                }
+            }
+            
+            const fetchPlantData = async () => {
                 try {
                     const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantUserId/${id}`);
                         
@@ -19,13 +34,13 @@ function ModalInfoUser({ isOpen, onOpenChange, id }) {
 
                     const data = await res.json();
                     setPlant(data.resultData);
-                    setUser(data.resultData[0].user.username);
                 } catch (err) {
                     console.error("Error fetching data: ", err);
                 }
             }
 
-            fetchData();
+            fetchUserData();
+            fetchPlantData();
         }
     }, [isOpen, id]);
 
@@ -56,10 +71,10 @@ function ModalInfoUser({ isOpen, onOpenChange, id }) {
                                         <TableColumn key="date">วันที่ปลูก</TableColumn>
                                         <TableColumn key="plantname">พืชที่ปลูก</TableColumn>
                                     </TableHeader>
-                                    <TableBody items={plant}>
+                                    <TableBody items={plant} emptyContent="ไม่มีข้อมูล">
                                         {(item) => (
                                             <TableRow key={item.id}>
-                                                <TableCell>{convertDate(item.plantAt)}</TableCell>
+                                                <TableCell>{convertDate(item.plantedAt)}</TableCell>
                                                 <TableCell>{item.plantname}</TableCell>
                                             </TableRow>
                                         )}

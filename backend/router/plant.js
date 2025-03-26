@@ -28,7 +28,11 @@ router.get('/listPlant/:id', async (req, res) => {
 
 router.get('/listPlantAvaliable', async (req, res) => {
     try {
-        const listPlantAvaliable = await prisma.plant_avaliable.findMany();
+        const listPlantAvaliable = await prisma.plant_avaliable.findMany({
+            include: {
+                user: true,
+            }
+        });
 
         if (listPlantAvaliable) {
             res.status(200).json({
@@ -51,12 +55,8 @@ router.get("/getPlantUserId/:id", async (req, res) => {
             },
             select: {
                 id: true,
+                plantedAt: true,
                 plantname: true,
-                user: {
-                    select: {
-                        username: true,
-                    },
-                },
             },
         });
 
@@ -168,7 +168,7 @@ router.post('/createPlant', async (req, res) => {
 
 router.post('/createPlantAvaliable', async (req, res) => {
 
-    const { plantName } = req.body;
+    const { plantName, id } = req.body;
 
     if (!plantName) {
         return res.status(400).json({ error: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
@@ -177,7 +177,8 @@ router.post('/createPlantAvaliable', async (req, res) => {
     try {
         const createPlant = await prisma.plant_avaliable.create({
             data: {
-                plantname: plantName
+                plantname: plantName,
+                user_id: id,
             }
         });
 
@@ -294,4 +295,4 @@ router.delete('/deletePlantAvaliable/:id', async (req, res) => {
     }
 });
 
-module.exports = router
+module.exports = router;

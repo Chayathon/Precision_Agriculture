@@ -242,6 +242,7 @@ export default function ListPlant() {
                 <TableHeader>
                     <TableColumn allowsSorting key="id">ไอดี</TableColumn>
                     <TableColumn allowsSorting key="plantname">ชื่อพืช</TableColumn>
+                    <TableColumn allowsSorting key="plantname">ผู้เพิ่มพืช</TableColumn>
                     <TableColumn key="tools">จัดการ</TableColumn>
                 </TableHeader>
                 <TableBody 
@@ -254,9 +255,10 @@ export default function ListPlant() {
                         <TableRow key={item.id}>
                             <TableCell>{item.id}</TableCell>
                             <TableCell>{item.plantname}</TableCell>
+                            <TableCell>{item.user.username}</TableCell>
                             <TableCell>
                                 <ButtonGroup>
-                                    {item.id > 0 && (
+                                    {item.id > 1 && (
                                         <>
                                             <Tooltip content="เพิ่มค่าตัวแปร" color="success">
                                                 <Button onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}} variant="light" size='sm'>
