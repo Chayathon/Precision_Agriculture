@@ -313,7 +313,7 @@ function Home() {
                             <p className='text-gray-500'>พืช</p>
                         </CardHeader>
                         <CardBody>
-                            <p className='text-center text-8xl font-bold'>{plants}</p>
+                            <p className='text-center text-8xl font-bold'>{plants - 1}</p>
                         </CardBody>
                         <CardFooter className='flex justify-center'>
                             <p className='text-gray-500'>ชนิด</p>
@@ -336,7 +336,7 @@ function Home() {
                 <Link href='/admin/listUser'>
                     <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' isPressable>
                         <CardHeader className='flex justify-center'>
-                            <p className='text-gray-500'>ผู้ใช้</p>
+                            <p className='text-gray-500'>เกษตรกร</p>
                         </CardHeader>
                         <CardBody>
                             <p className='text-center text-8xl font-bold'>{users}</p>

@@ -247,6 +247,7 @@ export default function ListUser() {
                 onSortChange={setSortDescriptor}
             >
                 <TableHeader>
+                    <TableColumn allowsSorting key="id">ไอดี</TableColumn>
                     <TableColumn allowsSorting key="firstname">ชื่อจริง</TableColumn>
                     <TableColumn allowsSorting key="lastname">นามสกุล</TableColumn>
                     <TableColumn allowsSorting key="email">อีเมล</TableColumn>
@@ -266,6 +267,7 @@ export default function ListUser() {
                 >
                     {(item) => (
                         <TableRow key={item.id}>
+                            <TableCell>{item.id}</TableCell>
                             <TableCell>{item.firstname}</TableCell>
                             <TableCell>{item.lastname}</TableCell>
                             <TableCell>{item.email}</TableCell>

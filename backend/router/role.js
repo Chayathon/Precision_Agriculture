@@ -1,8 +1,8 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 
-const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 const { authIsCheck, isAdmin } = require("../middleware/auth");
 
@@ -105,4 +105,4 @@ router.delete('/deleteRole/:id', async (req, res) => {
     }
 });
 
-module.exports = router
+module.exports = router;

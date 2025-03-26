@@ -1,8 +1,8 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 
-const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 const bcrypt = require("bcrypt");
 
@@ -68,4 +68,4 @@ router.post("/createAdmin", async (req, res) => {
     }
 });
 
-module.exports = router
+module.exports = router;
