@@ -17,6 +17,8 @@ import {
   Legend,
 } from "chart.js";
 import { Line } from 'react-chartjs-2';
+import WeatherCard from '../components/WeatherCard';
+import WeatherCardDaily from '../components/WeatherCardDaily';
 
 function Home() {
     const [lat, setLat] = useState(0);
@@ -96,7 +98,7 @@ function Home() {
             const hour = thaiTime.hour;
             const duration = 24;
 
-            const url = `https://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=${lat}&lon=${lon}&fields=tc,rh,rain&date=${date}&hour=${hour}&duration=${duration}`;
+            const url = `https://data.tmd.go.th/nwpapi/v1/forecast/location/hourly/at?lat=${lat}&lon=${lon}&fields=tc,rh,rain,ws10m,cond&date=${date}&hour=${hour}&duration=${duration}`;
 
             try {
                 const response = await axios.get(url, {
@@ -120,7 +122,7 @@ function Home() {
             const date = thaiTime.toISODate();
             const duration = 10;
 
-            const url = `https://data.tmd.go.th/nwpapi/v1/forecast/location/daily/at?lat=${lat}&lon=${lon}&fields=tc_max,tc_min,rh,rain,cond&date=${date}&duration=${duration}`;
+            const url = `https://data.tmd.go.th/nwpapi/v1/forecast/location/daily/at?lat=${lat}&lon=${lon}&fields=tc_max,tc_min,rh,rain,ws10m,cond&date=${date}&duration=${duration}`;
 
             try {
                 const response = await axios.get(url, {
@@ -261,14 +263,51 @@ function Home() {
                     </div>
                     <p className='flex justify-center'>ความชื้นสัมพัทธ์ (%)</p>
                 </Card>
-                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl">
+                {/* <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl">
                     <p className='flex justify-center'>พยากรณ์อากาศรายชั่วโมง</p>
                     <Line
                         options={options}
                         data={weatherHourlyChart(weatherHourly)}
                     />
+                </Card> */}
+                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl">
+                    <p>พยากรณ์อากาศรายชั่วโมง</p>
+                    <div className="flex overflow-x-auto p-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+                        {weatherHourly.map((forecast, index) => (
+                            <div key={index} className="snap-start">
+                                <WeatherCard
+                                    key={index}
+                                    time={forecast.time}
+                                    temp={forecast.data.tc}
+                                    humid={forecast.data.rh}
+                                    rainChance={forecast.data.rain}
+                                    windSpeed={forecast.data.ws10m}
+                                    condition={forecast.data.cond}
+                                />
+                            </div>
+                        ))}
+                    </div>
                 </Card>
                 <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl">
+                    <p>พยากรณ์อากาศรายวัน</p>
+                    <div className="flex overflow-x-auto p-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
+                        {weatherDaily.map((forecast, index) => (
+                            <div key={index} className="snap-start">
+                                <WeatherCardDaily
+                                    key={index}
+                                    time={forecast.time}
+                                    tempMax={forecast.data.tc_max}
+                                    tempMin={forecast.data.tc_min}
+                                    humid={forecast.data.rh}
+                                    rainChance={forecast.data.rain}
+                                    windSpeed={forecast.data.ws10m}
+                                    condition={forecast.data.cond}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </Card>
+                {/* <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl">
                     <p className='flex justify-center pb-2'>พยากรณ์อากาศรายวัน</p>
                     <Table removeWrapper aria-label="Weather Daily">
                         <TableHeader>
@@ -304,7 +343,7 @@ function Home() {
                             ))}
                         </TableBody>
                     </Table>
-                </Card>
+                </Card> */}
             </div>
         </div>
     )
