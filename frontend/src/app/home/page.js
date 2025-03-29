@@ -344,6 +344,12 @@ function Home() {
                         </TableBody>
                     </Table>
                 </Card> */}
+                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl">
+                    <iframe src="https://www.tmd.go.th/StromTrack" className='w-full' height="600" frameborder="0" />
+                </Card>
+                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl">
+                    <iframe src= "https://www.tmd.go.th/weatherEarthquakeWidget" className='w-full' height="600" frameborder="0" />
+                </Card>
             </div>
         </div>
     )
