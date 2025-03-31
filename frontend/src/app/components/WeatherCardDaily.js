@@ -47,7 +47,7 @@ const WeatherCardDaily = ({ time, tempMax, tempMin, humid, rainChance, windSpeed
                 {weatherCondition(condition)}
 
                 <div className="flex space-x-2 mt-2">
-                    <p className="flex text-lg font-bold"><WiThermometer size={26} className="text-red-500" />{Math.round(tempMax)}° | <WiThermometer size={26} className="text-blue-500" />{Math.round(tempMin)}°</p>
+                    <p className="flex text-lg font-bold"><WiThermometer size={26} className="text-red-500" />{Math.round(tempMax)}° <WiThermometer size={26} className="text-blue-500" />{Math.round(tempMin)}°</p>
                 </div>
                 <div className="flex space-x-2 mt-2">
                     <p className="flex text-lg font-bold"><WiHumidity size={26} className="text-blue-500" />{Math.round(humid)}%</p>
