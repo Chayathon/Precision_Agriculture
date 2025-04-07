@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link';
 import {Card, CardHeader, CardBody, CardFooter, Input, Textarea, Button, Select, SelectItem} from "@nextui-org/react";
 import { toast } from 'react-toastify'
+import { ThemeSwitcher } from '../components/ThemeSwitcher';
 
 function Page() {
     const router = useRouter();
@@ -170,8 +171,9 @@ function Page() {
     return (
         <div className="grid w-[100vw] h-[100vh]">
             <Card className="m-auto drop-shadow-2xl bg-blend-darken w-11/12 max-sm:my-4 sm:w-2/3 md:w-3/4 lg:w-4/5 xl:w-1/2">
-                <CardHeader className='text-2xl font-bold justify-center'>
+                <CardHeader className='px-4 text-2xl font-bold justify-between'>
                     สมัครสมาชิก
+                    <ThemeSwitcher />
                 </CardHeader>
                 <CardBody>
                     <form onSubmit={handleSubmit}>

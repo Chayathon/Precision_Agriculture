@@ -1,6 +1,7 @@
 import { Kanit } from "next/font/google";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -23,8 +24,10 @@ export default function RootLayout({ children }) {
                 className={`${kanit.className} antialiased`}
             >
                 <NextUIProvider>
-                    {children}
-                    <ToastContainer autoClose={3000} />
+                    <NextThemesProvider attribute="class" defaultTheme="light">
+                        {children}
+                        <ToastContainer autoClose={3000} />
+                    </NextThemesProvider>
                 </NextUIProvider>
             </body>
         </html>

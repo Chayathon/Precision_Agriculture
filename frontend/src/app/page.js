@@ -6,6 +6,7 @@ import Link from 'next/link'
 import Cookies from 'js-cookie';
 import {Card, CardHeader, CardBody, CardFooter, Input, Button} from "@nextui-org/react";
 import { toast } from 'react-toastify';
+import { ThemeSwitcher } from './components/ThemeSwitcher';
 
 function Page() {
     const router = useRouter();
@@ -68,8 +69,9 @@ function Page() {
     return (
         <div className='grid w-[100vw] h-[100vh]'>
             <Card className="m-auto drop-shadow-2xl bg-blend-darken w-11/12 sm:w-2/3 md:w-2/4 lg:w-2/6">
-                <CardHeader className='text-2xl font-bold justify-center'>
+                <CardHeader className='px-4 text-2xl font-bold justify-between'>
                     เข้าสู่ระบบ
+                    <ThemeSwitcher />
                 </CardHeader>
                 <CardBody>
                     <form onSubmit={handleSubmit}>
