@@ -9,6 +9,7 @@ import { FaArrowRightFromBracket, FaUserGear } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import 'moment/locale/th';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 function AdminNavbar() {
     const router = useRouter();
@@ -283,6 +284,9 @@ function AdminNavbar() {
                         </div>
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
+                        <DropdownItem key="theme">
+                            <p className='flex justify-between items-center'>ธีม<ThemeSwitcher /></p>
+                        </DropdownItem>
                         <DropdownItem key="settings" onPress={onOpen}>
                             <p className='flex justify-between'>แก้ไขโปรไฟล์<FaUserGear className='text-lg' /></p>
                         </DropdownItem>

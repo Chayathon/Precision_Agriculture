@@ -3,7 +3,7 @@ import { useTheme } from "next-themes";
 import { Switch } from "@nextui-org/react";
 import { HiSun, HiMoon } from "react-icons/hi2";
 
-export const ThemeSwitcher = ({size}) => {
+export const ThemeSwitcher = () => {
     const [mounted, setMounted] = useState(false)
     const { theme, setTheme } = useTheme();
 
@@ -25,7 +25,7 @@ export const ThemeSwitcher = ({size}) => {
                 isSelected={isDark}
                 onValueChange={handleThemeChange}
                 color="default"
-                size={size}
+                size="sm"
                 thumbIcon={({isSelected, className}) =>
                     isSelected ? <HiMoon className={className} /> : <HiSun className={className} />
                 }

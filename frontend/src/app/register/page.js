@@ -173,7 +173,7 @@ function Page() {
             <Card className="m-auto drop-shadow-2xl bg-blend-darken w-11/12 max-sm:my-4 sm:w-2/3 md:w-3/4 lg:w-4/5 xl:w-1/2">
                 <CardHeader className='px-4 text-2xl font-bold justify-between'>
                     สมัครสมาชิก
-                    <ThemeSwitcher />
+                    <ThemeSwitcher size="md" />
                 </CardHeader>
                 <CardBody>
                     <form onSubmit={handleSubmit}>

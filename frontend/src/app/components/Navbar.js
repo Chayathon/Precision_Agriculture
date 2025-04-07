@@ -9,6 +9,7 @@ import { FaBell, FaUserGear, FaArrowRightFromBracket, FaDownload } from "react-i
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import 'moment/locale/th';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 function UserNavbar() {
     const router = useRouter();
@@ -387,7 +388,7 @@ function UserNavbar() {
 
                 <NavbarContent as="div" justify="end">
                     <Dropdown placement="bottom-end">
-                        <DropdownTrigger>
+                        <DropdownTrigger className='flex items-center'>
                             <div>
                                 <Badge content={notifications.length} size="sm" color="danger">
                                     <FaBell className="size-6 cursor-pointer" />
@@ -441,6 +442,9 @@ function UserNavbar() {
                             </div>
                         </DropdownTrigger>
                         <DropdownMenu aria-label="Profile Actions" variant="flat">
+                            <DropdownItem key="theme">
+                                <p className='flex justify-between items-center'>ธีม<ThemeSwitcher size='sm' /></p>
+                            </DropdownItem>
                             <DropdownItem key="download" onPress={handleDownload}>
                                 <p className='flex justify-between'>ดาวน์โหลดแอปพลิเคชัน<FaDownload className='text-lg' /></p>
                             </DropdownItem>

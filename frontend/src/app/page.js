@@ -71,7 +71,7 @@ function Page() {
             <Card className="m-auto drop-shadow-2xl bg-blend-darken w-11/12 sm:w-2/3 md:w-2/4 lg:w-2/6">
                 <CardHeader className='px-4 text-2xl font-bold justify-between'>
                     เข้าสู่ระบบ
-                    <ThemeSwitcher />
+                    <ThemeSwitcher size="md" />
                 </CardHeader>
                 <CardBody>
                     <form onSubmit={handleSubmit}>

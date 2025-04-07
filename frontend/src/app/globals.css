@@ -5,3 +5,7 @@
 .Toastify__toast {
     font-family: 'Kanit', sans-serif !important;
 }
+
+* {
+    @apply transition-colors duration-300;
+}
