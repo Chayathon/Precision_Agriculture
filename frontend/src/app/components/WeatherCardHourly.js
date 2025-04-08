@@ -3,7 +3,7 @@ import { WiThermometer, WiHumidity, WiDaySunny, WiDayCloudy, WiCloud, WiCloudy, 
 import moment from 'moment';
 import 'moment/locale/th';
 
-const WeatherCard = ({ time, temp, humid, rainChance, windSpeed, condition }) => {
+const WeatherCardHourly = ({ time, temp, humid, rainChance, windSpeed, condition }) => {
   moment.locale('th');
   const date = moment(time).format('Do MMM');
   const hour = moment(time).format('HH');
@@ -73,7 +73,7 @@ const WeatherCard = ({ time, temp, humid, rainChance, windSpeed, condition }) =>
   };
 
   return (
-    <Card className="w-40 mx-2">
+    <Card className="w-40 mx-2 dark:bg-zinc-800">
       <CardHeader className="flex flex-col items-center">
         <p className="text-sm font-bold">{date}</p>
         <p className="text-sm">{hour}:00 น.</p>
@@ -92,4 +92,4 @@ const WeatherCard = ({ time, temp, humid, rainChance, windSpeed, condition }) =>
   );
 };
 
-export default WeatherCard;
+export default WeatherCardHourly;

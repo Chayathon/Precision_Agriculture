@@ -78,7 +78,7 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
                                             <p className='text-2xl font-bold'>{plant}</p>
                                             <Button onPress={() => {onOpenCreateFactor()}} color='success' endContent={<FaPlus />}>เพิ่ม</Button>
                                         </div>
-                                        <Table aria-label="Factor Data">
+                                        <Table aria-label="Factor Data" selectionMode='single' selectionBehavior='replace'>
                                             <TableHeader>
                                                 <TableColumn key="age">ตั้งแต่ (วัน) ขึ้นไป</TableColumn>
                                                 <TableColumn key="temperature">อุณหภูมิ (°C)</TableColumn>
@@ -121,7 +121,7 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
                                         <p className='text-2xl font-bold'>{plant}</p>
                                             <Button onPress={() => {onOpenCreateNutrient()}} color='success' endContent={<FaPlus />}>เพิ่ม</Button>
                                         </div>
-                                        <Table aria-label="Nutrient Data">
+                                        <Table aria-label="Nutrient Data" selectionMode='single' selectionBehavior='replace'>
                                             <TableHeader>
                                                 <TableColumn key="age">ตั้งแต่ (วัน) ขึ้นไป</TableColumn>
                                                 <TableColumn key="temperature">(N) ไนโตรเจน (mg/L)</TableColumn>

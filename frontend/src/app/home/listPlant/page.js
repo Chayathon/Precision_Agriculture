@@ -254,7 +254,6 @@ export default function ListPlant() {
                 }}
                 selectedKeys={selectedKeys}
                 selectionMode="multiple"
-                selectionBehavior="replace"
                 sortDescriptor={sortDescriptor}
                 topContent={topContent}
                 topContentPlacement="outside"
