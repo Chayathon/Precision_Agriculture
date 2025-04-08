@@ -4,7 +4,7 @@ import { Switch } from "@nextui-org/react";
 import { HiSun, HiMoon } from "react-icons/hi2";
 
 export const ThemeSwitcher = ({size}) => {
-    const [mounted, setMounted] = useState(false)
+    const [mounted, setMounted] = useState(false);
     const { theme, setTheme } = useTheme();
 
     const isDark = theme === 'dark';

@@ -39,7 +39,7 @@ const WeatherCardDaily = ({ time, tempMax, tempMin, humid, rainChance, windSpeed
     };
 
     return (
-        <Card className="w-40 mx-2">
+        <Card className="w-40 mx-2 dark:bg-zinc-800">
             <CardHeader className="flex flex-col items-center">
                 <p className="text-sm font-bold">{date}</p>
             </CardHeader>

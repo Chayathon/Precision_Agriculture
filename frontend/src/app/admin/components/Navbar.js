@@ -9,7 +9,7 @@ import { FaArrowRightFromBracket, FaUserGear } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import 'moment/locale/th';
-import { ThemeSwitcher } from './ThemeSwitcher';
+import { ThemeSwitcher } from '@/app/components/ThemeSwitcher';
 
 function AdminNavbar() {
     const router = useRouter();
@@ -285,7 +285,7 @@ function AdminNavbar() {
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Profile Actions" variant="flat">
                         <DropdownItem key="theme">
-                            <p className='flex justify-between items-center'>ธีม<ThemeSwitcher /></p>
+                            <p className='flex justify-between items-center'>ธีม<ThemeSwitcher size="sm" /></p>
                         </DropdownItem>
                         <DropdownItem key="settings" onPress={onOpen}>
                             <p className='flex justify-between'>แก้ไขโปรไฟล์<FaUserGear className='text-lg' /></p>
@@ -388,7 +388,7 @@ function AdminNavbar() {
                                                 value={password}
                                                 label="รหัสผ่าน"
                                                 endContent={
-                                                    <Button type="button" size="sm" className='bg-gray-300' onClick={toggleVisibility} aria-label="toggle password visibility">
+                                                    <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
                                                         {isVisible ? 'ซ่อน' : 'แสดง'}
                                                     </Button>
                                                 }

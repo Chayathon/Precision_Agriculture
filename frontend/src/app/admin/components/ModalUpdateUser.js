@@ -269,7 +269,7 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                                             value={password}
                                             label="รหัสผ่าน"
                                             endContent={
-                                                <Button type="button" size="sm" className='bg-gray-300' onPress={toggleVisibility} aria-label="toggle password visibility">
+                                                <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
                                                 {isVisible ? (
                                                     'ซ่อน'
                                                 ) : (

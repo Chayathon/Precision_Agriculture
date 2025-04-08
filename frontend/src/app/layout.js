@@ -1,9 +1,8 @@
 import { Kanit } from "next/font/google";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/react";
-import { ThemeProvider as NextThemesProvider } from "next-themes";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
+import ToastWrapper from "./components/ToastWrapper";
 
 export const metadata = {
     title: 'Precision Agriculture',
@@ -26,7 +25,7 @@ export default function RootLayout({ children }) {
                 <NextUIProvider>
                     <NextThemesProvider attribute="class" defaultTheme="light">
                         {children}
-                        <ToastContainer autoClose={3000} />
+                        <ToastWrapper />
                     </NextThemesProvider>
                 </NextUIProvider>
             </body>
