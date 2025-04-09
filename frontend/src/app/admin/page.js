@@ -397,7 +397,7 @@ function Home() {
                         data={weatherHourlyChart(weatherHourly)}
                     />
                 </Card> */}
-                <Card className="col-span-2 sm:col-span-4 p-4 pb-4 drop-shadow-xl">
+                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl">
                     <p>พยากรณ์อากาศรายชั่วโมง</p>
                     <div className="flex overflow-x-auto p-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
                         {weatherHourly.map((forecast, index) => (
@@ -415,7 +415,7 @@ function Home() {
                         ))}
                     </div>
                 </Card>
-                <Card className="col-span-2 sm:col-span-4 p-4 pb-4 drop-shadow-xl">
+                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl">
                     <p>พยากรณ์อากาศรายวัน</p>
                     <div className="flex overflow-x-auto p-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
                         {weatherDaily.map((forecast, index) => (
@@ -471,10 +471,10 @@ function Home() {
                         </TableBody>
                     </Table>
                 </Card> */}
-                <Card className="col-span-2 sm:col-span-4 p-4 pb-4 drop-shadow-xl">
+                <Card className="sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl">
                     <iframe src="https://www.tmd.go.th/StromTrack" className='w-full' height="600" frameborder="0" />
                 </Card>
-                <Card className="col-span-2 sm:col-span-4 p-4 pb-4 drop-shadow-xl">
+                <Card className="sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl">
                     <iframe src= "https://www.tmd.go.th/weatherEarthquakeWidget" className='w-full' height="600" frameborder="0" />
                 </Card>
             </div>

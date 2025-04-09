@@ -256,7 +256,7 @@ function AdminNavbar() {
             <NavbarContent>
                 <NavbarMenuToggle
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                    className="sm:hidden"
+                    className="md:hidden"
                 />
                 <NavbarBrand>
                     <div className='flex flex-col'>
@@ -266,7 +266,7 @@ function AdminNavbar() {
                 </NavbarBrand>
             </NavbarContent>
 
-            <NavbarContent className="hidden sm:flex gap-4" justify="center">
+            <NavbarContent className="hidden md:flex gap-4" justify="center">
                 <NavbarItem isActive={isActiveLink('/admin')}>
                     <Link href="/admin">
                         หน้าแรก
@@ -302,8 +302,8 @@ function AdminNavbar() {
                                 showFallback
                                 src='https://images.unsplash.com/broken'
                                 as="button"
-                                name={<span className="md:inline hidden">{name}</span>}
-                                description={<span className="md:inline hidden">{userEmail}</span>}
+                                name={<span className="lg:inline hidden">{name}</span>}
+                                description={<span className="lg:inline hidden">{userEmail}</span>}
                                 className="transition-transform"
                             />
                         </div>
