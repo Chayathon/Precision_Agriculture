@@ -250,7 +250,6 @@ function AdminNavbar() {
             }}
             isMenuOpen={isMenuOpen}
             onMenuOpenChange={setIsMenuOpen}
-            isBlurred={false}
             isBordered
         >
             <NavbarContent>
@@ -438,19 +437,44 @@ function AdminNavbar() {
             </NavbarContent>
             <NavbarMenu>
                 <Link href="/admin" className='w-full px-1' size='lg' onClick={() => setIsMenuOpen(false)}>
-                    <NavbarMenuItem>หน้าแรก</NavbarMenuItem>
+                    <NavbarMenuItem
+                        isActive={isActiveLink('/admin')}
+                        className={isActiveLink('/admin') ? 'text-blue-600' : 'foreground'}
+                    >
+                        หน้าแรก
+                    </NavbarMenuItem>
                 </Link>
                 <Link href="/admin/listPlant" className='w-full px-1' size='lg' onClick={() => setIsMenuOpen(false)}>
-                    <NavbarMenuItem>ข้อมูลพืช</NavbarMenuItem>
+                    <NavbarMenuItem
+                        isActive={isActiveLink('/admin/listPlant')}
+                        className={isActiveLink('/admin/listPlant') ? 'text-blue-600' : 'foreground'}
+                    >
+                        ข้อมูลพืช
+                    </NavbarMenuItem>
                 </Link>
                 <Link href="/admin/listAdmin" className='w-full px-1' size='lg' onClick={() => setIsMenuOpen(false)}>
-                    <NavbarMenuItem>ข้อมูลผู้ดูแลระบบ</NavbarMenuItem>
+                    <NavbarMenuItem
+                        isActive={isActiveLink('/admin/listAdmin')}
+                        className={isActiveLink('/admin/listAdmin') ? 'text-blue-600' : 'foreground'}
+                    >
+                        ข้อมูลผู้ดูแลระบบ
+                    </NavbarMenuItem>
                 </Link>
                 <Link href="/admin/listUser" className='w-full px-1' size='lg' onClick={() => setIsMenuOpen(false)}>
-                    <NavbarMenuItem>ข้อมูลสมาชิก</NavbarMenuItem>
+                    <NavbarMenuItem
+                        isActive={isActiveLink('/admin/listUser')}
+                        className={isActiveLink('/admin/listUser') ? 'text-blue-600' : 'foreground'}
+                    >
+                        ข้อมูลเกษตรกร
+                    </NavbarMenuItem>
                 </Link>
                 <Link href="/admin/listRole" className='w-full px-1' size='lg' onClick={() => setIsMenuOpen(false)}>
-                    <NavbarMenuItem>ข้อมูลตำแหน่ง</NavbarMenuItem>
+                    <NavbarMenuItem
+                        isActive={isActiveLink('/admin/listRole')}
+                        className={isActiveLink('/admin/listRole') ? 'text-blue-600' : 'foreground'}
+                    >
+                        ข้อมูลตำแหน่ง
+                    </NavbarMenuItem>
                 </Link>
             </NavbarMenu>
         </Navbar>
