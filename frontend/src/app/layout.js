@@ -7,7 +7,7 @@ import ToastWrapper from "./components/ToastWrapper";
 export const metadata = {
     title: 'Precision Agriculture',
     icons: {
-      icon: '/favicon.ico',
+      icon: '/icon.png',
     },
 };
 
