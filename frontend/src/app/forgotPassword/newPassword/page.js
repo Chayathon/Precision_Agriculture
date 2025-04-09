@@ -88,7 +88,7 @@ function NewPassword() {
                                 onChange={(e) => setPassword(e.target.value)}
                                 label="รหัสผ่าน"
                                 endContent={
-                                    <Button type="button" size="sm" className='bg-gray-300' onPress={toggleVisibility} aria-label="toggle password visibility">
+                                    <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
                                         {isVisible ? 'ซ่อน' : 'แสดง'}
                                     </Button>
                                 }
@@ -102,7 +102,7 @@ function NewPassword() {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 label="ยืนยันรหัสผ่าน"
                                 endContent={
-                                    <Button type="button" size="sm" className='bg-gray-300' onPress={toggleVisibility} aria-label="toggle password visibility">
+                                    <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
                                         {isVisible ? 'ซ่อน' : 'แสดง'}
                                     </Button>
                                 }
