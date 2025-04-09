@@ -108,6 +108,12 @@ function UserNavbar() {
     }, [id]);
 
     useEffect(() => {
+        if (selectedKeys.size > 0) {
+            router.push(`/home/dashboard/${selectedPlantId}`);
+        }
+    }, [selectedKeys, router, selectedPlantId]);
+
+    useEffect(() => {
         // แยก pathname ออกเป็น array โดยใช้ "/"
         const pathParts = pathname.split('/');
         
@@ -132,12 +138,6 @@ function UserNavbar() {
             setSelectedPlantId(null);
         }
     }, [pathname]);
-
-    useEffect(() => {
-        if (selectedKeys.size > 0) {
-            router.push(`/home/dashboard/${selectedPlantId}`);
-        }
-    }, [selectedKeys, router, selectedPlantId]);
 
     useEffect(() => {
         const loadNotifications = () => {
@@ -338,9 +338,35 @@ function UserNavbar() {
         router.push('/');
     };
 
+    const isActiveLink = (path) => {
+        if (path === '/home/dashboard') {
+            return pathname.startsWith('/home/dashboard');
+        }
+        return pathname === path;
+    };
+
     return (
         <>
-            <Navbar className='bg-gray-800 text-white'>
+            <Navbar
+                classNames={{
+                    base: "bg-slate-200 dark:bg-zinc-800",
+                    item: [
+                        "flex",
+                        "relative",
+                        "h-full",
+                        "items-center",
+                        "data-[active=true]:after:absolute",
+                        "data-[active=true]:after:bottom-0",
+                        "data-[active=true]:after:left-0",
+                        "data-[active=true]:after:right-0",
+                        "data-[active=true]:after:h-[2px]",
+                        "data-[active=true]:after:rounded-[2px]",
+                        "data-[active=true]:after:bg-primary",
+                    ],
+                }}
+                isBlurred={false}
+                isBordered
+            >
                 <NavbarContent>
                     <NavbarBrand>
                         <div className='flex-col hidden sm:flex'>
@@ -351,20 +377,22 @@ function UserNavbar() {
                 </NavbarContent>
 
                 <NavbarContent className="flex gap-4" justify="center">
-                    <NavbarItem>
+                    <NavbarItem isActive={isActiveLink('/home')}>
                         <Link href="/home">
                             หน้าแรก
                         </Link>
                     </NavbarItem>
                     <Dropdown>
-                        <DropdownTrigger>
-                            <Button 
-                                variant="bordered" 
-                                className="capitalize"
-                            >
-                                {selectedValue}
-                            </Button>
-                        </DropdownTrigger>
+                        <NavbarItem isActive={isActiveLink('/home/dashboard')}>
+                            <DropdownTrigger>
+                                <Button 
+                                    variant="bordered" 
+                                    className="capitalize"
+                                >
+                                    {selectedValue}
+                                </Button>
+                            </DropdownTrigger>
+                        </NavbarItem>
                         <DropdownMenu 
                             aria-label="Select plant"
                             variant="flat"
@@ -379,7 +407,7 @@ function UserNavbar() {
                             )}
                         </DropdownMenu>
                     </Dropdown>
-                    <NavbarItem>
+                    <NavbarItem isActive={isActiveLink('/home/listPlant')}>
                         <Link href="/home/listPlant">
                             ข้อมูลพืช
                         </Link>

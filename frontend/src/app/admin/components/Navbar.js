@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure, NavbarMenu, NavbarMenuItem, NavbarMenuToggle, Select, SelectItem } from "@nextui-org/react";
 import { FaArrowRightFromBracket, FaUserGear } from "react-icons/fa6";
@@ -13,10 +13,10 @@ import { ThemeSwitcher } from '@/app/components/ThemeSwitcher';
 
 function AdminNavbar() {
     const router = useRouter();
+    const pathname = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const [currentDateTime, setCurrentDateTime] = useState({ date: '', time: '' });
-
     
     const [id, setId] = useState('');
     const [name, setName] = useState('');
@@ -225,9 +225,34 @@ function AdminNavbar() {
         toast.success("ออกจากระบบสำเร็จ")
         router.push('/')
     }
+
+    const isActiveLink = (path) => {
+        return pathname === path;
+    };
     
     return (
-        <Navbar className='bg-gray-800 text-white' isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
+        <Navbar
+            classNames={{
+                base: "bg-slate-200 dark:bg-zinc-800",
+                item: [
+                    "flex",
+                    "relative",
+                    "h-full",
+                    "items-center",
+                    "data-[active=true]:after:absolute",
+                    "data-[active=true]:after:bottom-0",
+                    "data-[active=true]:after:left-0",
+                    "data-[active=true]:after:right-0",
+                    "data-[active=true]:after:h-[2px]",
+                    "data-[active=true]:after:rounded-[2px]",
+                    "data-[active=true]:after:bg-primary",
+                ],
+            }}
+            isMenuOpen={isMenuOpen}
+            onMenuOpenChange={setIsMenuOpen}
+            isBlurred={false}
+            isBordered
+        >
             <NavbarContent>
                 <NavbarMenuToggle
                     aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -242,27 +267,27 @@ function AdminNavbar() {
             </NavbarContent>
 
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
-                <NavbarItem>
+                <NavbarItem isActive={isActiveLink('/admin')}>
                     <Link href="/admin">
                         หน้าแรก
                     </Link>
                 </NavbarItem>
-                <NavbarItem>
+                <NavbarItem isActive={isActiveLink('/admin/listPlant')}>
                     <Link href="/admin/listPlant">
                         ข้อมูลพืช
                     </Link>
                 </NavbarItem>
-                <NavbarItem>
+                <NavbarItem isActive={isActiveLink('/admin/listAdmin')}>
                     <Link href="/admin/listAdmin">
                         ข้อมูลผู้ดูแลระบบ
                     </Link>
                 </NavbarItem>
-                <NavbarItem>
+                <NavbarItem isActive={isActiveLink('/admin/listUser')}>
                     <Link href="/admin/listUser">
                         ข้อมูลเกษตรกร
                     </Link>
                 </NavbarItem>
-                <NavbarItem>
+                <NavbarItem isActive={isActiveLink('/admin/listRole')}>
                     <Link href="/admin/listRole">
                         ข้อมูลตำแหน่ง
                     </Link>
