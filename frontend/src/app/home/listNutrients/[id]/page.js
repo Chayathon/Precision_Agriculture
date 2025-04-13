@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import { Button, ButtonGroup, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Select, SelectItem } from '@nextui-org/react';
 import moment from "moment";
 import 'moment/locale/th';
-import { jsPDF } from "jspdf";
-import html2canvas from "html2canvas";
+import { pdf } from '@react-pdf/renderer';
+import PDFNutrients from '@/app/components/PDFNutrients';
 
 function ListNutrients({ params }) {
     const { id } = params;
@@ -131,28 +131,17 @@ function ListNutrients({ params }) {
     };
 
     const exportToPDF = async () => {
-      try {
-        const element = document.getElementById('content-to-export');
-        
-        const canvas = await html2canvas(element);
-        const imgData = canvas.toDataURL('image/png');
-        
-        const pdf = new jsPDF('p', 'mm', 'a4');
-        const imgProps = pdf.getImageProperties(imgData);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-        
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save('nutrients-data.pdf');
-        
-      } catch (error) {
-        console.error('Error generating PDF:', error);
-      }
+        const blob = await pdf(<PDFNutrients data={plantData} />).toBlob();
+      
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'nutrients-report.pdf';
+        link.click();
     };
 
     return (
         <Table
-            aria-label="List Temperature"
+            aria-label="List Nutrients"
             id='content-to-export'
             topContent={
               <div className='flex justify-between'>
@@ -168,7 +157,7 @@ function ListNutrients({ params }) {
                   </ButtonGroup>
                 </div>
 
-                <div className="block md:hidden w-full">
+                <div className="block md:hidden w-full pr-4">
                   <Select
                     onChange={(e) => {
                       const value = e.target.value;
@@ -196,10 +185,9 @@ function ListNutrients({ params }) {
                 <ButtonGroup>
                   <Button 
                     onPress={exportToPDF}
-                    isLoading={isLoading}
                     disabled={isLoading || !plantData?.length}
                   >
-                    {isLoading ? 'กำลังสร้าง PDF...' : 'PDF'}
+                    PDF
                   </Button>
                 </ButtonGroup>
               </div>

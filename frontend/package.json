@@ -10,12 +10,11 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.4.8",
+    "@react-pdf/renderer": "^4.3.0",
     "axios": "^1.8.3",
     "chart.js": "^4.4.8",
     "framer-motion": "^11.18.2",
-    "html2canvas": "^1.4.1",
     "js-cookie": "^3.0.5",
-    "jspdf": "^3.0.0",
     "lodash": "^4.17.21",
     "luxon": "^3.5.0",
     "moment": "^2.30.1",
