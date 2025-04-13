@@ -323,7 +323,7 @@ function UserNavbar() {
 
     const handleDownload = () => {
         const link = document.createElement("a");
-        link.href = "/precision-agriculture.apk";
+        link.href = "/apk/precision-agriculture.apk";
         link.download = "precision-agriculture.apk";
         document.body.appendChild(link);
         link.click();
