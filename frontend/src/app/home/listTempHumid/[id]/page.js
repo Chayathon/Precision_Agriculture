@@ -10,15 +10,32 @@ import PDFTempHumid from '@/app/components/PDFTempHumid';
 function ListTempHumid({ params }) {
     const { id } = params;
     
+    const [plantName, setPlantName] = useState('');
     const [plantData, setPlantData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const fetchPlant = async (plantId) => {
+      try {
+          const res = await fetch(
+              `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlant/${plantId}`
+          );
+          if (res.status === 200) {
+              const data = await res.json();
+              setPlantName(data.resultData.plantname);
+          }
+      } catch (err) {
+          console.error("Failed to fetch", err);
+      } finally {
+          setIsLoading(false);
+      }
+    };
 
     const fetchPlantVariables7day = async (plantId) => {
         try {
             const res = await fetch(
                 `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables7day/${plantId}`
             );
-            if (res.ok) {
+            if (res.status === 200) {
                 const data = await res.json();
                 setPlantData(data.resultData || []);
             }
@@ -35,7 +52,7 @@ function ListTempHumid({ params }) {
             `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables14day/${plantId}`
           );
     
-          if (res.ok) {
+          if (res.status === 200) {
             const data = await res.json();
             setPlantData(data.resultData);
           }
@@ -50,7 +67,7 @@ function ListTempHumid({ params }) {
             `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables1month/${plantId}`
           );
     
-          if (res.ok) {
+          if (res.status === 200) {
             const data = await res.json();
             setPlantData(data.resultData);
           }
@@ -65,7 +82,7 @@ function ListTempHumid({ params }) {
             `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables3month/${plantId}`
           );
     
-          if (res.ok) {
+          if (res.status === 200) {
             const data = await res.json();
             setPlantData(data.resultData);
           }
@@ -80,7 +97,7 @@ function ListTempHumid({ params }) {
             `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables6month/${plantId}`
           );
     
-          if (res.ok) {
+          if (res.status === 200) {
             const data = await res.json();
             setPlantData(data.resultData);
           }
@@ -95,7 +112,7 @@ function ListTempHumid({ params }) {
             `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables9month/${plantId}`
           );
     
-          if (res.ok) {
+          if (res.status === 200) {
             const data = await res.json();
             setPlantData(data.resultData);
           }
@@ -110,7 +127,7 @@ function ListTempHumid({ params }) {
             `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables1year/${plantId}`
           );
     
-          if (res.ok) {
+          if (res.status === 200) {
             const data = await res.json();
             setPlantData(data.resultData);
           }
@@ -120,6 +137,7 @@ function ListTempHumid({ params }) {
       };
 
     useEffect(() => {
+        fetchPlant(id);
         fetchPlantVariables7day(id);
     }, [id]);
 
@@ -131,7 +149,7 @@ function ListTempHumid({ params }) {
     };
 
     const exportToPDF = async () => {
-      const blob = await pdf(<PDFTempHumid data={plantData} />).toBlob();
+      const blob = await pdf(<PDFTempHumid plant={plantName} data={plantData} />).toBlob();
     
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
@@ -142,9 +160,12 @@ function ListTempHumid({ params }) {
     return (
         <Table
             aria-label="List Temperature & Humidity"
-            id='content-to-export'
             topContent={
-              <div className='flex justify-between'>
+              <div className='flex justify-between items-center'>
+                <p className='text-lg sm:text-xl md:text-2xl font-bold'>
+                  {plantName}
+                </p>
+
                 <div className="hidden md:block">
                   <ButtonGroup>
                       <Button onPress={() => fetchPlantVariables7day(id)} className="focus:bg-gray-400">7 วัน</Button>
@@ -157,7 +178,7 @@ function ListTempHumid({ params }) {
                   </ButtonGroup>
                 </div>
 
-                <div className="block md:hidden w-full pr-4">
+                <div className="block md:hidden w-full px-4">
                   <Select
                     onChange={(e) => {
                       const value = e.target.value;

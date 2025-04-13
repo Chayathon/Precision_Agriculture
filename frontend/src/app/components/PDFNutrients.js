@@ -37,10 +37,10 @@ const styles = StyleSheet.create({
     },
 });  
 
-const PDFNutrients = ({ data = [] }) => (
+const PDFNutrients = ({ plant, data = [] }) => (
     <Document>
         <Page size="A4" style={styles.page}>
-            <Text style={styles.title}>รายงานค่าสารอาหาร</Text>
+            <Text style={styles.title}>รายงานค่าสารอาหารของ{plant}</Text>
             <View style={styles.table}>
                 {/* Header */}
                 <View style={[styles.row, styles.header]}>

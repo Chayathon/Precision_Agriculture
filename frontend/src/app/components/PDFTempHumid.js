@@ -37,10 +37,10 @@ const styles = StyleSheet.create({
     },
 });  
 
-const PDFTempHumid = ({ data = [] }) => (
+const PDFTempHumid = ({ plant, data = [] }) => (
     <Document>
         <Page size="A4" style={styles.page}>
-            <Text style={styles.title}>รายงานค่าอุณหภูมิและความชื้น</Text>
+            <Text style={styles.title}>รายงานค่าอุณหภูมิและความชื้นของ{plant}</Text>
             <View style={styles.table}>
                 {/* Header */}
                 <View style={[styles.row, styles.header]}>
