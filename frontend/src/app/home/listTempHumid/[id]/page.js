@@ -203,14 +203,13 @@ function ListTempHumid({ params }) {
                   </Select>
                 </div>
 
-                <ButtonGroup>
-                  <Button
-                    onPress={exportToPDF}
-                    disabled={isLoading || !plantData?.length}
-                  >
-                    PDF
-                  </Button>
-                </ButtonGroup>
+                <Button
+                  onPress={exportToPDF}
+                  color='primary'
+                  disabled={isLoading || !plantData?.length}
+                >
+                  PDF
+                </Button>
               </div>
             }
             className='p-4'
