@@ -161,11 +161,11 @@ function ListNutrients({ params }) {
         <Table
             aria-label="List Nutrients"
             topContent={
-              <div className='flex justify-between'>
+              <div className='flex justify-between items-center'>
                 <p className='text-lg sm:text-xl md:text-2xl font-bold'>
                   {plantName}
                 </p>
-                
+
                 <div className="hidden md:block">
                   <ButtonGroup>
                       <Button onPress={() => fetchPlantVariables7day(id)} className="focus:bg-gray-400">7 วัน</Button>
@@ -178,7 +178,7 @@ function ListNutrients({ params }) {
                   </ButtonGroup>
                 </div>
 
-                <div className="block md:hidden w-full pr-4">
+                <div className="block md:hidden w-full px-4">
                   <Select
                     onChange={(e) => {
                       const value = e.target.value;
