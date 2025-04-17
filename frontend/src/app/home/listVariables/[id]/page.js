@@ -5,10 +5,11 @@ import { Button, ButtonGroup, Table, TableBody, TableCell, TableColumn, TableHea
 import moment from "moment";
 import 'moment/locale/th';
 import { pdf } from '@react-pdf/renderer';
-import PDFNutrients from '@/app/components/PDFNutrients';
+import PDFTempHumid from '@/app/components/PDFTempHumid';
 import { FaFileExport } from 'react-icons/fa6';
+import PDFVariables from '@/app/components/PDFVariables';
 
-function ListNutrients({ params }) {
+function ListVariables({ params }) {
     const { id } = params;
     
     const [plantName, setPlantName] = useState('');
@@ -150,17 +151,17 @@ function ListNutrients({ params }) {
     };
 
     const exportToPDF = async () => {
-        const blob = await pdf(<PDFNutrients plant={plantName} data={plantData} />).toBlob();
-      
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'nutrients-report.pdf';
-        link.click();
+      const blob = await pdf(<PDFVariables plant={plantName} data={plantData} />).toBlob();
+    
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'variables-report.pdf';
+      link.click();
     };
 
     return (
         <Table
-            aria-label="List Nutrients"
+            aria-label="List Temperature & Humidity"
             topContent={
               <div className='flex justify-between items-center'>
                 <p className='text-lg sm:text-xl md:text-2xl font-bold'>
@@ -204,7 +205,7 @@ function ListNutrients({ params }) {
                   </Select>
                 </div>
 
-                <Button 
+                <Button
                   onPress={exportToPDF}
                   color='primary'
                   disabled={isLoading || !plantData?.length}
@@ -219,9 +220,9 @@ function ListNutrients({ params }) {
         >
             <TableHeader>
                 <TableColumn key="date">วันที่</TableColumn>
-                <TableColumn key="nitrogen">(N) ไนโตรเจน (mg/L)</TableColumn>
-                <TableColumn key="phosphorus">(P) ฟอสฟอรัส (mg/L)</TableColumn>
-                <TableColumn key="potassium">(K) โพแทสเซียม (mg/L)</TableColumn>
+                <TableColumn key="ph">ค่าความเป็นกรด-ด่าง (pH)</TableColumn>
+                <TableColumn key="salinity">ค่าการนำไฟฟ้า (dS/m)</TableColumn>
+                <TableColumn key="lightIntensity">ค่าความเข้มแสง (lux)</TableColumn>
             </TableHeader>
             <TableBody
                 items={plantData || []}
@@ -232,9 +233,9 @@ function ListNutrients({ params }) {
                 {(item) => (
                     <TableRow key={item.id}>
                         <TableCell>{convertDate(item.receivedAt)}</TableCell>
-                        <TableCell>{item.nitrogen}</TableCell>
-                        <TableCell>{item.phosphorus}</TableCell>
-                        <TableCell>{item.potassium}</TableCell>
+                        <TableCell>{item.pH}</TableCell>
+                        <TableCell>{item.salinity}</TableCell>
+                        <TableCell>{item.lightIntensity}</TableCell>
                     </TableRow>
                 )}
             </TableBody>
@@ -242,4 +243,4 @@ function ListNutrients({ params }) {
     );
 }
 
-export default ListNutrients;
+export default ListVariables;

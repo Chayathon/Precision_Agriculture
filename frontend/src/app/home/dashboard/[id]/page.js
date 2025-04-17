@@ -535,9 +535,18 @@ function Dashboard({ params }) {
                   <p className="text-gray-500">ค่าความเป็นกรด-ด่าง (pH)</p>
                 </div>
                 <div className="flex justify-end">
-                  <Button onPress={() => {setSelectedId(id); onOpenPhGraph();}} variant="light" size='sm'>
-                    <FaChartLine className="text-xl text-red-400" />
-                  </Button>
+                  <ButtonGroup size="sm" variant="light">
+                    <Button onPress={() => {setSelectedId(id); onOpenPhGraph();}}>
+                      <FaChartLine className="size-4 text-red-400" />
+                    </Button>
+                    <Button>
+                      <Link
+                        href={`/home/listVariables/${id}`}
+                      >
+                        <FaTable className="size-4 text-red-400" />
+                      </Link>
+                    </Button>
+                  </ButtonGroup>
                 </div>
               </CardHeader>
               <CardBody>
@@ -562,9 +571,18 @@ function Dashboard({ params }) {
                   <p className="text-gray-500">ค่าการนำไฟฟ้า (dS/m)</p>
                 </div>
                 <div className="flex justify-end">
-                  <Button onPress={() => {setSelectedId(id); onOpenSalinityGraph();}} variant="light" size='sm'>
-                    <FaChartLine className="text-xl text-red-400" />
-                  </Button>
+                  <ButtonGroup size="sm" variant="light">
+                    <Button onPress={() => {setSelectedId(id); onOpenSalinityGraph();}}>
+                      <FaChartLine className="size-4 text-red-400" />
+                    </Button>
+                    <Button>
+                        <Link
+                          href={`/home/listVariables/${id}`}
+                        >
+                          <FaTable className="size-4 text-red-400" />
+                        </Link>
+                    </Button>
+                  </ButtonGroup>
                 </div>
               </CardHeader>
               <CardBody>
@@ -589,9 +607,18 @@ function Dashboard({ params }) {
                   <p className="text-gray-500">ค่าความเข้มแสง (lux)</p>
                 </div>
                 <div className="flex justify-end">
-                  <Button onPress={() => {setSelectedId(id); onOpenLightIntensityGraph();}} variant="light" size='sm'>
-                    <FaChartLine className="text-xl text-red-400" />
-                  </Button>
+                  <ButtonGroup size="sm" variant="light">
+                    <Button onPress={() => {setSelectedId(id); onOpenLightIntensityGraph();}}>
+                      <FaChartLine className="size-4 text-red-400" />
+                    </Button>
+                    <Button>
+                      <Link
+                        href={`/home/listVariables/${id}`}
+                      >
+                        <FaTable className="size-4 text-red-400" />
+                      </Link>
+                    </Button>
+                  </ButtonGroup>
                 </div>
               </CardHeader>
               <CardBody>
@@ -670,7 +697,7 @@ function Dashboard({ params }) {
                     <Link
                       href={`/home/listTempHumid/${id}`}
                     >
-                      <FaTable className="text-xl text-red-400" />
+                      <FaTable className="size-4 text-red-400" />
                     </Link>
                   </Button>
                 </div>
@@ -691,7 +718,7 @@ function Dashboard({ params }) {
                     <Link
                       href={`/home/listNutrients/${id}`}
                     >
-                      <FaTable className="text-xl text-red-400" />
+                      <FaTable className="size-4 text-red-400" />
                     </Link>
                   </Button>
                 </div>

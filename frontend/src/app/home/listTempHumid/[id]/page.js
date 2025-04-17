@@ -6,6 +6,7 @@ import moment from "moment";
 import 'moment/locale/th';
 import { pdf } from '@react-pdf/renderer';
 import PDFTempHumid from '@/app/components/PDFTempHumid';
+import { FaFileExport } from 'react-icons/fa6';
 
 function ListTempHumid({ params }) {
     const { id } = params;
@@ -208,7 +209,7 @@ function ListTempHumid({ params }) {
                   color='primary'
                   disabled={isLoading || !plantData?.length}
                 >
-                  PDF
+                  <FaFileExport className='size-4' />PDF
                 </Button>
               </div>
             }
