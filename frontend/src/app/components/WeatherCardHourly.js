@@ -1,5 +1,6 @@
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
-import { WiThermometer, WiHumidity, WiDaySunny, WiDayCloudy, WiCloud, WiCloudy, WiDayShowers, WiDayRain, WiDayRainWind, WiDayThunderstorm, WiCloudyWindy, WiCloudyGusts, WiDayCloudyGusts, WiNa, WiNightCloudy, WiNightAltCloudy, WiNightShowers, WiNightRain, WiNightRainWind, WiNightThunderstorm, WiNightAltCloudyWindy, WiNightAltCloudyGusts, WiNightCloudyGusts, WiNightClear } from "react-icons/wi";
+import { WiHumidity, WiDaySunny, WiDayCloudy, WiCloud, WiCloudy, WiDayShowers, WiDayRain, WiDayRainWind, WiDayThunderstorm, WiCloudyWindy, WiCloudyGusts, WiDayCloudyGusts, WiNa, WiNightCloudy, WiNightAltCloudy, WiNightShowers, WiNightRain, WiNightRainWind, WiNightThunderstorm, WiNightAltCloudyWindy, WiNightAltCloudyGusts, WiNightCloudyGusts, WiNightClear } from "react-icons/wi";
+import { FaTemperatureHalf } from "react-icons/fa6";
 import moment from 'moment';
 import 'moment/locale/th';
 
@@ -82,7 +83,7 @@ const WeatherCardHourly = ({ time, temp, humid, rainChance, windSpeed, condition
         {weatherCondition(condition, hour)}
 
         <div className="flex space-x-2 mt-2">
-          <p className="flex text-lg font-bold"><WiThermometer size={26} className="text-red-500" />{Math.round(temp)}° <WiHumidity size={26} className="text-blue-500" />{Math.round(humid)}%</p>
+          <p className="flex text-lg font-bold items-center"><FaTemperatureHalf size={18} className="text-red-500" />{Math.round(temp)}° &nbsp; <WiHumidity size={26} className="text-blue-500" />{Math.round(humid)}%</p>
         </div>
 
         <p className="text-sm mt-1">ฝน {rainChance}% ของพื้นที่</p>

@@ -1,5 +1,6 @@
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
-import { WiThermometer, WiHumidity, WiDaySunny, WiDayCloudy, WiCloud, WiCloudy, WiDayShowers, WiDayRain, WiDayRainWind, WiDayThunderstorm, WiCloudyWindy, WiCloudyGusts, WiDayCloudyGusts, WiNa } from "react-icons/wi";
+import { WiHumidity, WiDaySunny, WiDayCloudy, WiCloud, WiCloudy, WiDayShowers, WiDayRain, WiDayRainWind, WiDayThunderstorm, WiCloudyWindy, WiCloudyGusts, WiDayCloudyGusts, WiNa } from "react-icons/wi";
+import { FaTemperatureQuarter, FaTemperatureThreeQuarters } from "react-icons/fa6";
 import moment from 'moment';
 import 'moment/locale/th';
 
@@ -47,10 +48,10 @@ const WeatherCardDaily = ({ time, tempMax, tempMin, humid, rainChance, windSpeed
                 {weatherCondition(condition)}
 
                 <div className="flex space-x-2 mt-2">
-                    <p className="flex text-lg font-bold"><WiThermometer size={26} className="text-red-500" />{Math.round(tempMax)}° <WiThermometer size={26} className="text-blue-500" />{Math.round(tempMin)}°</p>
+                    <p className="flex text-lg font-bold items-center"><FaTemperatureThreeQuarters size={18} className="text-red-500" />{Math.round(tempMax)}° &nbsp; <FaTemperatureQuarter size={18} className="text-blue-500" />{Math.round(tempMin)}°</p>
                 </div>
                 <div className="flex space-x-2 mt-2">
-                    <p className="flex text-lg font-bold"><WiHumidity size={26} className="text-blue-500" />{Math.round(humid)}%</p>
+                    <p className="flex text-lg font-bold items-center"><WiHumidity size={26} className="text-blue-500" />{Math.round(humid)}%</p>
                 </div>
 
                 <p className="text-sm mt-1">ฝน {rainChance}% ของพื้นที่</p>
