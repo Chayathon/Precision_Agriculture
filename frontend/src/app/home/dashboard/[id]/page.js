@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { Card, CardHeader, CardBody, Button, useDisclosure, ButtonGroup, Select, SelectItem, Spinner } from "@nextui-org/react";
 import {
   Chart as ChartJS,
@@ -14,10 +15,11 @@ import {
 
 import { Line } from "react-chartjs-2";
 import { FaTable, FaChartLine } from "react-icons/fa6";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import ModalPhGraph from "../../../components/ModalPhGraph";
 import ModalSalinityGraph from "../../../components/ModalSalinityGraph";
 import ModalLightIntensityGraph from "../../../components/ModalLightIntensityGraph";
-import Link from "next/link";
 
 function Dashboard({ params }) {
   const { id } = params;
@@ -303,6 +305,14 @@ function Dashboard({ params }) {
   };
 
   useEffect(() => {
+      AOS.init({
+          duration: 500,
+          easing: 'ease-in-out',
+          once: true,
+      });
+  }, []);
+
+  useEffect(() => {
     if(plantData && factorData && nutrientData) {
       plantData.temperature < factorData.temperature ? localStorage.setItem('temperature', 'อุณหภูมิต่ำกว่าค่าที่ต้องการ') : localStorage.removeItem('temperature');
       plantData.humidity < factorData.humidity ? localStorage.setItem('humidity', 'ความชื้นต่ำกว่าค่าที่ต้องการ') : localStorage.removeItem('humidity');
@@ -419,7 +429,7 @@ function Dashboard({ params }) {
       ) : (!isLoading && plantData && plantDatas && nutrientData && factorData) ? (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-            <Card className="drop-shadow-xl hover:-translate-y-1 md:col-span-2 lg:col-span-1">
+            <Card className="drop-shadow-xl hover:-translate-y-1 md:col-span-2 lg:col-span-1" data-aos="fade-up">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">อายุ (วัน)</p>
               </CardHeader>
@@ -427,7 +437,7 @@ function Dashboard({ params }) {
                 <p className="text-center text-6xl font-bold">{plantAge}</p>
               </CardBody>
             </Card>
-            <Card className="drop-shadow-xl hover:-translate-y-1">
+            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">อุณหภูมิ (°C)</p>
               </CardHeader>
@@ -447,7 +457,7 @@ function Dashboard({ params }) {
                 </div>
               </CardBody>
             </Card>
-            <Card className="drop-shadow-xl hover:-translate-y-1">
+            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">ความชื้น (%)</p>
               </CardHeader>
@@ -468,7 +478,7 @@ function Dashboard({ params }) {
               </CardBody>
             </Card>
 
-            <Card className="drop-shadow-xl hover:-translate-y-1">
+            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">ไนโตรเจน (mg/L)</p>
               </CardHeader>
@@ -488,7 +498,7 @@ function Dashboard({ params }) {
                 </div>
               </CardBody>
             </Card>
-            <Card className="drop-shadow-xl hover:-translate-y-1">
+            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">ฟอสฟอรัส (mg/L)</p>
               </CardHeader>
@@ -508,7 +518,7 @@ function Dashboard({ params }) {
                 </div>
               </CardBody>
             </Card>
-            <Card className="drop-shadow-xl hover:-translate-y-1">
+            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">โพแทสเซียม (mg/L)</p>
               </CardHeader>
@@ -529,7 +539,7 @@ function Dashboard({ params }) {
               </CardBody>
             </Card>
 
-            <Card className="drop-shadow-xl hover:-translate-y-1">
+            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
                 <div className="flex justify-center flex-1"> 
                   <p className="text-gray-500">ค่าความเป็นกรด-ด่าง (pH)</p>
@@ -565,7 +575,7 @@ function Dashboard({ params }) {
                 </div>
               </CardBody>
             </Card>
-            <Card className="drop-shadow-xl hover:-translate-y-1">
+            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
                 <div className="flex justify-center flex-1"> 
                   <p className="text-gray-500">ค่าการนำไฟฟ้า (dS/m)</p>
@@ -601,7 +611,7 @@ function Dashboard({ params }) {
                 </div>
               </CardBody>
             </Card>
-            <Card className="drop-shadow-xl hover:-translate-y-1">
+            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
                 <div className="flex justify-center flex-1"> 
                   <p className="text-gray-500">ค่าความเข้มแสง (lux)</p>
@@ -649,7 +659,7 @@ function Dashboard({ params }) {
             <ModalLightIntensityGraph isOpen={isOpenLightIntensityGraph} onOpenChange={onOpenLightIntensityChangeGraph} id={selectedId} />
           )}
 
-          <div className="hidden justify-end mb-4 md:flex">
+          <div className="hidden justify-end mb-4 md:flex" data-aos="fade-up">
             <ButtonGroup className='flex flex-row flex-wrap max-sm:gap-y-2'>
               <Button onPress={() => fetchPlantVariables7day(id)} className="focus:bg-gray-400">7 วัน</Button>
               <Button onPress={() => fetchPlantVariables14day(id)} className="focus:bg-gray-400">14 วัน</Button>
@@ -661,7 +671,7 @@ function Dashboard({ params }) {
             </ButtonGroup>
           </div>
 
-          <div className="block w-full mb-4 md:hidden">
+          <div className="block w-full mb-4 md:hidden" data-aos="fade-up">
             <Select
               onChange={(e) => {
                 const value = e.target.value;
@@ -687,7 +697,7 @@ function Dashboard({ params }) {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
+            <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
                 <div className="flex justify-center flex-1"> 
                   <p className="text-gray-500">กราฟแสดงข้อมูลอุณหภูมิ & ความชื้น</p>
@@ -708,7 +718,7 @@ function Dashboard({ params }) {
               />
             </Card>
             
-            <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
+            <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
                 <div className="flex justify-center flex-1"> 
                   <p className="text-gray-500">กราฟแสดงข้อมูลสารอาหาร</p>

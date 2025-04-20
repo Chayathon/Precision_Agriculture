@@ -1,24 +1,16 @@
 'use client';
 
 import React, { useEffect, useState } from 'react'
+import Link from 'next/link';
 import Cookies from "js-cookie";
 import axios from 'axios';
 import { DateTime } from 'luxon';
 import moment from 'moment';
 import 'moment/locale/th';
-import Link from 'next/link';
-import { Card, CardHeader, CardBody, CardFooter, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@nextui-org/react";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+import { Card, CardHeader, CardBody, CardFooter, Spinner } from "@nextui-org/react";
 import GaugeChart from 'react-gauge-chart';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  PointElement,
-  Tooltip,
-  Legend,
-} from "chart.js";
-import { Line } from 'react-chartjs-2';
 import WeatherCardHourly from '../components/WeatherCardHourly';
 import WeatherCardDaily from '../components/WeatherCardDaily';
 
@@ -219,55 +211,13 @@ function Home() {
         fetchRole();
     }, []);
 
-    ChartJS.register(
-        CategoryScale,
-        LinearScale,
-        LineElement,
-        PointElement,
-        Tooltip,
-        Legend
-    );
-    
-    const options = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: "top",
-            },
-        },
-    };
-
-    const weatherHourlyChart = (data) => {
-        if (!data) {
-            return {
-                labels: [],
-                datasets: []
-            };
-        }
-        return {
-            labels: data.map(item => moment(item.time).format('HH:MM')),
-            datasets: [
-                {
-                    label: "อุณหภูมิ (°C)",
-                    data: data.map(item => item.data.tc),
-                    backgroundColor: "rgba(255, 0, 0, 0.5)",
-                    borderColor: "rgba(255, 0, 0, 1)",
-                },
-                {
-                    label: "ความชื้น (%)",
-                    data: data.map(item => item.data.rh),
-                    backgroundColor: "rgba(0, 200, 255, 0.5)",
-                    borderColor: "rgba(0, 200, 255, 1)",
-                },
-                {
-                    label: "ปริมาณฝน (mm)",
-                    data: data.map(item => item.data.rain),
-                    backgroundColor: "rgba(0, 0, 255, 0.5)",
-                    borderColor: "rgba(0, 0, 255, 1)",
-                },
-            ],
-        }
-    };
+    useEffect(() => {
+        AOS.init({
+            duration: 500,
+            easing: 'ease-in-out',
+            once: true,
+        });
+    }, []);
 
     const weatherCondition = (conditionCode) => {
         switch (conditionCode) {
@@ -310,7 +260,7 @@ function Home() {
         <div className='container mx-auto max-w-[1400px]'>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 m-4'>
                 <Link href='/admin/listPlant'>
-                    <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' isPressable>
+                    <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' data-aos="fade-up" isPressable>
                         <CardHeader className='flex justify-center'>
                             <p className='text-gray-500'>พืช</p>
                         </CardHeader>
@@ -323,7 +273,7 @@ function Home() {
                     </Card>
                 </Link>
                 <Link href='/admin/listAdmin'>
-                    <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' isPressable>
+                    <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' data-aos="fade-up" isPressable>
                         <CardHeader className='flex justify-center'>
                             <p className='text-gray-500'>ผู้ดูแลระบบ</p>
                         </CardHeader>
@@ -336,7 +286,7 @@ function Home() {
                     </Card>
                 </Link>
                 <Link href='/admin/listUser'>
-                    <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' isPressable>
+                    <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' data-aos="fade-up" isPressable>
                         <CardHeader className='flex justify-center'>
                             <p className='text-gray-500'>เกษตรกร</p>
                         </CardHeader>
@@ -349,7 +299,7 @@ function Home() {
                     </Card>
                 </Link>
                 <Link href='/admin/listRole'>
-                    <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' isPressable>
+                    <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' data-aos="fade-up" isPressable>
                         <CardHeader className='flex justify-center'>
                             <p className='text-gray-500'>ตำแหน่ง</p>
                         </CardHeader>
@@ -361,12 +311,12 @@ function Home() {
                         </CardFooter>
                     </Card>
                 </Link>
-                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl items-center">
+                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl items-center" data-aos="fade-up">
                     <p>ข้อมูลสภาพอากาศ ตำบล {localtion}</p>
                     <p>วันที่ {date} เวลา {time}.00 น.</p>
                     <p className='pt-4 text-lg font-bold sm:text-xl md:text-2xl lg:text-4xl'>{weatherCondition(condition)}</p>
                 </Card>
-                <Card className="md:col-span-2 items-center p-4 drop-shadow-xl">
+                <Card className="md:col-span-2 items-center p-4 drop-shadow-xl" data-aos="fade-up">
                     <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
                         <GaugeChart
                             id="temp-gauge"
@@ -378,7 +328,7 @@ function Home() {
                     </div>
                     <p className='flex justify-center'>อุณหภูมิ (°C)</p>
                 </Card>
-                <Card className="md:col-span-2 items-center p-4 drop-shadow-xl">
+                <Card className="md:col-span-2 items-center p-4 drop-shadow-xl" data-aos="fade-up">
                     <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
                         <GaugeChart
                             id="humidity-gauge"
@@ -390,14 +340,7 @@ function Home() {
                     </div>
                     <p className='flex justify-center'>ความชื้นสัมพัทธ์ (%)</p>
                 </Card>
-                {/* <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl">
-                    <p className='flex justify-center'>พยากรณ์อากาศรายชั่วโมง</p>
-                    <Line
-                        options={options}
-                        data={weatherHourlyChart(weatherHourly)}
-                    />
-                </Card> */}
-                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl">
+                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
                     <p>พยากรณ์อากาศรายชั่วโมง</p>
                     <div className="flex overflow-x-auto p-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
                         {weatherHourly.map((forecast, index) => (
@@ -415,7 +358,7 @@ function Home() {
                         ))}
                     </div>
                 </Card>
-                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl">
+                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
                     <p>พยากรณ์อากาศรายวัน</p>
                     <div className="flex overflow-x-auto p-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
                         {weatherDaily.map((forecast, index) => (
@@ -434,47 +377,10 @@ function Home() {
                         ))}
                     </div>
                 </Card>
-                {/* <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl">
-                    <p className='flex justify-center pb-2'>พยากรณ์อากาศรายวัน</p>
-                    <Table removeWrapper aria-label="Weather Daily">
-                        <TableHeader>
-                            <TableColumn>วันที่</TableColumn>
-                            <TableColumn>
-                                <span className="hidden sm:inline">อุณหภูมิสูงสุด</span>
-                                <span className="text-lg sm:hidden">☀️</span>
-                            </TableColumn>
-                            <TableColumn>
-                                <span className="hidden sm:inline">อุณหภูมิต่ำสุด</span>
-                                <span className="text-lg sm:hidden">🌙</span>
-                            </TableColumn>
-                            <TableColumn>
-                                <span className="hidden sm:inline">ความชื้นเฉลี่ย</span>
-                                <span className="text-lg sm:hidden">💧</span>
-                            </TableColumn>
-                            <TableColumn className='hidden sm:table-cell'>ปริมาณฝน</TableColumn>
-                            <TableColumn className='hidden md:table-cell'>สภาพอากาศโดยรวม</TableColumn>
-                        </TableHeader>
-                        <TableBody>
-                            {weatherDaily.map((item, index) => (
-                                <TableRow key={index}>
-                                    <TableCell>
-                                        <span className='hidden sm:inline'>{moment(item.time).format('DD MMMM') + ' ' + (parseInt(moment(item.time).format('YYYY')) + 543)}</span>
-                                        <span className='sm:hidden'>{moment(item.time).format('DD/MM/') + '' + (parseInt(moment(item.time).format('YY')) + 43)}</span>
-                                    </TableCell>
-                                    <TableCell>{item.data.tc_max}°C</TableCell>
-                                    <TableCell>{item.data.tc_min}°C</TableCell>
-                                    <TableCell>{item.data.rh}%</TableCell>
-                                    <TableCell className='hidden sm:table-cell'>{item.data.rain}mm</TableCell>
-                                    <TableCell className='hidden md:table-cell'>{weatherCondition(item.data.cond)}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </Card> */}
-                <Card className="sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl">
+                <Card className="sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
                     <iframe src="https://www.tmd.go.th/StromTrack" className='w-full' height="600" frameborder="0" />
                 </Card>
-                <Card className="sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl">
+                <Card className="sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
                     <iframe src= "https://www.tmd.go.th/weatherEarthquakeWidget" className='w-full' height="600" frameborder="0" />
                 </Card>
             </div>
