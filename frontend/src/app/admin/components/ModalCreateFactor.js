@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input } from '@nextui-org/react';
+import { NumberInput } from '@heroui/number-input';
 import { toast } from 'react-toastify';
 
 function ModalCreateFactor({ isOpen, onOpenChange, setRefresh, id }) {
@@ -64,10 +65,12 @@ function ModalCreateFactor({ isOpen, onOpenChange, setRefresh, id }) {
                 <ModalBody>
                     <form onSubmit={handleSubmit}>
                         <div className="flex mb-4 gap-4">
-                            <Input
-                                onChange={(e) => setAge(e.target.value)}
-                                type="number"
-                                label="อายุตั้งแต่กี่ (วัน) ขึ้นไป"
+                            <NumberInput
+                                value={age}
+                                onValueChange={setAge}
+                                defaultValue={0}
+                                minValue={0}
+                                label="อายุตั้งแต่ (วัน) ขึ้นไป"
                                 isRequired
                             />
                             <Input
