@@ -364,7 +364,7 @@ function Home() {
                         <p className='flex justify-center'>อุณหภูมิ (°C)</p>
                     </Skeleton>
                 </Card>
-                <Card className="md:col-span-2 items-center p-4 drop-shadow-xl" data-aos="fade-up">
+                <Card className="md:col-span-2 items-center p-4 drop-shadow-xl space-y-1" data-aos="fade-up">
                     <Skeleton className="w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px] rounded-lg" isLoaded={isLoaded}>
                         <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
                             <GaugeChart

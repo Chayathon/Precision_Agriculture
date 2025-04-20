@@ -14,7 +14,7 @@ import {
 } from "chart.js";
 
 import { Line } from "react-chartjs-2";
-import { FaTable, FaChartLine } from "react-icons/fa6";
+import { FaTable, FaChartLine, FaBan } from "react-icons/fa6";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import ModalPhGraph from "../../../components/ModalPhGraph";
@@ -741,8 +741,8 @@ function Dashboard({ params }) {
           </div>
         </>
       ) : (
-        <div className="flex justify-center items-center h-full">
-          <h2 className="text-2xl text-gray-500">ไม่มีข้อมูลสำหรับแสดงผล</h2>
+        <div className="flex justify-center pt-16">
+          <h2 className="flex items-center text-2xl text-gray-500"><FaBan size={22} />&ensp;ไม่มีข้อมูลสำหรับแสดงผล&ensp;<FaBan size={22} /></h2>
         </div>
       )}
     </div>
