@@ -9,7 +9,7 @@ import moment from 'moment';
 import 'moment/locale/th';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { Card, CardHeader, CardBody, CardFooter, Spinner } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter, Spinner, Skeleton } from "@nextui-org/react";
 import GaugeChart from 'react-gauge-chart';
 import WeatherCardHourly from '../components/WeatherCardHourly';
 import WeatherCardDaily from '../components/WeatherCardDaily';
@@ -34,11 +34,13 @@ function Home() {
     const [weatherHourly, setWeatherHourly] = useState([]);
     const [weatherDaily, setWeatherDaily] = useState([]);
 
+    const [isLoaded, setIsLoaded] = useState(false);
+
     const fetchPlant = async () => {
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listPlantAvaliable`);
 
-            if (res.ok) {
+            if (res.status === 200) {
                 const data = await res.json();
                 setPlants(data.resultData.length);
             }
@@ -54,7 +56,7 @@ function Home() {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
-            if (res.ok) {
+            if (res.status === 200) {
                 const data = await res.json();
                 setAdmins(data.resultData.length);
             }
@@ -70,7 +72,7 @@ function Home() {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
-            if (res.ok) {
+            if (res.status === 200) {
                 const data = await res.json();
                 setUsers(data.resultData.length);
             }
@@ -86,7 +88,7 @@ function Home() {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
-            if (res.ok) {
+            if (res.status === 200) {
                 const data = await res.json();
                 setRoles(data.resultData.length);
             }
@@ -147,6 +149,8 @@ function Home() {
                 setCondition(forecasts[0].data.cond || 0); // สภาพอากาศโดยทั่วไป
             } catch (error) {
                 console.error('Error fetching TMD data:', error);
+            } finally {
+                setIsLoaded(true);
             }
         };
 
@@ -172,6 +176,8 @@ function Home() {
                 setWeatherHourly(forecasts || []);
             } catch (error) {
                 console.error('Error fetching TMD data:', error);
+            } finally {
+                setIsLoaded(true);
             }
         };
 
@@ -196,6 +202,8 @@ function Home() {
                 setWeatherDaily(forecasts || []);
             } catch (error) {
                 console.error('Error fetching TMD data:', error);
+            } finally {
+                setIsLoaded(true);
             }
         };
     
@@ -250,138 +258,182 @@ function Home() {
         }
     };
 
-    if (!temp || !humidity || !condition) {
-        return <div className="flex justify-center pt-16">
-            <Spinner size="lg" label="กำลังโหลดข้อมูล..." />
-        </div>
-    }
-
     return (
         <div className='container mx-auto max-w-[1400px]'>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 m-4'>
                 <Link href='/admin/listPlant'>
                     <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' data-aos="fade-up" isPressable>
                         <CardHeader className='flex justify-center'>
-                            <p className='text-gray-500'>พืช</p>
+                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                <p className='text-gray-500'>พืช</p>
+                            </Skeleton>
                         </CardHeader>
                         <CardBody>
-                            <p className='text-center text-8xl font-bold'>{plants - 1}</p>
+                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                <p className='text-center text-8xl font-bold'>{plants - 1}</p>
+                            </Skeleton>
                         </CardBody>
                         <CardFooter className='flex justify-center'>
-                            <p className='text-gray-500'>ชนิด</p>
+                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                <p className='text-gray-500'>ชนิด</p>
+                            </Skeleton>
                         </CardFooter>
                     </Card>
                 </Link>
                 <Link href='/admin/listAdmin'>
                     <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' data-aos="fade-up" isPressable>
                         <CardHeader className='flex justify-center'>
-                            <p className='text-gray-500'>ผู้ดูแลระบบ</p>
+                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                <p className='text-gray-500'>ผู้ดูแลระบบ</p>
+                            </Skeleton>
                         </CardHeader>
                         <CardBody>
-                            <p className='text-center text-8xl font-bold'>{admins}</p>
+                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                <p className='text-center text-8xl font-bold'>{admins}</p>
+                            </Skeleton>
                         </CardBody>
                         <CardFooter className='flex justify-center'>
-                            <p className='text-gray-500'>คน</p>
+                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                <p className='text-gray-500'>คน</p>
+                            </Skeleton>
                         </CardFooter>
                     </Card>
                 </Link>
                 <Link href='/admin/listUser'>
                     <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' data-aos="fade-up" isPressable>
                         <CardHeader className='flex justify-center'>
-                            <p className='text-gray-500'>เกษตรกร</p>
+                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                <p className='text-gray-500'>เกษตรกร</p>
+                            </Skeleton>
                         </CardHeader>
                         <CardBody>
-                            <p className='text-center text-8xl font-bold'>{users}</p>
+                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                <p className='text-center text-8xl font-bold'>{users}</p>
+                            </Skeleton>
                         </CardBody>
                         <CardFooter className='flex justify-center'>
-                            <p className='text-gray-500'>คน</p>
+                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                <p className='text-gray-500'>คน</p>
+                            </Skeleton>
                         </CardFooter>
                     </Card>
                 </Link>
                 <Link href='/admin/listRole'>
                     <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' data-aos="fade-up" isPressable>
                         <CardHeader className='flex justify-center'>
-                            <p className='text-gray-500'>ตำแหน่ง</p>
+                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                <p className='text-gray-500'>ตำแหน่ง</p>
+                            </Skeleton>
                         </CardHeader>
                         <CardBody>
-                            <p className='text-center text-8xl font-bold'>{roles}</p>
+                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                <p className='text-center text-8xl font-bold'>{roles}</p>
+                            </Skeleton>
                         </CardBody>
                         <CardFooter className='flex justify-center'>
-                            <p className='text-gray-500'>บทบาท</p>
+                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                <p className='text-gray-500'>บทบาท</p>
+                            </Skeleton>
                         </CardFooter>
                     </Card>
                 </Link>
-                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl items-center" data-aos="fade-up">
-                    <p>ข้อมูลสภาพอากาศ ตำบล {localtion}</p>
-                    <p>วันที่ {date} เวลา {time}.00 น.</p>
-                    <p className='pt-4 text-lg font-bold sm:text-xl md:text-2xl lg:text-4xl'>{weatherCondition(condition)}</p>
+                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl items-center space-y-1" data-aos="fade-up">
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                        <p>ข้อมูลสภาพอากาศ ตำบล {localtion}</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                        <p>วันที่ {date} เวลา {time}.00 น.</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                        <p className='pt-4 text-lg font-bold sm:text-xl md:text-2xl lg:text-4xl'>{weatherCondition(condition)}</p>
+                    </Skeleton>
+                </Card>
+                <Card className="md:col-span-2 items-center p-4 drop-shadow-xl space-y-1" data-aos="fade-up">
+                    <Skeleton className="w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px] rounded-lg" isLoaded={isLoaded}>
+                        <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
+                            <GaugeChart
+                                id="temp-gauge"
+                                nrOfLevels={20}
+                                percent={temp / 50}
+                                textColor="#A0A0A0"
+                                formatTextValue={() => `${temp.toFixed(2)}°C`}
+                            />
+                        </div>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                        <p className='flex justify-center'>อุณหภูมิ (°C)</p>
+                    </Skeleton>
                 </Card>
                 <Card className="md:col-span-2 items-center p-4 drop-shadow-xl" data-aos="fade-up">
-                    <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
-                        <GaugeChart
-                            id="temp-gauge"
-                            nrOfLevels={20}
-                            percent={temp / 50}
-                            textColor="#A0A0A0"
-                            formatTextValue={() => `${temp.toFixed(2)}°C`}
-                        />
-                    </div>
-                    <p className='flex justify-center'>อุณหภูมิ (°C)</p>
+                    <Skeleton className="w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px] rounded-lg" isLoaded={isLoaded}>
+                        <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
+                            <GaugeChart
+                                id="humidity-gauge"
+                                nrOfLevels={10}
+                                percent={humidity / 100}
+                                textColor="#A0A0A0"
+                                formatTextValue={() => `${humidity.toFixed(2)}%`}
+                            />
+                        </div>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                        <p className='flex justify-center'>ความชื้นสัมพัทธ์ (%)</p>
+                    </Skeleton>
                 </Card>
-                <Card className="md:col-span-2 items-center p-4 drop-shadow-xl" data-aos="fade-up">
-                    <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
-                        <GaugeChart
-                            id="humidity-gauge"
-                            nrOfLevels={10}
-                            percent={humidity / 100}
-                            textColor="#A0A0A0"
-                            formatTextValue={() => `${humidity.toFixed(2)}%`}
-                        />
-                    </div>
-                    <p className='flex justify-center'>ความชื้นสัมพัทธ์ (%)</p>
-                </Card>
-                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
-                    <p>พยากรณ์อากาศรายชั่วโมง</p>
+                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl space-y-1" data-aos="fade-up">
+                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                        <p>พยากรณ์อากาศรายชั่วโมง</p>
+                    </Skeleton>
                     <div className="flex overflow-x-auto p-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
                         {weatherHourly.map((forecast, index) => (
-                            <div key={index} className="snap-start">
-                                <WeatherCardHourly
-                                    key={index}
-                                    time={forecast.time}
-                                    temp={forecast.data.tc}
-                                    humid={forecast.data.rh}
-                                    rainChance={forecast.data.rain}
-                                    windSpeed={forecast.data.ws10m}
-                                    condition={forecast.data.cond}
-                                />
-                            </div>
+                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                <div key={index} className="snap-start">
+                                    <WeatherCardHourly
+                                        key={index}
+                                        time={forecast.time}
+                                        temp={forecast.data.tc}
+                                        humid={forecast.data.rh}
+                                        rainChance={forecast.data.rain}
+                                        windSpeed={forecast.data.ws10m}
+                                        condition={forecast.data.cond}
+                                    />
+                                </div>
+                            </Skeleton>
                         ))}
                     </div>
                 </Card>
                 <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
-                    <p>พยากรณ์อากาศรายวัน</p>
+                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                        <p>พยากรณ์อากาศรายวัน</p>
+                    </Skeleton>
                     <div className="flex overflow-x-auto p-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
                         {weatherDaily.map((forecast, index) => (
-                            <div key={index} className="snap-start">
-                                <WeatherCardDaily
-                                    key={index}
-                                    time={forecast.time}
-                                    tempMax={forecast.data.tc_max}
-                                    tempMin={forecast.data.tc_min}
-                                    humid={forecast.data.rh}
-                                    rainChance={forecast.data.rain}
-                                    windSpeed={forecast.data.ws10m}
-                                    condition={forecast.data.cond}
-                                />
-                            </div>
+                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                <div key={index} className="snap-start">
+                                    <WeatherCardDaily
+                                        key={index}
+                                        time={forecast.time}
+                                        tempMax={forecast.data.tc_max}
+                                        tempMin={forecast.data.tc_min}
+                                        humid={forecast.data.rh}
+                                        rainChance={forecast.data.rain}
+                                        windSpeed={forecast.data.ws10m}
+                                        condition={forecast.data.cond}
+                                    />
+                                </div>
+                            </Skeleton>
                         ))}
                     </div>
                 </Card>
                 <Card className="sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
-                    <iframe src="https://www.tmd.go.th/StromTrack" className='w-full' height="600" frameborder="0" />
+                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                        <iframe src="https://www.tmd.go.th/StromTrack" className='w-full' height="600" frameborder="0" />
+                    </Skeleton>
                 </Card>
                 <Card className="sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
-                    <iframe src= "https://www.tmd.go.th/weatherEarthquakeWidget" className='w-full' height="600" frameborder="0" />
+                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                        <iframe src= "https://www.tmd.go.th/weatherEarthquakeWidget" className='w-full' height="600" frameborder="0" />
+                    </Skeleton>
                 </Card>
             </div>
         </div>

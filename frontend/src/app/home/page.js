@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react'
-import { Card, Spinner } from '@nextui-org/react';
+import { Card, Skeleton, Spinner } from '@nextui-org/react';
 import axios from 'axios';
 import { DateTime } from 'luxon';
 import moment from 'moment';
@@ -26,6 +26,8 @@ function Home() {
 
     const [weatherHourly, setWeatherHourly] = useState([]);
     const [weatherDaily, setWeatherDaily] = useState([]);
+
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -65,6 +67,7 @@ function Home() {
             setTime(hour);
 
             try {
+
                 const response = await axios.get(url, {
                 headers: {
                     accept: 'application/json',
@@ -79,6 +82,8 @@ function Home() {
                 setCondition(forecasts[0].data.cond || 0); // สภาพอากาศโดยทั่วไป
             } catch (error) {
                 console.error('Error fetching TMD data:', error);
+            } finally {
+                setIsLoaded(true);
             }
         };
 
@@ -104,6 +109,8 @@ function Home() {
                 setWeatherHourly(forecasts || []);
             } catch (error) {
                 console.error('Error fetching TMD data:', error);
+            } finally {
+                setIsLoaded(true)
             }
         };
 
@@ -128,6 +135,8 @@ function Home() {
                 setWeatherDaily(forecasts || []);
             } catch (error) {
                 console.error('Error fetching TMD data:', error);
+            } finally {
+                setIsLoaded(true);
             }
         };
     
@@ -175,86 +184,106 @@ function Home() {
         }
     };
 
-    if (!temp || !humidity || !condition) {
-        return <div className="flex justify-center pt-16">
-            <Spinner size="lg" label="กำลังโหลดข้อมูล..." />
-        </div>
-    }
-
     return (
         <div className="container mx-auto max-w-[1200px]">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 m-4">
-                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl items-center" data-aos="fade-up">
-                    <p>ข้อมูลสภาพอากาศ ตำบล {localtion}</p>
-                    <p>วันที่ {date} เวลา {time}.00 น.</p>
-                    <p className='pt-4 text-lg font-bold sm:text-xl md:text-2xl lg:text-4xl'>{weatherCondition(condition)}</p>
+                <Card className="col-span-1 sm:col-span-2 py-4 drop-shadow-xl items-center space-y-1" data-aos="fade-up">
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                        <p>ข้อมูลสภาพอากาศ ตำบล {localtion}</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                        <p>วันที่ {date} เวลา {time}.00 น.</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                        <p className='pt-4 text-lg font-bold sm:text-xl md:text-2xl lg:text-4xl'>{weatherCondition(condition)}</p>
+                    </Skeleton>
                 </Card>
-                <Card className="items-center p-4 drop-shadow-xl" data-aos="fade-up">
-                    <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
-                        <GaugeChart
-                            id="temp-gauge"
-                            nrOfLevels={20}
-                            percent={temp / 50}
-                            textColor="#A0A0A0"
-                            formatTextValue={() => `${temp.toFixed(2)}°C`}
-                        />
-                    </div>
-                    <p className='flex justify-center'>อุณหภูมิ (°C)</p>
+                <Card className="items-center p-4 drop-shadow-xl space-y-1" data-aos="fade-up">
+                    <Skeleton className="w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px] rounded-lg" isLoaded={isLoaded}>
+                        <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
+                            <GaugeChart
+                                id="temp-gauge"
+                                nrOfLevels={20}
+                                percent={temp / 50}
+                                textColor="#A0A0A0"
+                                formatTextValue={() => `${temp.toFixed(2)}°C`}
+                            />
+                        </div>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                        <p className='flex justify-center'>อุณหภูมิ (°C)</p>
+                    </Skeleton>
                 </Card>
-                <Card className="items-center p-4 drop-shadow-xl" data-aos="fade-up">
-                    <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
-                        <GaugeChart
-                            id="humidity-gauge"
-                            nrOfLevels={10}
-                            percent={humidity / 100}
-                            textColor="#A0A0A0"
-                            formatTextValue={() => `${humidity.toFixed(2)}%`}
-                        />
-                    </div>
-                    <p className='flex justify-center'>ความชื้นสัมพัทธ์ (%)</p>
+                <Card className="items-center p-4 drop-shadow-xl space-y-1" data-aos="fade-up">
+                    <Skeleton className="w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px] rounded-lg" isLoaded={isLoaded}>
+                        <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
+                            <GaugeChart
+                                id="humidity-gauge"
+                                nrOfLevels={10}
+                                percent={humidity / 100}
+                                textColor="#A0A0A0"
+                                formatTextValue={() => `${humidity.toFixed(2)}%`}
+                            />
+                        </div>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                        <p className='flex justify-center'>ความชื้นสัมพัทธ์ (%)</p>
+                    </Skeleton>
                 </Card>
-                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
-                    <p>พยากรณ์อากาศรายชั่วโมง</p>
+                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl space-y-1" data-aos="fade-up">
+                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                        <p>พยากรณ์อากาศรายชั่วโมง</p>
+                    </Skeleton>
                     <div className="flex overflow-x-auto p-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
                         {weatherHourly.map((forecast, index) => (
-                            <div key={index} className="snap-start">
-                                <WeatherCardHourly
-                                    key={index}
-                                    time={forecast.time}
-                                    temp={forecast.data.tc}
-                                    humid={forecast.data.rh}
-                                    rainChance={forecast.data.rain}
-                                    windSpeed={forecast.data.ws10m}
-                                    condition={forecast.data.cond}
-                                />
-                            </div>
+                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                <div key={index} className="snap-start">
+                                    <WeatherCardHourly
+                                        key={index}
+                                        time={forecast.time}
+                                        temp={forecast.data.tc}
+                                        humid={forecast.data.rh}
+                                        rainChance={forecast.data.rain}
+                                        windSpeed={forecast.data.ws10m}
+                                        condition={forecast.data.cond}
+                                    />
+                                </div>
+                            </Skeleton>
                         ))}
                     </div>
                 </Card>
-                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
-                    <p>พยากรณ์อากาศรายวัน</p>
+                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl space-y-1" data-aos="fade-up">
+                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                        <p>พยากรณ์อากาศรายวัน</p>
+                    </Skeleton>
                     <div className="flex overflow-x-auto p-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
                         {weatherDaily.map((forecast, index) => (
                             <div key={index} className="snap-start">
-                                <WeatherCardDaily
-                                    key={index}
-                                    time={forecast.time}
-                                    tempMax={forecast.data.tc_max}
-                                    tempMin={forecast.data.tc_min}
-                                    humid={forecast.data.rh}
-                                    rainChance={forecast.data.rain}
-                                    windSpeed={forecast.data.ws10m}
-                                    condition={forecast.data.cond}
-                                />
+                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                    <WeatherCardDaily
+                                        key={index}
+                                        time={forecast.time}
+                                        tempMax={forecast.data.tc_max}
+                                        tempMin={forecast.data.tc_min}
+                                        humid={forecast.data.rh}
+                                        rainChance={forecast.data.rain}
+                                        windSpeed={forecast.data.ws10m}
+                                        condition={forecast.data.cond}
+                                    />
+                                </Skeleton>
                             </div>
                         ))}
                     </div>
                 </Card>
                 <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
-                    <iframe src="https://www.tmd.go.th/StromTrack" className='w-full' height="600" frameborder="0" />
+                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                        <iframe src="https://www.tmd.go.th/StromTrack" className='w-full' height="600" frameborder="0" />
+                    </Skeleton>
                 </Card>
                 <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
-                    <iframe src= "https://www.tmd.go.th/weatherEarthquakeWidget" className='w-full' height="600" frameborder="0" />
+                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                        <iframe src= "https://www.tmd.go.th/weatherEarthquakeWidget" className='w-full' height="600" frameborder="0" />
+                    </Skeleton>
                 </Card>
             </div>
         </div>
