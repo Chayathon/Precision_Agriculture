@@ -15,6 +15,8 @@ import {
 
 import { Line } from "react-chartjs-2";
 import { FaTable, FaChartLine, FaBan } from "react-icons/fa6";
+import moment from "moment";
+import 'moment/locale/th';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import ModalPhGraph from "../../../components/ModalPhGraph";
@@ -343,12 +345,11 @@ function Dashboard({ params }) {
     },
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('th-TH', {
-      day: 'numeric',
-      month: '2-digit',
-      year: 'numeric'
-    });
+  const convertDate = (dateConvert) => {
+    if (!dateConvert) return "วันที่ไม่ระบุ";
+    const date = moment(dateConvert).locale('th');
+    const buddhistYearDate = date.format('D/M/') + (date.year() + 543) + ' เวลา ' + date.format('LT');
+    return buddhistYearDate;
   };
 
   const createEnvironmentData = (data) => {
@@ -359,7 +360,7 @@ function Dashboard({ params }) {
       };
     }
     return {
-      labels: data.map(item => formatDate(item.receivedAt)),
+      labels: data.map(item => convertDate(item.receivedAt)),
       datasets: [
         {
           label: "อุณหภูมิ (°C)",
@@ -390,7 +391,7 @@ function Dashboard({ params }) {
       };
     }
     return {
-      labels: data.map(item => formatDate(item.receivedAt)),
+      labels: data.map(item => convertDate(item.receivedAt)),
       datasets: [
         {
           label: "ไนโตรเจน (mg/L)",

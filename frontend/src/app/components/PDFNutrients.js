@@ -1,4 +1,3 @@
-// components/PdfDocument.js
 import React from 'react';
 import { Font, StyleSheet, Document, Page, Text, View } from '@react-pdf/renderer';
 import moment from "moment";
@@ -35,7 +34,14 @@ const styles = StyleSheet.create({
         fontSize: 10,
         textAlign: 'center'
     },
-});  
+});
+
+const convertDate = (dateConvert) => {
+    if (!dateConvert) return "วันที่ไม่ระบุ";
+    const date = moment(dateConvert).locale('th');
+    const buddhistYearDate = date.format('D MMM') + ' ' + (date.year() + 543) + ' เวลา ' + date.format('LT');
+    return buddhistYearDate;
+};
 
 const PDFNutrients = ({ plant, data = [] }) => (
     <Document>
@@ -53,7 +59,7 @@ const PDFNutrients = ({ plant, data = [] }) => (
                 {/* Data */}
                 {data.map((item, index) => (
                     <View key={index} style={styles.row}>
-                        <Text style={styles.cellDate}>{moment(item.receivedAt).locale('th').format('LL')}</Text>
+                        <Text style={styles.cellDate}>{convertDate(item.receivedAt)}</Text>
                         <Text style={styles.cellNPK}>{item.nitrogen}</Text>
                         <Text style={styles.cellNPK}>{item.phosphorus}</Text>
                         <Text style={styles.cellNPK}>{item.potassium}</Text>

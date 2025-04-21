@@ -145,7 +145,7 @@ function ListTempHumid({ params }) {
     const convertDate = (dateConvert) => {
         if (!dateConvert) return "วันที่ไม่ระบุ";
         const date = moment(dateConvert).locale('th');
-        const buddhistYearDate = date.format('D MMMM') + ' ' + (date.year() + 543);
+        const buddhistYearDate = date.format('D MMM') + ' ' + (date.year() + 543) + ' เวลา ' + date.format('LT');
         return buddhistYearDate;
     };
 
