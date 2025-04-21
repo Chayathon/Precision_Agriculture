@@ -309,7 +309,6 @@ function Dashboard({ params }) {
   useEffect(() => {
       AOS.init({
           duration: 500,
-          easing: 'ease-in-out',
           once: true,
       });
   }, []);
@@ -430,224 +429,240 @@ function Dashboard({ params }) {
       ) : (!isLoading && plantData && plantDatas && nutrientData && factorData) ? (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-            <Card className="drop-shadow-xl hover:-translate-y-1 md:col-span-2 lg:col-span-1" data-aos="fade-up">
+            <Card className="drop-shadow-xl md:col-span-2 lg:col-span-1" data-aos="fade-up">
               <CardHeader className="flex justify-center">
                 <p className="text-gray-500">อายุ (วัน)</p>
               </CardHeader>
               <CardBody>
-                <p className="text-center text-6xl font-bold">{plantAge}</p>
+                <p className="text-center text-5xl lg:text-6xl font-bold">{plantAge}</p>
               </CardBody>
             </Card>
-            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
-              <CardHeader className="flex justify-center">
-                <p className="text-gray-500">อุณหภูมิ (°C)</p>
-              </CardHeader>
-              <CardBody>
-                <div className="flex justify-center items-center gap-12">
-                  <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${plantData.temperature < factorData.temperature ? 'text-red-500' : 'text-green-500'}`}>
-                      {plantData.temperature}
-                    </p>
+            <div data-aos="fade-up">
+              <Card className="drop-shadow-xl hover:-translate-y-1">
+                <CardHeader className="flex justify-center">
+                  <p className="text-gray-500">อุณหภูมิ (°C)</p>
+                </CardHeader>
+                <CardBody>
+                  <div className="flex justify-center items-center gap-12">
+                    <div className="text-center">
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className={`text-5xl font-bold ${plantData.temperature < factorData.temperature ? 'text-red-500' : 'text-green-500'}`}>
+                        {plantData.temperature}
+                      </p>
+                    </div>
+                    
+                    <div className="text-center">
+                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                      <p className="text-5xl font-bold">{factorData.temperature}</p>
+                    </div>
                   </div>
-                  
-                  <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p className="text-5xl font-bold">{factorData.temperature}</p>
+                </CardBody>
+              </Card>
+            </div>
+            <div data-aos="fade-up">
+              <Card className="drop-shadow-xl hover:-translate-y-1">
+                <CardHeader className="flex justify-center">
+                  <p className="text-gray-500">ความชื้น (%)</p>
+                </CardHeader>
+                <CardBody>
+                  <div className="flex justify-center items-center gap-12">
+                    <div className="text-center">
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className={`text-5xl font-bold ${plantData.humidity < factorData.humidity ? 'text-red-500' : 'text-green-500'}`}>
+                        {plantData.humidity}
+                      </p>
+                    </div>
+                    
+                    <div className="text-center">
+                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                      <p className="text-5xl font-bold">{factorData.humidity}</p>
+                    </div>
                   </div>
-                </div>
-              </CardBody>
-            </Card>
-            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
-              <CardHeader className="flex justify-center">
-                <p className="text-gray-500">ความชื้น (%)</p>
-              </CardHeader>
-              <CardBody>
-                <div className="flex justify-center items-center gap-12">
-                  <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${plantData.humidity < factorData.humidity ? 'text-red-500' : 'text-green-500'}`}>
-                      {plantData.humidity}
-                    </p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p className="text-5xl font-bold">{factorData.humidity}</p>
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
+                </CardBody>
+              </Card>
+            </div>
 
-            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
-              <CardHeader className="flex justify-center">
-                <p className="text-gray-500">ไนโตรเจน (mg/L)</p>
-              </CardHeader>
-              <CardBody>
-                <div className="flex justify-center items-center gap-12">
-                  <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${plantData.nitrogen < nutrientData.nitrogen ? 'text-red-500' : 'text-green-500'}`}>
-                      {plantData.nitrogen}
-                    </p>
+            <div data-aos="fade-up">
+              <Card className="drop-shadow-xl hover:-translate-y-1">
+                <CardHeader className="flex justify-center">
+                  <p className="text-gray-500">ไนโตรเจน (mg/L)</p>
+                </CardHeader>
+                <CardBody>
+                  <div className="flex justify-center items-center gap-12">
+                    <div className="text-center">
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className={`text-5xl font-bold ${plantData.nitrogen < nutrientData.nitrogen ? 'text-red-500' : 'text-green-500'}`}>
+                        {plantData.nitrogen}
+                      </p>
+                    </div>
+                    
+                    <div className="text-center">
+                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                      <p className="text-5xl font-bold">{nutrientData.nitrogen}</p>
+                    </div>
                   </div>
-                  
-                  <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p className="text-5xl font-bold">{nutrientData.nitrogen}</p>
+                </CardBody>
+              </Card>
+            </div>
+            <div data-aos="fade-up">
+              <Card className="drop-shadow-xl hover:-translate-y-1">
+                <CardHeader className="flex justify-center">
+                  <p className="text-gray-500">ฟอสฟอรัส (mg/L)</p>
+                </CardHeader>
+                <CardBody>
+                  <div className="flex justify-center items-center gap-12">
+                    <div className="text-center">
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className={`text-5xl font-bold ${plantData.phosphorus < nutrientData.phosphorus ? 'text-red-500' : 'text-green-500'}`}>
+                        {plantData.phosphorus}
+                      </p>
+                    </div>
+                    
+                    <div className="text-center">
+                      <p className="text-2xl">ค่ามาตรฐาน</p>
+                      <p className="text-5xl font-bold"> {nutrientData.phosphorus}</p>
+                    </div>
                   </div>
-                </div>
-              </CardBody>
-            </Card>
-            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
-              <CardHeader className="flex justify-center">
-                <p className="text-gray-500">ฟอสฟอรัส (mg/L)</p>
-              </CardHeader>
-              <CardBody>
-                <div className="flex justify-center items-center gap-12">
-                  <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${plantData.phosphorus < nutrientData.phosphorus ? 'text-red-500' : 'text-green-500'}`}>
-                      {plantData.phosphorus}
-                    </p>
+                </CardBody>
+              </Card>
+            </div>
+            <div data-aos="fade-up">
+              <Card className="drop-shadow-xl hover:-translate-y-1">
+                <CardHeader className="flex justify-center">
+                  <p className="text-gray-500">โพแทสเซียม (mg/L)</p>
+                </CardHeader>
+                <CardBody>
+                  <div className="flex justify-center items-center gap-12">
+                    <div className="text-center">
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className={`text-5xl font-bold ${plantData.potassium < nutrientData.potassium ? 'text-red-500' : 'text-green-500'}`}>
+                        {plantData.potassium}
+                      </p>
+                    </div>
+                    
+                    <div className="text-center">
+                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                      <p className="text-5xl font-bold">{nutrientData.potassium}</p>
+                    </div>
                   </div>
-                  
-                  <div className="text-center">
-                    <p className="text-2xl">ค่ามาตรฐาน</p>
-                    <p className="text-5xl font-bold"> {nutrientData.phosphorus}</p>
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
-            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
-              <CardHeader className="flex justify-center">
-                <p className="text-gray-500">โพแทสเซียม (mg/L)</p>
-              </CardHeader>
-              <CardBody>
-                <div className="flex justify-center items-center gap-12">
-                  <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${plantData.potassium < nutrientData.potassium ? 'text-red-500' : 'text-green-500'}`}>
-                      {plantData.potassium}
-                    </p>
-                  </div>
-                  
-                  <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p className="text-5xl font-bold">{nutrientData.potassium}</p>
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
+                </CardBody>
+              </Card>
+            </div>
 
-            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
-              <CardHeader className="flex justify-between items-center">
-                <div className="flex justify-center flex-1"> 
-                  <p className="text-gray-500">ค่าความเป็นกรด-ด่าง (pH)</p>
-                </div>
-                <div className="flex justify-end">
-                  <ButtonGroup size="sm" variant="flat">
-                    <Button>
-                      <Link
-                        href={`/home/listVariables/${id}`}
-                      >
-                        <FaTable className="size-4 text-red-400" />
-                      </Link>
-                    </Button>
-                    <Button onPress={() => {setSelectedId(id); onOpenPhGraph();}}>
-                      <FaChartLine className="size-4 text-red-400" />
-                    </Button>
-                  </ButtonGroup>
-                </div>
-              </CardHeader>
-              <CardBody>
-                <div className="flex justify-center items-center gap-12">
-                  <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${plantData.pH < factorData.pH ? 'text-red-500' : 'text-green-500'}`}>
-                      {plantData.pH}
-                    </p>
+            <div data-aos="fade-up">
+              <Card className="drop-shadow-xl hover:-translate-y-1">
+                <CardHeader className="flex justify-between items-center">
+                  <div className="flex justify-center flex-1"> 
+                    <p className="text-gray-500">ค่าความเป็นกรด-ด่าง (pH)</p>
                   </div>
-                  
-                  <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p className="text-5xl font-bold">{factorData.pH}</p>
-                  </div>
-                </div>
-              </CardBody>
-            </Card>
-            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
-              <CardHeader className="flex justify-between items-center">
-                <div className="flex justify-center flex-1"> 
-                  <p className="text-gray-500">ค่าการนำไฟฟ้า (dS/m)</p>
-                </div>
-                <div className="flex justify-end">
-                  <ButtonGroup size="sm" variant="flat">
-                    <Button>
+                  <div className="flex justify-end">
+                    <ButtonGroup size="sm" variant="flat">
+                      <Button>
                         <Link
                           href={`/home/listVariables/${id}`}
                         >
                           <FaTable className="size-4 text-red-400" />
                         </Link>
-                    </Button>
-                    <Button onPress={() => {setSelectedId(id); onOpenSalinityGraph();}}>
-                      <FaChartLine className="size-4 text-red-400" />
-                    </Button>
-                  </ButtonGroup>
-                </div>
-              </CardHeader>
-              <CardBody>
-                <div className="flex justify-center items-center gap-12">
-                  <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${plantData.salinity < factorData.salinity ? 'text-red-500' : 'text-green-500'}`}>
-                      {plantData.salinity}
-                    </p>
+                      </Button>
+                      <Button onPress={() => {setSelectedId(id); onOpenPhGraph();}}>
+                        <FaChartLine className="size-4 text-red-400" />
+                      </Button>
+                    </ButtonGroup>
                   </div>
-                  
-                  <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p className="text-5xl font-bold">{factorData.salinity}</p>
+                </CardHeader>
+                <CardBody>
+                  <div className="flex justify-center items-center gap-12">
+                    <div className="text-center">
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className={`text-5xl font-bold ${plantData.pH < factorData.pH ? 'text-red-500' : 'text-green-500'}`}>
+                        {plantData.pH}
+                      </p>
+                    </div>
+                    
+                    <div className="text-center">
+                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                      <p className="text-5xl font-bold">{factorData.pH}</p>
+                    </div>
                   </div>
-                </div>
-              </CardBody>
-            </Card>
-            <Card className="drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
-              <CardHeader className="flex justify-between items-center">
-                <div className="flex justify-center flex-1"> 
-                  <p className="text-gray-500">ค่าความเข้มแสง (lux)</p>
-                </div>
-                <div className="flex justify-end">
-                  <ButtonGroup size="sm" variant="flat">
-                    <Button>
-                      <Link
-                        href={`/home/listVariables/${id}`}
-                      >
-                        <FaTable className="size-4 text-red-400" />
-                      </Link>
-                    </Button>
-                    <Button onPress={() => {setSelectedId(id); onOpenLightIntensityGraph();}}>
-                      <FaChartLine className="size-4 text-red-400" />
-                    </Button>
-                  </ButtonGroup>
-                </div>
-              </CardHeader>
-              <CardBody>
-                <div className="flex justify-center items-center gap-12">
-                  <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${plantData.lightIntensity < factorData.lightIntensity ? 'text-red-500' : 'text-green-500'}`}>
-                      {plantData.lightIntensity}
-                    </p>
+                </CardBody>
+              </Card>
+            </div>
+            <div data-aos="fade-up">
+              <Card className="drop-shadow-xl hover:-translate-y-1">
+                <CardHeader className="flex justify-between items-center">
+                  <div className="flex justify-center flex-1"> 
+                    <p className="text-gray-500">ค่าการนำไฟฟ้า (dS/m)</p>
                   </div>
-                  
-                  <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p className="text-5xl font-bold">{factorData.lightIntensity}</p>
+                  <div className="flex justify-end">
+                    <ButtonGroup size="sm" variant="flat">
+                      <Button>
+                          <Link
+                            href={`/home/listVariables/${id}`}
+                          >
+                            <FaTable className="size-4 text-red-400" />
+                          </Link>
+                      </Button>
+                      <Button onPress={() => {setSelectedId(id); onOpenSalinityGraph();}}>
+                        <FaChartLine className="size-4 text-red-400" />
+                      </Button>
+                    </ButtonGroup>
                   </div>
-                </div>
-              </CardBody>
-            </Card>
+                </CardHeader>
+                <CardBody>
+                  <div className="flex justify-center items-center gap-12">
+                    <div className="text-center">
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className={`text-5xl font-bold ${plantData.salinity < factorData.salinity ? 'text-red-500' : 'text-green-500'}`}>
+                        {plantData.salinity}
+                      </p>
+                    </div>
+                    
+                    <div className="text-center">
+                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                      <p className="text-5xl font-bold">{factorData.salinity}</p>
+                    </div>
+                  </div>
+                </CardBody>
+              </Card>
+            </div>
+            <div data-aos="fade-up">
+              <Card className="drop-shadow-xl hover:-translate-y-1">
+                <CardHeader className="flex justify-between items-center">
+                  <div className="flex justify-center flex-1"> 
+                    <p className="text-gray-500">ค่าความเข้มแสง (lux)</p>
+                  </div>
+                  <div className="flex justify-end">
+                    <ButtonGroup size="sm" variant="flat">
+                      <Button>
+                        <Link
+                          href={`/home/listVariables/${id}`}
+                        >
+                          <FaTable className="size-4 text-red-400" />
+                        </Link>
+                      </Button>
+                      <Button onPress={() => {setSelectedId(id); onOpenLightIntensityGraph();}}>
+                        <FaChartLine className="size-4 text-red-400" />
+                      </Button>
+                    </ButtonGroup>
+                  </div>
+                </CardHeader>
+                <CardBody>
+                  <div className="flex justify-center items-center gap-12">
+                    <div className="text-center">
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className={`text-5xl font-bold ${plantData.lightIntensity < factorData.lightIntensity ? 'text-red-500' : 'text-green-500'}`}>
+                        {plantData.lightIntensity}
+                      </p>
+                    </div>
+                    
+                    <div className="text-center">
+                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                      <p className="text-5xl font-bold">{factorData.lightIntensity}</p>
+                    </div>
+                  </div>
+                </CardBody>
+              </Card>
+            </div>
           </div>
 
           {isOpenPhGraph && (
@@ -698,47 +713,51 @@ function Dashboard({ params }) {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
-              <CardHeader className="flex justify-between items-center">
-                <div className="flex justify-center flex-1"> 
-                  <p className="text-gray-500">กราฟแสดงข้อมูลอุณหภูมิ & ความชื้น</p>
-                </div>
-                <div className="flex justify-end">
-                  <Button size='sm' variant="flat">
-                    <Link
-                      href={`/home/listTempHumid/${id}`}
-                    >
-                      <FaTable className="size-4 text-red-400" />
-                    </Link>
-                  </Button>
-                </div>
-              </CardHeader>
-              <Line
-                options={options}
-                data={createEnvironmentData(plantDatas)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
-              />
-            </Card>
-            
-            <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
-              <CardHeader className="flex justify-between items-center">
-                <div className="flex justify-center flex-1"> 
-                  <p className="text-gray-500">กราฟแสดงข้อมูลสารอาหาร</p>
-                </div>
-                <div className="flex justify-end">
-                  <Button size='sm' variant="flat">
-                    <Link
-                      href={`/home/listNutrients/${id}`}
-                    >
-                      <FaTable className="size-4 text-red-400" />
-                    </Link>
-                  </Button>
-                </div>
-              </CardHeader>
-              <Line
-                options={options}
-                data={createNutrientData(plantDatas)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
-              />
-            </Card>
+            <div data-aos="fade-up">
+              <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
+                <CardHeader className="flex justify-between items-center">
+                  <div className="flex justify-center flex-1"> 
+                    <p className="text-gray-500">กราฟแสดงข้อมูลอุณหภูมิ & ความชื้น</p>
+                  </div>
+                  <div className="flex justify-end">
+                    <Button size='sm' variant="flat">
+                      <Link
+                        href={`/home/listTempHumid/${id}`}
+                      >
+                        <FaTable className="size-4 text-red-400" />
+                      </Link>
+                    </Button>
+                  </div>
+                </CardHeader>
+                <Line
+                  options={options}
+                  data={createEnvironmentData(plantDatas)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
+                />
+              </Card>
+            </div>
+              
+            <div data-aos="fade-up">
+              <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
+                <CardHeader className="flex justify-between items-center">
+                  <div className="flex justify-center flex-1"> 
+                    <p className="text-gray-500">กราฟแสดงข้อมูลสารอาหาร</p>
+                  </div>
+                  <div className="flex justify-end">
+                    <Button size='sm' variant="flat">
+                      <Link
+                        href={`/home/listNutrients/${id}`}
+                      >
+                        <FaTable className="size-4 text-red-400" />
+                      </Link>
+                    </Button>
+                  </div>
+                </CardHeader>
+                <Line
+                  options={options}
+                  data={createNutrientData(plantDatas)}  // ส่ง plantData ทั้งหมดที่ได้มาจาก API
+                />
+              </Card>
+            </div>
           </div>
         </>
       ) : (

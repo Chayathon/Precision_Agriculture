@@ -262,80 +262,88 @@ function Home() {
         <div className='container mx-auto max-w-[1400px]'>
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 m-4'>
                 <Link href='/admin/listPlant'>
-                    <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' data-aos="fade-up" isPressable>
-                        <CardHeader className='flex justify-center'>
-                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                <p className='text-gray-500'>พืช</p>
-                            </Skeleton>
-                        </CardHeader>
-                        <CardBody>
-                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                <p className='text-center text-8xl font-bold'>{plants - 1}</p>
-                            </Skeleton>
-                        </CardBody>
-                        <CardFooter className='flex justify-center'>
-                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                <p className='text-gray-500'>ชนิด</p>
-                            </Skeleton>
-                        </CardFooter>
-                    </Card>
+                    <div data-aos="fade-up">
+                        <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' isPressable>
+                            <CardHeader className='flex justify-center'>
+                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                    <p className='text-gray-500'>พืช</p>
+                                </Skeleton>
+                            </CardHeader>
+                            <CardBody>
+                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                    <p className='text-center text-8xl font-bold'>{plants - 1}</p>
+                                </Skeleton>
+                            </CardBody>
+                            <CardFooter className='flex justify-center'>
+                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                    <p className='text-gray-500'>ชนิด</p>
+                                </Skeleton>
+                            </CardFooter>
+                        </Card>
+                    </div>
                 </Link>
                 <Link href='/admin/listAdmin'>
-                    <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' data-aos="fade-up" isPressable>
-                        <CardHeader className='flex justify-center'>
-                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                <p className='text-gray-500'>ผู้ดูแลระบบ</p>
-                            </Skeleton>
-                        </CardHeader>
-                        <CardBody>
-                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                <p className='text-center text-8xl font-bold'>{admins}</p>
-                            </Skeleton>
-                        </CardBody>
-                        <CardFooter className='flex justify-center'>
-                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                <p className='text-gray-500'>คน</p>
-                            </Skeleton>
-                        </CardFooter>
-                    </Card>
+                    <div data-aos="fade-up">
+                        <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' isPressable>
+                            <CardHeader className='flex justify-center'>
+                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                    <p className='text-gray-500'>ผู้ดูแลระบบ</p>
+                                </Skeleton>
+                            </CardHeader>
+                            <CardBody>
+                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                    <p className='text-center text-8xl font-bold'>{admins}</p>
+                                </Skeleton>
+                            </CardBody>
+                            <CardFooter className='flex justify-center'>
+                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                    <p className='text-gray-500'>คน</p>
+                                </Skeleton>
+                            </CardFooter>
+                        </Card>
+                    </div>
                 </Link>
                 <Link href='/admin/listUser'>
-                    <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' data-aos="fade-up" isPressable>
-                        <CardHeader className='flex justify-center'>
-                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                <p className='text-gray-500'>เกษตรกร</p>
-                            </Skeleton>
-                        </CardHeader>
-                        <CardBody>
-                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                <p className='text-center text-8xl font-bold'>{users}</p>
-                            </Skeleton>
-                        </CardBody>
-                        <CardFooter className='flex justify-center'>
-                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                <p className='text-gray-500'>คน</p>
-                            </Skeleton>
-                        </CardFooter>
-                    </Card>
+                    <div data-aos="fade-up">
+                        <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' isPressable>
+                            <CardHeader className='flex justify-center'>
+                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                    <p className='text-gray-500'>เกษตรกร</p>
+                                </Skeleton>
+                            </CardHeader>
+                            <CardBody>
+                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                    <p className='text-center text-8xl font-bold'>{users}</p>
+                                </Skeleton>
+                            </CardBody>
+                            <CardFooter className='flex justify-center'>
+                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                    <p className='text-gray-500'>คน</p>
+                                </Skeleton>
+                            </CardFooter>
+                        </Card>
+                    </div>
                 </Link>
                 <Link href='/admin/listRole'>
-                    <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' data-aos="fade-up" isPressable>
-                        <CardHeader className='flex justify-center'>
-                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                <p className='text-gray-500'>ตำแหน่ง</p>
-                            </Skeleton>
-                        </CardHeader>
-                        <CardBody>
-                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                <p className='text-center text-8xl font-bold'>{roles}</p>
-                            </Skeleton>
-                        </CardBody>
-                        <CardFooter className='flex justify-center'>
-                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                <p className='text-gray-500'>บทบาท</p>
-                            </Skeleton>
-                        </CardFooter>
-                    </Card>
+                    <div data-aos="fade-up">
+                        <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' isPressable>
+                            <CardHeader className='flex justify-center'>
+                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                    <p className='text-gray-500'>ตำแหน่ง</p>
+                                </Skeleton>
+                            </CardHeader>
+                            <CardBody>
+                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                    <p className='text-center text-8xl font-bold'>{roles}</p>
+                                </Skeleton>
+                            </CardBody>
+                            <CardFooter className='flex justify-center'>
+                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                                    <p className='text-gray-500'>บทบาท</p>
+                                </Skeleton>
+                            </CardFooter>
+                        </Card>
+                    </div>
                 </Link>
                 <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl items-center space-y-1" data-aos="fade-up">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
