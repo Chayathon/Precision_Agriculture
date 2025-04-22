@@ -2,9 +2,10 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { Card, CardHeader, CardBody, CardFooter, Input, Button, InputOtp } from "@nextui-org/react";
-import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import { Card, CardHeader, CardBody, CardFooter, Input, Button, InputOtp } from "@nextui-org/react";
+import { FaCircleCheck } from 'react-icons/fa6';
 
 function ForgotPassword() {
     const router = useRouter();
@@ -91,7 +92,7 @@ function ForgotPassword() {
                             isLoading={isLoading}
                             disabled={isLoading}
                         >
-                            {isLoading ? 'กำลังดำเนินการ...' : (isCheck ? 'ยืนยัน OTP' : 'ยืนยัน')}
+                            {isLoading ? 'กำลังดำเนินการ...' : (isCheck ? 'ยืนยัน OTP' : 'ยืนยัน')} <FaCircleCheck size={16} />
                         </Button>
                     </form>
                 </CardBody>

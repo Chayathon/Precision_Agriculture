@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Select, SelectSection, SelectItem, DateInput, Badge, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Select, SelectItem, Badge, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
 import { FaBell, FaUserGear, FaArrowRightFromBracket, FaDownload } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 import moment from 'moment';
@@ -474,13 +474,13 @@ function UserNavbar() {
                                 <p className='flex justify-between items-center'>ธีม<ThemeSwitcher size='sm' /></p>
                             </DropdownItem>
                             <DropdownItem key="download" onPress={handleDownload}>
-                                <p className='flex justify-between'>ดาวน์โหลดแอปพลิเคชัน<FaDownload className='text-lg' /></p>
+                                <p className='flex justify-between items-center'>ดาวน์โหลดแอปพลิเคชัน<FaDownload size={18} /></p>
                             </DropdownItem>
                             <DropdownItem key="settings" onPress={onOpenEdit}>
-                                <p className='flex justify-between'>แก้ไขโปรไฟล์<FaUserGear className='text-lg' /></p>
+                                <p className='flex justify-between items-center'>แก้ไขโปรไฟล์<FaUserGear size={18} /></p>
                             </DropdownItem>
                             <DropdownItem key="logout" color="danger" onPress={handleLogout}>
-                                <p className='flex justify-between'>ออกจากระบบ<FaArrowRightFromBracket className='text-lg' /></p>
+                                <p className='flex justify-between items-center'>ออกจากระบบ<FaArrowRightFromBracket size={18} /></p>
                             </DropdownItem>
                         </DropdownMenu>
                     </Dropdown>

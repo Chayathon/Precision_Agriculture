@@ -312,10 +312,10 @@ function AdminNavbar() {
                             <p className='flex justify-between items-center'>ธีม<ThemeSwitcher size="sm" /></p>
                         </DropdownItem>
                         <DropdownItem key="settings" onPress={onOpen}>
-                            <p className='flex justify-between'>แก้ไขโปรไฟล์<FaUserGear className='text-lg' /></p>
+                            <p className='flex justify-between items-center'>แก้ไขโปรไฟล์<FaUserGear size={18} /></p>
                         </DropdownItem>
                         <DropdownItem key="logout" color="danger" onPress={handleLogout}>
-                            <p className='flex justify-between'>ออกจากระบบ<FaArrowRightFromBracket className='text-lg' /></p>
+                            <p className='flex justify-between items-center'>ออกจากระบบ<FaArrowRightFromBracket size={18} /></p>
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>

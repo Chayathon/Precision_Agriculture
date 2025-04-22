@@ -4,8 +4,9 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Cookies from 'js-cookie';
-import {Card, CardHeader, CardBody, CardFooter, Input, Button} from "@nextui-org/react";
 import { toast } from 'react-toastify';
+import {Card, CardHeader, CardBody, CardFooter, Input, Button} from "@nextui-org/react";
+import { FaArrowRightToBracket } from 'react-icons/fa6';
 import { ThemeSwitcher } from './components/ThemeSwitcher';
 
 function Page() {
@@ -104,7 +105,7 @@ function Page() {
                             disabled={isLoading}
                             aria-label={isLoading ? 'กำลังเข้าสู่ระบบ' : 'เข้าสู่ระบบ'}
                         >
-                            {isLoading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'}
+                            {isLoading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'} <FaArrowRightToBracket size={18} />
                         </Button>
                     </form>
                 </CardBody>

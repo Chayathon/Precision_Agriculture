@@ -1,9 +1,10 @@
 "use client";
 
-import { Button, Card, CardBody, CardHeader, Input, Spinner } from '@nextui-org/react';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
+import { Button, Card, CardBody, CardHeader, Input, Spinner } from '@nextui-org/react';
+import { FaCircleCheck } from 'react-icons/fa6';
 
 function NewPassword() {
     const router = useRouter();
@@ -112,13 +113,13 @@ function NewPassword() {
                         </div>
                         <Button
                             type='submit'
-                            color='success'
+                            color='primary'
                             className='w-full'
                             isLoading={isLoading}
                             disabled={isLoading}
                             aria-label={isLoading ? 'กำลังดำเนินการ...' : 'ยืนยัน'}
                         >
-                            {isLoading ? 'กำลังดำเนินการ...' : 'ยืนยัน'}
+                            {isLoading ? 'กำลังดำเนินการ...' : 'ยืนยัน'} <FaCircleCheck size={16} />
                         </Button>
                     </form>
                 </CardBody>

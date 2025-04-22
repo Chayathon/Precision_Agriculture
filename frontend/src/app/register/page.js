@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
-import {Card, CardHeader, CardBody, CardFooter, Input, Textarea, Button, Select, SelectItem} from "@nextui-org/react";
 import { toast } from 'react-toastify'
+import {Card, CardHeader, CardBody, CardFooter, Input, Textarea, Button, Select, SelectItem} from "@nextui-org/react";
+import { FaUserCheck } from 'react-icons/fa6';
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
 
 function Page() {
@@ -283,7 +284,7 @@ function Page() {
                             disabled={isLoading}
                             aria-label={isLoading ? 'กำลังสมัครสมาชิก' : 'สมัครสมาชิก'}
                         >
-                            {isLoading ? 'กำลังสมัครสมาชิก' : 'สมัครสมาชิก'}
+                            {isLoading ? 'กำลังสมัครสมาชิก' : 'สมัครสมาชิก'} <FaUserCheck size={18} />
                         </Button>
                     </form>
                 </CardBody>
