@@ -43,7 +43,7 @@ function Page() {
             const data = await res.json();
 
             if(res.status === 200 && data.message == 'Login Successfully') {
-                Cookies.set('Token', data.token, { expires: 1, secure: true });
+                Cookies.set('Token', data.token, { expires: 1 });
                 Cookies.set('UserData', JSON.stringify(data.resultData), { expires: 1 });
                 localStorage.setItem("Token", data.token);
                 localStorage.setItem("UserData", JSON.stringify(data.resultData));

@@ -9,7 +9,7 @@ import moment from 'moment';
 import 'moment/locale/th';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { Card, CardHeader, CardBody, CardFooter, Spinner, Skeleton } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter, Skeleton } from "@nextui-org/react";
 import GaugeChart from 'react-gauge-chart';
 import WeatherCardHourly from '../components/WeatherCardHourly';
 import WeatherCardDaily from '../components/WeatherCardDaily';
