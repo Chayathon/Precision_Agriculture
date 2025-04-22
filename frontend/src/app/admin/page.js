@@ -394,8 +394,8 @@ function Home() {
                     </Skeleton>
                     <div className="flex overflow-x-auto p-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
                         {weatherHourly.map((forecast, index) => (
-                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                <div key={index} className="snap-start">
+                            <div key={index} className="snap-start">
+                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
                                     <WeatherCardHourly
                                         key={index}
                                         time={forecast.time}
@@ -405,8 +405,8 @@ function Home() {
                                         windSpeed={forecast.data.ws10m}
                                         condition={forecast.data.cond}
                                     />
-                                </div>
-                            </Skeleton>
+                                </Skeleton>
+                            </div>
                         ))}
                     </div>
                 </Card>
@@ -416,8 +416,8 @@ function Home() {
                     </Skeleton>
                     <div className="flex overflow-x-auto p-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
                         {weatherDaily.map((forecast, index) => (
-                            <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                <div key={index} className="snap-start">
+                            <div key={index} className="snap-start">
+                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
                                     <WeatherCardDaily
                                         key={index}
                                         time={forecast.time}
@@ -428,8 +428,8 @@ function Home() {
                                         windSpeed={forecast.data.ws10m}
                                         condition={forecast.data.cond}
                                     />
-                                </div>
-                            </Skeleton>
+                                </Skeleton>
+                            </div>
                         ))}
                     </div>
                 </Card>
