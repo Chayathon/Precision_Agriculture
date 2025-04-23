@@ -368,8 +368,12 @@ function Home() {
                             />
                         </div>
                     </Skeleton>
-                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                        <p className='flex justify-center'>อุณหภูมิ (°C)</p>
+                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                        <div className='flex items-center space-x-12 md:space-x-24 lg:space-x-36'>
+                            <p className='font-bold text-xl md:text-2xl lg:text-3xl'>0</p>
+                            <p>อุณหภูมิ (°C)</p>
+                            <p className='font-bold text-xl md:text-2xl lg:text-3xl'>50</p>
+                        </div>
                     </Skeleton>
                 </Card>
                 <Card className="md:col-span-2 items-center p-4 drop-shadow-xl space-y-1" data-aos="fade-up">
@@ -384,8 +388,12 @@ function Home() {
                             />
                         </div>
                     </Skeleton>
-                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                        <p className='flex justify-center'>ความชื้นสัมพัทธ์ (%)</p>
+                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                        <div className='flex items-center space-x-6 sm:space-x-10 md:space-x-20 lg:space-x-32'>
+                            <p className='font-bold text-xl md:text-2xl lg:text-3xl'>0</p>
+                            <p>ความชื้นสัมพัทธ์ (%)</p>
+                            <p className='font-bold text-xl md:text-2xl lg:text-3xl'>100</p>
+                        </div>
                     </Skeleton>
                 </Card>
                 <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl space-y-1" data-aos="fade-up">

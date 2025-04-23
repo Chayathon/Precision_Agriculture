@@ -203,15 +203,19 @@ function Home() {
                         <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
                             <GaugeChart
                                 id="temp-gauge"
-                                nrOfLevels={20}
+                                nrOfLevels={5}
                                 percent={temp / 50}
                                 textColor="#A0A0A0"
                                 formatTextValue={() => `${temp.toFixed(2)}°C`}
                             />
                         </div>
                     </Skeleton>
-                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                        <p className='flex justify-center'>อุณหภูมิ (°C)</p>
+                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                        <div className='flex items-center space-x-12 md:space-x-24 lg:space-x-32'>
+                            <p className='font-bold text-xl md:text-2xl lg:text-3xl'>0</p>
+                            <p>อุณหภูมิ (°C)</p>
+                            <p className='font-bold text-xl md:text-2xl lg:text-3xl'>50</p>
+                        </div>
                     </Skeleton>
                 </Card>
                 <Card className="items-center p-4 drop-shadow-xl space-y-1" data-aos="fade-up">
@@ -226,8 +230,12 @@ function Home() {
                             />
                         </div>
                     </Skeleton>
-                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                        <p className='flex justify-center'>ความชื้นสัมพัทธ์ (%)</p>
+                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
+                        <div className='flex items-center space-x-6 sm:space-x-10 md:space-x-16 lg:space-x-24'>
+                            <p className='font-bold text-xl md:text-2xl lg:text-3xl'>0</p>
+                            <p>ความชื้นสัมพัทธ์ (%)</p>
+                            <p className='font-bold text-xl md:text-2xl lg:text-3xl'>100</p>
+                        </div>
                     </Skeleton>
                 </Card>
                 <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl space-y-1" data-aos="fade-up">
