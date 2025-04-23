@@ -1,20 +1,40 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { Button, ButtonGroup, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Select, SelectItem } from '@nextui-org/react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { Button, ButtonGroup, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Select, SelectItem, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
 import moment from "moment";
 import 'moment/locale/th';
 import { pdf } from '@react-pdf/renderer';
-import PDFTempHumid from '@/app/components/PDFTempHumid';
 import { FaFileExport } from 'react-icons/fa6';
 import PDFVariables from '@/app/components/PDFVariables';
 
+export const columns = [
+  {name: "อุณหภูมิ (°C)", uid: "temperature"},
+  {name: "ความชื้น (%)", uid: "humidity"},
+  {name: "ไนโตรเจน (mg/kg)", uid: "nitrogen"},
+  {name: "ฟอสฟอรัส (mg/kg)", uid: "phosphorus"},
+  {name: "โพแทสเซียม (mg/kg)", uid: "potassium"},
+  {name: "กรด-ด่าง (pH)", uid: "pH"},
+  {name: "ค่าความเค็ม (µS/cm)", uid: "salinity"},
+  {name: "ค่าแสง (lux)", uid: "lightIntensity"},
+];
+
+const INITIAL_VISIBLE_COLUMNS = ["nitrogen", "phosphorus", "potassium"];
+
 function ListVariables({ params }) {
     const { id } = params;
+
+    const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
     
     const [plantName, setPlantName] = useState('');
     const [plantData, setPlantData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const headerColumns = React.useMemo(() => {
+      if (visibleColumns === "all") return columns;
+  
+      return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
+    }, [visibleColumns]);
 
     const fetchPlant = async (plantId) => {
       try {
@@ -151,78 +171,132 @@ function ListVariables({ params }) {
     };
 
     const exportToPDF = async () => {
-      const blob = await pdf(<PDFVariables plant={plantName} data={plantData} />).toBlob();
-    
+      const timestamp = moment().format('YYYYMMDD_HHmmss');
+      const filename = `variables-report_${timestamp}.pdf`;
+      const blob = await pdf(
+        <PDFVariables
+          plant={plantName}
+          data={plantData}
+          visibleColumns={visibleColumns}
+          columns={columns}
+        />
+      ).toBlob();
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = 'variables-report.pdf';
+      link.download = filename;
       link.click();
     };
+
+    const renderCell = useCallback((item, columnKey) => {
+      const cellValue = item[columnKey];
+  
+      switch (columnKey) {
+        case "temperature":
+        case "humidity":
+        case "nitrogen":
+        case "phosphorus":
+        case "potassium":
+        case "pH":
+        case "salinity":
+        case "lightIntensity":
+          return cellValue !== undefined ? cellValue : "-";
+        default:
+          return cellValue;
+      }
+    }, []);
+
+    const topContent = useMemo(() => {
+      return (
+        <div className='flex justify-between items-center'>
+          <p className='text-lg sm:text-xl md:text-2xl font-bold'>
+            {plantName}
+          </p>
+  
+          <div className="hidden lg:block">
+            <ButtonGroup>
+              <Button onPress={() => fetchPlantVariables7day(id)} className="focus:bg-gray-400">7 วัน</Button>
+              <Button onPress={() => fetchPlantVariables14day(id)} className="focus:bg-gray-400">14 วัน</Button>
+              <Button onPress={() => fetchPlantVariables1month(id)} className="focus:bg-gray-400">1 เดือน</Button>
+              <Button onPress={() => fetchPlantVariables3month(id)} className="focus:bg-gray-400">3 เดือน</Button>
+              <Button onPress={() => fetchPlantVariables6month(id)} className="focus:bg-gray-400">6 เดือน</Button>
+              <Button onPress={() => fetchPlantVariables9month(id)} className="focus:bg-gray-400">9 เดือน</Button>
+              <Button onPress={() => fetchPlantVariables1year(id)} className="focus:bg-gray-400">1 ปี</Button>
+            </ButtonGroup>
+          </div>
+  
+          <div className="block lg:hidden w-full px-4">
+            <Select
+              onChange={(e) => {
+                const value = e.target.value;
+                if (value === '7day') fetchPlantVariables7day(id);
+                if (value === '14day') fetchPlantVariables14day(id);
+                if (value === '1month') fetchPlantVariables1month(id);
+                if (value === '3month') fetchPlantVariables3month(id);
+                if (value === '6month') fetchPlantVariables6month(id);
+                if (value === '9month') fetchPlantVariables9month(id);
+                if (value === '1year') fetchPlantVariables1year(id);
+              }}
+              className="w-full"
+              placeholder="เลือกช่วงเวลา"
+            >
+              <SelectItem key="7day">7 วัน</SelectItem>
+              <SelectItem key="14day">14 วัน</SelectItem>
+              <SelectItem key="1month">1 เดือน</SelectItem>
+              <SelectItem key="3month">3 เดือน</SelectItem>
+              <SelectItem key="6month">6 เดือน</SelectItem>
+              <SelectItem key="9month">9 เดือน</SelectItem>
+              <SelectItem key="1year">1 ปี</SelectItem>
+            </Select>
+          </div>
+  
+          <div className='flex gap-2'>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button variant="flat">
+                  คอลัมน์
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                aria-label="Table Columns"
+                closeOnSelect={false}
+                selectedKeys={visibleColumns}
+                selectionMode="multiple"
+                onSelectionChange={setVisibleColumns}
+              >
+                {columns.map((column) => (
+                  <DropdownItem key={column.uid}>
+                    {column.name}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown>
+    
+            <Button
+              onPress={exportToPDF}
+              color='primary'
+              disabled={isLoading || !plantData?.length}
+            >
+              <FaFileExport className='size-4' /> PDF
+            </Button>
+          </div>
+        </div>
+      );
+    }, [visibleColumns, plantName, plantData, isLoading, id]);
 
     return (
         <Table
             aria-label="List Temperature & Humidity"
-            topContent={
-              <div className='flex justify-between items-center'>
-                <p className='text-lg sm:text-xl md:text-2xl font-bold'>
-                  {plantName}
-                </p>
-
-                <div className="hidden md:block">
-                  <ButtonGroup>
-                      <Button onPress={() => fetchPlantVariables7day(id)} className="focus:bg-gray-400">7 วัน</Button>
-                      <Button onPress={() => fetchPlantVariables14day(id)} className="focus:bg-gray-400">14 วัน</Button>
-                      <Button onPress={() => fetchPlantVariables1month(id)} className="focus:bg-gray-400">1 เดือน</Button>
-                      <Button onPress={() => fetchPlantVariables3month(id)} className="focus:bg-gray-400">3 เดือน</Button>
-                      <Button onPress={() => fetchPlantVariables6month(id)} className="focus:bg-gray-400">6 เดือน</Button>
-                      <Button onPress={() => fetchPlantVariables9month(id)} className="focus:bg-gray-400">9 เดือน</Button>
-                      <Button onPress={() => fetchPlantVariables1year(id)} className="focus:bg-gray-400">1 ปี</Button>
-                  </ButtonGroup>
-                </div>
-
-                <div className="block md:hidden w-full px-4">
-                  <Select
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (value === '7day') fetchPlantVariables7day(id);
-                      if (value === '14day') fetchPlantVariables14day(id);
-                      if (value === '1month') fetchPlantVariables1month(id);
-                      if (value === '3month') fetchPlantVariables3month(id);
-                      if (value === '6month') fetchPlantVariables6month(id);
-                      if (value === '9month') fetchPlantVariables9month(id);
-                      if (value === '1year') fetchPlantVariables1year(id);
-                    }}
-                    className="w-full"
-                    placeholder="เลือกช่วงเวลา"
-                  >
-                    <SelectItem key="7day">7 วัน</SelectItem>
-                    <SelectItem key="14day">14 วัน</SelectItem>
-                    <SelectItem key="1month">1 เดือน</SelectItem>
-                    <SelectItem key="3month">3 เดือน</SelectItem>
-                    <SelectItem key="6month">6 เดือน</SelectItem>
-                    <SelectItem key="9month">9 เดือน</SelectItem>
-                    <SelectItem key="1year">1 ปี</SelectItem>
-                  </Select>
-                </div>
-
-                <Button
-                  onPress={exportToPDF}
-                  color='primary'
-                  disabled={isLoading || !plantData?.length}
-                >
-                  <FaFileExport className='size-4' />PDF
-                </Button>
-              </div>
-            }
+            topContent={topContent}
             className='p-4'
             isHeaderSticky
             isStriped
         >
             <TableHeader>
                 <TableColumn key="date">วันที่</TableColumn>
-                <TableColumn key="ph">ค่าความเป็นกรด-ด่าง (pH)</TableColumn>
-                <TableColumn key="salinity">ค่าการนำไฟฟ้า (dS/m)</TableColumn>
-                <TableColumn key="lightIntensity">ค่าความเข้มแสง (lux)</TableColumn>
+                {headerColumns.map((column) => (
+                  <TableColumn key={column.uid}>{column.name}</TableColumn>
+                ))}
             </TableHeader>
             <TableBody
                 items={plantData || []}
@@ -231,12 +305,13 @@ function ListVariables({ params }) {
                 emptyContent={!isLoading ? "ไม่มีข้อมูล" : null}
             >
                 {(item) => (
-                    <TableRow key={item.id}>
-                        <TableCell>{convertDate(item.receivedAt)}</TableCell>
-                        <TableCell>{item.pH}</TableCell>
-                        <TableCell>{item.salinity}</TableCell>
-                        <TableCell>{item.lightIntensity}</TableCell>
-                    </TableRow>
+                  <TableRow key={item.id}>
+                    {(columnKey) => (
+                      <TableCell>
+                        {columnKey === "date" ? convertDate(item.receivedAt) : renderCell(item, columnKey)}
+                      </TableCell>
+                    )}
+                  </TableRow>
                 )}
             </TableBody>
         </Table>

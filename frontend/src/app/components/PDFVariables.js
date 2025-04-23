@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     },
   
     cellDate: {
-        width: '28%',
+        width: '20%',
         borderWidth: 1,
         borderColor: '#000',
         padding: 5,
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         textAlign: 'left'
     },
     cellVariables: {
-        width: '24%',
+        width: `${80 / 3}%`,
         borderWidth: 1,
         borderColor: '#000',
         padding: 5,
@@ -43,31 +43,48 @@ const convertDate = (dateConvert) => {
     return buddhistYearDate;
 };
 
-const PDFVariables = ({ plant, data = [] }) => (
-    <Document>
-        <Page size="A4" style={styles.page}>
-            <Text style={styles.title}>รายงานค่าตัวแปรที่เกี่ยวข้องของ{plant}</Text>
-            <View style={styles.table}>
-                {/* Header */}
-                <View style={[styles.row, styles.header]}>
-                    <Text style={styles.cellDate}>วันที่</Text>
-                    <Text style={styles.cellVariables}>ค่าความเป็นกรด-ด่าง (pH)</Text>
-                    <Text style={styles.cellVariables}>ค่าการนำไฟฟ้า (dS/m)</Text>
-                    <Text style={styles.cellVariables}>ค่าความเข้มแสง (lux)</Text>
-                </View>
+const PDFVariables = ({ plant, data = [], visibleColumns, columns }) => {
+    // กรองคอลัมน์ที่เลือกจาก visibleColumns
+    const selectedColumns = columns.filter((column) =>
+        visibleColumns.has(column.uid)
+    );
 
-                {/* Data */}
-                {data.map((item, index) => (
-                    <View key={index} style={styles.row}>
-                        <Text style={styles.cellDate}>{convertDate(item.receivedAt)}</Text>
-                        <Text style={styles.cellVariables}>{item.pH}</Text>
-                        <Text style={styles.cellVariables}>{item.salinity}</Text>
-                        <Text style={styles.cellVariables}>{item.lightIntensity}</Text>
+    // คำนวณความกว้างของคอลัมน์ตัวแปร (80% หารด้วยจำนวนคอลัมน์ที่เลือก)
+    const variableCellWidth = selectedColumns.length > 0 ? `${80 / selectedColumns.length}%` : '30%';
+
+    return (
+        <Document>
+            <Page size="A4" style={styles.page}>
+                <Text style={styles.title}>รายงานค่าตัวแปรที่เกี่ยวข้องของ{plant}</Text>
+                <View style={styles.table}>
+                    {/* Header */}
+                    <View style={[styles.row, styles.header]}>
+                        <Text style={styles.cellDate}>วันที่</Text>
+                        {selectedColumns.map((column) => (
+                            <Text key={column.uid} style={[styles.cellVariables, { width: variableCellWidth }]}>
+                                {column.name}
+                            </Text>
+                        ))}
                     </View>
-                ))}
-            </View>
-        </Page>
-    </Document>
-);
+
+                    {/* Data */}
+                    {data.map((item, index) => (
+                        <View key={index} style={styles.row}>
+                            <Text style={styles.cellDate}>{convertDate(item.receivedAt)}</Text>
+                            {selectedColumns.map((column) => (
+                                <Text
+                                    key={column.uid}
+                                    style={[styles.cellVariables, { width: variableCellWidth }]}
+                                >
+                                    {item[column.uid] !== undefined ? item[column.uid] : '-'}
+                                </Text>
+                            ))}
+                        </View>
+                    ))}
+                </View>
+            </Page>
+        </Document>
+    );
+};
 
 export default PDFVariables;
