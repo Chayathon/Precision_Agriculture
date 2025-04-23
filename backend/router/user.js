@@ -207,6 +207,7 @@ router.put("/updateUser/:id", async (req, res) => {
             email: req.body.email,
             tel: req.body.tel,
             address: req.body.address,
+            role_id: Number(req.body.role),
             province: Number(req.body.province),
             district: Number(req.body.district),
             subdistrict: Number(req.body.subdistrict),

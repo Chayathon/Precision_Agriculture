@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Input, Textarea, Button, Select, SelectItem } from '@nextui-org/react'
 import { toast } from 'react-toastify'
+import Cookies from "js-cookie";
 
 function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [subdistricts, setSubdistricts] = useState([]);
+    const [roles, setRoles] = useState([]);
     
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
@@ -17,6 +19,7 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
         district: "",
         subdistrict: "",
     });
+    const [role, setRole] = useState(null);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -114,6 +117,7 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                         district: data.resultData.district,
                         subdistrict: data.resultData.subdistrict
                     });
+                    setRole(data.resultData.role_id);
                     setUsername(data.resultData.username);
                     setPassword(data.resultData.password);
                 } catch (err) {
@@ -121,7 +125,24 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                 }
             }
 
+            const fetchRoles = async () => {
+                try {
+                    const token = Cookies.get("Token");
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listRole`, {
+                        headers: { Authorization: `Bearer ${token}` },
+                    });
+                        
+                    if (res.ok) {
+                        const data = await res.json();
+                        setRoles(data.resultData);
+                    }
+                } catch (err) {
+                    console.error("Error fetching data: ", err);
+                }
+            }
+
             fetchData();
+            fetchRoles();
         }
     }, [isOpen, id]);
 
@@ -146,6 +167,7 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                     lastname,
                     email,
                     tel,
+                    role,
                     address: address.detail,
                     province: address.province,
                     district: address.district,
@@ -258,6 +280,16 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                                             isRequired
                                         >
                                             {(item) => <SelectItem key={item.subdistrict_id}>{item.name_th}</SelectItem>}
+                                        </Select>
+                                    </div>
+                                    <div className='my-4'>
+                                        <Select
+                                            label="สถานะ"
+                                            items={roles}
+                                            selectedKeys={String(role)}
+                                            onChange={(e) => setRole(e.target.value)}
+                                        >
+                                            {(item) => <SelectItem key={item.id}>{item.role_name}</SelectItem>}
                                         </Select>
                                     </div>
                                     <div className='my-4'>
