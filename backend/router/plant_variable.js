@@ -6,22 +6,53 @@ const prisma = new PrismaClient();
 
 router.post('/recievedVariable', async (req, res) => {
     try {
-        const { temp, water, ph, conduct, lux, ni, po, pt } = parseFloat(req.body);
+        console.log('Received req.body:', req.body);
+        
+        const { id, temp, water, ph, conduct, lux, ni, po, pt } = req.body;
+
+        if (
+            !id ||
+            temp === undefined ||
+            water === undefined ||
+            ph === undefined ||
+            conduct === undefined ||
+            lux === undefined ||
+            ni === undefined ||
+            po === undefined ||
+            pt === undefined
+        ) {
+            return res.status(400).json({
+                message: 'ข้อมูลที่ส่งมาไม่ครบถ้วนหรือไม่ถูกต้อง'
+            });
+        }
+
+        const parsedData = {
+            plant_id: Number(id),
+            temperature: parseFloat(temp),
+            humidity: parseFloat(water),
+            pH: parseFloat(ph),
+            salinity: parseFloat(conduct),
+            lightIntensity: parseFloat(lux),
+            nitrogen: parseFloat(ni),
+            phosphorus: parseFloat(po),
+            potassium: parseFloat(pt)
+        };
+
+        // ตรวจสอบว่าไม่มีค่าใดเป็น NaN
+        for (const [key, value] of Object.entries(parsedData)) {
+            if (isNaN(value)) {
+                return res.status(400).json({
+                    message: `ข้อมูล ${key} ไม่ใช่ตัวเลขที่ถูกต้อง`
+                });
+            }
+        }
 
         const now = new Date();
         const recievedTime = new Date(now.getTime() + (7 * 60 * 60 * 1000));
 
         const plantVariable = await prisma.p_variable.create({
             data: {
-                plant_id: Number(req.body.id),
-                temperature: temp,
-                humidity: water,
-                pH: ph,
-                salinity: conduct,
-                lightIntensity: lux,
-                nitrogen: ni,
-                phosphorus: po,
-                potassium: pt,
+                ...parsedData,
                 receivedAt: recievedTime
             }
         });
