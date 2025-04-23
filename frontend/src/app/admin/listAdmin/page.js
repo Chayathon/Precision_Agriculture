@@ -13,6 +13,7 @@ import ModalDeleteUser from "../components/ModalDeleteUser";
 import ModalMultiDeleteUser from "../components/ModalMultiDeleteUser";
 
 export default function ListAdmin() {
+    const [id, setId] = useState(null);
     const [users, setUsers] = useState([]);
 
     const [refresh, setRefresh] = useState(false);
@@ -120,11 +121,21 @@ export default function ListAdmin() {
         setPage(1)
     }, []);
 
+    useEffect(() => {
+        if(localStorage.getItem('UserData')) {
+            const user = JSON.parse(localStorage.getItem('UserData') || '{}')
+            
+            if(user) {
+                setId(user.id);
+            }
+        }
+    }, []);
+
     // Fetch users data
-    const fetchAdmin = async (role_id) => {
+    const fetchAdmin = async (role_id, id) => {
         try {
             const token = Cookies.get("Token");
-            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listUser/${role_id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listAdmin/${role_id}/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -140,8 +151,10 @@ export default function ListAdmin() {
     };
 
     useEffect(() => {
-        fetchAdmin(2);
-    }, [refresh]);
+        if(id) {
+            fetchAdmin(2, id);
+        }
+    }, [refresh, id]);
 
     // Top content of table
     const topContent = useMemo(() => {

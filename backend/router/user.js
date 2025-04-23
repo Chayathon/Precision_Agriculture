@@ -11,6 +11,7 @@ const { authIsCheck, isAdmin } = require("../middleware/auth");
 
 router.get("/listUser/:role_id", authIsCheck, isAdmin, async (req, res) => {
     const { role_id } = req.params;
+    
     const listUser = await prisma.user.findMany({
         where: {
             role_id: Number(role_id),

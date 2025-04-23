@@ -8,14 +8,21 @@ const bcrypt = require("bcrypt");
 
 const { authIsCheck, isAdmin } = require("../middleware/auth");
 
-router.get("/listAdmin/:role_id", authIsCheck, isAdmin, async (req, res) => {
-    const { role_id } = req.params;
+router.get("/listAdmin/:role_id/:id", authIsCheck, isAdmin, async (req, res) => {
+    const { role_id, id } = req.params;
+
     const listAdmin = await prisma.user.findMany({
         where: {
             role_id: Number(role_id),
+            id: {
+                not: Number(id),
+            },
         },
         include: {
             role: true,
+            provinceRel: true, // ดึงข้อมูลจาก province
+            districtRel: true, // ดึงข้อมูลจาก district
+            subdistrictRel: true, // ดึงข้อมูลจาก subdistrict
         },
     });
   
