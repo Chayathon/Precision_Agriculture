@@ -4,62 +4,9 @@ const router = express.Router();
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-// router.get('/getPlantFactor/:id', async (req, res) => {
-//     try {
-//         const { id } = req.params;
-
-//         const plantFactor = await prisma.p_factor.findMany({
-//             where: {
-//                 plant_id: Number(id),
-//             },
-//             orderBy: {
-//                 receivedAt: 'desc',
-//             },
-//             take: 1,
-//         });
-
-//         if(plantFactor) {
-//             res.status(200).json({
-//                 message: 'Get Plant Factor',
-//                 resultData: plantFactor,
-//             });
-//         }
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).send('Server Error');
-//     }
-// });
-
-// router.get('/getPlantNutrient/:id', async (req, res) => {
-//     try {
-//         const { id } = req.params;
-
-//         const plantNutrient = await prisma.p_nutrient.findMany({
-//             where: {
-//                 plant_id: Number(id),
-//             },
-//             orderBy: {
-//                 receivedAt: 'desc',
-//             },
-//             take: 1,
-//         });
-
-//         if(plantNutrient) {
-//             res.status(200).json({
-//                 message: 'Get Plant Nutrient',
-//                 resultData: plantNutrient,
-//             });
-//         }
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).send('Server Error');
-//     }
-// });
-
 router.post('/recievedVariable', async (req, res) => {
     try {
-        // const { id } = req.params;
-        // const { id, temperature, humidity, pH, salinity, lightIntensity, nitrogen, phosphorus, potassium } = req.body;
+        const { temp, water, ph, conduct, lux, ni, po, pt } = parseFloat(req.body);
 
         const now = new Date();
         const recievedTime = new Date(now.getTime() + (7 * 60 * 60 * 1000));
@@ -67,14 +14,14 @@ router.post('/recievedVariable', async (req, res) => {
         const plantVariable = await prisma.p_variable.create({
             data: {
                 plant_id: Number(req.body.id),
-                temperature: parseFloat(req.body.temperature),
-                humidity: parseFloat(req.body.humidity),
-                pH: parseFloat(req.body.pH),
-                salinity: parseFloat(req.body.salinity),
-                lightIntensity: parseFloat(req.body.lightIntensity),
-                nitrogen: parseFloat(req.body.nitrogen),
-                phosphorus: parseFloat(req.body.phosphorus),
-                potassium: parseFloat(req.body.potassium),
+                temperature: temp,
+                humidity: water,
+                pH: ph,
+                salinity: conduct,
+                lightIntensity: lux,
+                nitrogen: ni,
+                phosphorus: po,
+                potassium: pt,
                 receivedAt: recievedTime
             }
         });
@@ -115,31 +62,6 @@ router.get('/getPlantVariable/:id', async (req, res) => {
         res.status(500).send('Server Error');
     }
 });
-
-// router.get('/getPlantVariables/:id', async (req, res) => {
-//     try {
-//         const { id } = req.params;
-
-//         const plantVariables = await prisma.p_variable.findMany({
-//             where: {
-//                 plant_id: Number(id),
-//             },
-//             orderBy: {
-//                 receivedAt: 'asc',
-//             },
-//         });
-
-//         if(plantVariables) {
-//             res.status(200).json({
-//                 message: 'Get Plant Variables',
-//                 resultData: plantVariables,
-//             });
-//         }
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).send('Server Error');
-//     }
-// });
 
 router.get('/getPlantVariables7day/:id', async (req, res) => {
     try {
