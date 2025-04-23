@@ -446,7 +446,13 @@ function Dashboard({ params }) {
                   <div className="flex justify-center items-center gap-12">
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${plantData.temperature < factorData.temperature ? 'text-red-500' : 'text-green-500'}`}>
+                      <p className={`text-5xl font-bold ${
+                          plantData.temperature < factorData.temperature
+                          ? 'text-red-500'
+                          : plantData.temperature > factorData.temperature * 1.25
+                          ? 'text-amber-500'
+                          : 'text-green-500'
+                        }`}>
                         {plantData.temperature}
                       </p>
                     </div>
@@ -468,7 +474,13 @@ function Dashboard({ params }) {
                   <div className="flex justify-center items-center gap-12">
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${plantData.humidity < factorData.humidity ? 'text-red-500' : 'text-green-500'}`}>
+                      <p className={`text-5xl font-bold ${
+                          plantData.humidity < factorData.humidity
+                          ? 'text-red-500'
+                          : plantData.humidity > factorData.humidity * 1.25
+                          ? 'text-amber-500'
+                          : 'text-green-500'
+                        }`}>
                         {plantData.humidity}
                       </p>
                     </div>
@@ -485,13 +497,19 @@ function Dashboard({ params }) {
             <div data-aos="fade-up">
               <Card className="drop-shadow-xl hover:-translate-y-1">
                 <CardHeader className="flex justify-center">
-                  <p className="text-gray-500">ไนโตรเจน (mg/L)</p>
+                  <p className="text-gray-500">ไนโตรเจน (mg/kg)</p>
                 </CardHeader>
                 <CardBody>
                   <div className="flex justify-center items-center gap-12">
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${plantData.nitrogen < nutrientData.nitrogen ? 'text-red-500' : 'text-green-500'}`}>
+                      <p className={`text-5xl font-bold ${
+                          plantData.nitrogen < nutrientData.nitrogen
+                          ? 'text-red-500'
+                          : plantData.nitrogen > nutrientData.nitrogen * 1.25
+                          ? 'text-amber-500'
+                          : 'text-green-500'
+                        }`}>
                         {plantData.nitrogen}
                       </p>
                     </div>
@@ -507,13 +525,19 @@ function Dashboard({ params }) {
             <div data-aos="fade-up">
               <Card className="drop-shadow-xl hover:-translate-y-1">
                 <CardHeader className="flex justify-center">
-                  <p className="text-gray-500">ฟอสฟอรัส (mg/L)</p>
+                  <p className="text-gray-500">ฟอสฟอรัส (mg/kg)</p>
                 </CardHeader>
                 <CardBody>
                   <div className="flex justify-center items-center gap-12">
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${plantData.phosphorus < nutrientData.phosphorus ? 'text-red-500' : 'text-green-500'}`}>
+                      <p className={`text-5xl font-bold ${
+                          plantData.phosphorus < nutrientData.phosphorus
+                          ? 'text-red-500'
+                          : plantData.phosphorus > nutrientData.phosphorus * 1.25
+                          ? 'text-amber-500'
+                          : 'text-green-500'
+                        }`}>
                         {plantData.phosphorus}
                       </p>
                     </div>
@@ -529,13 +553,19 @@ function Dashboard({ params }) {
             <div data-aos="fade-up">
               <Card className="drop-shadow-xl hover:-translate-y-1">
                 <CardHeader className="flex justify-center">
-                  <p className="text-gray-500">โพแทสเซียม (mg/L)</p>
+                  <p className="text-gray-500">โพแทสเซียม (mg/kg)</p>
                 </CardHeader>
                 <CardBody>
                   <div className="flex justify-center items-center gap-12">
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${plantData.potassium < nutrientData.potassium ? 'text-red-500' : 'text-green-500'}`}>
+                      <p className={`text-5xl font-bold ${
+                          plantData.potassium < nutrientData.potassium
+                          ? 'text-red-500'
+                          : plantData.potassium > nutrientData.potassium * 1.25
+                          ? 'text-amber-500'
+                          : 'text-green-500'
+                        }`}>
                         {plantData.potassium}
                       </p>
                     </div>
@@ -574,7 +604,13 @@ function Dashboard({ params }) {
                   <div className="flex justify-center items-center gap-12">
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${plantData.pH < factorData.pH ? 'text-red-500' : 'text-green-500'}`}>
+                      <p className={`text-5xl font-bold ${
+                          plantData.pH < factorData.pH
+                          ? 'text-red-500'
+                          : plantData.pH > factorData.pH * 1.25
+                          ? 'text-amber-500'
+                          : 'text-green-500'
+                        }`}>
                         {plantData.pH}
                       </p>
                     </div>
@@ -591,7 +627,7 @@ function Dashboard({ params }) {
               <Card className="drop-shadow-xl hover:-translate-y-1">
                 <CardHeader className="flex justify-between items-center">
                   <div className="flex justify-center flex-1"> 
-                    <p className="text-gray-500">ค่าการนำไฟฟ้า (dS/m)</p>
+                    <p className="text-gray-500">ค่าการนำไฟฟ้า (µS/cm)</p>
                   </div>
                   <div className="flex justify-end">
                     <ButtonGroup size="sm" variant="flat">
@@ -612,7 +648,13 @@ function Dashboard({ params }) {
                   <div className="flex justify-center items-center gap-12">
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${plantData.salinity < factorData.salinity ? 'text-red-500' : 'text-green-500'}`}>
+                      <p className={`text-5xl font-bold ${
+                          plantData.salinity < factorData.salinity
+                          ? 'text-red-500'
+                          : plantData.salinity > factorData.salinity * 1.25
+                          ? 'text-amber-500'
+                          : 'text-green-500'
+                        }`}>
                         {plantData.salinity}
                       </p>
                     </div>
@@ -650,7 +692,13 @@ function Dashboard({ params }) {
                   <div className="flex justify-center items-center gap-12">
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${plantData.lightIntensity < factorData.lightIntensity ? 'text-red-500' : 'text-green-500'}`}>
+                      <p className={`text-5xl font-bold ${
+                          plantData.lightIntensity < factorData.lightIntensity
+                          ? 'text-red-500'
+                          : plantData.lightIntensity > factorData.lightIntensity * 1.25
+                          ? 'text-amber-500'
+                          : 'text-green-500'
+                        }`}>
                         {plantData.lightIntensity}
                       </p>
                     </div>
