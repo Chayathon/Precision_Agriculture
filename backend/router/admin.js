@@ -13,7 +13,9 @@ router.get("/listAdmin/:role_id/:id", authIsCheck, isAdmin, async (req, res) => 
 
     const listAdmin = await prisma.user.findMany({
         where: {
-            role_id: Number(role_id),
+            role_id: {
+                gte: Number(role_id),
+            },
             id: {
                 not: Number(id),
             },

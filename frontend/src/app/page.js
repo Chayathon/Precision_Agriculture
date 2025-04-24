@@ -52,7 +52,7 @@ function Login() {
                 toast.success("เข้าสู่ระบบสำเร็จ");
                 router.push(data.path);
             } else if (res.status === 400) {
-                toast.warn("ชื่อผู้ใช้ไม่ถูกต้อง");
+                toast.warn("ไม่พบชื่อผู้ใช้");
             } else if (res.status === 401) {
                 toast.warn("รหัสผ่านไม่ถูกต้อง");
             } else if (res.status === 403) {

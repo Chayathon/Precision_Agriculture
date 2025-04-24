@@ -65,9 +65,7 @@ router.post("/register", async (req, res) => {
             from: 'Precision Agriculture',
             to: email,
             subject: 'ยืนยันที่อยู่อีเมลของคุณ',
-            html: `
-                <h3><a href="${verificationUrl}">ยืนยันที่อยู่อีเมล</a></h3>
-            `
+            html: `<h3><a href="${verificationUrl}">ยืนยันที่อยู่อีเมล</a></h3>`
         }
 
         await transporter.sendMail(mailOptions);
@@ -166,7 +164,7 @@ router.post("/login", async (req, res) => {
                 message: "Login Successfully",
                 token: token,
                 resultData: rest,
-                path: rest.role.role_name == "admin" ? "/admin" : "/home",
+                path: rest.role.id == 1 ? "/home" : "/admin",
             });
         }
         else {

@@ -7,13 +7,13 @@ export function middleware(request) {
 
     if(userData) {
         const data = JSON.parse(userData.value)
-        const userRoles = data.role.role_name
+        const userRoles = data.role.id
         
-        if (url?.includes("/admin") && (!userRoles.includes("admin"))) {
+        if (url?.includes("/admin") && userRoles < 2) {
             return NextResponse.redirect(new URL("/", request.url));
         }
 
-        if (url?.includes("/home/dashboard") && (!userRoles.includes("user"))) {
+        if (url?.includes("/home") && userRoles !== 1) {
             return NextResponse.redirect(new URL("/", request.url));
         } 
     }
@@ -24,5 +24,5 @@ export function middleware(request) {
  
 // See "Matching Paths" below to learn more
 export const config = {
-    matcher: ['/dashboard/:path*', '/admin/:path*'],
+    matcher: ['/home/:path*', '/admin/:path*'],
 };

@@ -48,7 +48,7 @@ const isAdmin = async(req, res, next) => {
             }
         })
 
-        if(checkRoleAdmin.role_name != "admin") {
+        if(checkRoleAdmin.id < 2) {
             return res.status(400).send("Access denied")
         }
         
