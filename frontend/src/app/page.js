@@ -7,6 +7,7 @@ import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import {Card, CardHeader, CardBody, CardFooter, Input, Button} from "@nextui-org/react";
 import { FaRightToBracket } from 'react-icons/fa6';
+import { HiMail } from "react-icons/hi";
 import { ThemeSwitcher } from './components/ThemeSwitcher';
 
 function Login() {
@@ -14,8 +15,11 @@ function Login() {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
 
+    const [verified, setVerified] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const [sending, setSending] = useState(false);
 
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
@@ -56,17 +60,54 @@ function Login() {
             } else if (res.status === 401) {
                 toast.warn("รหัสผ่านไม่ถูกต้อง");
             } else if (res.status === 403) {
-                toast.warn("กรุณายืนยันอีเมล ก่อนเข้าใช้งาน")
+                toast.warn("กรุณายืนยันอีเมล ก่อนเข้าใช้งาน");
+                setVerified(false);
+                setEmail(data.email);
             } else {
                 toast.error(data.message || "เกิดข้อผิดพลาด");
             }
         } catch (error) {
             console.error("Login Error:", error.message, error.stack);
             toast.error("เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่");
+            setIsLoading(false);
         } finally {
             setIsLoading(false);
         }
     }
+
+    const handleResendVerification = async () => {
+        setSending(true);
+
+        try {
+            const res = await fetch('http://localhost:4000/api/resend-verification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email
+                })
+            });
+
+            const data = await res.json();
+
+            if(res.status === 200) {
+                toast.success("สำเร็จ! กรุณาตรวจสอบอีเมลเพื่อยืนยัน");
+            } else if(res.status === 400) {
+                toast.warn("ผู้ใช้นี้ยืนยันอีเมลแล้ว");
+            } else if(res.status === 400) {
+                toast.error("ไม่พบผู้ใช้!");
+            } else {
+                toast.error(data.message || "เกิดข้อผิดพลาด");
+            }
+        } catch (error) {
+            console.error("Resend Error:", error.message, error.stack);
+            toast.error("เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่");
+            setSending(false);
+        } finally {
+            setSending(false);
+        }
+    };
 
     return (
         <div className='grid w-[100vw] h-[100vh]'>
@@ -98,6 +139,16 @@ function Login() {
                             className='my-4'
                             required
                         />
+                        {!verified && email && (
+                            <Button
+                                onPress={handleResendVerification}
+                                className="w-full mb-2"
+                                isLoading={sending}
+                                disabled={sending}
+                            >
+                                ส่งอีเมลยืนยันอีกครั้ง <HiMail size={20} />
+                            </Button>
+                        )}
                         <Button
                             type='submit'
                             color='success'

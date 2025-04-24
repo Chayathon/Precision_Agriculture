@@ -4,11 +4,11 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-const nodemailer = require('nodemailer');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
 const keyauth = "lovemymom";
+
+const { sendVerificationEmail } = require("../utils/verify-email");
 
 router.post("/register", async (req, res) => {
     const { firstname, lastname, email, tel, address, province, district, subdistrict, username, password } = req.body;
@@ -52,23 +52,7 @@ router.post("/register", async (req, res) => {
             },
         });
 
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            },
-        });
-
-        const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
-        const mailOptions = {
-            from: 'Precision Agriculture',
-            to: email,
-            subject: 'ยืนยันที่อยู่อีเมลของคุณ',
-            html: `<h3><a href="${verificationUrl}">ยืนยันที่อยู่อีเมล</a></h3>`
-        }
-
-        await transporter.sendMail(mailOptions);
+        await sendVerificationEmail(email, token);
 
         res.status(201).json({ message: 'User registered. Please check your email to verify.' });
     } catch (err) {
@@ -141,7 +125,10 @@ router.post("/login", async (req, res) => {
         }
 
         if (!user.isVerified) {
-            return res.status(403).json({ message: 'Please verify your email before logging in' });
+            return res.status(403).json({
+                message: 'Please verify your email before logging in',
+                email: user.email,
+            });
         }
 
         const checkPassword = await bcrypt.compare(password, user.password);
@@ -175,6 +162,37 @@ router.post("/login", async (req, res) => {
     } catch (err) {
         console.log(err);
         res.status(500).send("Server Error");
+    }
+});
+
+router.post('/resend-verification', async (req, res) => {
+    const { email } = req.body;
+  
+    try {
+        const user = await prisma.user.findUnique({ where: { email } });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        if (user.isVerified) {
+            return res.status(400).json({ message: 'Email already verified' });
+        }
+    
+        const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '24h' });
+        await prisma.user.update({
+            where: {
+                email
+            },
+            data: {
+                verificationToken: token
+            },
+        });
+    
+        await sendVerificationEmail(email, token);
+        
+        res.status(200).json({ message: 'Verification email resent' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error', error });
     }
 });
 

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { Button } from '@nextui-org/react';
+import { FaCircleCheck } from 'react-icons/fa6';
 
 function VerifyEmail() {
     const router = useRouter();
@@ -40,7 +41,7 @@ function VerifyEmail() {
                 isLoading={isLoading}
                 disabled={isLoading}
             >
-                ยืนยันที่อยู่อีเมล
+                ยืนยันที่อยู่อีเมล<FaCircleCheck size={20} />
             </Button>
         </div>
     );

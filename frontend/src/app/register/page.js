@@ -145,7 +145,7 @@ function Register() {
             if(res.status === 201) {
                 const form = e.target;
                 form.reset();
-                toast.success("สำเร็จ!, กรุณาตรวจสอบอีเมลเพื่อยืนยัน");
+                toast.success("สำเร็จ! กรุณาตรวจสอบอีเมลเพื่อยืนยัน");
             }
             else if (res.status === 400) {
                 toast.warn("อีเมลหรือชื่อผู้ใช้นี้ ได้รับการลงทะเบียนแล้ว");
@@ -155,6 +155,7 @@ function Register() {
         } catch (error) {
             console.error("Register Error:", error.message, error.stack);
             toast.error("เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่");
+            setIsLoading(false);
         } finally {
             setIsLoading(false);
         }
