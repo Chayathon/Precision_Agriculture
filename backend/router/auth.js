@@ -66,10 +66,7 @@ router.post("/register", async (req, res) => {
             to: email,
             subject: 'ยืนยันที่อยู่อีเมลของคุณ',
             html: `
-                <h3>ยืนยันอีเมลโดยการคลิก <a href="${verificationUrl}">ที่นี่</a></h3>
-                <p style="color: red;">
-                    <small>*มีอายุการใช้งาน 1 ชั่วโมง</small>
-                </p>
+                <h3><a href="${verificationUrl}">ยืนยันที่อยู่อีเมล</a></h3>
             `
         }
 
