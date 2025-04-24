@@ -446,7 +446,7 @@ function Dashboard({ params }) {
                     </div>
                     {(plantData.temperature < factorData.temperature || plantData.temperature > factorData.temperature * 1.25) && (
                       <div className="flex justify-end">
-                        <Link href="https://www.doa.go.th/share/">
+                        <Link href="https://www.doa.go.th/share/" target="_blank">
                           <FaCircleExclamation size={20} />
                         </Link>
                       </div>
@@ -485,7 +485,7 @@ function Dashboard({ params }) {
                     </div>
                     {(plantData.humidity < factorData.humidity || plantData.humidity > factorData.humidity * 1.25) && (
                       <div className="flex justify-end">
-                        <Link href="https://www.doa.go.th/share/">
+                        <Link href="https://www.doa.go.th/share/" target="_blank">
                           <FaCircleExclamation size={20} />
                         </Link>
                       </div>
@@ -525,7 +525,7 @@ function Dashboard({ params }) {
                     </div>
                     {(plantData.nitrogen < nutrientData.nitrogen || plantData.nitrogen > nutrientData.nitrogen * 1.25) && (
                       <div className="flex justify-end">
-                        <Link href="https://www.doa.go.th/share/">
+                        <Link href="https://www.doa.go.th/share/" target="_blank">
                           <FaCircleExclamation size={20} />
                         </Link>
                       </div>
@@ -564,7 +564,7 @@ function Dashboard({ params }) {
                     </div>
                     {(plantData.phosphorus < nutrientData.phosphorus || plantData.phosphorus > nutrientData.phosphorus * 1.25) && (
                       <div className="flex justify-end">
-                        <Link href="https://www.doa.go.th/share/">
+                        <Link href="https://www.doa.go.th/share/" target="_blank">
                           <FaCircleExclamation size={20} />
                         </Link>
                       </div>
@@ -603,7 +603,7 @@ function Dashboard({ params }) {
                     </div>
                     {(plantData.potassium < nutrientData.potassium || plantData.potassium > nutrientData.potassium * 1.25) && (
                       <div className="flex justify-end">
-                        <Link href="https://www.doa.go.th/share/">
+                        <Link href="https://www.doa.go.th/share/" target="_blank">
                           <FaCircleExclamation size={20} />
                         </Link>
                       </div>
@@ -648,7 +648,7 @@ function Dashboard({ params }) {
                       </ButtonGroup>
                       {(plantData.pH < factorData.pH || plantData.pH > factorData.pH * 1.25) && (
                         <div className="flex justify-end">
-                          <Link href="https://www.doa.go.th/share/">
+                          <Link href="https://www.doa.go.th/share/" target="_blank">
                             <FaCircleExclamation size={20} />
                           </Link>
                         </div>
@@ -692,7 +692,7 @@ function Dashboard({ params }) {
                       </ButtonGroup>
                       {(plantData.salinity < factorData.salinity || plantData.salinity > factorData.salinity * 1.25) && (
                         <div className="flex justify-end">
-                          <Link href="https://www.doa.go.th/share/">
+                          <Link href="https://www.doa.go.th/share/" target="_blank">
                             <FaCircleExclamation size={20} />
                           </Link>
                         </div>
@@ -736,7 +736,7 @@ function Dashboard({ params }) {
                       </ButtonGroup>
                       {(plantData.lightIntensity < factorData.lightIntensity || plantData.lightIntensity > factorData.lightIntensity * 1.25) && (
                         <div className="flex justify-end">
-                          <Link href="https://www.doa.go.th/share/">
+                          <Link href="https://www.doa.go.th/share/" target="_blank">
                             <FaCircleExclamation size={20} />
                           </Link>
                         </div>
