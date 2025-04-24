@@ -136,7 +136,6 @@ export default function ListPlant() {
         fetchPlant();
     }, [refresh, userId])
     
-
     useEffect(() => {
         if (typeof window !== "undefined") {
             const userData = JSON.parse(localStorage.getItem("UserData") || "{}");
@@ -235,12 +234,6 @@ export default function ListPlant() {
             </div>
         );
     }, [selectedKeys, filteredItems.length, isLoading, page, pages, onPreviousPage, onNextPage]);
-
-    if (!userId) {
-        return <div className="flex justify-center pt-16">
-            <Spinner size="lg" label="กำลังโหลดข้อมูล..." />
-      </div>
-    }
 
     return (
         <div className='m-4'>

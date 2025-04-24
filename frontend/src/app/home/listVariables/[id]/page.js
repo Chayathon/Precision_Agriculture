@@ -301,7 +301,7 @@ function ListVariables({ params }) {
             <TableBody
                 items={plantData || []}
                 isLoading={isLoading}
-                loadingContent={<Spinner size="lg" label="กำลังโหลดข้อมูล..." />}
+                loadingContent={<Spinner size="md" label="กำลังโหลดข้อมูล..." />}
                 emptyContent={!isLoading ? "ไม่มีข้อมูล" : null}
             >
                 {(item) => (
