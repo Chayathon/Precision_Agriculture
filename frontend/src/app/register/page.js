@@ -1,16 +1,13 @@
-'use client'
+'use client';
 
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link';
 import { toast } from 'react-toastify'
 import {Card, CardHeader, CardBody, CardFooter, Input, Textarea, Button, Select, SelectItem} from "@nextui-org/react";
 import { FaUserCheck } from 'react-icons/fa6';
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
 
-function Page() {
-    const router = useRouter();
-
+function Register() {
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [subdistricts, setSubdistricts] = useState([]);
@@ -145,16 +142,10 @@ function Page() {
                 })
             });
 
-            if(res.status === 200) {
+            if(res.status === 201) {
                 const form = e.target;
                 form.reset();
-                toast.success("ลงทะเบียนสำเร็จแล้ว", {
-                    autoClose: 1500,
-                });
-
-                setTimeout(() => {
-                    router.push('/');
-                }, 1500);
+                toast.success("สำเร็จ!, กรุณาตรวจสอบอีเมลเพื่อยืนยัน");
             }
             else if (res.status === 400) {
                 toast.warn("อีเมลหรือชื่อผู้ใช้นี้ ได้รับการลงทะเบียนแล้ว");
@@ -296,4 +287,4 @@ function Page() {
     )
 }
 
-export default Page
+export default Register

@@ -48,25 +48,27 @@ model subdistrict {
 }
 
 model user {
-  id              Int               @id @default(autoincrement())
-  firstname       String
-  lastname        String
-  email           String            @unique
-  tel             String
-  address         String
-  province        Int               @db.UnsignedInt
-  district        Int               @db.UnsignedInt
-  subdistrict     Int               @db.UnsignedInt
-  username        String
-  password        String
-  role_id         Int
-  otp             Int?
-  plant           plant[]
-  plant_avaliable plant_avaliable[]
-  districtRel     district          @relation(fields: [district], references: [district_id])
-  provinceRel     province          @relation(fields: [province], references: [province_id])
-  role            role              @relation(fields: [role_id], references: [id])
-  subdistrictRel  subdistrict       @relation(fields: [subdistrict], references: [subdistrict_id])
+  id                Int               @id @default(autoincrement())
+  firstname         String
+  lastname          String
+  email             String            @unique
+  tel               String
+  address           String
+  province          Int               @db.UnsignedInt
+  district          Int               @db.UnsignedInt
+  subdistrict       Int               @db.UnsignedInt
+  username          String
+  password          String
+  role_id           Int
+  verificationToken String?
+  isVerified        Boolean           @default(false)
+  otp               Int?
+  plant             plant[]
+  plant_avaliable   plant_avaliable[]
+  districtRel       district          @relation(fields: [district], references: [district_id])
+  provinceRel       province          @relation(fields: [province], references: [province_id])
+  role              role              @relation(fields: [role_id], references: [id])
+  subdistrictRel    subdistrict       @relation(fields: [subdistrict], references: [subdistrict_id])
 
   @@index([role_id], map: "user_role_id_fkey")
   @@index([province], map: "user_province_fkey")

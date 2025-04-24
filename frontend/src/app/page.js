@@ -9,7 +9,7 @@ import {Card, CardHeader, CardBody, CardFooter, Input, Button} from "@nextui-org
 import { FaArrowRightToBracket } from 'react-icons/fa6';
 import { ThemeSwitcher } from './components/ThemeSwitcher';
 
-function Page() {
+function Login() {
     const router = useRouter();
 
     const [username, setUsername] = useState("");
@@ -53,9 +53,10 @@ function Page() {
                 router.push(data.path);
             } else if (res.status === 400) {
                 toast.warn("ชื่อผู้ใช้ไม่ถูกต้อง");
-            }
-            else if (res.status === 401) {
+            } else if (res.status === 401) {
                 toast.warn("รหัสผ่านไม่ถูกต้อง");
+            } else if (res.status === 403) {
+                toast.warn("กรุณายืนยันอีเมล ก่อนเข้าใช้งาน")
             } else {
                 toast.error(data.message || "เกิดข้อผิดพลาด");
             }
@@ -118,4 +119,4 @@ function Page() {
     )
 }
 
-export default Page
+export default Login

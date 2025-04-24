@@ -1,7 +1,7 @@
 import { Kanit } from "next/font/google";
 import "./globals.css";
 import { NextUIProvider } from "@nextui-org/react";
-import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 import ToastWrapper from "./components/ToastWrapper";
 
 export const metadata = {
