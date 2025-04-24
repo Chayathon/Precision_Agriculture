@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure, NavbarMenu, NavbarMenuItem, NavbarMenuToggle, Select, SelectItem } from "@nextui-org/react";
-import { FaArrowRightFromBracket, FaUserGear } from "react-icons/fa6";
+import { FaRightFromBracket, FaUserGear } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import 'moment/locale/th';
@@ -315,7 +315,7 @@ function AdminNavbar() {
                             <p className='flex justify-between items-center'>แก้ไขโปรไฟล์<FaUserGear size={18} /></p>
                         </DropdownItem>
                         <DropdownItem key="logout" color="danger" onPress={handleLogout}>
-                            <p className='flex justify-between items-center'>ออกจากระบบ<FaArrowRightFromBracket size={18} /></p>
+                            <p className='flex justify-between items-center'>ออกจากระบบ<FaRightFromBracket size={18} /></p>
                         </DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
