@@ -61,6 +61,7 @@ router.post("/createAdmin", async (req, res) => {
                 username: req.body.username,
                 password: hashPassword,
                 role_id: 2,
+                isVerified: true,
             },
         });
 

@@ -181,6 +181,7 @@ router.post("/createUser", async (req, res) => {
                 username: req.body.username,
                 password: hashPassword,
                 role_id: 1,
+                isVerified: true,
             },
         });
 
