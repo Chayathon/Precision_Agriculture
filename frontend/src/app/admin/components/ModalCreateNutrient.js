@@ -15,7 +15,7 @@ function ModalCreateNutrient({ isOpen, onOpenChange, setRefresh, id }) {
         e.preventDefault();
         setIsLoading(true);
 
-        if (!age || !nitrogen || !phosphorus || !potassium) {
+        if (!nitrogen || !phosphorus || !potassium) {
             toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
             setIsLoading(false);
             return;

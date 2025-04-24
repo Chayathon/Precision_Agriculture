@@ -17,7 +17,7 @@ function ModalCreateFactor({ isOpen, onOpenChange, setRefresh, id }) {
         e.preventDefault();
         setIsLoading(true);
 
-        if (!age || !ph || !temperature || !humidity || !salinity || !lightIntensity) {
+        if (!ph || !temperature || !humidity || !salinity || !lightIntensity) {
             toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
             setIsLoading(false);
             return;
