@@ -14,7 +14,7 @@ import {
 } from "chart.js";
 
 import { Line } from "react-chartjs-2";
-import { FaTable, FaChartLine, FaBan, FaCircleQuestion } from "react-icons/fa6";
+import { FaTable, FaChartLine, FaBan, FaCircleExclamation } from "react-icons/fa6";
 import moment from "moment";
 import 'moment/locale/th';
 import AOS from 'aos';
@@ -447,7 +447,7 @@ function Dashboard({ params }) {
                     {(plantData.temperature < factorData.temperature || plantData.temperature > factorData.temperature * 1.25) && (
                       <div className="flex justify-end">
                         <Link href="https://www.doa.go.th/share/">
-                          <FaCircleQuestion size={20} />
+                          <FaCircleExclamation size={20} />
                         </Link>
                       </div>
                     )}
@@ -486,7 +486,7 @@ function Dashboard({ params }) {
                     {(plantData.humidity < factorData.humidity || plantData.humidity > factorData.humidity * 1.25) && (
                       <div className="flex justify-end">
                         <Link href="https://www.doa.go.th/share/">
-                          <FaCircleQuestion size={20} />
+                          <FaCircleExclamation size={20} />
                         </Link>
                       </div>
                     )}
@@ -526,7 +526,7 @@ function Dashboard({ params }) {
                     {(plantData.nitrogen < nutrientData.nitrogen || plantData.nitrogen > nutrientData.nitrogen * 1.25) && (
                       <div className="flex justify-end">
                         <Link href="https://www.doa.go.th/share/">
-                          <FaCircleQuestion size={20} />
+                          <FaCircleExclamation size={20} />
                         </Link>
                       </div>
                     )}
@@ -565,7 +565,7 @@ function Dashboard({ params }) {
                     {(plantData.phosphorus < nutrientData.phosphorus || plantData.phosphorus > nutrientData.phosphorus * 1.25) && (
                       <div className="flex justify-end">
                         <Link href="https://www.doa.go.th/share/">
-                          <FaCircleQuestion size={20} />
+                          <FaCircleExclamation size={20} />
                         </Link>
                       </div>
                     )}
@@ -604,7 +604,7 @@ function Dashboard({ params }) {
                     {(plantData.potassium < nutrientData.potassium || plantData.potassium > nutrientData.potassium * 1.25) && (
                       <div className="flex justify-end">
                         <Link href="https://www.doa.go.th/share/">
-                          <FaCircleQuestion size={20} />
+                          <FaCircleExclamation size={20} />
                         </Link>
                       </div>
                     )}
@@ -649,7 +649,7 @@ function Dashboard({ params }) {
                       {(plantData.pH < factorData.pH || plantData.pH > factorData.pH * 1.25) && (
                         <div className="flex justify-end">
                           <Link href="https://www.doa.go.th/share/">
-                            <FaCircleQuestion size={20} />
+                            <FaCircleExclamation size={20} />
                           </Link>
                         </div>
                       )}
@@ -693,7 +693,7 @@ function Dashboard({ params }) {
                       {(plantData.salinity < factorData.salinity || plantData.salinity > factorData.salinity * 1.25) && (
                         <div className="flex justify-end">
                           <Link href="https://www.doa.go.th/share/">
-                            <FaCircleQuestion size={20} />
+                            <FaCircleExclamation size={20} />
                           </Link>
                         </div>
                       )}
@@ -737,7 +737,7 @@ function Dashboard({ params }) {
                       {(plantData.lightIntensity < factorData.lightIntensity || plantData.lightIntensity > factorData.lightIntensity * 1.25) && (
                         <div className="flex justify-end">
                           <Link href="https://www.doa.go.th/share/">
-                            <FaCircleQuestion size={20} />
+                            <FaCircleExclamation size={20} />
                           </Link>
                         </div>
                       )}
