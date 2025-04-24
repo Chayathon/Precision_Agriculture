@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
 import {Card, CardHeader, CardBody, CardFooter, Input, Button} from "@nextui-org/react";
-import { FaRightToBracket } from 'react-icons/fa6';
+import { FaLock, FaRightToBracket, FaUserTag } from 'react-icons/fa6';
 import { HiMail } from "react-icons/hi";
 import { ThemeSwitcher } from './components/ThemeSwitcher';
 
@@ -19,7 +19,7 @@ function Login() {
 
     const [verified, setVerified] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
-    const [sending, setSending] = useState(false);
+    const [isSending, setIsSending] = useState(false);
 
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
@@ -76,7 +76,7 @@ function Login() {
     }
 
     const handleResendVerification = async () => {
-        setSending(true);
+        setIsSending(true);
 
         try {
             const res = await fetch('http://localhost:4000/api/resend-verification', {
@@ -103,9 +103,9 @@ function Login() {
         } catch (error) {
             console.error("Resend Error:", error.message, error.stack);
             toast.error("เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่");
-            setSending(false);
+            setIsSending(false);
         } finally {
-            setSending(false);
+            setIsSending(false);
         }
     };
 
@@ -125,11 +125,17 @@ function Login() {
                             variant='faded'
                             autoFocus
                             required
+                            startContent={
+                                <FaUserTag size={18} />
+                            }
                         />
                         <Input
                             onChange={(e) => setPassword(e.target.value)}
                             label="รหัสผ่าน"
                             variant='faded'
+                            startContent={
+                                <FaLock />
+                            }
                             endContent={
                                 <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
                                     {isVisible ? 'ซ่อน' : 'แสดง'}
@@ -143,10 +149,10 @@ function Login() {
                             <Button
                                 onPress={handleResendVerification}
                                 className="w-full mb-2"
-                                isLoading={sending}
-                                disabled={sending}
+                                isLoading={isSending}
+                                disabled={isSending}
                             >
-                                ส่งอีเมลยืนยันอีกครั้ง <HiMail size={20} />
+                                {isSending ? 'กำลังส่งอีเมล...' : 'ส่งอีเมลยืนยันอีกครั้ง'} <HiMail size={20} />
                             </Button>
                         )}
                         <Button
