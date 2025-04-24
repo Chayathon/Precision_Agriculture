@@ -127,7 +127,7 @@ function ModalUpdateFactor({ isOpen, onOpenChange, id, setRefresh }) {
                                             onChange={(e) => setSalinity(e.target.value)}
                                             value={salinity}
                                             type="text"
-                                            label="ค่าการนำไฟฟ้า (dS/m)"
+                                            label="ค่าการนำไฟฟ้า (µS/cm)"
                                             isRequired
                                         />
                                         <Input

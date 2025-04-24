@@ -98,7 +98,7 @@ function ModalUpdateNutrient({ isOpen, onOpenChange, id, setRefresh }) {
                                             onChange={(e) => setNitrogen(e.target.value)}
                                             value={nitrogen}
                                             type="text"
-                                            label="(N) ไนโตรเจน (mg/L)"
+                                            label="(N) ไนโตรเจน (mg/kg)"
                                             isRequired
                                         />
                                     </div>
@@ -107,14 +107,14 @@ function ModalUpdateNutrient({ isOpen, onOpenChange, id, setRefresh }) {
                                             onChange={(e) => setPhosphorus(e.target.value)}
                                             value={phosphorus}
                                             type="text"
-                                            label="(P) ฟอสฟอรัส (mg/L)"
+                                            label="(P) ฟอสฟอรัส (mg/kg)"
                                             isRequired
                                         />
                                         <Input
                                             onChange={(e) => setPotassium(e.target.value)}
                                             value={potassium}
                                             type="text"
-                                            label="(K) โพแทสเซียม (mg/L)"
+                                            label="(K) โพแทสเซียม (mg/kg)"
                                             isRequired
                                         />
                                     </div>

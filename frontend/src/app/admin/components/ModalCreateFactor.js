@@ -98,7 +98,7 @@ function ModalCreateFactor({ isOpen, onOpenChange, setRefresh, id }) {
                             <Input
                                 onChange={(e) => setSalinity(e.target.value)}
                                 type="text"
-                                label="ค่าการนำไฟฟ้า (dS/m)"
+                                label="ค่าการนำไฟฟ้า (µS/cm)"
                                 isRequired
                             />
                             <Input

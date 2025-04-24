@@ -271,7 +271,7 @@ function Home() {
                             </CardHeader>
                             <CardBody>
                                 <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                    <p className='text-center text-8xl font-bold'>{plants - 1}</p>
+                                    <p className='text-center text-8xl font-bold'>{plants === 0 ? "0" : plants - 1}</p>
                                 </Skeleton>
                             </CardBody>
                             <CardFooter className='flex justify-center'>

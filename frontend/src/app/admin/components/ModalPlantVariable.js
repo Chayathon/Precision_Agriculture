@@ -84,7 +84,7 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
                                                 <TableColumn key="temperature">อุณหภูมิ (°C)</TableColumn>
                                                 <TableColumn key="humidity">ความชื่น (%)</TableColumn>
                                                 <TableColumn key="ph">ค่าความเป็นกรด-ด่าง (pH)</TableColumn>
-                                                <TableColumn key="salinity">ค่าการนำไฟฟ้า (dS/m)</TableColumn>
+                                                <TableColumn key="salinity">ค่าการนำไฟฟ้า (µS/cm)</TableColumn>
                                                 <TableColumn key="lightIntensity">ค่าความเข้มแสง (lux)</TableColumn>
                                                 <TableColumn key="tools">จัดการ</TableColumn>
                                             </TableHeader>
@@ -124,9 +124,9 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
                                         <Table aria-label="Nutrient Data">
                                             <TableHeader>
                                                 <TableColumn key="age">ตั้งแต่ (วัน) ขึ้นไป</TableColumn>
-                                                <TableColumn key="temperature">(N) ไนโตรเจน (mg/L)</TableColumn>
-                                                <TableColumn key="humidity">(P) ฟอสฟอรัส (mg/L)</TableColumn>
-                                                <TableColumn key="ph">(K) โพแทสเซียม (mg/L)</TableColumn>
+                                                <TableColumn key="temperature">(N) ไนโตรเจน (mg/kg)</TableColumn>
+                                                <TableColumn key="humidity">(P) ฟอสฟอรัส (mg/kg)</TableColumn>
+                                                <TableColumn key="ph">(K) โพแทสเซียม (mg/kg)</TableColumn>
                                                 <TableColumn key="tools">จัดการ</TableColumn>
                                             </TableHeader>
                                             <TableBody items={nutrient} emptyContent="ไม่มีข้อมูล">
