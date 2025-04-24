@@ -82,8 +82,6 @@ router.get('/getFactorById/:id', async (req, res) => {
 router.post('/createFactor', async (req, res) => {
     const { age, ph, temperature, humidity, salinity, lightIntensity, plantId } = req.body;
 
-    console.log(req.body);
-
     if (!plantId) {
         return res.status(400).json({ message: "Missing plantId" });
     }
@@ -240,8 +238,6 @@ router.get('/getNutrientById/:id', async (req, res) => {
 router.post('/createNutrient', async (req, res) => {
     const { age, nitrogen, phosphorus, potassium, plantId } = req.body;
 
-    console.log(req.body);
-
     if (!plantId) {
         return res.status(400).json({ message: "Missing plantId" });
     }
@@ -394,8 +390,6 @@ router.get('/getOtherFactorById/:id', async (req, res) => {
 router.post('/createOtherFactor', async (req, res) => {
 
     const { age, ph, temperature, humidity, salinity, lightIntensity, plantId } = req.body;
-
-    console.log(req.body);
 
     if (!plantId) {
         return res.status(400).json({ message: "Missing plantId" });
@@ -553,8 +547,6 @@ router.get('/getOtherNutrientById/:id', async (req, res) => {
 router.post('/createOtherNutrient', async (req, res) => {
 
     const { age, nitrogen, phosphorus, potassium, plantId } = req.body;
-
-    console.log(req.body);
 
     if (!plantId) {
         return res.status(400).json({ message: "Missing plantId" });

@@ -11,7 +11,7 @@ const jwt = require("jsonwebtoken");
 const keyauth = "lovemymom";
 
 router.post("/register", async (req, res) => {
-    const { email, username, password } = req.body;
+    const { firstname, lastname, email, tel, address, province, district, subdistrict, username, password } = req.body;
 
     try {
         const checkUser = await prisma.user.findFirst({
@@ -36,15 +36,15 @@ router.post("/register", async (req, res) => {
         
         const user = await prisma.user.create({
             data: {
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
-                email: req.body.email,
-                tel: req.body.tel,
-                address: req.body.address,
-                province: Number(req.body.province),
-                district: Number(req.body.district),
-                subdistrict: Number(req.body.subdistrict),
-                username: req.body.username,
+                firstname: firstname,
+                lastname: lastname,
+                email: email,
+                tel: tel,
+                address: address,
+                province: Number(province),
+                district: Number(district),
+                subdistrict: Number(subdistrict),
+                username: username,
                 password: hashPassword,
                 role_id: 1,
                 verificationToken: token,

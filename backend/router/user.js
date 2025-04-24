@@ -12,65 +12,80 @@ const { authIsCheck, isAdmin } = require("../middleware/auth");
 router.get("/listUser/:role_id", authIsCheck, isAdmin, async (req, res) => {
     const { role_id } = req.params;
     
-    const listUser = await prisma.user.findMany({
-        where: {
-            role_id: Number(role_id),
-        },
-        include: {
-            role: true,
-            provinceRel: true, // ดึงข้อมูลจาก province
-            districtRel: true, // ดึงข้อมูลจาก district
-            subdistrictRel: true, // ดึงข้อมูลจาก subdistrict
-        },
-    });
-
-    if (listUser) {
-        res.status(200).json({
-            message: "Get User",
-            resultData: listUser,
+    try {
+        const listUser = await prisma.user.findMany({
+            where: {
+                role_id: Number(role_id),
+            },
+            include: {
+                role: true,
+                provinceRel: true, // ดึงข้อมูลจาก province
+                districtRel: true, // ดึงข้อมูลจาก district
+                subdistrictRel: true, // ดึงข้อมูลจาก subdistrict
+            },
         });
+    
+        if (listUser) {
+            res.status(200).json({
+                message: "Get User",
+                resultData: listUser,
+            });
+        }
+    } catch(err) {
+        console.log(err);
+        res.status(500).send("Server Error");
     }
 });
 
 router.get("/getUser/:id", async (req, res) => {
     const { id } = req.params;
     
-    const getUser = await prisma.user.findFirst({
-        where: {
-            id: Number(id),
-        },
-        include: {
-            provinceRel: true, // ดึงข้อมูลจาก province
-            districtRel: true, // ดึงข้อมูลจาก district
-            subdistrictRel: true, // ดึงข้อมูลจาก subdistrict
-        },
-    });
-
-    if (getUser) {
-        res.status(200).json({
-            message: "Get User by ID",
-            resultData: getUser,
+    try {
+        const getUser = await prisma.user.findFirst({
+            where: {
+                id: Number(id),
+            },
+            include: {
+                provinceRel: true, // ดึงข้อมูลจาก province
+                districtRel: true, // ดึงข้อมูลจาก district
+                subdistrictRel: true, // ดึงข้อมูลจาก subdistrict
+            },
         });
+    
+        if (getUser) {
+            res.status(200).json({
+                message: "Get User by ID",
+                resultData: getUser,
+            });
+        }
+    } catch(err) {
+        console.log(err);
+        res.status(500).send("Server Error");
     }
 });
 
 router.get("/getUsername/:id", async (req, res) => {
     const { id } = req.params;
     
-    const getUsername = await prisma.user.findFirst({
-        where: {
-            id: Number(id),
-        },
-        select: {
-            username: true,
-        }
-    });
-
-    if (getUsername) {
-        res.status(200).json({
-            message: "Get Username by ID",
-            resultData: getUsername,
+    try {
+        const getUsername = await prisma.user.findFirst({
+            where: {
+                id: Number(id),
+            },
+            select: {
+                username: true,
+            }
         });
+    
+        if (getUsername) {
+            res.status(200).json({
+                message: "Get Username by ID",
+                resultData: getUsername,
+            });
+        }
+    } catch(err) {
+        console.log(err);
+        res.status(500).send("Server Error");
     }
 });
 
@@ -155,30 +170,37 @@ router.get("/forgotPassword/:email", async (req, res) => {
 });
 
 router.post("/createUser", async (req, res) => {
-    const password = req.body.password
-    const hashPassword = await bcrypt.hash(password, 10);
+    const { firstname, lastname, email, tel, address, province, district, subdistrict, username, password } = req.body;
 
-    const checkUser = await prisma.user.findFirst({
-        where: {
-            OR : [
-                { email: req.body.email },
-                { username: req.body.username}
-            ]
-        },
-    });
+    try {
+        const hashPassword = await bcrypt.hash(password, 10);
+    
+        const checkUser = await prisma.user.findFirst({
+            where: {
+                OR : [
+                    { email: email },
+                    { username: username}
+                ]
+            },
+        });
 
-    if (!checkUser) {
+        if(checkUser) {
+            return res.status(400).json({
+                message: "User already exists"
+            });
+        }
+    
         const user = await prisma.user.create({
             data: {
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
-                email: req.body.email,
-                tel: req.body.tel,
-                address: req.body.address,
-                province: Number(req.body.province),
-                district: Number(req.body.district),
-                subdistrict: Number(req.body.subdistrict),
-                username: req.body.username,
+                firstname: firstname,
+                lastname: lastname,
+                email: email,
+                tel: tel,
+                address: address,
+                province: Number(province),
+                district: Number(district),
+                subdistrict: Number(subdistrict),
+                username: username,
                 password: hashPassword,
                 role_id: 1,
                 isVerified: true,
@@ -190,36 +212,44 @@ router.post("/createUser", async (req, res) => {
                 message: 'User created successfully',
             })
         }
-    }
-    else {
-        res.status(400).json({ error: "User already exists" });
+    } catch(err) {
+        console.log(err);
+        res.status(500).send("Server Error");
     }
 });
 
 router.put("/updateUser/:id", async (req, res) => {
     const { id } = req.params;
-    const putUser = await prisma.user.update({
-        where: {
-                id: Number(id)
-            },
-        data: {
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
-            email: req.body.email,
-            tel: req.body.tel,
-            address: req.body.address,
-            role_id: Number(req.body.role),
-            province: Number(req.body.province),
-            district: Number(req.body.district),
-            subdistrict: Number(req.body.subdistrict),
-        },
-    });
+    const { firstname, lastname, email, tel, address, role, province, district, subdistrict } = req.body;
 
-    if (putUser) {
-        res.status(200).json({
-            message: "User updated successfully",
+    try {
+        const putUser = await prisma.user.update({
+            where: {
+                    id: Number(id)
+                },
+            data: {
+                firstname: firstname,
+                lastname: lastname,
+                email: email,
+                tel: tel,
+                address: address,
+                role_id: Number(role),
+                province: Number(province),
+                district: Number(district),
+                subdistrict: Number(subdistrict),
+            },
         });
+    
+        if (putUser) {
+            res.status(200).json({
+                message: "User updated successfully",
+            });
+        }
+    } catch(err) {
+        console.log(err);
+        res.status(500).send("Server Error");
     }
+    
 });
 
 router.put("/updatePassword", async (req, res) => {
@@ -254,8 +284,9 @@ router.put("/updatePassword", async (req, res) => {
 });
 
 router.delete("/deleteUser/:id", async (req, res) => {
+    const { id } = req.params;
+    
     try {
-        const { id } = req.params;
         const delUser = await prisma.user.delete({
             where: {
                 id: Number(id),

@@ -132,7 +132,7 @@ router.get("/getPlantAvaliableById/:id", async (req, res) => {
 
 router.post('/createPlant', async (req, res) => {
 
-    const { plantName, plantAt, plantId, userId } = req.body; // ดึงข้อมูล userId จาก body
+    const { plantName, plantAt, plantId, userId } = req.body;
 
     if (!plantName || !plantAt || !userId) {
         return res.status(400).json({ error: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
