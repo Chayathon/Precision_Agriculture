@@ -36,6 +36,7 @@ function VerifyEmail() {
             <Button
                 onPress={handleSubmit}
                 color='success'
+                size='lg'
                 isLoading={isLoading}
                 disabled={isLoading}
             >
