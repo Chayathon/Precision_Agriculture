@@ -118,29 +118,29 @@ export default function ListPlant() {
     }, []);
 
     useEffect(() => {
-        const fetchPlant = async () => {
-            try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listPlant/${userId}`);
-    
-                if (res.status === 200) {
-                    const data = await res.json();
-                    setPlants(data.resultData);
-                    setIsLoading(false);
-                    setPage(1);
+        if(userId) {
+            const fetchPlant = async () => {
+                try {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listPlant/${userId}`);
+        
+                    if (res.status === 200) {
+                        const data = await res.json();
+                        setPlants(data.resultData);
+                        setIsLoading(false);
+                        setPage(1);
+                    }
+                } catch (error) {
+                    console.error("Error fetching data: ", error);
                 }
-            } catch (error) {
-                console.error("Error fetching data: ", error);
-            }
-        };
+            };
 
-        fetchPlant();
+            fetchPlant();
+        }
     }, [refresh, userId])
     
     useEffect(() => {
-        if (typeof window !== "undefined") {
-            const userData = JSON.parse(localStorage.getItem("UserData") || "{}");
-            setUserId(userData.id);
-        }
+        const userData = JSON.parse(localStorage.getItem("UserData") || "{}");
+        setUserId(userData.id);
     }, []);
 
     const convertDate = (dateConvert) => {
