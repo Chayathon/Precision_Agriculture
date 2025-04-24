@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2025 at 09:23 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Apr 24, 2025 at 05:50 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -987,9 +987,8 @@ CREATE TABLE `plant` (
 --
 
 INSERT INTO `plant` (`id`, `plantname`, `plantedAt`, `user_id`, `plant_id`) VALUES
-(1, 'ข้าว', '2025-03-01 00:00:00.000', 2, 2),
-(2, 'มะม่วง', '2025-03-15 00:00:00.000', 2, 1),
-(3, 'ข้าว', '2025-03-03 00:00:00.000', 3, 2);
+(2, 'ข้าวหอมมะลิ ', '2025-02-15 00:00:00.000', 2, 2),
+(3, 'ข้าวหอมมะลิ', '2025-04-01 00:00:00.000', 2, 2);
 
 -- --------------------------------------------------------
 
@@ -1008,11 +1007,12 @@ CREATE TABLE `plant_avaliable` (
 --
 
 INSERT INTO `plant_avaliable` (`id`, `plantname`, `user_id`) VALUES
-(1, 'อื่นๆ', 1),
-(2, 'ข้าว', 1),
-(3, 'ข้าวโพด', 1),
-(4, 'มันสำปะหลัง', 1),
-(5, 'ทุเรียน', 1);
+(2, 'ข้าวหอมมะลิ ', 1),
+(3, 'มันสำปะหลัง', 1),
+(4, 'ข้าวโพดเลี้ยงสัตว์', 1),
+(5, 'ทุเรียนหมอนทอง', 1),
+(6, 'ข้าวจ้าว ', 1),
+(7, 'ข้าวเหนียว', 1);
 
 -- --------------------------------------------------------
 
@@ -1131,7 +1131,10 @@ CREATE TABLE `p_factor` (
 --
 
 INSERT INTO `p_factor` (`id`, `pH`, `temperature`, `humidity`, `lightIntensity`, `salinity`, `plant_id`, `age`) VALUES
-(1, 7, 30, 75, 12000, 1.2, 2, 0);
+(2, 6, 30, 70, 30000, 1.5, 2, 30),
+(3, 6.5, 30, 75, 35000, 2, 2, 60),
+(4, 6.5, 28, 65, 25000, 1.5, 2, 90),
+(5, 6, 25, 65, 20000, 1, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -1153,7 +1156,10 @@ CREATE TABLE `p_nutrient` (
 --
 
 INSERT INTO `p_nutrient` (`id`, `nitrogen`, `phosphorus`, `potassium`, `plant_id`, `age`) VALUES
-(1, 30, 30, 30, 2, 0);
+(2, 8, 5, 8, 2, 30),
+(3, 5, 5, 8, 2, 60),
+(4, 5, 5, 5, 2, 90),
+(5, 5, 5, 5, 2, 1);
 
 -- --------------------------------------------------------
 
@@ -1172,13 +1178,6 @@ CREATE TABLE `p_other_factor` (
   `lightIntensity` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `p_other_factor`
---
-
-INSERT INTO `p_other_factor` (`id`, `plant_id`, `age`, `pH`, `temperature`, `humidity`, `salinity`, `lightIntensity`) VALUES
-(1, 2, 0, 5, 25, 50, 1.5, 15000);
-
 -- --------------------------------------------------------
 
 --
@@ -1193,13 +1192,6 @@ CREATE TABLE `p_other_nutrient` (
   `phosphorus` double NOT NULL,
   `potassium` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `p_other_nutrient`
---
-
-INSERT INTO `p_other_nutrient` (`id`, `plant_id`, `age`, `nitrogen`, `phosphorus`, `potassium`) VALUES
-(1, 2, 0, 50, 50, 50);
 
 -- --------------------------------------------------------
 
@@ -1226,7 +1218,57 @@ CREATE TABLE `p_variable` (
 --
 
 INSERT INTO `p_variable` (`id`, `plant_id`, `receivedAt`, `nitrogen`, `phosphorus`, `potassium`, `pH`, `temperature`, `humidity`, `lightIntensity`, `salinity`) VALUES
-(1, 1, '2025-03-01 15:17:04.000', 50, 50, 50, 5, 30, 75, 12000, 1.2);
+(2, 2, '2025-03-01 22:26:40.000', 4, 3, 8, 6, 25, 75, 10000, 1),
+(3, 2, '2025-03-02 22:26:40.000', 26, 25, 40, 30, 20, 10, 15000, 1.5),
+(4, 2, '2025-03-03 22:26:40.000', 25, 21, 41, 10, 50, 25, 20000, 3),
+(5, 2, '2025-03-04 22:26:40.000', 11, 15, 45, 20, 30, 25, 16003, 5),
+(6, 2, '2025-03-05 22:26:40.000', 14, 15, 20, 10, 20, 29, 30000, 49),
+(7, 2, '2025-03-06 22:27:11.000', 10, 5, 5, 10, 20, 65, 26000, 2),
+(8, 2, '2025-03-07 22:27:11.000', 30, 20, 35, 20, 30, 50, 29000, 3),
+(9, 2, '2025-03-08 22:27:11.000', 30, 15, 35, 25, 27, 25, 20000, 3),
+(10, 2, '2025-03-09 22:27:11.000', 11, 15, 45, 20, 27, 60, 30000, 3.4),
+(11, 2, '2025-03-10 22:27:11.000', 20, 23, 15, 16, 28, 30, 35000, 10),
+(12, 2, '2025-03-11 22:40:56.000', 4, 3, 8, 6, 25, 75, 15000, 2),
+(13, 2, '2025-03-12 22:40:56.000', 24, 34, 41, 25, 32, 70, 20100, 3),
+(14, 2, '2025-03-13 22:40:56.000', 25, 21, 41, 10, 50, 25, 20000, 3),
+(15, 2, '2025-03-14 22:40:56.000', 16, 27, 37, 26, 24, 64, 30000, 2),
+(16, 2, '2025-03-15 22:40:56.000', 14, 15, 20, 10, 23, 30, 30000, 5),
+(17, 2, '2025-03-16 22:40:56.000', 15, 4, 6, 14, 29, 55, 27000, 3),
+(18, 2, '2025-03-17 22:40:56.000', 18, 17, 24, 15, 25, 61, 21000, 2),
+(19, 2, '2025-03-18 22:40:56.000', 30, 15, 35, 25, 27, 25, 20000, 3),
+(20, 2, '2025-03-19 22:40:56.000', 11, 15, 45, 20, 27, 60, 30000, 3.4),
+(21, 2, '2025-03-20 22:40:56.000', 20, 23, 15, 16, 35, 40, 35000, 2),
+(22, 3, '2025-03-01 22:26:40.000', 4, 3, 8, 6, 25, 75, 10000, 1),
+(23, 3, '2025-03-04 22:26:40.000', 11, 15, 45, 20, 30, 25, 16003, 5),
+(24, 3, '2025-03-08 22:27:11.000', 30, 15, 35, 25, 27, 25, 20000, 3),
+(25, 3, '2025-03-14 22:40:56.000', 16, 27, 37, 26, 24, 64, 30000, 2),
+(26, 3, '2025-03-18 22:40:56.000', 30, 15, 35, 25, 27, 25, 20000, 3),
+(27, 3, '2025-03-04 22:26:40.000', 11, 15, 45, 20, 30, 25, 16003, 5),
+(28, 3, '2025-03-06 22:27:11.000', 10, 5, 5, 10, 20, 65, 26000, 2),
+(29, 3, '2025-03-09 22:27:11.000', 11, 15, 45, 20, 27, 60, 30000, 3.4),
+(30, 3, '2025-03-10 22:27:11.000', 20, 23, 15, 16, 28, 30, 35000, 10),
+(31, 3, '2025-03-11 22:40:56.000', 4, 3, 8, 6, 25, 75, 15000, 2),
+(32, 3, '2025-03-14 22:40:56.000', 16, 27, 37, 26, 24, 64, 30000, 2),
+(33, 3, '2025-03-18 22:40:56.000', 30, 15, 35, 25, 27, 25, 20000, 3),
+(34, 3, '2025-03-03 22:26:40.000', 25, 21, 41, 10, 50, 25, 20000, 3),
+(35, 3, '2025-03-04 22:26:40.000', 11, 15, 45, 20, 30, 25, 16003, 5),
+(36, 3, '2025-03-07 22:27:11.000', 30, 20, 35, 20, 30, 50, 29000, 3),
+(37, 3, '2025-03-10 22:27:11.000', 20, 23, 15, 16, 28, 30, 35000, 10),
+(38, 3, '2025-03-13 22:40:56.000', 25, 21, 41, 10, 50, 25, 20000, 3),
+(39, 3, '2025-03-17 22:40:56.000', 18, 17, 24, 15, 25, 61, 21000, 2),
+(40, 3, '2025-03-20 22:40:56.000', 20, 23, 15, 16, 35, 40, 35000, 2),
+(41, 3, '2025-03-04 22:26:40.000', 11, 15, 45, 20, 30, 25, 16003, 5),
+(42, 3, '2025-03-18 22:40:56.000', 30, 15, 35, 25, 27, 25, 20000, 3),
+(43, 3, '2025-03-01 22:26:40.000', 4, 3, 8, 6, 25, 75, 10000, 1),
+(44, 3, '2025-03-03 22:26:40.000', 25, 21, 41, 10, 50, 25, 20000, 3),
+(45, 3, '2025-03-05 22:26:40.000', 14, 15, 20, 10, 20, 29, 30000, 49),
+(46, 3, '2025-03-06 22:27:11.000', 10, 5, 5, 10, 20, 65, 26000, 2),
+(47, 3, '2025-03-07 22:27:11.000', 30, 20, 35, 20, 30, 50, 29000, 3),
+(48, 3, '2025-03-11 22:40:56.000', 4, 3, 8, 6, 25, 75, 15000, 2),
+(49, 3, '2025-03-14 22:40:56.000', 16, 27, 37, 26, 24, 64, 30000, 2),
+(50, 3, '2025-03-18 22:40:56.000', 30, 15, 35, 25, 27, 25, 20000, 3),
+(51, 3, '2025-03-04 22:26:40.000', 11, 15, 45, 20, 30, 25, 16003, 5),
+(52, 3, '2025-03-18 22:40:56.000', 30, 15, 35, 25, 27, 25, 20000, 3);
 
 -- --------------------------------------------------------
 
@@ -8113,17 +8155,19 @@ CREATE TABLE `user` (
   `username` varchar(191) NOT NULL,
   `password` varchar(191) NOT NULL,
   `role_id` int(11) NOT NULL,
-  `otp` int(11) DEFAULT NULL
+  `otp` int(11) DEFAULT NULL,
+  `isVerified` tinyint(1) NOT NULL DEFAULT 0,
+  `verificationToken` varchar(191) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `firstname`, `lastname`, `email`, `tel`, `address`, `province`, `district`, `subdistrict`, `username`, `password`, `role_id`, `otp`) VALUES
-(1, 'ชยธร', 'เติมพิพัฒน์พงศ์', 'gusgus157903@gmail.com', '0957079861', '253/11 ม.รุ่งเรือง ถ.เทศบาล 4', 19, 1901, 190101, 'Chayathon', '$2b$10$db3pYLKQFBErX/Gg1R6zDuhuT8SBhTk0zp3UeTsReekZJGCBM0S3C', 2, NULL),
-(2, 'อดิเทพ', 'ทองเรือง', 'aditep.t@gmail.com', '0967953918', '11/111', 84, 8401, 840109, 'Aditep', '$2b$10$0owvgO.Gmhf3mArryx7ks.ff.Hye/uOtHLyqzFxRQ3n/Z/FbGovlG', 1, NULL),
-(3, 'user', '01', 'user@example.com', '0812345678', '12/234', 25, 2501, 250112, 'user', '$2b$10$BvfcUN2SPkN3jEdMtS59Je8PZ4LyrW/vUakWS2Yd.roQDZZAiNPVC', 1, NULL);
+INSERT INTO `user` (`id`, `firstname`, `lastname`, `email`, `tel`, `address`, `province`, `district`, `subdistrict`, `username`, `password`, `role_id`, `otp`, `isVerified`, `verificationToken`) VALUES
+(1, 'ชยธร', 'เติมพิพัฒน์พงศ์', 'gusgus157903@gmail.com', '0957079861', '253/11 ม.รุ่งเรือง ถ.เทศบาล 4', 19, 1901, 190101, 'Chayathon', '$2b$10$db3pYLKQFBErX/Gg1R6zDuhuT8SBhTk0zp3UeTsReekZJGCBM0S3C', 2, NULL, 1, NULL),
+(2, 'อดิเทพ', 'ทองเรือง', 's6606021420253@email.kmutnb.ac.th', '0967953918', '11/111', 84, 8417, 841712, 'Adithep', '$2b$10$0owvgO.Gmhf3mArryx7ks.ff.Hye/uOtHLyqzFxRQ3n/Z/FbGovlG', 1, NULL, 1, NULL),
+(3, 'user', '01', 'user@example.com', '0812345678', '12/234', 25, 2501, 250112, 'user', '$2b$10$BvfcUN2SPkN3jEdMtS59Je8PZ4LyrW/vUakWS2Yd.roQDZZAiNPVC', 1, NULL, 0, NULL);
 
 --
 -- Indexes for dumped tables
@@ -8230,19 +8274,19 @@ ALTER TABLE `plant`
 -- AUTO_INCREMENT for table `plant_avaliable`
 --
 ALTER TABLE `plant_avaliable`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `p_factor`
 --
 ALTER TABLE `p_factor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `p_nutrient`
 --
 ALTER TABLE `p_nutrient`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `p_other_factor`
@@ -8260,7 +8304,7 @@ ALTER TABLE `p_other_nutrient`
 -- AUTO_INCREMENT for table `p_variable`
 --
 ALTER TABLE `p_variable`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `role`
