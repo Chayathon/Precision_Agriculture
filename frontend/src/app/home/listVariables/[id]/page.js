@@ -170,23 +170,6 @@ function ListVariables({ params }) {
         return buddhistYearDate;
     };
 
-    const exportToPDF = async () => {
-      const timestamp = moment().format('YYYYMMDD_HHmmss');
-      const filename = `variables-report_${timestamp}.pdf`;
-      const blob = await pdf(
-        <PDFVariables
-          plant={plantName}
-          data={plantData}
-          visibleColumns={visibleColumns}
-          columns={columns}
-        />
-      ).toBlob();
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = filename;
-      link.click();
-    };
-
     const renderCell = useCallback((item, columnKey) => {
       const cellValue = item[columnKey];
   
@@ -206,6 +189,23 @@ function ListVariables({ params }) {
     }, []);
 
     const topContent = useMemo(() => {
+      const exportToPDF = async () => {
+        const timestamp = moment().format('YYYYMMDD_HHmmss');
+        const filename = `variables-report_${timestamp}.pdf`;
+        const blob = await pdf(
+          <PDFVariables
+            plant={plantName}
+            data={plantData}
+            visibleColumns={visibleColumns}
+            columns={columns}
+          />
+        ).toBlob();
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+      };
+
       return (
         <div className='flex justify-between items-center'>
           <p className='text-lg sm:text-xl md:text-2xl font-bold'>

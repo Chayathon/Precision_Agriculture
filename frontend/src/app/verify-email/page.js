@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { Button } from '@nextui-org/react';
 import { FaCircleCheck } from 'react-icons/fa6';
 
-function VerifyEmail() {
+function VerifyEmailContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const token = searchParams.get('token');
@@ -22,10 +22,11 @@ function VerifyEmail() {
                     toast.success("ยืนยันที่อยู่อีเมลสำเร็จ");
                     setTimeout(() => router.push('/'), 3000);
                 } else {
-                    toast.error("Token หมดอายุ")
+                    toast.error("หมดเวลาในการยืนยันอีเมล");
                 }
             } catch (error) {
-                toast.error(error.response?.data?.message || 'ยืนยันที่อยู่อีเมลไม่สำเร็จ');
+                toast.error("ยืนยันที่อยู่อีเมลไม่สำเร็จ");
+                setIsLoading(false);
             } finally {
                 setIsLoading(false);
             }
@@ -47,4 +48,10 @@ function VerifyEmail() {
     );
 }
 
-export default VerifyEmail
+export default function VerifyEmail() {
+    return (
+        <Suspense fallback={<div>กำลังโหลด...</div>}>
+            <VerifyEmailContent />
+        </Suspense>
+    );
+}
