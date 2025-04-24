@@ -14,7 +14,7 @@ import {
 } from "chart.js";
 
 import { Line } from "react-chartjs-2";
-import { FaTable, FaChartLine, FaBan } from "react-icons/fa6";
+import { FaTable, FaChartLine, FaBan, FaCircleQuestion } from "react-icons/fa6";
 import moment from "moment";
 import 'moment/locale/th';
 import AOS from 'aos';
@@ -440,8 +440,17 @@ function Dashboard({ params }) {
             <Link href={`/home/listVariables/${id}`}>
               <div data-aos="fade-up">
                 <Card className="drop-shadow-xl hover:-translate-y-1 w-full" isPressable>
-                  <CardHeader className="flex justify-center">
-                    <p className="text-gray-500">อุณหภูมิ (°C)</p>
+                  <CardHeader className="flex justify-between items-center">
+                    <div className="flex justify-center flex-1">
+                      <p className="text-gray-500">อุณหภูมิ (°C)</p>
+                    </div>
+                    {(plantData.temperature < factorData.temperature || plantData.temperature > factorData.temperature * 1.25) && (
+                      <div className="flex justify-end">
+                        <Link href="https://www.doa.go.th/th/">
+                          <FaCircleQuestion size={20} />
+                        </Link>
+                      </div>
+                    )}
                   </CardHeader>
                   <CardBody>
                     <div className="flex justify-center items-center gap-12">
@@ -470,8 +479,17 @@ function Dashboard({ params }) {
             <Link href={`/home/listVariables/${id}`}>
               <div data-aos="fade-up">
                 <Card className="drop-shadow-xl hover:-translate-y-1 w-full" isPressable>
-                  <CardHeader className="flex justify-center">
-                    <p className="text-gray-500">ความชื้น (%)</p>
+                  <CardHeader className="flex justify-between items-center">
+                    <div className="flex justify-center flex-1">
+                      <p className="text-gray-500">ความชื้น (%)</p>
+                    </div>
+                    {(plantData.humidity < factorData.humidity || plantData.humidity > factorData.humidity * 1.25) && (
+                      <div className="flex justify-end">
+                        <Link href="https://www.doa.go.th/th/">
+                          <FaCircleQuestion size={20} />
+                        </Link>
+                      </div>
+                    )}
                   </CardHeader>
                   <CardBody>
                     <div className="flex justify-center items-center gap-12">
@@ -501,8 +519,17 @@ function Dashboard({ params }) {
             <Link href={`/home/listVariables/${id}`}>
               <div data-aos="fade-up">
                 <Card className="drop-shadow-xl hover:-translate-y-1 w-full" isPressable>
-                  <CardHeader className="flex justify-center">
-                    <p className="text-gray-500">ไนโตรเจน (mg/kg)</p>
+                  <CardHeader className="flex justify-between items-center">
+                    <div className="flex justify-center flex-1">
+                      <p className="text-gray-500">ไนโตรเจน (mg/kg)</p>
+                    </div>
+                    {(plantData.nitrogen < nutrientData.nitrogen || plantData.nitrogen > nutrientData.nitrogen * 1.25) && (
+                      <div className="flex justify-end">
+                        <Link href="https://www.doa.go.th/th/">
+                          <FaCircleQuestion size={20} />
+                        </Link>
+                      </div>
+                    )}
                   </CardHeader>
                   <CardBody>
                     <div className="flex justify-center items-center gap-12">
@@ -531,8 +558,17 @@ function Dashboard({ params }) {
             <Link href={`/home/listVariables/${id}`}>
               <div data-aos="fade-up">
                 <Card className="drop-shadow-xl hover:-translate-y-1 w-full" isPressable>
-                  <CardHeader className="flex justify-center">
-                    <p className="text-gray-500">ฟอสฟอรัส (mg/kg)</p>
+                  <CardHeader className="flex justify-between items-center">
+                    <div className="flex justify-center flex-1">
+                      <p className="text-gray-500">ฟอสฟอรัส (mg/kg)</p>
+                    </div>
+                    {(plantData.phosphorus < nutrientData.phosphorus || plantData.phosphorus > nutrientData.phosphorus * 1.25) && (
+                      <div className="flex justify-end">
+                        <Link href="https://www.doa.go.th/th/">
+                          <FaCircleQuestion size={20} />
+                        </Link>
+                      </div>
+                    )}
                   </CardHeader>
                   <CardBody>
                     <div className="flex justify-center items-center gap-12">
@@ -561,8 +597,17 @@ function Dashboard({ params }) {
             <Link href={`/home/listVariables/${id}`}>
               <div data-aos="fade-up">
                 <Card className="drop-shadow-xl hover:-translate-y-1 w-full" isPressable>
-                  <CardHeader className="flex justify-center">
-                    <p className="text-gray-500">โพแทสเซียม (mg/kg)</p>
+                  <CardHeader className="flex justify-between items-center">
+                    <div className="flex justify-center flex-1">
+                      <p className="text-gray-500">โพแทสเซียม (mg/kg)</p>
+                    </div>
+                    {(plantData.potassium < nutrientData.potassium || plantData.potassium > nutrientData.potassium * 1.25) && (
+                      <div className="flex justify-end">
+                        <Link href="https://www.doa.go.th/th/">
+                          <FaCircleQuestion size={20} />
+                        </Link>
+                      </div>
+                    )}
                   </CardHeader>
                   <CardBody>
                     <div className="flex justify-center items-center gap-12">
@@ -596,12 +641,19 @@ function Dashboard({ params }) {
                     <div className="flex justify-center flex-1"> 
                       <p className="text-gray-500">ค่าความเป็นกรด-ด่าง (pH)</p>
                     </div>
-                    <div className="flex justify-end">
+                    <div className="flex justify-end gap-2">
                       <ButtonGroup size="sm" variant="flat">
                         <Button onPress={() => {setSelectedId(id); onOpenPhGraph();}}>
                           <FaChartLine className="size-4 text-red-400" />
                         </Button>
                       </ButtonGroup>
+                      {(plantData.pH < factorData.pH || plantData.pH > factorData.pH * 1.25) && (
+                        <div className="flex justify-end">
+                          <Link href="https://www.doa.go.th/th/">
+                            <FaCircleQuestion size={20} />
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   </CardHeader>
                   <CardBody>
@@ -635,12 +687,19 @@ function Dashboard({ params }) {
                     <div className="flex justify-center flex-1"> 
                       <p className="text-gray-500">ค่าการนำไฟฟ้า (µS/cm)</p>
                     </div>
-                    <div className="flex justify-end">
+                    <div className="flex justify-end gap-2">
                       <ButtonGroup size="sm" variant="flat">
                         <Button onPress={() => {setSelectedId(id); onOpenSalinityGraph();}}>
                           <FaChartLine className="size-4 text-red-400" />
                         </Button>
                       </ButtonGroup>
+                      {(plantData.salinity < factorData.salinity || plantData.salinity > factorData.salinity * 1.25) && (
+                        <div className="flex justify-end">
+                          <Link href="https://www.doa.go.th/th/">
+                            <FaCircleQuestion size={20} />
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   </CardHeader>
                   <CardBody>
@@ -674,12 +733,19 @@ function Dashboard({ params }) {
                     <div className="flex justify-center flex-1"> 
                       <p className="text-gray-500">ค่าความเข้มแสง (lux)</p>
                     </div>
-                    <div className="flex justify-end">
+                    <div className="flex justify-end gap-2">
                       <ButtonGroup size="sm" variant="flat">
                         <Button onPress={() => {setSelectedId(id); onOpenLightIntensityGraph();}}>
                           <FaChartLine className="size-4 text-red-400" />
                         </Button>
                       </ButtonGroup>
+                      {(plantData.lightIntensity < factorData.lightIntensity || plantData.lightIntensity > factorData.lightIntensity * 1.25) && (
+                        <div className="flex justify-end">
+                          <Link href="https://www.doa.go.th/th/">
+                            <FaCircleQuestion size={20} />
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   </CardHeader>
                   <CardBody>
@@ -719,14 +785,6 @@ function Dashboard({ params }) {
           )}
 
           <div className="flex justify-between mb-4" data-aos="fade-up">
-            <Button className="max-md:w-full" color="secondary">
-              <Link
-                href={`/home/listVariables/${id}`}
-                className="flex items-center gap-2"
-              >
-                <FaTable className="size-4" /> ตารางข้อมูล
-              </Link>
-            </Button>
             <div className="hidden md:flex">
               <ButtonGroup className='max-sm:gap-y-2'>
                 <Button onPress={() => fetchPlantVariables7day(id)} className="focus:bg-gray-400">7 วัน</Button>
@@ -737,7 +795,15 @@ function Dashboard({ params }) {
                 <Button onPress={() => fetchPlantVariables9month(id)} className="focus:bg-gray-400">9 เดือน</Button>
                 <Button onPress={() => fetchPlantVariables1year(id)} className="focus:bg-gray-400">1 ปี</Button>
               </ButtonGroup>
-              </div>
+            </div>
+            <Button className="max-md:w-full" color="secondary">
+              <Link
+                href={`/home/listVariables/${id}`}
+                className="flex items-center gap-2"
+              >
+                <FaTable className="size-4" /> ตารางข้อมูล
+              </Link>
+            </Button>
           </div>
 
           <div className="block w-full mb-4 md:hidden" data-aos="fade-up">
