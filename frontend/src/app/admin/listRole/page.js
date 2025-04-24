@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import Cookies from "js-cookie";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure, Spinner } from "@nextui-org/react";
 import { FaPlus, FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
@@ -121,14 +121,16 @@ export default function ListRole() {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
-            if (res.ok) {
+            if (res.status === 200) {
                 const data = await res.json();
                 setRoles(data.resultData);
-                setIsLoading(false);
                 setPage(1);
             }
         } catch (error) {
             console.error("Error fetching data: ", error);
+            setIsLoading(false);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -244,7 +246,7 @@ export default function ListRole() {
                 </TableHeader>
                 <TableBody 
                     isLoading={isLoading}
-                    loadingContent={<div>กำลังโหลดข้อมูล...</div>}
+                    loadingContent={<Spinner size="lg" label="กำลังโหลดข้อมูล..." />}
                     emptyContent={!isLoading ? "ไม่มีข้อมูล" : null}
                     items={sortedItems}
                 >

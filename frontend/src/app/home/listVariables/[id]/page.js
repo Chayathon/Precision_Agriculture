@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { Button, ButtonGroup, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Select, SelectItem, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react';
+import { Button, ButtonGroup, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow, Select, SelectItem, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Spinner } from '@nextui-org/react';
 import moment from "moment";
 import 'moment/locale/th';
 import { pdf } from '@react-pdf/renderer';
@@ -301,7 +301,7 @@ function ListVariables({ params }) {
             <TableBody
                 items={plantData || []}
                 isLoading={isLoading}
-                loadingContent={<div>กำลังโหลดข้อมูล...</div>}
+                loadingContent={<Spinner size="lg" label="กำลังโหลดข้อมูล..." />}
                 emptyContent={!isLoading ? "ไม่มีข้อมูล" : null}
             >
                 {(item) => (

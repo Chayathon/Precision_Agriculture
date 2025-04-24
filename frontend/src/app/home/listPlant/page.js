@@ -267,7 +267,7 @@ export default function ListPlant() {
                 </TableHeader>
                 <TableBody 
                     isLoading={isLoading}
-                    loadingContent={<div>กำลังโหลดข้อมูล...</div>}
+                    loadingContent={<Spinner size="lg" label="กำลังโหลดข้อมูล..." />}
                     emptyContent={!isLoading ? "ไม่มีข้อมูล" : null}
                     items={sortedItems}
                 >
