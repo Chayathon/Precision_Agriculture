@@ -634,7 +634,6 @@ function Dashboard({ params }) {
               </div>
             </Link>
 
-            <Link href={`/home/listVariables/${id}`}>
               <div data-aos="fade-up">
                 <Card className="drop-shadow-xl hover:-translate-y-1 w-full" isPressable>
                   <CardHeader className="flex justify-between items-center">
@@ -679,8 +678,6 @@ function Dashboard({ params }) {
                   </CardBody>
                 </Card>
               </div>
-            </Link>
-            <Link href={`/home/listVariables/${id}`}>
               <div data-aos="fade-up">
                 <Card className="drop-shadow-xl hover:-translate-y-1 w-full" isPressable>
                   <CardHeader className="flex justify-between items-center">
@@ -725,8 +722,6 @@ function Dashboard({ params }) {
                   </CardBody>
                 </Card>
               </div>
-            </Link>
-            <Link href={`/home/listVariables/${id}`}>
               <div data-aos="fade-up">
                 <Card className="drop-shadow-xl hover:-translate-y-1 w-full" isPressable>
                   <CardHeader className="flex justify-between items-center">
@@ -771,7 +766,6 @@ function Dashboard({ params }) {
                   </CardBody>
                 </Card>
               </div>
-            </Link>
           </div>
 
           {isOpenPhGraph && (
