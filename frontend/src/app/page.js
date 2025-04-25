@@ -145,16 +145,6 @@ function Login() {
                             className='my-4'
                             required
                         />
-                        {!verified && email && (
-                            <Button
-                                onPress={handleResendVerification}
-                                className="w-full mb-2"
-                                isLoading={isSending}
-                                disabled={isSending}
-                            >
-                                {isSending ? 'กำลังส่งอีเมล...' : 'ส่งอีเมลยืนยันอีกครั้ง'} <HiMail size={20} />
-                            </Button>
-                        )}
                         <Button
                             type='submit'
                             color='success'
@@ -165,6 +155,16 @@ function Login() {
                         >
                             {isLoading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'} <FaRightToBracket size={18} />
                         </Button>
+                        {!verified && email && (
+                            <Button
+                                onPress={handleResendVerification}
+                                className="w-full mt-2"
+                                isLoading={isSending}
+                                disabled={isSending}
+                            >
+                                {isSending ? 'กำลังส่งอีเมล...' : 'ส่งอีเมลยืนยันอีกครั้ง'} <HiMail size={20} />
+                            </Button>
+                        )}
                     </form>
                 </CardBody>
                 <CardFooter className='flex justify-between'>

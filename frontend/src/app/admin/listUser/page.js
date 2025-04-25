@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import Cookies from "js-cookie";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure, user, Spinner } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure, user, Spinner, Select, SelectItem } from "@nextui-org/react";
 import { FaPlus, FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
@@ -15,6 +15,7 @@ import ModalMultiDeleteUser from "../components/ModalMultiDeleteUser";
 
 export default function ListUser() {
     const [users, setUsers] = useState([]);
+    const [isVerified, setIsVerified] = useState("1");
 
     const [refresh, setRefresh] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -122,30 +123,32 @@ export default function ListUser() {
         setPage(1)
     }, []);
 
-    // Fetch users data
-    const fetchUser = async (role_id) => {
-        try {
-            const token = Cookies.get("Token");
-            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listUser/${role_id}`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
-            if (res.status === 200) {
-                const data = await res.json();
-                setUsers(data.resultData);
-                setPage(1);
-            }
-        } catch (error) {
-            console.error("Error fetching data: ", error);
-            setIsLoading(false);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    
 
     useEffect(() => {
+        // Fetch users data
+        const fetchUser = async (role_id) => {
+            try {
+                const token = Cookies.get("Token");
+                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listUser/${role_id}/${isVerified}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                if (res.status === 200) {
+                    const data = await res.json();
+                    setUsers(data.resultData);
+                    setPage(1);
+                }
+            } catch (error) {
+                console.error("Error fetching data: ", error);
+                setIsLoading(false);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        
         fetchUser(1);
-    }, [refresh]);
+    }, [refresh, isVerified]);
 
     // Top content of table
     const topContent = useMemo(() => {
@@ -162,6 +165,16 @@ export default function ListUser() {
                         onValueChange={onSearchChange}
                     />
                     <div className="flex gap-3">
+                        <Select
+                            className="w-32"
+                            size="sm"
+                            label="สถานะยืนยันอีเมล"
+                            defaultSelectedKeys={[isVerified]}
+                            onChange={(e) => setIsVerified(e.target.value)}
+                        >
+                            <SelectItem key="1" value="1">ยืนยันแล้ว</SelectItem>
+                            <SelectItem key="0" value="0">ยังไม่ยืนยัน</SelectItem>
+                        </Select>
                         {selectedKeys.size > 0 && (
                             <Button 
                                 onPress={onOpenMultiDelete} 
@@ -196,7 +209,7 @@ export default function ListUser() {
                 </div>
             </div>
         );
-    }, [filterValue, onRowsPerPageChange, users.length, onSearchChange, selectedKeys.size, onClear, onOpenCreate, onOpenMultiDelete]);
+    }, [filterValue, onRowsPerPageChange, users.length, onSearchChange, selectedKeys.size, onClear, onOpenCreate, onOpenMultiDelete, isVerified]);
 
     // Bottom content of table
     const bottomContent = useMemo(() => {
