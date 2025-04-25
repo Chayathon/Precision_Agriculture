@@ -47,8 +47,7 @@ router.post('/recievedVariable', async (req, res) => {
             }
         }
 
-        const now = new Date();
-        const recievedTime = new Date(now.getTime() + (7 * 60 * 60 * 1000));
+        const recievedTime = new Date();
 
         const plantVariable = await prisma.p_variable.create({
             data: {

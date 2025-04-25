@@ -6,14 +6,6 @@
     @apply transition-colors duration-300;
 }
 
-:root {
-    --font-kanit: 'Kanit', sans-serif;
-}
-
-html, body {
-    font-family: var(--font-kanit) !important;
-}
-
 .Toastify__toast {
     font-family: 'Kanit', sans-serif !important;
 }

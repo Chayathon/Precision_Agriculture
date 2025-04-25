@@ -16,7 +16,7 @@ function VerifyEmailContent() {
         if (token) {
             setIsLoading(true);
             try {
-                const res = await fetch(`http://localhost:4000/api/verify-email?token=${token}`);
+                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/verify-email?token=${token}`);
 
                 if(res.status === 200) {
                     toast.success("ยืนยันที่อยู่อีเมลสำเร็จ");

@@ -14,6 +14,7 @@ export const metadata = {
 const kanit = Kanit({
     weight: ["400", "500", "600"],
     subsets: ["latin-ext", "thai"],
+    display: "swap",
 });
 
 export default function RootLayout({ children }) {

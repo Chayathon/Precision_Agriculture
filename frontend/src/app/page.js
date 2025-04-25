@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -79,7 +79,7 @@ function Login() {
         setIsSending(true);
 
         try {
-            const res = await fetch('http://localhost:4000/api/resend-verification', {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/resend-verification`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
