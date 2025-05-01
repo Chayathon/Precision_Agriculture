@@ -9,6 +9,32 @@ const bcrypt = require("bcrypt");
 
 const { authIsCheck, isAdmin } = require("../middleware/auth");
 
+router.get("/listUsers/:role_id", authIsCheck, isAdmin, async (req, res) => {
+    const { role_id } = req.params;
+    
+    try {
+        const listUsers = await prisma.user.findMany({
+            where: {
+                role_id: Number(role_id),
+                isVerified: true,
+            },
+            include: {
+                role: true,
+            },
+        });
+    
+        if (listUsers) {
+            res.status(200).json({
+                message: "Get All User",
+                resultData: listUsers,
+            });
+        }
+    } catch(err) {
+        console.log(err);
+        res.status(500).send("Server Error");
+    }
+});
+
 router.get("/listUser/:role_id/:verified", authIsCheck, isAdmin, async (req, res) => {
     const { role_id, verified } = req.params;
     

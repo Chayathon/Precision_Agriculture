@@ -52,7 +52,7 @@ function Home() {
     const fetchAdmin = async (role_id) => {
         try {
             const token = Cookies.get("Token");
-            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listUser/${role_id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listUsers/${role_id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -68,29 +68,13 @@ function Home() {
     const fetchUser = async (role_id) => {
         try {
             const token = Cookies.get("Token");
-            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listUser/${role_id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listUsers/${role_id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
             if (res.status === 200) {
                 const data = await res.json();
                 setUsers(data.resultData.length);
-            }
-        } catch (error) {
-            console.error("Error fetching data: ", error);
-        }
-    };
-
-    const fetchRole = async () => {
-        try {
-            const token = Cookies.get("Token");
-            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/listRole`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
-            if (res.status === 200) {
-                const data = await res.json();
-                setRoles(data.resultData.length);
             }
         } catch (error) {
             console.error("Error fetching data: ", error);
@@ -216,7 +200,6 @@ function Home() {
         fetchPlant();
         fetchAdmin(2);
         fetchUser(1);
-        fetchRole();
     }, []);
 
     useEffect(() => {
@@ -260,8 +243,8 @@ function Home() {
 
     return (
         <div className='container mx-auto max-w-[1400px]'>
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 m-4'>
-                <Link href='/admin/listPlant'>
+            <div className='grid grid-cols-1 sm:grid-cols-4 md:grid-cols-6 gap-4 m-4'>
+                <Link href='/admin/listPlant' className='sm:col-span-4 md:col-span-2'>
                     <div data-aos="fade-up">
                         <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' isPressable>
                             <CardHeader className='flex justify-center'>
@@ -282,7 +265,7 @@ function Home() {
                         </Card>
                     </div>
                 </Link>
-                <Link href='/admin/listAdmin'>
+                <Link href='/admin/listAdmin' className='sm:col-span-2'>
                     <div data-aos="fade-up">
                         <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' isPressable>
                             <CardHeader className='flex justify-center'>
@@ -303,7 +286,7 @@ function Home() {
                         </Card>
                     </div>
                 </Link>
-                <Link href='/admin/listUser'>
+                <Link href='/admin/listUser' className='sm:col-span-2'>
                     <div data-aos="fade-up">
                         <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' isPressable>
                             <CardHeader className='flex justify-center'>
@@ -324,28 +307,7 @@ function Home() {
                         </Card>
                     </div>
                 </Link>
-                <Link href='/admin/listRole'>
-                    <div data-aos="fade-up">
-                        <Card className='drop-shadow-xl h-[228px] hover:-translate-y-1 w-full' isPressable>
-                            <CardHeader className='flex justify-center'>
-                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                    <p className='text-gray-500'>ตำแหน่ง</p>
-                                </Skeleton>
-                            </CardHeader>
-                            <CardBody>
-                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                    <p className='text-center text-8xl font-bold'>{roles}</p>
-                                </Skeleton>
-                            </CardBody>
-                            <CardFooter className='flex justify-center'>
-                                <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                                    <p className='text-gray-500'>บทบาท</p>
-                                </Skeleton>
-                            </CardFooter>
-                        </Card>
-                    </div>
-                </Link>
-                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl items-center space-y-1" data-aos="fade-up">
+                <Card className="sm:col-span-4 md:col-span-6 p-4 pb-4 drop-shadow-xl items-center space-y-1" data-aos="fade-up">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                         <p>ข้อมูลสภาพอากาศ ตำบล {localtion}</p>
                     </Skeleton>
@@ -356,7 +318,7 @@ function Home() {
                         <p className='pt-4 text-lg font-bold sm:text-xl md:text-2xl lg:text-4xl'>{weatherCondition(condition)}</p>
                     </Skeleton>
                 </Card>
-                <Card className="md:col-span-2 items-center p-4 drop-shadow-xl space-y-1" data-aos="fade-up">
+                <Card className="sm:col-span-2 md:col-span-3 items-center p-4 drop-shadow-xl space-y-1" data-aos="fade-up">
                     <Skeleton className="w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px] rounded-lg" isLoaded={isLoaded}>
                         <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
                             <GaugeChart
@@ -376,7 +338,7 @@ function Home() {
                         </div>
                     </Skeleton>
                 </Card>
-                <Card className="md:col-span-2 items-center p-4 drop-shadow-xl space-y-1" data-aos="fade-up">
+                <Card className="sm:col-span-2 md:col-span-3 items-center p-4 drop-shadow-xl space-y-1" data-aos="fade-up">
                     <Skeleton className="w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px] rounded-lg" isLoaded={isLoaded}>
                         <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
                             <GaugeChart
@@ -389,14 +351,14 @@ function Home() {
                         </div>
                     </Skeleton>
                     <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                        <div className='flex items-center space-x-6 sm:space-x-10 md:space-x-20 lg:space-x-32'>
+                        <div className='flex items-center space-x-6 sm:space-x-10 md:space-x-16 lg:space-x-32'>
                             <p className='font-bold text-xl md:text-2xl lg:text-3xl'>0</p>
                             <p>ความชื้นสัมพัทธ์ (%)</p>
                             <p className='font-bold text-xl md:text-2xl lg:text-3xl'>100</p>
                         </div>
                     </Skeleton>
                 </Card>
-                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl space-y-1" data-aos="fade-up">
+                <Card className="col-span-1 sm:col-span-4 md:col-span-6 p-4 pb-4 drop-shadow-xl space-y-1" data-aos="fade-up">
                     <Skeleton className="rounded-lg" isLoaded={isLoaded}>
                         <p>พยากรณ์อากาศรายชั่วโมง</p>
                     </Skeleton>
@@ -418,7 +380,7 @@ function Home() {
                         ))}
                     </div>
                 </Card>
-                <Card className="col-span-1 sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
+                <Card className="col-span-1 sm:col-span-4 md:col-span-6 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
                     <Skeleton className="rounded-lg" isLoaded={isLoaded}>
                         <p>พยากรณ์อากาศรายวัน</p>
                     </Skeleton>
@@ -440,16 +402,6 @@ function Home() {
                             </div>
                         ))}
                     </div>
-                </Card>
-                <Card className="sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
-                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                        <iframe src="https://www.tmd.go.th/StromTrack" className='w-full' height="600" frameborder="0" />
-                    </Skeleton>
-                </Card>
-                <Card className="sm:col-span-2 md:col-span-4 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
-                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                        <iframe src= "https://www.tmd.go.th/weatherEarthquakeWidget" className='w-full' height="600" frameborder="0" />
-                    </Skeleton>
                 </Card>
             </div>
         </div>

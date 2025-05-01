@@ -283,16 +283,6 @@ function Home() {
                         ))}
                     </div>
                 </Card>
-                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
-                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                        <iframe src="https://www.tmd.go.th/StromTrack" className='w-full' height="600" frameborder="0" />
-                    </Skeleton>
-                </Card>
-                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl" data-aos="fade-up">
-                    <Skeleton className="rounded-lg" isLoaded={isLoaded}>
-                        <iframe src= "https://www.tmd.go.th/weatherEarthquakeWidget" className='w-full' height="600" frameborder="0" />
-                    </Skeleton>
-                </Card>
             </div>
         </div>
     )

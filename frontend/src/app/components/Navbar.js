@@ -463,8 +463,8 @@ function UserNavbar() {
                                 <User
                                     showFallback src='https://images.unsplash.com/broken'
                                     as="button"
-                                    name={<span className="sm:inline hidden">{name}</span>}
-                                    description={<span className="sm:inline hidden">{userEmail}</span>}
+                                    name={<span className="md:inline hidden">{name}</span>}
+                                    description={<span className="md:inline hidden">{userEmail}</span>}
                                     className="transition-transform"
                                 />
                             </div>
