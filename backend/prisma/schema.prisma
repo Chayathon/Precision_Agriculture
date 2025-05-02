@@ -60,9 +60,9 @@ model user {
   username          String
   password          String
   role_id           Int
-  verificationToken String?
-  isVerified        Boolean           @default(false)
   otp               Int?
+  isVerified        Boolean           @default(false)
+  verificationToken String?
   plant             plant[]
   plant_avaliable   plant_avaliable[]
   districtRel       district          @relation(fields: [district], references: [district_id])
@@ -118,6 +118,8 @@ model plant {
   id                Int                @id @default(autoincrement())
   plantname         String
   plantedAt         DateTime
+  latitude          Float?
+  longitude         Float?
   user_id           Int
   plant_id          Int
   p_other_factors   p_other_factor[]

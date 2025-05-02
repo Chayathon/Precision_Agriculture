@@ -8,7 +8,7 @@ router.post('/recievedVariable', async (req, res) => {
     try {
         console.log('Received req.body:', req.body);
         
-        const { id, temp, water, ph, conduct, lux, ni, po, pt } = req.body;
+        const { id, temp, water, ph, conduct, lux, ni, po, pt, latitude, longitude } = req.body;
 
         if (
             !id ||
@@ -35,7 +35,7 @@ router.post('/recievedVariable', async (req, res) => {
             lightIntensity: parseFloat(lux),
             nitrogen: parseFloat(ni),
             phosphorus: parseFloat(po),
-            potassium: parseFloat(pt)
+            potassium: parseFloat(pt),
         };
 
         // ตรวจสอบว่าไม่มีค่าใดเป็น NaN
@@ -54,6 +54,16 @@ router.post('/recievedVariable', async (req, res) => {
                 ...parsedData,
                 receivedAt: recievedTime
             }
+        });
+
+        const coordinatesData = await prisma.plant.update({
+            where: {
+                id: Number(id)
+            },
+            data: {
+                ...(latitude === null && !isNaN(parseFloat(latitude)) && { latitude: parseFloat(latitude) }),
+                ...(longitude === null && !isNaN(parseFloat(longitude)) && { longitude: parseFloat(longitude) })
+            },
         });
 
         if(plantVariable) {
