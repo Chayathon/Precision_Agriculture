@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 24, 2025 at 05:50 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: May 02, 2025 at 04:45 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -978,6 +978,8 @@ CREATE TABLE `plant` (
   `id` int(11) NOT NULL,
   `plantname` varchar(191) NOT NULL,
   `plantedAt` datetime(3) NOT NULL,
+  `latitude` double DEFAULT NULL,
+  `longitude` double DEFAULT NULL,
   `user_id` int(11) NOT NULL,
   `plant_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -986,9 +988,9 @@ CREATE TABLE `plant` (
 -- Dumping data for table `plant`
 --
 
-INSERT INTO `plant` (`id`, `plantname`, `plantedAt`, `user_id`, `plant_id`) VALUES
-(2, 'ข้าวหอมมะลิ ', '2025-02-15 00:00:00.000', 2, 2),
-(3, 'ข้าวหอมมะลิ', '2025-04-01 00:00:00.000', 2, 2);
+INSERT INTO `plant` (`id`, `plantname`, `plantedAt`, `latitude`, `longitude`, `user_id`, `plant_id`) VALUES
+(2, 'ข้าวหอมมะลิ ', '2025-02-15 00:00:00.000', NULL, NULL, 2, 2),
+(3, 'ข้าวหอมมะลิ', '2025-04-01 00:00:00.000', NULL, NULL, 2, 2);
 
 -- --------------------------------------------------------
 
