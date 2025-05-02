@@ -323,7 +323,7 @@ function Home() {
                         <div className='w-full max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]'>
                             <GaugeChart
                                 id="temp-gauge"
-                                nrOfLevels={20}
+                                nrOfLevels={5}
                                 percent={temp / 50}
                                 textColor="#A0A0A0"
                                 formatTextValue={() => `${temp.toFixed(2)}°C`}
