@@ -56,15 +56,25 @@ router.post('/recievedVariable', async (req, res) => {
             }
         });
 
-        const coordinatesData = await prisma.plant.update({
+        const plant = await prisma.plant.findFirst({
             where: {
-                id: Number(id)
-            },
-            data: {
-                ...(latitude === null && !isNaN(parseFloat(latitude)) && { latitude: parseFloat(latitude) }),
-                ...(longitude === null && !isNaN(parseFloat(longitude)) && { longitude: parseFloat(longitude) })
+                id: Number(id),
+                latitude: null,
+                longitude: null,
             },
         });
+
+        if (plant) {
+            const coordinatesData = await prisma.plant.update({
+                where: {
+                    id: Number(id),
+                },
+                data: {
+                    latitude: parseFloat(latitude),
+                    longitude: parseFloat(longitude),
+                },
+            });
+        }
 
         if(plantVariable) {
             res.status(200).json({
