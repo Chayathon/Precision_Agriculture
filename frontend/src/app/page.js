@@ -60,7 +60,7 @@ function Login() {
             } else if (res.status === 401) {
                 toast.warn("รหัสผ่านไม่ถูกต้อง");
             } else if (res.status === 403) {
-                toast.warn("กรุณายืนยันอีเมล ก่อนเข้าใช้งาน");
+                toast.warn("กรุณายืนยันการสมัครสมาชิก ก่อนเข้าใช้งาน");
                 setVerified(false);
                 setEmail(data.email);
             } else {
@@ -95,7 +95,7 @@ function Login() {
                 toast.success("สำเร็จ! กรุณาตรวจสอบอีเมลเพื่อยืนยัน");
             } else if(res.status === 400) {
                 toast.warn("ผู้ใช้นี้ยืนยันอีเมลแล้ว");
-            } else if(res.status === 400) {
+            } else if(res.status === 404) {
                 toast.error("ไม่พบผู้ใช้!");
             } else {
                 toast.error(data.message || "เกิดข้อผิดพลาด");
