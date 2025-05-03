@@ -16,6 +16,7 @@ import {
 
 import { Line } from "react-chartjs-2";
 import { FaTable, FaChartLine, FaBan, FaCircleExclamation } from "react-icons/fa6";
+import DmsCoordinates from "dms-conversion";
 import moment from "moment";
 import 'moment/locale/th';
 import AOS from 'aos';
@@ -30,10 +31,15 @@ function Dashboard({ params }) {
 
   const [plantId, setPlantId] = useState(null);
   const [plantAge, setPlantAge] = useState("");
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [mapUrl, setMapUrl] = useState("");
+
   const [plantData, setPlantData] = useState(null);
   const [plantDatas, setPlantDatas] = useState(null);
   const [nutrientData, setNutrientData] = useState(null);
   const [factorData, setFactorData] = useState(null);
+
   const [otherPlant, setOtherPlant] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -133,12 +139,8 @@ function Dashboard({ params }) {
 
     if (otherPlant) {
       if (id) Promise.all([fetchOtherNutrient(id), fetchOtherFactor(id)]);
-      
-      console.log("Fetching other Plant");
     } else {
       if (plantId) Promise.all([fetchNutrient(plantId), fetchFactor(plantId)]);
-      
-      console.log("Fetching Plant");
     }
   }, [id, plantId, otherPlant, plantAge]);
 
@@ -155,6 +157,9 @@ function Dashboard({ params }) {
           const plantedAt = data.resultData.plantedAt;
           const ageInDays = calculateAge(plantedAt);
           setPlantAge(ageInDays);
+
+          setLatitude(data.resultData.latitude);
+          setLongitude(data.resultData.longitude);
   
           data.resultData.plant_id > 0 ? setOtherPlant(false) : setOtherPlant(true);
         }
@@ -307,6 +312,14 @@ function Dashboard({ params }) {
       console.error("Failed to fetch", err);
     }
   };
+
+  useEffect(() => {
+    if(latitude && longitude) {
+      const dmsCoords = new DmsCoordinates(latitude, longitude).toString();
+      const pinned = Buffer.from(dmsCoords).toString("base64");
+      setMapUrl(`https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3861.904509294199!2d${longitude}!3d${latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2z${pinned}!5e0!3m2!1sth!2sth!4v1746197897815!5m2!1sth!2sth`);
+    }
+  }, [latitude, longitude]);
 
   useEffect(() => {
       AOS.init({
@@ -837,15 +850,18 @@ function Dashboard({ params }) {
                   </div>
                 </CardHeader>
                 <CardBody>
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3861.904509294199!2d100.5018!3d13.7563!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTPCsDQ1JzIyLjciTiAxMDDCsDMwJzA2LjUiRQ!5e0!3m2!1sth!2sth!4v1746197897815!5m2!1sth!2sth"
-                    width="800"
-                    height="600"
-                    style={{ border: 0 }}
-                    allowFullScreen=""
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  ></iframe>
+                  {mapUrl ? (
+                    <iframe
+                      src={mapUrl}
+                      className="rounded-xl h-[20rem] md:h-[30rem] lg:h-[40rem]"
+                      style={{ border: 0 }}
+                      allowfullscreen=""
+                      loading="lazy"
+                      referrerpolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                  ) : (
+                    <p className="flex justify-center text-4xl font-bold">ไม่มีข้อมูล</p>
+                  )}
                 </CardBody>
               </Card>
             </div>
