@@ -828,6 +828,27 @@ function Dashboard({ params }) {
                 />
               </Card>
             </div>
+
+            <div data-aos="fade-up" className="lg:col-span-2">
+              <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
+                <CardHeader className="flex justify-between items-center">
+                  <div className="flex justify-center flex-1">
+                    <p className="text-gray-500">แผนที่แสดงสถานที่ปลูกพืช</p>
+                  </div>
+                </CardHeader>
+                <CardBody>
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3861.904509294199!2d100.5018!3d13.7563!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTPCsDQ1JzIyLjciTiAxMDDCsDMwJzA2LjUiRQ!5e0!3m2!1sth!2sth!4v1746197897815!5m2!1sth!2sth"
+                    width="800"
+                    height="600"
+                    style={{ border: 0 }}
+                    allowFullScreen=""
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                </CardBody>
+              </Card>
+            </div>
           </div>
         </>
       ) : (
