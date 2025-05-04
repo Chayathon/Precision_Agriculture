@@ -458,369 +458,353 @@ function Dashboard({ params }) {
                 <p className="text-center text-5xl lg:text-6xl font-bold">{plantAge}</p>
               </CardBody>
             </Card>
-            <div data-aos="fade-up">
-              <Card className="drop-shadow-xl hover:-translate-y-1 w-full">
-                <CardHeader className="flex justify-between items-center">
-                  <div className="flex justify-center flex-1">
-                    <p className="text-gray-500">อุณหภูมิ (°C)</p>
+            <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex justify-center flex-1">
+                  <p className="text-gray-500">อุณหภูมิ (°C)</p>
+                </div>
+                {(plantData?.temperature < factorData?.temperature || plantData?.temperature > factorData?.temperature * 1.25) && (
+                  <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
+                    <FaCircleExclamation size={20} />
+                  </Link>
+                )}
+              </CardHeader>
+              <CardBody>
+                <div className="flex justify-center items-center gap-12">
+                  <div className="text-center">
+                    <p className="text-2xl">ค่าที่วัดได้</p>
+                    <p className={`text-5xl font-bold ${
+                        plantData?.temperature < factorData?.temperature
+                        ? 'text-red-500'
+                        : plantData?.temperature > factorData?.temperature * 1.25
+                        ? 'text-amber-500'
+                        : !plantData?.temperature
+                        ? 'text-gray-500'
+                        : 'text-green-500'
+                      }`}>
+                      {plantData?.temperature ?? "N/A"}
+                    </p>
                   </div>
-                  {(plantData?.temperature < factorData?.temperature || plantData?.temperature > factorData?.temperature * 1.25) && (
-                    <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
-                      <FaCircleExclamation size={20} />
-                    </Link>
-                  )}
-                </CardHeader>
-                <CardBody>
-                  <div className="flex justify-center items-center gap-12">
-                    <div className="text-center">
-                      <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${
-                          plantData?.temperature < factorData?.temperature
-                          ? 'text-red-500'
-                          : plantData?.temperature > factorData?.temperature * 1.25
-                          ? 'text-amber-500'
-                          : !plantData?.temperature
-                          ? 'text-gray-500'
-                          : 'text-green-500'
-                        }`}>
-                        {plantData?.temperature ?? "N/A"}
-                      </p>
-                    </div>
-                    
-                    <div className="text-center">
-                      <p className="text-2xl ">ค่ามาตรฐาน</p>
-                      <p
-                        className={`text-5xl font-bold ${
-                          !factorData?.temperature ? "text-gray-500" : "text-black"
-                        }`}
-                      >{factorData?.temperature ?? "N/A"}</p>
-                    </div>
+                  
+                  <div className="text-center">
+                    <p className="text-2xl ">ค่ามาตรฐาน</p>
+                    <p
+                      className={`text-5xl font-bold ${
+                        !factorData?.temperature ? "text-gray-500" : "text-black"
+                      }`}
+                    >{factorData?.temperature ?? "N/A"}</p>
                   </div>
-                </CardBody>
-              </Card>
-            </div>
-            <div data-aos="fade-up">
-              <Card className="drop-shadow-xl hover:-translate-y-1 w-full">
-                <CardHeader className="flex justify-between items-center">
-                  <div className="flex justify-center flex-1">
-                    <p className="text-gray-500">ความชื้น (%)</p>
+                </div>
+              </CardBody>
+            </Card>
+            <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex justify-center flex-1">
+                  <p className="text-gray-500">ความชื้น (%)</p>
+                </div>
+                {(plantData?.humidity < factorData?.humidity || plantData?.humidity > factorData?.humidity * 1.25) && (
+                  <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end">
+                    <FaCircleExclamation size={20} />
+                  </Link>
+                )}
+              </CardHeader>
+              <CardBody>
+                <div className="flex justify-center items-center gap-12">
+                  <div className="text-center">
+                    <p className="text-2xl">ค่าที่วัดได้</p>
+                    <p className={`text-5xl font-bold ${
+                        plantData?.humidity < factorData?.humidity
+                        ? 'text-red-500'
+                        : plantData?.humidity > factorData?.humidity * 1.25
+                        ? 'text-amber-500'
+                        : !plantData?.humidity
+                        ? 'text-gray-500'
+                        : 'text-green-500'
+                      }`}>
+                      {plantData?.humidity ?? "N/A"}
+                    </p>
                   </div>
-                  {(plantData?.humidity < factorData?.humidity || plantData?.humidity > factorData?.humidity * 1.25) && (
-                    <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end">
-                      <FaCircleExclamation size={20} />
-                    </Link>
-                  )}
-                </CardHeader>
-                <CardBody>
-                  <div className="flex justify-center items-center gap-12">
-                    <div className="text-center">
-                      <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${
-                          plantData?.humidity < factorData?.humidity
-                          ? 'text-red-500'
-                          : plantData?.humidity > factorData?.humidity * 1.25
-                          ? 'text-amber-500'
-                          : !plantData?.humidity
-                          ? 'text-gray-500'
-                          : 'text-green-500'
-                        }`}>
-                        {plantData?.humidity ?? "N/A"}
-                      </p>
-                    </div>
-                    
-                    <div className="text-center">
-                      <p className="text-2xl ">ค่ามาตรฐาน</p>
-                      <p
-                        className={`text-5xl font-bold ${
-                          !factorData?.humidity ? "text-gray-500" : "text-black"
-                        }`}
-                      >{factorData?.humidity ?? "N/A"}</p>
-                    </div>
+                  
+                  <div className="text-center">
+                    <p className="text-2xl ">ค่ามาตรฐาน</p>
+                    <p
+                      className={`text-5xl font-bold ${
+                        !factorData?.humidity ? "text-gray-500" : "text-black"
+                      }`}
+                    >{factorData?.humidity ?? "N/A"}</p>
                   </div>
-                </CardBody>
-              </Card>
-            </div>
+                </div>
+              </CardBody>
+            </Card>
 
-            <div data-aos="fade-up">
-              <Card className="drop-shadow-xl hover:-translate-y-1 w-full">
-                <CardHeader className="flex justify-between items-center">
-                  <div className="flex justify-center flex-1">
-                    <p className="text-gray-500">ไนโตรเจน (mg/kg)</p>
+            <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex justify-center flex-1">
+                  <p className="text-gray-500">ไนโตรเจน (mg/kg)</p>
+                </div>
+                {(plantData?.nitrogen < nutrientData?.nitrogen || plantData?.nitrogen > nutrientData?.nitrogen * 1.25) && (
+                  <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
+                    <FaCircleExclamation size={20} />
+                  </Link>
+                )}
+              </CardHeader>
+              <CardBody>
+                <div className="flex justify-center items-center gap-12">
+                  <div className="text-center">
+                    <p className="text-2xl">ค่าที่วัดได้</p>
+                    <p className={`text-5xl font-bold ${
+                        plantData?.nitrogen < nutrientData?.nitrogen
+                        ? 'text-red-500'
+                        : plantData?.nitrogen > nutrientData?.nitrogen * 1.25
+                        ? 'text-amber-500'
+                        : !plantData?.nitrogen
+                        ? 'text-gray-500'
+                        : 'text-green-500'
+                      }`}>
+                      {plantData?.nitrogen ?? "N/A"}
+                    </p>
                   </div>
-                  {(plantData?.nitrogen < nutrientData?.nitrogen || plantData?.nitrogen > nutrientData?.nitrogen * 1.25) && (
-                    <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
-                      <FaCircleExclamation size={20} />
-                    </Link>
-                  )}
-                </CardHeader>
-                <CardBody>
-                  <div className="flex justify-center items-center gap-12">
-                    <div className="text-center">
-                      <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${
-                          plantData?.nitrogen < nutrientData?.nitrogen
-                          ? 'text-red-500'
-                          : plantData?.nitrogen > nutrientData?.nitrogen * 1.25
-                          ? 'text-amber-500'
-                          : !plantData?.nitrogen
-                          ? 'text-gray-500'
-                          : 'text-green-500'
-                        }`}>
-                        {plantData?.nitrogen ?? "N/A"}
-                      </p>
-                    </div>
-                    
-                    <div className="text-center">
-                      <p className="text-2xl ">ค่ามาตรฐาน</p>
-                      <p
-                        className={`text-5xl font-bold ${
-                          !nutrientData?.nitrogen ? "text-gray-500" : "text-black"
-                        }`}
-                      >
-                        {nutrientData?.nitrogen ?? "N/A"}
-                      </p>
-                    </div>
+                  
+                  <div className="text-center">
+                    <p className="text-2xl ">ค่ามาตรฐาน</p>
+                    <p
+                      className={`text-5xl font-bold ${
+                        !nutrientData?.nitrogen ? "text-gray-500" : "text-black"
+                      }`}
+                    >
+                      {nutrientData?.nitrogen ?? "N/A"}
+                    </p>
                   </div>
-                </CardBody>
-              </Card>
-            </div>
-            <div data-aos="fade-up">
-              <Card className="drop-shadow-xl hover:-translate-y-1 w-full">
-                <CardHeader className="flex justify-between items-center">
-                  <div className="flex justify-center flex-1">
-                    <p className="text-gray-500">ฟอสฟอรัส (mg/kg)</p>
+                </div>
+              </CardBody>
+            </Card>
+            <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex justify-center flex-1">
+                  <p className="text-gray-500">ฟอสฟอรัส (mg/kg)</p>
+                </div>
+                {(plantData?.phosphorus < nutrientData?.phosphorus || plantData?.phosphorus > nutrientData?.phosphorus * 1.25) && (
+                  <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
+                    <FaCircleExclamation size={20} />
+                  </Link>
+                )}
+              </CardHeader>
+              <CardBody>
+                <div className="flex justify-center items-center gap-12">
+                  <div className="text-center">
+                    <p className="text-2xl">ค่าที่วัดได้</p>
+                    <p className={`text-5xl font-bold ${
+                        plantData?.phosphorus < nutrientData?.phosphorus
+                        ? 'text-red-500'
+                        : plantData?.phosphorus > nutrientData?.phosphorus * 1.25
+                        ? 'text-amber-500'
+                        : !plantData?.phosphorus
+                        ? 'text-gray-500'
+                        : 'text-green-500'
+                      }`}>
+                      {plantData?.phosphorus ?? "N/A"}
+                    </p>
                   </div>
-                  {(plantData?.phosphorus < nutrientData?.phosphorus || plantData?.phosphorus > nutrientData?.phosphorus * 1.25) && (
-                    <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
-                      <FaCircleExclamation size={20} />
-                    </Link>
-                  )}
-                </CardHeader>
-                <CardBody>
-                  <div className="flex justify-center items-center gap-12">
-                    <div className="text-center">
-                      <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${
-                          plantData?.phosphorus < nutrientData?.phosphorus
-                          ? 'text-red-500'
-                          : plantData?.phosphorus > nutrientData?.phosphorus * 1.25
-                          ? 'text-amber-500'
-                          : !plantData?.phosphorus
-                          ? 'text-gray-500'
-                          : 'text-green-500'
-                        }`}>
-                        {plantData?.phosphorus ?? "N/A"}
-                      </p>
-                    </div>
-                    
-                    <div className="text-center">
-                      <p className="text-2xl">ค่ามาตรฐาน</p>
-                      <p
-                        className={`text-5xl font-bold ${
-                          !nutrientData?.phosphorus ? "text-gray-500" : "text-black"
-                        }`}
-                      >
-                        {nutrientData?.phosphorus ?? "N/A"}
-                      </p>
-                    </div>
+                  
+                  <div className="text-center">
+                    <p className="text-2xl">ค่ามาตรฐาน</p>
+                    <p
+                      className={`text-5xl font-bold ${
+                        !nutrientData?.phosphorus ? "text-gray-500" : "text-black"
+                      }`}
+                    >
+                      {nutrientData?.phosphorus ?? "N/A"}
+                    </p>
                   </div>
-                </CardBody>
-              </Card>
-            </div>
-            <div data-aos="fade-up">
-              <Card className="drop-shadow-xl hover:-translate-y-1 w-full">
-                <CardHeader className="flex justify-between items-center">
-                  <div className="flex justify-center flex-1">
-                    <p className="text-gray-500">โพแทสเซียม (mg/kg)</p>
+                </div>
+              </CardBody>
+            </Card>
+            <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex justify-center flex-1">
+                  <p className="text-gray-500">โพแทสเซียม (mg/kg)</p>
+                </div>
+                {(plantData?.potassium < nutrientData?.potassium || plantData?.potassium > nutrientData?.potassium * 1.25) && (
+                  <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
+                    <FaCircleExclamation size={20} />
+                  </Link>
+                )}
+              </CardHeader>
+              <CardBody>
+                <div className="flex justify-center items-center gap-12">
+                  <div className="text-center">
+                    <p className="text-2xl">ค่าที่วัดได้</p>
+                    <p className={`text-5xl font-bold ${
+                        plantData?.potassium < nutrientData?.potassium
+                        ? 'text-red-500'
+                        : plantData?.potassium > nutrientData?.potassium * 1.25
+                        ? 'text-amber-500'
+                        : !plantData?.potassium
+                        ? 'text-gray-500'
+                        : 'text-green-500'
+                      }`}>
+                      {plantData?.potassium ?? "N/A"}
+                    </p>
                   </div>
-                  {(plantData?.potassium < nutrientData?.potassium || plantData?.potassium > nutrientData?.potassium * 1.25) && (
-                    <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
-                      <FaCircleExclamation size={20} />
-                    </Link>
-                  )}
-                </CardHeader>
-                <CardBody>
-                  <div className="flex justify-center items-center gap-12">
-                    <div className="text-center">
-                      <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${
-                          plantData?.potassium < nutrientData?.potassium
-                          ? 'text-red-500'
-                          : plantData?.potassium > nutrientData?.potassium * 1.25
-                          ? 'text-amber-500'
-                          : !plantData?.potassium
-                          ? 'text-gray-500'
-                          : 'text-green-500'
-                        }`}>
-                        {plantData?.potassium ?? "N/A"}
-                      </p>
-                    </div>
-                    
-                    <div className="text-center">
-                      <p className="text-2xl ">ค่ามาตรฐาน</p>
-                      <p
-                        className={`text-5xl font-bold ${
-                          !nutrientData?.potassium ? "text-gray-500" : "text-black"
-                        }`}
-                      >
-                        {nutrientData?.potassium ?? "N/A"}
-                      </p>
-                    </div>
+                  
+                  <div className="text-center">
+                    <p className="text-2xl ">ค่ามาตรฐาน</p>
+                    <p
+                      className={`text-5xl font-bold ${
+                        !nutrientData?.potassium ? "text-gray-500" : "text-black"
+                      }`}
+                    >
+                      {nutrientData?.potassium ?? "N/A"}
+                    </p>
                   </div>
-                </CardBody>
-              </Card>
-            </div>
+                </div>
+              </CardBody>
+            </Card>
 
-            <div data-aos="fade-up">
-              <Card className="drop-shadow-xl hover:-translate-y-1 w-full">
-                <CardHeader className="flex justify-between items-center">
-                  <div className="flex justify-center flex-1"> 
-                    <p className="text-gray-500">ค่าความเป็นกรด-ด่าง (pH)</p>
+            <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex justify-center flex-1"> 
+                  <p className="text-gray-500">ค่าความเป็นกรด-ด่าง (pH)</p>
+                </div>
+                <div className="flex justify-end gap-2">
+                  <ButtonGroup size="sm" variant="flat">
+                    <Button onPress={() => {setSelectedId(id); onOpenPhGraph();}}>
+                      <FaChartLine className="size-4 text-red-400" />
+                    </Button>
+                  </ButtonGroup>
+                  {(plantData?.pH < factorData?.pH || plantData?.pH > factorData?.pH * 1.25) && (
+                    <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
+                      <FaCircleExclamation size={20} />
+                    </Link>
+                  )}
+                </div>
+              </CardHeader>
+              <CardBody>
+                <div className="flex justify-center items-center gap-12">
+                  <div className="text-center">
+                    <p className="text-2xl">ค่าที่วัดได้</p>
+                    <p className={`text-5xl font-bold ${
+                        plantData?.pH < factorData?.pH
+                        ? 'text-red-500'
+                        : plantData?.pH > factorData?.pH * 1.25
+                        ? 'text-amber-500'
+                        : !plantData?.pH
+                        ? 'text-gray-500'
+                        : 'text-green-500'
+                      }`}>
+                      {plantData?.pH ?? "N/A"}
+                    </p>
                   </div>
-                  <div className="flex justify-end gap-2">
-                    <ButtonGroup size="sm" variant="flat">
-                      <Button onPress={() => {setSelectedId(id); onOpenPhGraph();}}>
-                        <FaChartLine className="size-4 text-red-400" />
-                      </Button>
-                    </ButtonGroup>
-                    {(plantData?.pH < factorData?.pH || plantData?.pH > factorData?.pH * 1.25) && (
-                      <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
-                        <FaCircleExclamation size={20} />
-                      </Link>
-                    )}
+                  
+                  <div className="text-center">
+                    <p className="text-2xl ">ค่ามาตรฐาน</p>
+                    <p
+                      className={`text-5xl font-bold ${
+                        !factorData?.pH ? "text-gray-500" : "text-black"
+                      }`}
+                    >
+                      {factorData?.pH ?? "N/A"}
+                    </p>
                   </div>
-                </CardHeader>
-                <CardBody>
-                  <div className="flex justify-center items-center gap-12">
-                    <div className="text-center">
-                      <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${
-                          plantData?.pH < factorData?.pH
-                          ? 'text-red-500'
-                          : plantData?.pH > factorData?.pH * 1.25
-                          ? 'text-amber-500'
-                          : !plantData?.pH
-                          ? 'text-gray-500'
-                          : 'text-green-500'
-                        }`}>
-                        {plantData?.pH ?? "N/A"}
-                      </p>
-                    </div>
-                    
-                    <div className="text-center">
-                      <p className="text-2xl ">ค่ามาตรฐาน</p>
-                      <p
-                        className={`text-5xl font-bold ${
-                          !factorData?.pH ? "text-gray-500" : "text-black"
-                        }`}
-                      >
-                        {factorData?.pH ?? "N/A"}
-                      </p>
-                    </div>
+                </div>
+              </CardBody>
+            </Card>
+            <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex justify-center flex-1"> 
+                  <p className="text-gray-500">ค่าการนำไฟฟ้า (µS/cm)</p>
+                </div>
+                <div className="flex justify-end gap-2">
+                  <ButtonGroup size="sm" variant="flat">
+                    <Button onPress={() => {setSelectedId(id); onOpenSalinityGraph();}}>
+                      <FaChartLine className="size-4 text-red-400" />
+                    </Button>
+                  </ButtonGroup>
+                  {(plantData?.salinity < factorData?.salinity || plantData?.salinity > factorData?.salinity * 1.25) && (
+                    <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
+                      <FaCircleExclamation size={20} />
+                    </Link>
+                  )}
+                </div>
+              </CardHeader>
+              <CardBody>
+                <div className="flex justify-center items-center gap-12">
+                  <div className="text-center">
+                    <p className="text-2xl">ค่าที่วัดได้</p>
+                    <p className={`text-5xl font-bold ${
+                        plantData?.salinity < factorData?.salinity
+                        ? 'text-red-500'
+                        : plantData?.salinity > factorData?.salinity * 1.25
+                        ? 'text-amber-500'
+                        : !plantData?.salinity
+                        ? 'text-gray-500'
+                        : 'text-green-500'
+                      }`}>
+                      {plantData?.salinity ?? "N/A"}
+                    </p>
                   </div>
-                </CardBody>
-              </Card>
-            </div>
-            <div data-aos="fade-up">
-              <Card className="drop-shadow-xl hover:-translate-y-1 w-full">
-                <CardHeader className="flex justify-between items-center">
-                  <div className="flex justify-center flex-1"> 
-                    <p className="text-gray-500">ค่าการนำไฟฟ้า (µS/cm)</p>
+                  
+                  <div className="text-center">
+                    <p className="text-2xl ">ค่ามาตรฐาน</p>
+                    <p
+                      className={`text-5xl font-bold ${
+                        !factorData?.salinity ? "text-gray-500" : "text-black"
+                      }`}
+                    >
+                      {factorData?.salinity ?? "N/A"}
+                    </p>
                   </div>
-                  <div className="flex justify-end gap-2">
-                    <ButtonGroup size="sm" variant="flat">
-                      <Button onPress={() => {setSelectedId(id); onOpenSalinityGraph();}}>
-                        <FaChartLine className="size-4 text-red-400" />
-                      </Button>
-                    </ButtonGroup>
-                    {(plantData?.salinity < factorData?.salinity || plantData?.salinity > factorData?.salinity * 1.25) && (
-                      <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
-                        <FaCircleExclamation size={20} />
-                      </Link>
-                    )}
+                </div>
+              </CardBody>
+            </Card>
+            <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex justify-center flex-1"> 
+                  <p className="text-gray-500">ค่าความเข้มแสง (lux)</p>
+                </div>
+                <div className="flex justify-end gap-2">
+                  <ButtonGroup size="sm" variant="flat">
+                    <Button onPress={() => {setSelectedId(id); onOpenLightIntensityGraph();}}>
+                      <FaChartLine className="size-4 text-red-400" />
+                    </Button>
+                  </ButtonGroup>
+                  {(plantData?.lightIntensity < factorData?.lightIntensity || plantData?.lightIntensity > factorData?.lightIntensity * 1.25) && (
+                    <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
+                      <FaCircleExclamation size={20} />
+                    </Link>
+                  )}
+                </div>
+              </CardHeader>
+              <CardBody>
+                <div className="flex justify-center items-center gap-12">
+                  <div className="text-center">
+                    <p className="text-2xl">ค่าที่วัดได้</p>
+                    <p className={`text-5xl font-bold ${
+                        plantData?.lightIntensity < factorData?.lightIntensity
+                        ? 'text-red-500'
+                        : plantData?.lightIntensity > factorData?.lightIntensity * 1.25
+                        ? 'text-amber-500'
+                        : !plantData?.lightIntensity
+                        ? 'text-gray-500'
+                        : 'text-green-500'
+                      }`}>
+                      {plantData?.lightIntensity ?? "N/A"}
+                    </p>
                   </div>
-                </CardHeader>
-                <CardBody>
-                  <div className="flex justify-center items-center gap-12">
-                    <div className="text-center">
-                      <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${
-                          plantData?.salinity < factorData?.salinity
-                          ? 'text-red-500'
-                          : plantData?.salinity > factorData?.salinity * 1.25
-                          ? 'text-amber-500'
-                          : !plantData?.salinity
-                          ? 'text-gray-500'
-                          : 'text-green-500'
-                        }`}>
-                        {plantData?.salinity ?? "N/A"}
-                      </p>
-                    </div>
-                    
-                    <div className="text-center">
-                      <p className="text-2xl ">ค่ามาตรฐาน</p>
-                      <p
-                        className={`text-5xl font-bold ${
-                          !factorData?.salinity ? "text-gray-500" : "text-black"
-                        }`}
-                      >
-                        {factorData?.salinity ?? "N/A"}
-                      </p>
-                    </div>
+                  
+                  <div className="text-center">
+                    <p className="text-2xl ">ค่ามาตรฐาน</p>
+                    <p
+                      className={`text-5xl font-bold ${
+                        !factorData?.lightIntensity ? "text-gray-500" : "text-black"
+                      }`}
+                    >
+                      {factorData?.lightIntensity ?? "N/A"}
+                    </p>
                   </div>
-                </CardBody>
-              </Card>
-            </div>
-            <div data-aos="fade-up">
-              <Card className="drop-shadow-xl hover:-translate-y-1 w-full">
-                <CardHeader className="flex justify-between items-center">
-                  <div className="flex justify-center flex-1"> 
-                    <p className="text-gray-500">ค่าความเข้มแสง (lux)</p>
-                  </div>
-                  <div className="flex justify-end gap-2">
-                    <ButtonGroup size="sm" variant="flat">
-                      <Button onPress={() => {setSelectedId(id); onOpenLightIntensityGraph();}}>
-                        <FaChartLine className="size-4 text-red-400" />
-                      </Button>
-                    </ButtonGroup>
-                    {(plantData?.lightIntensity < factorData?.lightIntensity || plantData?.lightIntensity > factorData?.lightIntensity * 1.25) && (
-                      <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
-                        <FaCircleExclamation size={20} />
-                      </Link>
-                    )}
-                  </div>
-                </CardHeader>
-                <CardBody>
-                  <div className="flex justify-center items-center gap-12">
-                    <div className="text-center">
-                      <p className="text-2xl">ค่าที่วัดได้</p>
-                      <p className={`text-5xl font-bold ${
-                          plantData?.lightIntensity < factorData?.lightIntensity
-                          ? 'text-red-500'
-                          : plantData?.lightIntensity > factorData?.lightIntensity * 1.25
-                          ? 'text-amber-500'
-                          : !plantData?.lightIntensity
-                          ? 'text-gray-500'
-                          : 'text-green-500'
-                        }`}>
-                        {plantData?.lightIntensity ?? "N/A"}
-                      </p>
-                    </div>
-                    
-                    <div className="text-center">
-                      <p className="text-2xl ">ค่ามาตรฐาน</p>
-                      <p
-                        className={`text-5xl font-bold ${
-                          !factorData?.lightIntensity ? "text-gray-500" : "text-black"
-                        }`}
-                      >
-                        {factorData?.lightIntensity ?? "N/A"}
-                      </p>
-                    </div>
-                  </div>
-                </CardBody>
-              </Card>
-            </div>
+                </div>
+              </CardBody>
+            </Card>
           </div>
 
           {isOpenPhGraph && (
@@ -880,66 +864,60 @@ function Dashboard({ params }) {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div data-aos="fade-up">
-              <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
-                <CardHeader className="flex justify-between items-center">
-                  <div className="flex justify-center flex-1"> 
-                    <p className="text-gray-500">กราฟแสดงข้อมูลอุณหภูมิ & ความชื้น</p>
-                  </div>
-                </CardHeader>
-                  {plantDatas ? (
-                    <Line
-                      options={options}
-                      data={createEnvironmentData(plantDatas)}
-                    />
-                  ) : (
-                    <p className="flex justify-center text-2xl font-bold">ไม่มีข้อมูล</p>
-                  )}
-              </Card>
-            </div>
-              
-            <div data-aos="fade-up">
-              <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
-                <CardHeader className="flex justify-between items-center">
-                  <div className="flex justify-center flex-1"> 
-                    <p className="text-gray-500">กราฟแสดงข้อมูลสารอาหาร</p>
-                  </div>
-                </CardHeader>
+            <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex justify-center flex-1"> 
+                  <p className="text-gray-500">กราฟแสดงข้อมูลอุณหภูมิ & ความชื้น</p>
+                </div>
+              </CardHeader>
                 {plantDatas ? (
                   <Line
                     options={options}
-                    data={createNutrientData(plantDatas)}
+                    data={createEnvironmentData(plantDatas)}
                   />
                 ) : (
                   <p className="flex justify-center text-2xl font-bold">ไม่มีข้อมูล</p>
                 )}
-                
-              </Card>
-            </div>
+            </Card>
+              
+            <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex justify-center flex-1"> 
+                  <p className="text-gray-500">กราฟแสดงข้อมูลสารอาหาร</p>
+                </div>
+              </CardHeader>
+              {plantDatas ? (
+                <Line
+                  options={options}
+                  data={createNutrientData(plantDatas)}
+                />
+              ) : (
+                <p className="flex justify-center text-2xl font-bold">ไม่มีข้อมูล</p>
+              )}
+              
+            </Card>
 
-            <div data-aos="fade-up" className="lg:col-span-2">
-              <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1">
-                <CardHeader className="flex justify-between items-center">
-                  <div className="flex justify-center flex-1">
-                    <p className="text-gray-500">แผนที่แสดงสถานที่ปลูกพืช</p>
-                  </div>
-                </CardHeader>
-                <CardBody>
-                  {mapUrl ? (
-                    <iframe
-                      src={mapUrl}
-                      className="rounded-xl h-[20rem] md:h-[30rem] lg:h-[40rem]"
-                      style={{ border: 0 }}
-                      allowfullscreen=""
-                      loading="lazy"
-                      referrerpolicy="no-referrer-when-downgrade"
-                    ></iframe>
-                  ) : (
-                    <p className="flex justify-center text-4xl font-bold">ไม่มีข้อมูล</p>
-                  )}
-                </CardBody>
-              </Card>
-            </div>
+            <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1 lg:col-span-2" data-aos="fade-up">
+              <CardHeader className="flex justify-between items-center">
+                <div className="flex justify-center flex-1">
+                  <p className="text-gray-500">แผนที่แสดงสถานที่ปลูกพืช</p>
+                </div>
+              </CardHeader>
+              <CardBody>
+                {mapUrl ? (
+                  <iframe
+                    src={mapUrl}
+                    className="rounded-xl h-[20rem] md:h-[30rem] lg:h-[40rem]"
+                    style={{ border: 0 }}
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                ) : (
+                  <p className="flex justify-center text-4xl font-bold">ไม่มีข้อมูล</p>
+                )}
+              </CardBody>
+            </Card>
           </div>
         </>
       ) : (
