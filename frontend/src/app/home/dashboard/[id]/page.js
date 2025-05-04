@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardHeader, CardBody, Button, useDisclosure, ButtonGroup, Select, SelectItem, Link, Spinner } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Button, useDisclosure, ButtonGroup, Select, SelectItem, Link, Skeleton } from "@nextui-org/react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,7 +14,7 @@ import {
 } from "chart.js";
 
 import { Line } from "react-chartjs-2";
-import { FaTable, FaChartLine, FaBan, FaCircleExclamation } from "react-icons/fa6";
+import { FaTable, FaChartLine, FaCircleExclamation } from "react-icons/fa6";
 import DmsCoordinates from "dms-conversion";
 import moment from "moment";
 import 'moment/locale/th';
@@ -40,7 +40,7 @@ function Dashboard({ params }) {
   const [nutrientData, setNutrientData] = useState(null);
 
   const [otherPlant, setOtherPlant] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const [selectedId, setSelectedId] = useState(null);
 
@@ -59,7 +59,6 @@ function Dashboard({ params }) {
   useEffect(() => {
     const fetchFactor = async (plantId) => {
       try {
-        setIsLoading(true);
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_ENDPOINT}/getFactor/${plantId}/${plantAge}`
         );
@@ -73,13 +72,12 @@ function Dashboard({ params }) {
       } catch (err) {
         console.error("Failed to fetch", err);
       } finally {
-        setIsLoading(false);
+        setIsLoaded(true);
       }
     };
 
     const fetchNutrient = async (plantId) => {
       try {
-        setIsLoading(true);
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_ENDPOINT}/getNutrient/${plantId}/${plantAge}`
         );
@@ -93,13 +91,12 @@ function Dashboard({ params }) {
       } catch (err) {
         console.error("Failed to fetch", err);
       } finally {
-        setIsLoading(false);
+        setIsLoaded(true);
       }
     };
   
     const fetchOtherFactor = async (plantId) => {
       try {
-        setIsLoading(true);
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_ENDPOINT}/getOtherFactor/${plantId}/${plantAge}`
         );
@@ -113,13 +110,12 @@ function Dashboard({ params }) {
       } catch (err) {
         console.error("Failed to fetch", err);
       } finally {
-        setIsLoading(false);
+        setIsLoaded(true);
       }
     };
   
     const fetchOtherNutrient = async (plantId) => {
       try {
-        setIsLoading(true);
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_ENDPOINT}/getOtherNutrient/${plantId}/${plantAge}`
         );
@@ -133,7 +129,7 @@ function Dashboard({ params }) {
       } catch (err) {
         console.error("Failed to fetch", err);
       } finally {
-        setIsLoading(false);
+        setIsLoaded(true);
       }
     };
 
@@ -147,7 +143,6 @@ function Dashboard({ params }) {
   useEffect(() => {
     const fetchPlant = async (plantId) => {
       try {
-        setIsLoading(true);
         const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getPlant/${plantId}`);
   
         if(res.status === 200) {
@@ -166,13 +161,12 @@ function Dashboard({ params }) {
       } catch (err) {
         console.error("Failed to fetch", err);
       } finally {
-        setIsLoading(false);
+        setIsLoaded(true);
       }
     }
   
     const fetchPlantVariable = async (plantId) => {
       try {
-        setIsLoading(true);
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariable/${plantId}`
         );
@@ -184,13 +178,12 @@ function Dashboard({ params }) {
       } catch (err) {
         console.error("Failed to fetch", err);
       } finally {
-        setIsLoading(false);
+        setIsLoaded(true);
       }
     };
   
     const fetchPlantVariables = async (plantId) => {
       try {
-        setIsLoading(true);
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables7day/${plantId}`
         );
@@ -204,7 +197,7 @@ function Dashboard({ params }) {
       } catch (err) {
         console.error("Failed to fetch", err);
       } finally {
-        setIsLoading(false);
+        setIsLoaded(true);
       }
     };
 
@@ -357,6 +350,7 @@ function Dashboard({ params }) {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: true,
     plugins: {
       legend: {
         position: "top",
@@ -442,25 +436,26 @@ function Dashboard({ params }) {
   
   return (
     <div className="m-4">
-      {isLoading ? (
-        <div className="flex justify-center pt-16">
-          <Spinner size="lg" label="กำลังโหลดข้อมูล..." />
-        </div>
-      ) : (!isLoading) ? (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
             <Card className="drop-shadow-xl md:col-span-2 lg:col-span-1" data-aos="fade-up">
               <CardHeader className="flex justify-center">
-                <p className="text-gray-500">อายุ (วัน)</p>
+                <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                  <p className="text-gray-500">อายุ (วัน)</p>
+                </Skeleton>
               </CardHeader>
               <CardBody>
-                <p className="text-center text-5xl lg:text-6xl font-bold">{plantAge}</p>
+                <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                  <p className="text-center text-5xl lg:text-6xl font-bold">{plantAge}</p>
+                </Skeleton>
               </CardBody>
             </Card>
             <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
                 <div className="flex justify-center flex-1">
-                  <p className="text-gray-500">อุณหภูมิ (°C)</p>
+                  <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                    <p className="text-gray-500">อุณหภูมิ (°C)</p>
+                  </Skeleton>
                 </div>
                 {(plantData?.temperature < factorData?.temperature || plantData?.temperature > factorData?.temperature * 1.25) && (
                   <Link href="https://www.doa.go.th/share/" color="foreground" className="flex justify-end z-50" isExternal>
@@ -471,8 +466,11 @@ function Dashboard({ params }) {
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className={`text-5xl font-bold ${
                         plantData?.temperature < factorData?.temperature
                         ? 'text-red-500'
                         : plantData?.temperature > factorData?.temperature * 1.25
@@ -481,17 +479,22 @@ function Dashboard({ params }) {
                         ? 'text-gray-500'
                         : 'text-green-500'
                       }`}>
-                      {plantData?.temperature ?? "N/A"}
-                    </p>
+                        {plantData?.temperature ?? "N/A"}
+                      </p>
+                    </Skeleton>
                   </div>
                   
                   <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p
-                      className={`text-5xl font-bold ${
-                        !factorData?.temperature ? "text-gray-500" : "text-inherit"
-                      }`}
-                    >{factorData?.temperature ?? "N/A"}</p>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !factorData?.temperature ? "text-gray-500" : "text-inherit"
+                        }`}
+                      >
+                        {factorData?.temperature ?? "N/A"}
+                      </p>
+                    </Skeleton>
                   </div>
                 </div>
               </CardBody>
@@ -499,7 +502,9 @@ function Dashboard({ params }) {
             <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
                 <div className="flex justify-center flex-1">
-                  <p className="text-gray-500">ความชื้น (%)</p>
+                  <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                    <p className="text-gray-500">ความชื้น (%)</p>
+                  </Skeleton>
                 </div>
                 {(plantData?.humidity < factorData?.humidity || plantData?.humidity > factorData?.humidity * 1.25) && (
                   <Link href="https://www.doa.go.th/share/" color="foreground" className="flex justify-end z-50" isExternal>
@@ -510,8 +515,11 @@ function Dashboard({ params }) {
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className={`text-5xl font-bold ${
                         plantData?.humidity < factorData?.humidity
                         ? 'text-red-500'
                         : plantData?.humidity > factorData?.humidity * 1.25
@@ -520,17 +528,24 @@ function Dashboard({ params }) {
                         ? 'text-gray-500'
                         : 'text-green-500'
                       }`}>
-                      {plantData?.humidity ?? "N/A"}
-                    </p>
+                        {plantData?.humidity ?? "N/A"}
+                      </p>
+                    </Skeleton>
                   </div>
                   
                   <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p
-                      className={`text-5xl font-bold ${
-                        !factorData?.humidity ? "text-gray-500" : "text-inherit"
-                      }`}
-                    >{factorData?.humidity ?? "N/A"}</p>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !factorData?.humidity ? "text-gray-500" : "text-inherit"
+                        }`}
+                      >
+                        {factorData?.humidity ?? "N/A"}
+                      </p>
+                    </Skeleton>
                   </div>
                 </div>
               </CardBody>
@@ -539,7 +554,9 @@ function Dashboard({ params }) {
             <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
                 <div className="flex justify-center flex-1">
-                  <p className="text-gray-500">ไนโตรเจน (mg/kg)</p>
+                  <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                    <p className="text-gray-500">ไนโตรเจน (mg/kg)</p>
+                  </Skeleton>
                 </div>
                 {(plantData?.nitrogen < nutrientData?.nitrogen || plantData?.nitrogen > nutrientData?.nitrogen * 1.25) && (
                   <Link href="https://www.doa.go.th/share/" color="foreground" className="flex justify-end z-50" isExternal>
@@ -550,8 +567,11 @@ function Dashboard({ params }) {
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className={`text-5xl font-bold ${
                         plantData?.nitrogen < nutrientData?.nitrogen
                         ? 'text-red-500'
                         : plantData?.nitrogen > nutrientData?.nitrogen * 1.25
@@ -560,19 +580,24 @@ function Dashboard({ params }) {
                         ? 'text-gray-500'
                         : 'text-green-500'
                       }`}>
-                      {plantData?.nitrogen ?? "N/A"}
-                    </p>
+                        {plantData?.nitrogen ?? "N/A"}
+                      </p>
+                    </Skeleton>
                   </div>
                   
                   <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p
-                      className={`text-5xl font-bold ${
-                        !nutrientData?.nitrogen ? "text-gray-500" : "text-inherit"
-                      }`}
-                    >
-                      {nutrientData?.nitrogen ?? "N/A"}
-                    </p>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !nutrientData?.nitrogen ? "text-gray-500" : "text-inherit"
+                        }`}
+                      >
+                        {nutrientData?.nitrogen ?? "N/A"}
+                      </p>
+                    </Skeleton>
                   </div>
                 </div>
               </CardBody>
@@ -580,7 +605,9 @@ function Dashboard({ params }) {
             <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
                 <div className="flex justify-center flex-1">
-                  <p className="text-gray-500">ฟอสฟอรัส (mg/kg)</p>
+                  <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                    <p className="text-gray-500">ฟอสฟอรัส (mg/kg)</p>
+                  </Skeleton>
                 </div>
                 {(plantData?.phosphorus < nutrientData?.phosphorus || plantData?.phosphorus > nutrientData?.phosphorus * 1.25) && (
                   <Link href="https://www.doa.go.th/share/" color="foreground" className="flex justify-end z-50" isExternal>
@@ -591,8 +618,11 @@ function Dashboard({ params }) {
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className={`text-5xl font-bold ${
                         plantData?.phosphorus < nutrientData?.phosphorus
                         ? 'text-red-500'
                         : plantData?.phosphorus > nutrientData?.phosphorus * 1.25
@@ -601,19 +631,24 @@ function Dashboard({ params }) {
                         ? 'text-gray-500'
                         : 'text-green-500'
                       }`}>
-                      {plantData?.phosphorus ?? "N/A"}
-                    </p>
+                        {plantData?.phosphorus ?? "N/A"}
+                      </p>
+                    </Skeleton>
                   </div>
                   
                   <div className="text-center">
-                    <p className="text-2xl">ค่ามาตรฐาน</p>
-                    <p
-                      className={`text-5xl font-bold ${
-                        !nutrientData?.phosphorus ? "text-gray-500" : "text-inherit"
-                      }`}
-                    >
-                      {nutrientData?.phosphorus ?? "N/A"}
-                    </p>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl">ค่ามาตรฐาน</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !nutrientData?.phosphorus ? "text-gray-500" : "text-inherit"
+                        }`}
+                      >
+                        {nutrientData?.phosphorus ?? "N/A"}
+                      </p>
+                    </Skeleton>
                   </div>
                 </div>
               </CardBody>
@@ -621,7 +656,9 @@ function Dashboard({ params }) {
             <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
                 <div className="flex justify-center flex-1">
-                  <p className="text-gray-500">โพแทสเซียม (mg/kg)</p>
+                  <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                    <p className="text-gray-500">โพแทสเซียม (mg/kg)</p>
+                  </Skeleton>
                 </div>
                 {(plantData?.potassium < nutrientData?.potassium || plantData?.potassium > nutrientData?.potassium * 1.25) && (
                   <Link href="https://www.doa.go.th/share/" color="foreground" className="flex justify-end z-50" isExternal>
@@ -632,8 +669,11 @@ function Dashboard({ params }) {
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className={`text-5xl font-bold ${
                         plantData?.potassium < nutrientData?.potassium
                         ? 'text-red-500'
                         : plantData?.potassium > nutrientData?.potassium * 1.25
@@ -642,19 +682,24 @@ function Dashboard({ params }) {
                         ? 'text-gray-500'
                         : 'text-green-500'
                       }`}>
-                      {plantData?.potassium ?? "N/A"}
-                    </p>
+                        {plantData?.potassium ?? "N/A"}
+                      </p>
+                    </Skeleton>
                   </div>
                   
                   <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p
-                      className={`text-5xl font-bold ${
-                        !nutrientData?.potassium ? "text-gray-500" : "text-inherit"
-                      }`}
-                    >
-                      {nutrientData?.potassium ?? "N/A"}
-                    </p>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !nutrientData?.potassium ? "text-gray-500" : "text-inherit"
+                        }`}
+                      >
+                        {nutrientData?.potassium ?? "N/A"}
+                      </p>
+                    </Skeleton>
                   </div>
                 </div>
               </CardBody>
@@ -662,8 +707,10 @@ function Dashboard({ params }) {
 
             <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
-                <div className="flex justify-center flex-1"> 
-                  <p className="text-gray-500">ค่าความเป็นกรด-ด่าง (pH)</p>
+                <div className="flex justify-center flex-1">
+                  <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                    <p className="text-gray-500">ค่าความเป็นกรด-ด่าง (pH)</p>
+                  </Skeleton>
                 </div>
                 <div className="flex justify-end gap-2">
                   <ButtonGroup size="sm" variant="flat">
@@ -681,8 +728,11 @@ function Dashboard({ params }) {
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className={`text-5xl font-bold ${
                         plantData?.pH < factorData?.pH
                         ? 'text-red-500'
                         : plantData?.pH > factorData?.pH * 1.25
@@ -691,27 +741,34 @@ function Dashboard({ params }) {
                         ? 'text-gray-500'
                         : 'text-green-500'
                       }`}>
-                      {plantData?.pH ?? "N/A"}
-                    </p>
+                        {plantData?.pH ?? "N/A"}
+                      </p>
+                    </Skeleton>
                   </div>
                   
                   <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p
-                      className={`text-5xl font-bold ${
-                        !factorData?.pH ? "text-gray-500" : "text-inherit"
-                      }`}
-                    >
-                      {factorData?.pH ?? "N/A"}
-                    </p>
-                  </div>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !factorData?.pH ? "text-gray-500" : "text-inherit"
+                        }`}
+                      >
+                        {factorData?.pH ?? "N/A"}
+                      </p>
+                    </Skeleton>
+                    </div>
                 </div>
               </CardBody>
             </Card>
             <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
-                <div className="flex justify-center flex-1"> 
-                  <p className="text-gray-500">ค่าการนำไฟฟ้า (µS/cm)</p>
+                <div className="flex justify-center flex-1">
+                  <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                    <p className="text-gray-500">ค่าการนำไฟฟ้า (µS/cm)</p>
+                  </Skeleton>
                 </div>
                 <div className="flex justify-end gap-2">
                   <ButtonGroup size="sm" variant="flat">
@@ -729,8 +786,11 @@ function Dashboard({ params }) {
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className={`text-5xl font-bold ${
                         plantData?.salinity < factorData?.salinity
                         ? 'text-red-500'
                         : plantData?.salinity > factorData?.salinity * 1.25
@@ -739,27 +799,34 @@ function Dashboard({ params }) {
                         ? 'text-gray-500'
                         : 'text-green-500'
                       }`}>
-                      {plantData?.salinity ?? "N/A"}
-                    </p>
+                        {plantData?.salinity ?? "N/A"}
+                      </p>
+                    </Skeleton>
                   </div>
                   
                   <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p
-                      className={`text-5xl font-bold ${
-                        !factorData?.salinity ? "text-gray-500" : "text-inherit"
-                      }`}
-                    >
-                      {factorData?.salinity ?? "N/A"}
-                    </p>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !factorData?.salinity ? "text-gray-500" : "text-inherit"
+                        }`}
+                      >
+                        {factorData?.salinity ?? "N/A"}
+                      </p>
+                    </Skeleton>
                   </div>
                 </div>
               </CardBody>
             </Card>
             <Card className="drop-shadow-xl hover:-translate-y-1 w-full" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
-                <div className="flex justify-center flex-1"> 
-                  <p className="text-gray-500">ค่าความเข้มแสง (lux)</p>
+                <div className="flex justify-center flex-1">
+                  <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                    <p className="text-gray-500">ค่าความเข้มแสง (lux)</p>
+                  </Skeleton>
                 </div>
                 <div className="flex justify-end gap-2">
                   <ButtonGroup size="sm" variant="flat">
@@ -777,8 +844,11 @@ function Dashboard({ params }) {
               <CardBody>
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
-                    <p className="text-2xl">ค่าที่วัดได้</p>
-                    <p className={`text-5xl font-bold ${
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl">ค่าที่วัดได้</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className={`text-5xl font-bold ${
                         plantData?.lightIntensity < factorData?.lightIntensity
                         ? 'text-red-500'
                         : plantData?.lightIntensity > factorData?.lightIntensity * 1.25
@@ -787,19 +857,24 @@ function Dashboard({ params }) {
                         ? 'text-gray-500'
                         : 'text-green-500'
                       }`}>
-                      {plantData?.lightIntensity ?? "N/A"}
-                    </p>
+                        {plantData?.lightIntensity ?? "N/A"}
+                      </p>
+                    </Skeleton>
                   </div>
                   
                   <div className="text-center">
-                    <p className="text-2xl ">ค่ามาตรฐาน</p>
-                    <p
-                      className={`text-5xl font-bold ${
-                        !factorData?.lightIntensity ? "text-gray-500" : "text-inherit"
-                      }`}
-                    >
-                      {factorData?.lightIntensity ?? "N/A"}
-                    </p>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !factorData?.lightIntensity ? "text-gray-500" : "text-inherit"
+                        }`}
+                      >
+                        {factorData?.lightIntensity ?? "N/A"}
+                      </p>
+                    </Skeleton>
                   </div>
                 </div>
               </CardBody>
@@ -865,8 +940,10 @@ function Dashboard({ params }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
-                <div className="flex justify-center flex-1"> 
-                  <p className="text-gray-500">กราฟแสดงข้อมูลอุณหภูมิ & ความชื้น</p>
+                <div className="flex justify-center flex-1">
+                  <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                    <p className="text-gray-500">กราฟแสดงข้อมูลอุณหภูมิ & ความชื้น</p>
+                  </Skeleton>
                 </div>
               </CardHeader>
                 {plantDatas ? (
@@ -875,55 +952,61 @@ function Dashboard({ params }) {
                     data={createEnvironmentData(plantDatas)}
                   />
                 ) : (
-                  <p className="flex justify-center text-2xl font-bold">ไม่มีข้อมูล</p>
+                  <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                    <p className="flex justify-center text-2xl font-bold">ไม่มีข้อมูล</p>
+                  </Skeleton>
                 )}
             </Card>
               
             <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
-                <div className="flex justify-center flex-1"> 
-                  <p className="text-gray-500">กราฟแสดงข้อมูลสารอาหาร</p>
+                <div className="flex justify-center flex-1">
+                  <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                    <p className="text-gray-500">กราฟแสดงข้อมูลสารอาหาร</p>
+                  </Skeleton>
                 </div>
               </CardHeader>
-              {plantDatas ? (
-                <Line
-                  options={options}
-                  data={createNutrientData(plantDatas)}
-                />
-              ) : (
-                <p className="flex justify-center text-2xl font-bold">ไม่มีข้อมูล</p>
-              )}
-              
+                {plantDatas ? (
+                  <Line
+                    options={options}
+                    data={createNutrientData(plantDatas)}
+                  />
+                ) : (
+                  <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                    <p className="flex justify-center text-2xl font-bold">ไม่มีข้อมูล</p>
+                  </Skeleton>
+                )}
             </Card>
 
             <Card className="px-4 pb-4 drop-shadow-xl hover:-translate-y-1 lg:col-span-2" data-aos="fade-up">
               <CardHeader className="flex justify-between items-center">
                 <div className="flex justify-center flex-1">
-                  <p className="text-gray-500">แผนที่แสดงสถานที่ปลูกพืช</p>
+                  <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                    <p className="text-gray-500">แผนที่แสดงสถานที่ปลูกพืช</p>
+                  </Skeleton>
                 </div>
               </CardHeader>
               <CardBody>
                 {mapUrl ? (
-                  <iframe
-                    src={mapUrl}
-                    className="rounded-xl h-[20rem] md:h-[30rem] lg:h-[40rem]"
-                    style={{ border: 0 }}
-                    allowfullscreen=""
-                    loading="lazy"
-                    referrerpolicy="no-referrer-when-downgrade"
-                  ></iframe>
+                  <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                    <iframe
+                      src={mapUrl}
+                      className="rounded-xl w-full h-[20rem] md:h-[30rem] lg:h-[40rem]"
+                      style={{ border: 0 }}
+                      allowfullscreen=""
+                      loading="lazy"
+                      referrerpolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                  </Skeleton>
                 ) : (
-                  <p className="flex justify-center text-4xl font-bold">ไม่มีข้อมูล</p>
+                  <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                    <p className="flex justify-center text-4xl font-bold">ไม่มีข้อมูล</p>
+                  </Skeleton>
                 )}
               </CardBody>
             </Card>
           </div>
         </>
-      ) : (
-        <div className="flex justify-center pt-16">
-          <h2 className="flex items-center text-2xl text-gray-500"><FaBan size={22} />&ensp;ไม่มีข้อมูลสำหรับแสดงผล&ensp;<FaBan size={22} /></h2>
-        </div>
-      )}
     </div>
   );
 }
