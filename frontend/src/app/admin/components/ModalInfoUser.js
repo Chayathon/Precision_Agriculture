@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Link } from '@nextui-org/react'
 import moment from "moment";
 import 'moment/locale/th';
-import { FaLocationDot } from 'react-icons/fa6';
+import { FaMapLocationDot } from 'react-icons/fa6';
 
 function ModalInfoUser({ isOpen, onOpenChange, id }) {
     const [user, setUser] = useState('');
@@ -86,7 +86,7 @@ function ModalInfoUser({ isOpen, onOpenChange, id }) {
                                                             underline='hover'
                                                             isExternal
                                                         >
-                                                            <FaLocationDot />&nbsp;Google Maps
+                                                            <FaMapLocationDot />&nbsp;Maps
                                                         </Link>
                                                     ) : (
                                                         "ไม่มีข้อมูลสถานที่ปลูก"

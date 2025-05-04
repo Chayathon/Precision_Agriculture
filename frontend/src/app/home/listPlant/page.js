@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure, Spinner, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Link } from "@nextui-org/react";
-import { FaPlus, FaAngleLeft, FaAngleRight, FaLocationDot } from "react-icons/fa6";
+import { FaPlus, FaAngleLeft, FaAngleRight, FaMapLocationDot } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { CiEdit, CiMenuKebab, CiViewList } from "react-icons/ci";
 import { HiOutlineTrash } from "react-icons/hi2";
@@ -277,7 +277,7 @@ export default function ListPlant() {
                                         underline="hover"
                                         isExternal
                                     >
-                                        <FaLocationDot />&nbsp;Google Maps
+                                        <FaMapLocationDot />&nbsp;Maps
                                     </Link>
                                 ) : (
                                     "ไม่มีข้อมูลสถานที่ปลูก"
