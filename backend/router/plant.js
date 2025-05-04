@@ -57,6 +57,8 @@ router.get("/getPlantUserId/:id", async (req, res) => {
                 id: true,
                 plantedAt: true,
                 plantname: true,
+                latitude: true,
+                longitude: true,
             },
         });
 

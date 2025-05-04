@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react'
 import moment from "moment";
 import 'moment/locale/th';
+import { FaLocationDot } from 'react-icons/fa6';
 
 function ModalInfoUser({ isOpen, onOpenChange, id }) {
     const [user, setUser] = useState('');
@@ -70,12 +71,29 @@ function ModalInfoUser({ isOpen, onOpenChange, id }) {
                                     <TableHeader>
                                         <TableColumn key="date">วันที่ปลูก</TableColumn>
                                         <TableColumn key="plantname">พืชที่ปลูก</TableColumn>
+                                        <TableColumn key="place">สถานที่ปลูก</TableColumn>
                                     </TableHeader>
                                     <TableBody items={plant} emptyContent="ไม่มีข้อมูล">
                                         {(item) => (
                                             <TableRow key={item.id}>
                                                 <TableCell>{convertDate(item.plantedAt)}</TableCell>
                                                 <TableCell>{item.plantname}</TableCell>
+                                                <TableCell>
+                                                    {item.latitude && item.longitude ? (
+                                                        <a
+                                                            href={`https://www.google.com/maps/place/${item.latitude},${item.longitude}`}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="text-blue-600 hover:underline"
+                                                        >
+                                                            <div className='flex items-center'>
+                                                                <FaLocationDot />&nbsp;Google Maps
+                                                            </div>
+                                                        </a>
+                                                    ) : (
+                                                        "ไม่มีข้อมูลสถานที่ปลูก"
+                                                    )}
+                                                </TableCell>
                                             </TableRow>
                                         )}
                                     </TableBody>
