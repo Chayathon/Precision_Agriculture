@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure, Spinner, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure, Spinner, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Link } from "@nextui-org/react";
 import { FaPlus, FaAngleLeft, FaAngleRight, FaLocationDot } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { CiEdit, CiMenuKebab, CiViewList } from "react-icons/ci";
@@ -271,14 +271,14 @@ export default function ListPlant() {
                             <TableCell>{item.plantname}</TableCell>
                             <TableCell>
                                 {item.latitude && item.longitude ? (
-                                    <a
+                                    <Link
                                         href={`https://www.google.com/maps/place/${item.latitude},${item.longitude}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center text-blue-600 hover:underline"
+                                        className="flex items-center"
+                                        underline="hover"
+                                        isExternal
                                     >
                                         <FaLocationDot />&nbsp;Google Maps
-                                    </a>
+                                    </Link>
                                 ) : (
                                     "ไม่มีข้อมูลสถานที่ปลูก"
                                 )}

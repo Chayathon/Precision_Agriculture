@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from '@nextui-org/react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Link } from '@nextui-org/react'
 import moment from "moment";
 import 'moment/locale/th';
 import { FaLocationDot } from 'react-icons/fa6';
@@ -80,14 +80,14 @@ function ModalInfoUser({ isOpen, onOpenChange, id }) {
                                                 <TableCell>{item.plantname}</TableCell>
                                                 <TableCell>
                                                     {item.latitude && item.longitude ? (
-                                                        <a
+                                                        <Link
                                                             href={`https://www.google.com/maps/place/${item.latitude},${item.longitude}`}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="flex items-center text-blue-600 hover:underline"
+                                                            className="flex items-center"
+                                                            underline='hover'
+                                                            isExternal
                                                         >
                                                             <FaLocationDot />&nbsp;Google Maps
-                                                        </a>
+                                                        </Link>
                                                     ) : (
                                                         "ไม่มีข้อมูลสถานที่ปลูก"
                                                     )}

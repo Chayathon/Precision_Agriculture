@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Card, CardHeader, CardBody, Button, useDisclosure, ButtonGroup, Select, SelectItem, Spinner } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, Button, useDisclosure, ButtonGroup, Select, SelectItem, Link, Spinner } from "@nextui-org/react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -464,7 +463,7 @@ function Dashboard({ params }) {
                   <p className="text-gray-500">อุณหภูมิ (°C)</p>
                 </div>
                 {(plantData?.temperature < factorData?.temperature || plantData?.temperature > factorData?.temperature * 1.25) && (
-                  <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
+                  <Link href="https://www.doa.go.th/share/" color="foreground" className="flex justify-end z-50" isExternal>
                     <FaCircleExclamation size={20} />
                   </Link>
                 )}
@@ -490,7 +489,7 @@ function Dashboard({ params }) {
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
                     <p
                       className={`text-5xl font-bold ${
-                        !factorData?.temperature ? "text-gray-500" : "text-black"
+                        !factorData?.temperature ? "text-gray-500" : "text-inherit"
                       }`}
                     >{factorData?.temperature ?? "N/A"}</p>
                   </div>
@@ -503,7 +502,7 @@ function Dashboard({ params }) {
                   <p className="text-gray-500">ความชื้น (%)</p>
                 </div>
                 {(plantData?.humidity < factorData?.humidity || plantData?.humidity > factorData?.humidity * 1.25) && (
-                  <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end">
+                  <Link href="https://www.doa.go.th/share/" color="foreground" className="flex justify-end z-50" isExternal>
                     <FaCircleExclamation size={20} />
                   </Link>
                 )}
@@ -529,7 +528,7 @@ function Dashboard({ params }) {
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
                     <p
                       className={`text-5xl font-bold ${
-                        !factorData?.humidity ? "text-gray-500" : "text-black"
+                        !factorData?.humidity ? "text-gray-500" : "text-inherit"
                       }`}
                     >{factorData?.humidity ?? "N/A"}</p>
                   </div>
@@ -543,7 +542,7 @@ function Dashboard({ params }) {
                   <p className="text-gray-500">ไนโตรเจน (mg/kg)</p>
                 </div>
                 {(plantData?.nitrogen < nutrientData?.nitrogen || plantData?.nitrogen > nutrientData?.nitrogen * 1.25) && (
-                  <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
+                  <Link href="https://www.doa.go.th/share/" color="foreground" className="flex justify-end z-50" isExternal>
                     <FaCircleExclamation size={20} />
                   </Link>
                 )}
@@ -569,7 +568,7 @@ function Dashboard({ params }) {
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
                     <p
                       className={`text-5xl font-bold ${
-                        !nutrientData?.nitrogen ? "text-gray-500" : "text-black"
+                        !nutrientData?.nitrogen ? "text-gray-500" : "text-inherit"
                       }`}
                     >
                       {nutrientData?.nitrogen ?? "N/A"}
@@ -584,7 +583,7 @@ function Dashboard({ params }) {
                   <p className="text-gray-500">ฟอสฟอรัส (mg/kg)</p>
                 </div>
                 {(plantData?.phosphorus < nutrientData?.phosphorus || plantData?.phosphorus > nutrientData?.phosphorus * 1.25) && (
-                  <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
+                  <Link href="https://www.doa.go.th/share/" color="foreground" className="flex justify-end z-50" isExternal>
                     <FaCircleExclamation size={20} />
                   </Link>
                 )}
@@ -610,7 +609,7 @@ function Dashboard({ params }) {
                     <p className="text-2xl">ค่ามาตรฐาน</p>
                     <p
                       className={`text-5xl font-bold ${
-                        !nutrientData?.phosphorus ? "text-gray-500" : "text-black"
+                        !nutrientData?.phosphorus ? "text-gray-500" : "text-inherit"
                       }`}
                     >
                       {nutrientData?.phosphorus ?? "N/A"}
@@ -625,7 +624,7 @@ function Dashboard({ params }) {
                   <p className="text-gray-500">โพแทสเซียม (mg/kg)</p>
                 </div>
                 {(plantData?.potassium < nutrientData?.potassium || plantData?.potassium > nutrientData?.potassium * 1.25) && (
-                  <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
+                  <Link href="https://www.doa.go.th/share/" color="foreground" className="flex justify-end z-50" isExternal>
                     <FaCircleExclamation size={20} />
                   </Link>
                 )}
@@ -651,7 +650,7 @@ function Dashboard({ params }) {
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
                     <p
                       className={`text-5xl font-bold ${
-                        !nutrientData?.potassium ? "text-gray-500" : "text-black"
+                        !nutrientData?.potassium ? "text-gray-500" : "text-inherit"
                       }`}
                     >
                       {nutrientData?.potassium ?? "N/A"}
@@ -673,7 +672,7 @@ function Dashboard({ params }) {
                     </Button>
                   </ButtonGroup>
                   {(plantData?.pH < factorData?.pH || plantData?.pH > factorData?.pH * 1.25) && (
-                    <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
+                    <Link href="https://www.doa.go.th/share/" color="foreground" className="flex justify-end z-50" isExternal>
                       <FaCircleExclamation size={20} />
                     </Link>
                   )}
@@ -700,7 +699,7 @@ function Dashboard({ params }) {
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
                     <p
                       className={`text-5xl font-bold ${
-                        !factorData?.pH ? "text-gray-500" : "text-black"
+                        !factorData?.pH ? "text-gray-500" : "text-inherit"
                       }`}
                     >
                       {factorData?.pH ?? "N/A"}
@@ -721,7 +720,7 @@ function Dashboard({ params }) {
                     </Button>
                   </ButtonGroup>
                   {(plantData?.salinity < factorData?.salinity || plantData?.salinity > factorData?.salinity * 1.25) && (
-                    <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
+                    <Link href="https://www.doa.go.th/share/" color="foreground" className="flex justify-end z-50" isExternal>
                       <FaCircleExclamation size={20} />
                     </Link>
                   )}
@@ -748,7 +747,7 @@ function Dashboard({ params }) {
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
                     <p
                       className={`text-5xl font-bold ${
-                        !factorData?.salinity ? "text-gray-500" : "text-black"
+                        !factorData?.salinity ? "text-gray-500" : "text-inherit"
                       }`}
                     >
                       {factorData?.salinity ?? "N/A"}
@@ -769,7 +768,7 @@ function Dashboard({ params }) {
                     </Button>
                   </ButtonGroup>
                   {(plantData?.lightIntensity < factorData?.lightIntensity || plantData?.lightIntensity > factorData?.lightIntensity * 1.25) && (
-                    <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
+                    <Link href="https://www.doa.go.th/share/" color="foreground" className="flex justify-end z-50" isExternal>
                       <FaCircleExclamation size={20} />
                     </Link>
                   )}
@@ -796,7 +795,7 @@ function Dashboard({ params }) {
                     <p className="text-2xl ">ค่ามาตรฐาน</p>
                     <p
                       className={`text-5xl font-bold ${
-                        !factorData?.lightIntensity ? "text-gray-500" : "text-black"
+                        !factorData?.lightIntensity ? "text-gray-500" : "text-inherit"
                       }`}
                     >
                       {factorData?.lightIntensity ?? "N/A"}
