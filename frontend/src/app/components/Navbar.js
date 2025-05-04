@@ -57,7 +57,7 @@ function UserNavbar() {
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
 
-    const { isOpen: isOpenEdit, onOpen: onOpenEdit, onOpenChange: onOpenChangeEdit } = useDisclosure();
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
     useEffect(() => {
         const updateDateTime = () => {
@@ -167,21 +167,23 @@ function UserNavbar() {
     }, []);
 
     useEffect(() => {
-        const fetchProvinces = async () => {
-            try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/provinces`);
-    
-                if(res.status === 200) {
-                    const data = await res.json();
-                    setProvinces(data.resultData);
+        if(isOpen) {
+            const fetchProvinces = async () => {
+                try {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/provinces`);
+        
+                    if(res.status === 200) {
+                        const data = await res.json();
+                        setProvinces(data.resultData);
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch", error);
                 }
-            } catch (error) {
-                console.error("Failed to fetch", error);
             }
+            fetchProvinces();
         }
 
-        fetchProvinces();
-    }, []);
+    }, [isOpen]);
 
     useEffect(() => {
         if (address?.province) {
@@ -235,7 +237,7 @@ function UserNavbar() {
     }, [address?.district]);
         
     useEffect(() => {
-        if(isOpenEdit) {
+        if(isOpen) {
             const fetchData = async () => {
                 try {
                     const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/getUser/${id}`);
@@ -263,7 +265,7 @@ function UserNavbar() {
             }
             fetchData();
         }
-    }, [isOpenEdit, id]);
+    }, [isOpen, id]);
 
     const handleSubmitEdit = async (e) => {
         e.preventDefault();
@@ -298,7 +300,7 @@ function UserNavbar() {
                 form.reset();
 
                 toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว");
-                onOpenChangeEdit(false);
+                onOpenChange(false);
                 setRefresh(true);
 
                 setTimeout(() => {
@@ -476,7 +478,7 @@ function UserNavbar() {
                             <DropdownItem key="download" onPress={handleDownload}>
                                 <p className='flex justify-between items-center'>ดาวน์โหลดแอปพลิเคชัน<FaDownload size={18} /></p>
                             </DropdownItem>
-                            <DropdownItem key="settings" onPress={onOpenEdit}>
+                            <DropdownItem key="settings" onPress={onOpen}>
                                 <p className='flex justify-between items-center'>แก้ไขโปรไฟล์<FaUserGear size={18} /></p>
                             </DropdownItem>
                             <DropdownItem key="logout" color="danger" onPress={handleLogout}>
@@ -486,8 +488,8 @@ function UserNavbar() {
                     </Dropdown>
 
                     <Modal 
-                        isOpen={isOpenEdit} 
-                        onOpenChange={onOpenChangeEdit}
+                        isOpen={isOpen} 
+                        onOpenChange={onOpenChange}
                         size={"2xl"}
                         scrollBehavior='inside'
                     >

@@ -72,21 +72,22 @@ function AdminNavbar() {
     }, []);
 
     useEffect(() => {
-        const fetchProvinces = async () => {
-            try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/provinces`);
-    
-                if(res.status === 200) {
-                    const data = await res.json();
-                    setProvinces(data.resultData);
+        if(isOpen) {
+            const fetchProvinces = async () => {
+                try {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/provinces`);
+        
+                    if(res.status === 200) {
+                        const data = await res.json();
+                        setProvinces(data.resultData);
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch", error);
                 }
-            } catch (error) {
-                console.error("Failed to fetch", error);
             }
+            fetchProvinces();
         }
-
-        fetchProvinces();
-    }, []);
+    }, [isOpen]);
 
     useEffect(() => {
         if (address?.province) {
