@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, ButtonGroup, Pagination, Tooltip, useDisclosure, Spinner, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@nextui-org/react";
-import { FaPlus, FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import { FaPlus, FaAngleLeft, FaAngleRight, FaLocationDot } from "react-icons/fa6";
 import { FaSearch } from "react-icons/fa";
 import { CiEdit, CiMenuKebab, CiViewList } from "react-icons/ci";
 import { HiOutlineTrash } from "react-icons/hi2";
@@ -256,6 +256,7 @@ export default function ListPlant() {
                 <TableHeader>
                     <TableColumn allowsSorting key="plantedAt">วันที่ปลูก</TableColumn>
                     <TableColumn allowsSorting key="plantname">ชื่อพืช</TableColumn>
+                    <TableColumn key="place">สถานที่ปลูก</TableColumn>
                     <TableColumn key="tools">จัดการ</TableColumn>
                 </TableHeader>
                 <TableBody 
@@ -268,6 +269,20 @@ export default function ListPlant() {
                         <TableRow key={item.id}>
                             <TableCell>{convertDate(item.plantedAt)}</TableCell>
                             <TableCell>{item.plantname}</TableCell>
+                            <TableCell>
+                                {item.latitude && item.longitude ? (
+                                    <a
+                                        href={`https://www.google.com/maps/place/${item.latitude},${item.longitude}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center text-blue-600 hover:underline"
+                                    >
+                                        <FaLocationDot />&nbsp;Google Maps
+                                    </a>
+                                ) : (
+                                    "ไม่มีข้อมูลสถานที่ปลูก"
+                                )}
+                            </TableCell>
                             <TableCell>
                                 <div className="hidden sm:block">
                                     <ButtonGroup>

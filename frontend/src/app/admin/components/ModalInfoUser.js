@@ -69,7 +69,7 @@ function ModalInfoUser({ isOpen, onOpenChange, id }) {
                             <ModalBody>
                                 <Table aria-label="User Plant Info">
                                     <TableHeader>
-                                        <TableColumn key="date">วันที่ปลูก</TableColumn>
+                                        <TableColumn key="plantedAt">วันที่ปลูก</TableColumn>
                                         <TableColumn key="plantname">พืชที่ปลูก</TableColumn>
                                         <TableColumn key="place">สถานที่ปลูก</TableColumn>
                                     </TableHeader>
@@ -84,11 +84,9 @@ function ModalInfoUser({ isOpen, onOpenChange, id }) {
                                                             href={`https://www.google.com/maps/place/${item.latitude},${item.longitude}`}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            className="text-blue-600 hover:underline"
+                                                            className="flex items-center text-blue-600 hover:underline"
                                                         >
-                                                            <div className='flex items-center'>
-                                                                <FaLocationDot />&nbsp;Google Maps
-                                                            </div>
+                                                            <FaLocationDot />&nbsp;Google Maps
                                                         </a>
                                                     ) : (
                                                         "ไม่มีข้อมูลสถานที่ปลูก"
