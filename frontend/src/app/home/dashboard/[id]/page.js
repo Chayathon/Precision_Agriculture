@@ -37,8 +37,8 @@ function Dashboard({ params }) {
 
   const [plantData, setPlantData] = useState(null);
   const [plantDatas, setPlantDatas] = useState(null);
-  const [nutrientData, setNutrientData] = useState(null);
   const [factorData, setFactorData] = useState(null);
+  const [nutrientData, setNutrientData] = useState(null);
 
   const [otherPlant, setOtherPlant] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -50,42 +50,17 @@ function Dashboard({ params }) {
   const { isOpen: isOpenLightIntensityGraph, onOpen: onOpenLightIntensityGraph, onOpenChange: onOpenLightIntensityChangeGraph } = useDisclosure();
   
   const calculateAge = (plantedAt) => {
-    // แปลงวันที่ปลูกเป็นวัตถุ Date
-    const plantedDate = new Date(plantedAt);
-    // วันที่ปัจจุบัน
-    const currentDate = new Date();
+    const plantedDate = moment(plantedAt);
+    const currentDate = moment();
+    const plantAge = currentDate.diff(plantedDate, 'days');
     
-    // คำนวณความแตกต่างของเวลาในหน่วยมิลลิวินาที
-    const timeDifference = currentDate - plantedDate;
-    
-    // แปลงมิลลิวินาทีเป็นวัน
-    const ageInDays = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    
-    return ageInDays;
+    return plantAge;
   };
 
   useEffect(() => {
-    const fetchNutrient = async (plantId) => {
-      setIsLoading(true);
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_ENDPOINT}/getNutrient/${plantId}/${plantAge}`
-        );
-  
-        if (res.status === 200) {
-          const data = await res.json();
-          setNutrientData(data.resultData[0]);
-        }
-      } catch (err) {
-        console.error("Failed to fetch", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-  
     const fetchFactor = async (plantId) => {
-      setIsLoading(true);
       try {
+        setIsLoading(true);
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_ENDPOINT}/getFactor/${plantId}/${plantAge}`
         );
@@ -93,6 +68,8 @@ function Dashboard({ params }) {
         if (res.status === 200) {
           const data = await res.json();
           setFactorData(data.resultData[0]);
+        } else if (res.status === 404) {
+          setFactorData(null);
         }
       } catch (err) {
         console.error("Failed to fetch", err);
@@ -100,17 +77,19 @@ function Dashboard({ params }) {
         setIsLoading(false);
       }
     };
-  
-    const fetchOtherNutrient = async (plantId) => {
-      setIsLoading(true);
+
+    const fetchNutrient = async (plantId) => {
       try {
+        setIsLoading(true);
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_ENDPOINT}/getOtherNutrient/${plantId}/${plantAge}`
+          `${process.env.NEXT_PUBLIC_ENDPOINT}/getNutrient/${plantId}/${plantAge}`
         );
   
         if (res.status === 200) {
           const data = await res.json();
           setNutrientData(data.resultData[0]);
+        } else if (res.status === 404) {
+          setNutrientData(null);
         }
       } catch (err) {
         console.error("Failed to fetch", err);
@@ -120,8 +99,8 @@ function Dashboard({ params }) {
     };
   
     const fetchOtherFactor = async (plantId) => {
-      setIsLoading(true);
       try {
+        setIsLoading(true);
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_ENDPOINT}/getOtherFactor/${plantId}/${plantAge}`
         );
@@ -129,6 +108,28 @@ function Dashboard({ params }) {
         if (res.status === 200) {
           const data = await res.json();
           setFactorData(data.resultData[0]);
+        } else if (res.status === 404) {
+          setFactorData(null);
+        }
+      } catch (err) {
+        console.error("Failed to fetch", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+  
+    const fetchOtherNutrient = async (plantId) => {
+      try {
+        setIsLoading(true);
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_ENDPOINT}/getOtherNutrient/${plantId}/${plantAge}`
+        );
+  
+        if (res.status === 200) {
+          const data = await res.json();
+          setNutrientData(data.resultData[0]);
+        } else if (res.status === 404) {
+          setNutrientData(null);
         }
       } catch (err) {
         console.error("Failed to fetch", err);
@@ -161,7 +162,7 @@ function Dashboard({ params }) {
           setLatitude(data.resultData.latitude);
           setLongitude(data.resultData.longitude);
   
-          data.resultData.plant_id > 0 ? setOtherPlant(false) : setOtherPlant(true);
+          data.resultData.plant_id === 1 ? setOtherPlant(true) : setOtherPlant(false);
         }
       } catch (err) {
         console.error("Failed to fetch", err);
@@ -190,16 +191,21 @@ function Dashboard({ params }) {
   
     const fetchPlantVariables = async (plantId) => {
       try {
+        setIsLoading(true);
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_ENDPOINT}/getPlantVariables7day/${plantId}`
         );
   
+        const data = await res.json();
         if (res.status === 200) {
-          const data = await res.json();
           setPlantDatas(data.resultData);
+        } else if (res.status === 404) {
+          setPlantDatas(null);
         }
       } catch (err) {
         console.error("Failed to fetch", err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -441,7 +447,7 @@ function Dashboard({ params }) {
         <div className="flex justify-center pt-16">
           <Spinner size="lg" label="กำลังโหลดข้อมูล..." />
         </div>
-      ) : (!isLoading && plantData && plantDatas && nutrientData && factorData) ? (
+      ) : (!isLoading) ? (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
             <Card className="drop-shadow-xl md:col-span-2 lg:col-span-1" data-aos="fade-up">
@@ -458,7 +464,7 @@ function Dashboard({ params }) {
                   <div className="flex justify-center flex-1">
                     <p className="text-gray-500">อุณหภูมิ (°C)</p>
                   </div>
-                  {(plantData.temperature < factorData.temperature || plantData.temperature > factorData.temperature * 1.25) && (
+                  {(plantData?.temperature < factorData?.temperature || plantData?.temperature > factorData?.temperature * 1.25) && (
                     <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
                       <FaCircleExclamation size={20} />
                     </Link>
@@ -469,19 +475,25 @@ function Dashboard({ params }) {
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
                       <p className={`text-5xl font-bold ${
-                          plantData.temperature < factorData.temperature
+                          plantData?.temperature < factorData?.temperature
                           ? 'text-red-500'
-                          : plantData.temperature > factorData.temperature * 1.25
+                          : plantData?.temperature > factorData?.temperature * 1.25
                           ? 'text-amber-500'
+                          : !plantData?.temperature
+                          ? 'text-gray-500'
                           : 'text-green-500'
                         }`}>
-                        {plantData.temperature}
+                        {plantData?.temperature ?? "N/A"}
                       </p>
                     </div>
                     
                     <div className="text-center">
                       <p className="text-2xl ">ค่ามาตรฐาน</p>
-                      <p className="text-5xl font-bold">{factorData.temperature}</p>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !factorData?.temperature ? "text-gray-500" : "text-black"
+                        }`}
+                      >{factorData?.temperature ?? "N/A"}</p>
                     </div>
                   </div>
                 </CardBody>
@@ -493,7 +505,7 @@ function Dashboard({ params }) {
                   <div className="flex justify-center flex-1">
                     <p className="text-gray-500">ความชื้น (%)</p>
                   </div>
-                  {(plantData.humidity < factorData.humidity || plantData.humidity > factorData.humidity * 1.25) && (
+                  {(plantData?.humidity < factorData?.humidity || plantData?.humidity > factorData?.humidity * 1.25) && (
                     <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end">
                       <FaCircleExclamation size={20} />
                     </Link>
@@ -504,19 +516,25 @@ function Dashboard({ params }) {
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
                       <p className={`text-5xl font-bold ${
-                          plantData.humidity < factorData.humidity
+                          plantData?.humidity < factorData?.humidity
                           ? 'text-red-500'
-                          : plantData.humidity > factorData.humidity * 1.25
+                          : plantData?.humidity > factorData?.humidity * 1.25
                           ? 'text-amber-500'
+                          : !plantData?.humidity
+                          ? 'text-gray-500'
                           : 'text-green-500'
                         }`}>
-                        {plantData.humidity}
+                        {plantData?.humidity ?? "N/A"}
                       </p>
                     </div>
                     
                     <div className="text-center">
                       <p className="text-2xl ">ค่ามาตรฐาน</p>
-                      <p className="text-5xl font-bold">{factorData.humidity}</p>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !factorData?.humidity ? "text-gray-500" : "text-black"
+                        }`}
+                      >{factorData?.humidity ?? "N/A"}</p>
                     </div>
                   </div>
                 </CardBody>
@@ -529,7 +547,7 @@ function Dashboard({ params }) {
                   <div className="flex justify-center flex-1">
                     <p className="text-gray-500">ไนโตรเจน (mg/kg)</p>
                   </div>
-                  {(plantData.nitrogen < nutrientData.nitrogen || plantData.nitrogen > nutrientData.nitrogen * 1.25) && (
+                  {(plantData?.nitrogen < nutrientData?.nitrogen || plantData?.nitrogen > nutrientData?.nitrogen * 1.25) && (
                     <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
                       <FaCircleExclamation size={20} />
                     </Link>
@@ -540,19 +558,27 @@ function Dashboard({ params }) {
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
                       <p className={`text-5xl font-bold ${
-                          plantData.nitrogen < nutrientData.nitrogen
+                          plantData?.nitrogen < nutrientData?.nitrogen
                           ? 'text-red-500'
-                          : plantData.nitrogen > nutrientData.nitrogen * 1.25
+                          : plantData?.nitrogen > nutrientData?.nitrogen * 1.25
                           ? 'text-amber-500'
+                          : !plantData?.nitrogen
+                          ? 'text-gray-500'
                           : 'text-green-500'
                         }`}>
-                        {plantData.nitrogen}
+                        {plantData?.nitrogen ?? "N/A"}
                       </p>
                     </div>
                     
                     <div className="text-center">
                       <p className="text-2xl ">ค่ามาตรฐาน</p>
-                      <p className="text-5xl font-bold">{nutrientData.nitrogen}</p>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !nutrientData?.nitrogen ? "text-gray-500" : "text-black"
+                        }`}
+                      >
+                        {nutrientData?.nitrogen ?? "N/A"}
+                      </p>
                     </div>
                   </div>
                 </CardBody>
@@ -564,7 +590,7 @@ function Dashboard({ params }) {
                   <div className="flex justify-center flex-1">
                     <p className="text-gray-500">ฟอสฟอรัส (mg/kg)</p>
                   </div>
-                  {(plantData.phosphorus < nutrientData.phosphorus || plantData.phosphorus > nutrientData.phosphorus * 1.25) && (
+                  {(plantData?.phosphorus < nutrientData?.phosphorus || plantData?.phosphorus > nutrientData?.phosphorus * 1.25) && (
                     <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
                       <FaCircleExclamation size={20} />
                     </Link>
@@ -575,19 +601,27 @@ function Dashboard({ params }) {
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
                       <p className={`text-5xl font-bold ${
-                          plantData.phosphorus < nutrientData.phosphorus
+                          plantData?.phosphorus < nutrientData?.phosphorus
                           ? 'text-red-500'
-                          : plantData.phosphorus > nutrientData.phosphorus * 1.25
+                          : plantData?.phosphorus > nutrientData?.phosphorus * 1.25
                           ? 'text-amber-500'
+                          : !plantData?.phosphorus
+                          ? 'text-gray-500'
                           : 'text-green-500'
                         }`}>
-                        {plantData.phosphorus}
+                        {plantData?.phosphorus ?? "N/A"}
                       </p>
                     </div>
                     
                     <div className="text-center">
                       <p className="text-2xl">ค่ามาตรฐาน</p>
-                      <p className="text-5xl font-bold"> {nutrientData.phosphorus}</p>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !nutrientData?.phosphorus ? "text-gray-500" : "text-black"
+                        }`}
+                      >
+                        {nutrientData?.phosphorus ?? "N/A"}
+                      </p>
                     </div>
                   </div>
                 </CardBody>
@@ -599,7 +633,7 @@ function Dashboard({ params }) {
                   <div className="flex justify-center flex-1">
                     <p className="text-gray-500">โพแทสเซียม (mg/kg)</p>
                   </div>
-                  {(plantData.potassium < nutrientData.potassium || plantData.potassium > nutrientData.potassium * 1.25) && (
+                  {(plantData?.potassium < nutrientData?.potassium || plantData?.potassium > nutrientData?.potassium * 1.25) && (
                     <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
                       <FaCircleExclamation size={20} />
                     </Link>
@@ -610,19 +644,27 @@ function Dashboard({ params }) {
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
                       <p className={`text-5xl font-bold ${
-                          plantData.potassium < nutrientData.potassium
+                          plantData?.potassium < nutrientData?.potassium
                           ? 'text-red-500'
-                          : plantData.potassium > nutrientData.potassium * 1.25
+                          : plantData?.potassium > nutrientData?.potassium * 1.25
                           ? 'text-amber-500'
+                          : !plantData?.potassium
+                          ? 'text-gray-500'
                           : 'text-green-500'
                         }`}>
-                        {plantData.potassium}
+                        {plantData?.potassium ?? "N/A"}
                       </p>
                     </div>
                     
                     <div className="text-center">
                       <p className="text-2xl ">ค่ามาตรฐาน</p>
-                      <p className="text-5xl font-bold">{nutrientData.potassium}</p>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !nutrientData?.potassium ? "text-gray-500" : "text-black"
+                        }`}
+                      >
+                        {nutrientData?.potassium ?? "N/A"}
+                      </p>
                     </div>
                   </div>
                 </CardBody>
@@ -641,7 +683,7 @@ function Dashboard({ params }) {
                         <FaChartLine className="size-4 text-red-400" />
                       </Button>
                     </ButtonGroup>
-                    {(plantData.pH < factorData.pH || plantData.pH > factorData.pH * 1.25) && (
+                    {(plantData?.pH < factorData?.pH || plantData?.pH > factorData?.pH * 1.25) && (
                       <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
                         <FaCircleExclamation size={20} />
                       </Link>
@@ -653,19 +695,27 @@ function Dashboard({ params }) {
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
                       <p className={`text-5xl font-bold ${
-                          plantData.pH < factorData.pH
+                          plantData?.pH < factorData?.pH
                           ? 'text-red-500'
-                          : plantData.pH > factorData.pH * 1.25
+                          : plantData?.pH > factorData?.pH * 1.25
                           ? 'text-amber-500'
+                          : !plantData?.pH
+                          ? 'text-gray-500'
                           : 'text-green-500'
                         }`}>
-                        {plantData.pH}
+                        {plantData?.pH ?? "N/A"}
                       </p>
                     </div>
                     
                     <div className="text-center">
                       <p className="text-2xl ">ค่ามาตรฐาน</p>
-                      <p className="text-5xl font-bold">{factorData.pH}</p>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !factorData?.pH ? "text-gray-500" : "text-black"
+                        }`}
+                      >
+                        {factorData?.pH ?? "N/A"}
+                      </p>
                     </div>
                   </div>
                 </CardBody>
@@ -683,7 +733,7 @@ function Dashboard({ params }) {
                         <FaChartLine className="size-4 text-red-400" />
                       </Button>
                     </ButtonGroup>
-                    {(plantData.salinity < factorData.salinity || plantData.salinity > factorData.salinity * 1.25) && (
+                    {(plantData?.salinity < factorData?.salinity || plantData?.salinity > factorData?.salinity * 1.25) && (
                       <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
                         <FaCircleExclamation size={20} />
                       </Link>
@@ -695,19 +745,27 @@ function Dashboard({ params }) {
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
                       <p className={`text-5xl font-bold ${
-                          plantData.salinity < factorData.salinity
+                          plantData?.salinity < factorData?.salinity
                           ? 'text-red-500'
-                          : plantData.salinity > factorData.salinity * 1.25
+                          : plantData?.salinity > factorData?.salinity * 1.25
                           ? 'text-amber-500'
+                          : !plantData?.salinity
+                          ? 'text-gray-500'
                           : 'text-green-500'
                         }`}>
-                        {plantData.salinity}
+                        {plantData?.salinity ?? "N/A"}
                       </p>
                     </div>
                     
                     <div className="text-center">
                       <p className="text-2xl ">ค่ามาตรฐาน</p>
-                      <p className="text-5xl font-bold">{factorData.salinity}</p>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !factorData?.salinity ? "text-gray-500" : "text-black"
+                        }`}
+                      >
+                        {factorData?.salinity ?? "N/A"}
+                      </p>
                     </div>
                   </div>
                 </CardBody>
@@ -725,7 +783,7 @@ function Dashboard({ params }) {
                         <FaChartLine className="size-4 text-red-400" />
                       </Button>
                     </ButtonGroup>
-                    {(plantData.lightIntensity < factorData.lightIntensity || plantData.lightIntensity > factorData.lightIntensity * 1.25) && (
+                    {(plantData?.lightIntensity < factorData?.lightIntensity || plantData?.lightIntensity > factorData?.lightIntensity * 1.25) && (
                       <Link href="https://www.doa.go.th/share/" target="_blank" className="flex justify-end z-50">
                         <FaCircleExclamation size={20} />
                       </Link>
@@ -737,19 +795,27 @@ function Dashboard({ params }) {
                     <div className="text-center">
                       <p className="text-2xl">ค่าที่วัดได้</p>
                       <p className={`text-5xl font-bold ${
-                          plantData.lightIntensity < factorData.lightIntensity
+                          plantData?.lightIntensity < factorData?.lightIntensity
                           ? 'text-red-500'
-                          : plantData.lightIntensity > factorData.lightIntensity * 1.25
+                          : plantData?.lightIntensity > factorData?.lightIntensity * 1.25
                           ? 'text-amber-500'
+                          : !plantData?.lightIntensity
+                          ? 'text-gray-500'
                           : 'text-green-500'
                         }`}>
-                        {plantData.lightIntensity}
+                        {plantData?.lightIntensity ?? "N/A"}
                       </p>
                     </div>
                     
                     <div className="text-center">
                       <p className="text-2xl ">ค่ามาตรฐาน</p>
-                      <p className="text-5xl font-bold">{factorData.lightIntensity}</p>
+                      <p
+                        className={`text-5xl font-bold ${
+                          !factorData?.lightIntensity ? "text-gray-500" : "text-black"
+                        }`}
+                      >
+                        {factorData?.lightIntensity ?? "N/A"}
+                      </p>
                     </div>
                   </div>
                 </CardBody>
@@ -821,10 +887,14 @@ function Dashboard({ params }) {
                     <p className="text-gray-500">กราฟแสดงข้อมูลอุณหภูมิ & ความชื้น</p>
                   </div>
                 </CardHeader>
-                <Line
-                  options={options}
-                  data={createEnvironmentData(plantDatas)}
-                />
+                  {plantDatas ? (
+                    <Line
+                      options={options}
+                      data={createEnvironmentData(plantDatas)}
+                    />
+                  ) : (
+                    <p className="flex justify-center text-2xl font-bold">ไม่มีข้อมูล</p>
+                  )}
               </Card>
             </div>
               
@@ -835,10 +905,15 @@ function Dashboard({ params }) {
                     <p className="text-gray-500">กราฟแสดงข้อมูลสารอาหาร</p>
                   </div>
                 </CardHeader>
-                <Line
-                  options={options}
-                  data={createNutrientData(plantDatas)}
-                />
+                {plantDatas ? (
+                  <Line
+                    options={options}
+                    data={createNutrientData(plantDatas)}
+                  />
+                ) : (
+                  <p className="flex justify-center text-2xl font-bold">ไม่มีข้อมูล</p>
+                )}
+                
               </Card>
             </div>
 

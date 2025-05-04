@@ -125,6 +125,10 @@ router.get('/getPlantVariables7day/:id', async (req, res) => {
                 receivedAt: 'desc',
             },
         });
+
+        if (!latestRecord) {
+            return res.status(404).json({ message: 'No data found for the last 7 days' });
+        }
         
         const latestDate = new Date(latestRecord.receivedAt);
         const Days = new Date(latestDate);
@@ -170,6 +174,10 @@ router.get('/getPlantVariables14day/:id', async (req, res) => {
                 receivedAt: 'desc',
             },
         });
+
+        if (!latestRecord) {
+            return res.status(404).json({ message: 'No data found for the last 14 days' });
+        }
         
         const latestDate = new Date(latestRecord.receivedAt);
         const Days = new Date(latestDate);
@@ -215,6 +223,10 @@ router.get('/getPlantVariables1month/:id', async (req, res) => {
                 receivedAt: 'desc',
             },
         });
+
+        if (!latestRecord) {
+            return res.status(404).json({ message: 'No data found for the last 1 month' });
+        }
         
         const latestDate = new Date(latestRecord.receivedAt);
         const Days = new Date(latestDate);
@@ -260,6 +272,10 @@ router.get('/getPlantVariables3month/:id', async (req, res) => {
                 receivedAt: 'desc',
             },
         });
+
+        if (!latestRecord) {
+            return res.status(404).json({ message: 'No data found for the last 3 months' });
+        }
         
         const latestDate = new Date(latestRecord.receivedAt);
         const Days = new Date(latestDate);
@@ -305,6 +321,10 @@ router.get('/getPlantVariables6month/:id', async (req, res) => {
                 receivedAt: 'desc',
             },
         });
+
+        if (!latestRecord) {
+            return res.status(404).json({ message: 'No data found for the last 6 months' });
+        }
         
         const latestDate = new Date(latestRecord.receivedAt);
         const Days = new Date(latestDate);
@@ -350,6 +370,10 @@ router.get('/getPlantVariables9month/:id', async (req, res) => {
                 receivedAt: 'desc',
             },
         });
+
+        if (!latestRecord) {
+            return res.status(404).json({ message: 'No data found for the last 9 months' });
+        }
         
         const latestDate = new Date(latestRecord.receivedAt);
         const Days = new Date(latestDate);
@@ -395,6 +419,10 @@ router.get('/getPlantVariables1year/:id', async (req, res) => {
                 receivedAt: 'desc',
             },
         });
+
+        if (!latestRecord) {
+            return res.status(404).json({ message: 'No data found for the last 1 year' });
+        }
         
         const latestDate = new Date(latestRecord.receivedAt);
         const Days = new Date(latestDate);

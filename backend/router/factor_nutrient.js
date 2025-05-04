@@ -20,12 +20,14 @@ router.get('/getFactor/:id/:age', async (req, res) => {
             }
         });
 
-        if(Factor) {
-            res.status(200).json({
-                message: 'Get Factor Variables',
-                resultData: [Factor],
-            });
+        if (!Factor) {
+            return res.status(404).json({ message: `No data found for the age ${age} days` });
         }
+
+        res.status(200).json({
+            message: 'Get Factor Variables',
+            resultData: [Factor],
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');
@@ -176,12 +178,14 @@ router.get('/getNutrient/:id/:age', async (req, res) => {
             }
         });
 
-        if(Nutrient) {
-            res.status(200).json({
-                message: 'Get Nutrient Variables',
-                resultData: [Nutrient],
-            });
+        if (!Nutrient) {
+            return res.status(404).json({ message: `No data found for the age ${age} days` });
         }
+
+        res.status(200).json({
+            message: 'Get Nutrient Variables',
+            resultData: [Nutrient],
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');
@@ -328,12 +332,14 @@ router.get('/getOtherFactor/:id/:age', async (req, res) => {
             }
         });
 
-        if(Factor) {
-            res.status(200).json({
-                message: 'Get Factor Variables',
-                resultData: [Factor],
-            });
+        if (!Factor) {
+            return res.status(404).json({ message: `No data found for the age ${age} days` });
         }
+
+        res.status(200).json({
+            message: 'Get Factor Variables',
+            resultData: [Factor],
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');
@@ -485,12 +491,14 @@ router.get('/getOtherNutrient/:id/:age', async (req, res) => {
             }
         });
 
-        if(Nutrient) {
-            res.status(200).json({
-                message: 'Get Nutrient Variables',
-                resultData: [Nutrient],
-            });
+        if (!Nutrient) {
+            return res.status(404).json({ message: `No data found for the age ${age} days` });
         }
+
+        res.status(200).json({
+            message: 'Get Nutrient Variables',
+            resultData: [Nutrient],
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');
