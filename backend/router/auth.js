@@ -62,7 +62,7 @@ router.post("/register", async (req, res) => {
     }
 });
 
-router.get('/verify-email', async (req, res) => {
+router.get("/verify-email", async (req, res) => {
     const { token } = req.query;
   
     try {
@@ -166,7 +166,7 @@ router.post("/login", async (req, res) => {
     }
 });
 
-router.post('/resend-verification', async (req, res) => {
+router.post("/resend-verification", async (req, res) => {
     const { email } = req.body;
   
     try {
@@ -197,7 +197,7 @@ router.post('/resend-verification', async (req, res) => {
     }
 });
 
-router.post("/forgotPassword/:email", async (req, res) => {
+router.post("/forgotPassword", async (req, res) => {
     const { email } = req.params;
 
     try {
