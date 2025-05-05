@@ -22,7 +22,15 @@ function ForgotPassword() {
 
         try {
             if (!isCheck) {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/forgotPassword/${email}`);
+                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/forgotPassword`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email
+                    })
+                });
 
                 if(res.status === 200) {
                     const data = await res.json();

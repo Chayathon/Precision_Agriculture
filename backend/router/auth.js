@@ -197,7 +197,7 @@ router.post('/resend-verification', async (req, res) => {
     }
 });
 
-router.get("/forgotPassword/:email", async (req, res) => {
+router.post("/forgotPassword/:email", async (req, res) => {
     const { email } = req.params;
 
     try {
