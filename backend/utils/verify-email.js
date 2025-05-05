@@ -26,7 +26,7 @@ const sendVerificationEmail = async (email, token) => {
                 </p>
                 <div style="text-align: center; margin: 40px 0;">
                     <a href="${verificationUrl}" 
-                       style="background-color: #28a745; color: #fff; padding: 12px 30px; text-decoration: none; font-size: 16px; font-weight: bold; border-radius: 10px; font-family: 'Kanit', Arial, sans-serif;">
+                       style="background-color: #28a745; color: #fff; padding: 12px 30px; text-decoration: none; font-size: 16px; font-weight: bold; border-radius: 16px; font-family: 'Kanit', Arial, sans-serif;">
                         ยืนยันการสมัครสมาชิก
                     </a>
                 </div>
