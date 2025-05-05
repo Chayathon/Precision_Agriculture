@@ -289,7 +289,7 @@ function AdminNavbar() {
                 </NavbarItem>
                 <NavbarItem isActive={isActiveLink('/admin/listRole')}>
                     <Link href="/admin/listRole">
-                        ข้อมูลตำแหน่ง
+                        ข้อมูลบทบาท
                     </Link>
                 </NavbarItem>
             </NavbarContent>

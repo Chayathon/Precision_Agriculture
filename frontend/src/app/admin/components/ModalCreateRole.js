@@ -65,7 +65,7 @@ function ModalCreateRole({ isOpen, onOpenChange, setRefresh }) {
                             <form onSubmit={handleSubmit}>
                                 <Input
                                     autoFocus
-                                    label="ตำแหน่ง"
+                                    label="บทบาท"
                                     variant="bordered"
                                     onChange={(e) => setRoleName(e.target.value)}
                                 />

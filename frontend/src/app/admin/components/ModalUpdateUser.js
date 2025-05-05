@@ -284,7 +284,7 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                                     </div>
                                     <div className='my-4'>
                                         <Select
-                                            label="สถานะ"
+                                            label="บทบาท"
                                             items={roles}
                                             selectedKeys={String(role)}
                                             onChange={(e) => setRole(e.target.value)}
