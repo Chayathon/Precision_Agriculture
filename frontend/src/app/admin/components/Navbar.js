@@ -474,7 +474,7 @@ function AdminNavbar() {
                         isActive={isActiveLink('/admin/listRole')}
                         className={isActiveLink('/admin/listRole') ? 'text-blue-600' : 'foreground'}
                     >
-                        ข้อมูลตำแหน่ง
+                        ข้อมูลบทบาท
                     </NavbarMenuItem>
                 </Link>
             </NavbarMenu>
