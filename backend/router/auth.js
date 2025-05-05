@@ -191,14 +191,14 @@ router.post("/resend-verification", async (req, res) => {
         await sendVerificationEmail(email, token);
         
         res.status(200).json({ message: 'Verification email resent' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error', error });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
     }
 });
 
 router.post("/forgotPassword", async (req, res) => {
-    const { email } = req.params;
+    const { email } = req.body;
 
     try {
         const user = await prisma.user.findFirst({
@@ -255,12 +255,11 @@ router.post("/forgotPassword", async (req, res) => {
 });
 
 router.put("/updatePassword", async (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password
+    const { email, password } = req.body;
     const hashPassword = await bcrypt.hash(password, 10);
 
     try {
-        const updatedPassword = await prisma.user.update({
+        const updatePassword = await prisma.user.update({
             where: {
                 email: email,
             },
@@ -270,7 +269,7 @@ router.put("/updatePassword", async (req, res) => {
             },
         });
 
-        if(updatedPassword) {
+        if(updatePassword) {
             res.status(200).json({
                 message: "Password updated successfully"
             });
