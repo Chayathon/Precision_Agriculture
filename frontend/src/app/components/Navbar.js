@@ -570,22 +570,8 @@ function UserNavbar() {
                                                     {(item) => <SelectItem key={item.subdistrict_id}>{item.name_th}</SelectItem>}
                                                 </Select>
                                             </div>
-                                            <div className='my-4'>
-                                                <Input onChange={(e) => setUsername(e.target.value)} type='text' value={username} label='ชื่อผู้ใช้' isClearable isDisabled />
-                                            </div>
                                             <div className='mt-4'>
-                                                <Input
-                                                    onChange={(e) => setPassword(e.target.value)}
-                                                    value={password}
-                                                    label="รหัสผ่าน"
-                                                    endContent={
-                                                        <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                                            {isVisible ? 'ซ่อน' : 'แสดง'}
-                                                        </Button>
-                                                    }
-                                                    type={isVisible ? "text" : "password"}
-                                                    isDisabled
-                                                />
+                                                <Input onChange={(e) => setUsername(e.target.value)} type='text' value={username} label='ชื่อผู้ใช้' isClearable isDisabled />
                                             </div>
                                             <ModalFooter>
                                                 <Button variant="flat" onPress={onClose}>
