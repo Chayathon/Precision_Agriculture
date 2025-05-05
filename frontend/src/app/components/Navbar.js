@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
 import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Select, SelectItem, Badge, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
-import { FaBell, FaUserGear , FaDownload, FaRightFromBracket } from "react-icons/fa6";
+import { FaBell, FaUserGear , FaDownload, FaRightFromBracket, FaLock } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 import moment from 'moment';
 import 'moment/locale/th';
@@ -50,7 +50,11 @@ function UserNavbar() {
         subdistrict: "",
     });
     const [username, setUsername] = useState('');
+
+    const [isChecked, setIsChecked] = useState(false);
+    const [currentPassword, setCurrentPassword] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -58,6 +62,7 @@ function UserNavbar() {
     const toggleVisibility = () => setIsVisible(!isVisible);
 
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
+    const {isOpen: isOpenPassword, onOpen: onOpenPassword, onOpenChange: onOpenChangePassword} = useDisclosure();
 
     useEffect(() => {
         const updateDateTime = () => {
@@ -258,14 +263,13 @@ function UserNavbar() {
                         subdistrict: data.resultData.subdistrict,
                     });
                     setUsername(data.resultData.username);
-                    setPassword(data.resultData.password);
                 } catch (err) {
                     console.error("Error fetching data: ", err);
                 }
             }
             fetchData();
         }
-    }, [isOpen, id]);
+    }, [id, isOpen]);
 
     const handleSubmitEdit = async (e) => {
         e.preventDefault();
@@ -301,11 +305,6 @@ function UserNavbar() {
 
                 toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว");
                 onOpenChange(false);
-                setRefresh(true);
-
-                setTimeout(() => {
-                    setRefresh(false);
-                }, 1000);
             }
             else {
                 toast.error("แก้ไขข้อมูลล้มเหลว");
@@ -317,6 +316,67 @@ function UserNavbar() {
             setIsLoading(false);
         }
     };
+
+    const handleSubmitPassword = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        try {
+            if(!isChecked) {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/checkPassword/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        currentPassword
+                    })
+                });
+    
+                if (res.status === 200) {
+                    const form = e.target;
+                    form.reset();
+
+                    setIsChecked(true);
+                    toast.success("รหัสผ่านปัจจุบันถูกต้อง")
+                } else if (res.status === 401) {
+                    toast.error("รหัสผ่านปัจจุบันไม่ถูกต้อง!");
+                } else {
+                    toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่");
+                }
+            } else {
+                if (password != confirmPassword) {
+                    toast.error("รหัสผ่านไม่ตรงกัน!");
+                    setIsLoading(false);
+                    return;
+                }
+
+                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/changePassword/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        password
+                    })
+                });
+                
+                if (res.status === 200) {
+                    const form = e.target;
+                    form.reset();
+
+                    toast.success("เปลี่ยนรหัสผ่านเรียบร้อยแล้ว");
+                    onOpenChangePassword(false);
+                } else {
+                    toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่");
+                }
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
     const handleRemoveItem = (key) => {
         localStorage.removeItem(key); // ลบจาก localStorage
@@ -481,6 +541,9 @@ function UserNavbar() {
                             <DropdownItem key="settings" onPress={onOpen}>
                                 <p className='flex justify-between items-center'>แก้ไขโปรไฟล์<FaUserGear size={18} /></p>
                             </DropdownItem>
+                            <DropdownItem key="changePassword" onPress={onOpenPassword}>
+                                <p className='flex justify-between items-center'>เปลี่ยนรหัสผ่าน<FaLock size={18} /></p>
+                            </DropdownItem>
                             <DropdownItem key="logout" color="danger" onPress={handleLogout}>
                                 <p className='flex justify-between items-center'>ออกจากระบบ<FaRightFromBracket size={18} /></p>
                             </DropdownItem>
@@ -584,6 +647,83 @@ function UserNavbar() {
                                                     disabled={isLoading}
                                                 >
                                                     {isLoading ? 'กำลังแก้ไขข้อมูล...' : 'แก้ไข'}
+                                                </Button>
+                                            </ModalFooter>
+                                        </form>
+                                    </ModalBody>
+                                </>
+                            )}
+                        </ModalContent>
+                    </Modal>
+
+                    <Modal 
+                        isOpen={isOpenPassword} 
+                        onOpenChange={onOpenChangePassword}
+                    >
+                        <ModalContent>
+                            {(onClose) => (
+                                <>
+                                    <ModalHeader className="flex flex-col gap-1">เปลี่ยนรหัสผ่าน</ModalHeader>
+                                    <ModalBody>
+                                        <form onSubmit={handleSubmitPassword}>
+                                            {!isChecked ? (
+                                                <>
+                                                    <Input
+                                                        onChange={(e) => setCurrentPassword(e.target.value)}
+                                                        label="รหัสผ่านปัจจุบัน"
+                                                        endContent={
+                                                            <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
+                                                                {isVisible ? 'ซ่อน' : 'แสดง'}
+                                                            </Button>
+                                                        }
+                                                        type={isVisible ? "text" : "password"}
+                                                        autoFocus
+                                                        isRequired
+                                                    />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <div className='mb-4'>
+                                                        <Input
+                                                            onChange={(e) => setPassword(e.target.value)}
+                                                            label="รหัสผ่านใหม่"
+                                                            endContent={
+                                                                <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
+                                                                    {isVisible ? 'ซ่อน' : 'แสดง'}
+                                                                </Button>
+                                                            }
+                                                            type={isVisible ? "text" : "password"}
+                                                            autoFocus
+                                                            isRequired
+                                                        />
+                                                    </div>
+                                                    <div className='mt-4'>
+                                                        <Input
+                                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                                            label="ยืนยันรหัสผ่านใหม่"
+                                                            endContent={
+                                                                <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
+                                                                    {isVisible ? 'ซ่อน' : 'แสดง'}
+                                                                </Button>
+                                                            }
+                                                            type={isVisible ? "text" : "password"}
+                                                            isRequired
+                                                        />
+                                                    </div>
+                                                </>
+                                            )}
+                                            
+                                            <ModalFooter>
+                                                <Button variant="flat" onPress={onClose}>
+                                                    ยกเลิก
+                                                </Button>
+                                                <Button
+                                                    type='submit'
+                                                    color='success'
+                                                    isLoading={isLoading}
+                                                    disabled={isLoading}
+                                                >
+                                                    {isChecked ? 'เปลี่ยนรหัสผ่าน' : 'ยืนยัน'}
                                                 </Button>
                                             </ModalFooter>
                                         </form>
