@@ -66,7 +66,6 @@ function ModalCreateRole({ isOpen, onOpenChange, setRefresh }) {
                                 <Input
                                     autoFocus
                                     label="บทบาท"
-                                    variant="bordered"
                                     onChange={(e) => setRoleName(e.target.value)}
                                 />
                                 <ModalFooter>

@@ -387,7 +387,7 @@ function UserNavbar() {
                     <Dropdown>
                         <NavbarItem isActive={isActiveLink('/home/dashboard')}>
                             <DropdownTrigger>
-                                <Button 
+                                <Button
                                     variant="bordered" 
                                     className="capitalize"
                                 >

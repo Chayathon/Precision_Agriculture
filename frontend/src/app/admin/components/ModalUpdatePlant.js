@@ -87,7 +87,6 @@ function ModalUpdateRole({ isOpen, onOpenChange, id, setRefresh }) {
                                     <Input
                                         autoFocus
                                         label="ชื่อพืช"
-                                        variant="bordered"
                                         value={plantName}
                                         onChange={(e) => setPlantName(e.target.value)}
                                     />

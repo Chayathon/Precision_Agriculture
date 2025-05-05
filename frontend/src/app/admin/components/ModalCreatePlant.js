@@ -78,7 +78,6 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                                 <Input
                                     autoFocus
                                     label="ชื่อพืช"
-                                    variant="bordered"
                                     onChange={(e) => setPlantName(e.target.value)}
                                 />
                                 <ModalFooter>
