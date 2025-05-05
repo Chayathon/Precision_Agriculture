@@ -13,7 +13,7 @@ function ForgotPassword() {
     const [email, setEmail] = useState('');
     const [otp, setOTP] = useState();
     const [inputOTP, setInputOTP] = useState();
-    const [isCheck, setIsCheck] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
@@ -21,7 +21,7 @@ function ForgotPassword() {
         setIsLoading(true);
 
         try {
-            if (!isCheck) {
+            if (!isChecked) {
                 const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/forgotPassword`, {
                     method: 'POST',
                     headers: {
@@ -35,7 +35,7 @@ function ForgotPassword() {
                 if(res.status === 200) {
                     const data = await res.json();
                     setOTP(data.resultData.otp);
-                    setIsCheck(true);
+                    setIsChecked(true);
                     
                     toast.success("ส่ง OTP ไปที่อีเมลของคุณแล้ว");
                 } else if(res.status === 404) {
@@ -77,7 +77,7 @@ function ForgotPassword() {
                             />
                         </div>
                         <div className='m-2'>
-                            {isCheck && (
+                            {isChecked && (
                                 <>
                                     <p>กรุณากรอก OTP</p>
                                     <InputOtp
@@ -100,7 +100,7 @@ function ForgotPassword() {
                             isLoading={isLoading}
                             disabled={isLoading}
                         >
-                            {isLoading ? 'กำลังดำเนินการ...' : (isCheck ? 'ยืนยัน OTP' : 'ยืนยัน')} <FaCircleCheck size={16} />
+                            {isLoading ? 'กำลังดำเนินการ...' : (isChecked ? 'ยืนยัน OTP' : 'ยืนยัน')} <FaCircleCheck size={16} />
                         </Button>
                     </form>
                 </CardBody>
