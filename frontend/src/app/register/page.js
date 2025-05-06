@@ -30,6 +30,8 @@ function Register() {
 
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
+    const [isVisibleConfirm, setIsVisibleConfirm] = useState(false);
+    const toggleVisibilityConfirm = () => setIsVisibleConfirm(!isVisibleConfirm);
 
     useEffect(() => {
         const fetchProvinces = async () => {
@@ -111,13 +113,17 @@ function Register() {
         setIsLoading(true);
 
         if(password != confirmPassword) {
-            toast.error("รหัสผ่านไม่ตรงกัน!");
+            toast.error("รหัสผ่านไม่ตรงกัน!", {
+                autoClose: 10000,
+            });
             setIsLoading(false);
             return;
         }
 
         if(!firstname || !lastname || !email || !tel || !address || !username || !password || !confirmPassword) {
-            toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
+            toast.error("กรุณากรอกข้อมูลให้ครบทุกช่อง!", {
+                autoClose: 10000,
+            });
             setIsLoading(false);
             return;
         }
@@ -145,16 +151,21 @@ function Register() {
             if(res.status === 201) {
                 const form = e.target;
                 form.reset();
-                toast.success("สำเร็จ! กรุณาตรวจสอบอีเมลเพื่อยืนยัน");
-            }
-            else if (res.status === 400) {
-                toast.warn("อีเมลหรือชื่อผู้ใช้นี้ ได้รับการลงทะเบียนแล้ว");
+                toast.success("สำเร็จ! กรุณาตรวจสอบอีเมลเพื่อยืนยัน", {
+                    autoClose: 60000 * 5,
+                });
+            } else if (res.status === 400) {
+                toast.warn("อีเมลหรือชื่อผู้ใช้นี้ ได้รับการลงทะเบียนแล้ว", {
+                    autoClose: 60000 * 5,
+                });
             } else {
                 toast.error(data.message || "เกิดข้อผิดพลาด");
             }
         } catch (error) {
             console.error("Register Error:", error.message, error.stack);
-            toast.error("เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่");
+            toast.error("เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่", {
+                autoClose: 10000,
+            });
             setIsLoading(false);
         } finally {
             setIsLoading(false);
@@ -260,11 +271,11 @@ function Register() {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 label="ยืนยันรหัสผ่าน"
                                 endContent={
-                                    <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                        {isVisible ? 'ซ่อน' : 'แสดง'}
+                                    <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibilityConfirm} aria-label="toggle password visibility">
+                                        {isVisibleConfirm ? 'ซ่อน' : 'แสดง'}
                                     </Button>
                                 }
-                                type={isVisible ? "text" : "password"}
+                                type={isVisibleConfirm ? "text" : "password"}
                                 isRequired
                             />
                         </div>

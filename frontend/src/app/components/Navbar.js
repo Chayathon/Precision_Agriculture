@@ -404,14 +404,16 @@ function UserNavbar() {
                             onSelectionChange={setSelectedKeys}
                             disallowEmptySelection
                         >
-                            {(item) => (
-                                <DropdownItem key={item.id}>{item.plantname}</DropdownItem>
-                            )}
+                            {plants.map((item, index) => (
+                                <DropdownItem key={item.id}>
+                                    {`${index + 1} - ${item.plantname}`}
+                                </DropdownItem>
+                            ))}
                         </DropdownMenu>
                     </Dropdown>
                     <NavbarItem isActive={isActiveLink('/home/listPlant')}>
                         <Link href="/home/listPlant">
-                            ข้อมูลพืช
+                            เพิ่มข้อมูลพืช
                         </Link>
                     </NavbarItem>
                 </NavbarContent>
@@ -570,22 +572,8 @@ function UserNavbar() {
                                                     {(item) => <SelectItem key={item.subdistrict_id}>{item.name_th}</SelectItem>}
                                                 </Select>
                                             </div>
-                                            <div className='my-4'>
-                                                <Input onChange={(e) => setUsername(e.target.value)} type='text' value={username} label='ชื่อผู้ใช้' isClearable isDisabled />
-                                            </div>
                                             <div className='mt-4'>
-                                                <Input
-                                                    onChange={(e) => setPassword(e.target.value)}
-                                                    value={password}
-                                                    label="รหัสผ่าน"
-                                                    endContent={
-                                                        <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                                            {isVisible ? 'ซ่อน' : 'แสดง'}
-                                                        </Button>
-                                                    }
-                                                    type={isVisible ? "text" : "password"}
-                                                    isDisabled
-                                                />
+                                                <Input onChange={(e) => setUsername(e.target.value)} type='text' value={username} label='ชื่อผู้ใช้' isClearable isDisabled />
                                             </div>
                                             <ModalFooter>
                                                 <Button variant="flat" onPress={onClose}>

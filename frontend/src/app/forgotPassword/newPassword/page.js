@@ -16,6 +16,8 @@ function NewPassword() {
 
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
+    const [isVisibleConfirm, setIsVisibleConfirm] = useState(false);
+    const toggleVisibilityConfirm = () => setIsVisibleConfirm(!isVisibleConfirm);
 
     useEffect(() => {
         const resetEmail = sessionStorage.getItem('resetEmail');
@@ -103,11 +105,11 @@ function NewPassword() {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 label="ยืนยันรหัสผ่าน"
                                 endContent={
-                                    <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                        {isVisible ? 'ซ่อน' : 'แสดง'}
+                                    <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibilityConfirm} aria-label="toggle password visibility">
+                                        {isVisibleConfirm ? 'ซ่อน' : 'แสดง'}
                                     </Button>
                                 }
-                                type={isVisible ? "text" : "password"}
+                                type={isVisibleConfirm ? "text" : "password"}
                                 isRequired
                             />
                         </div>
