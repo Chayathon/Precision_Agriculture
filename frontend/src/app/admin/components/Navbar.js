@@ -274,6 +274,7 @@ function AdminNavbar() {
 
                     toast.success("เปลี่ยนรหัสผ่านเรียบร้อยแล้ว");
                     onOpenChangePassword(false);
+                    setIsChecked(false);
                 } else {
                     toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่");
                 }
