@@ -241,7 +241,7 @@ export default function ListRole() {
             >
                 <TableHeader>
                     <TableColumn allowsSorting key="id">ไอดี</TableColumn>
-                    <TableColumn allowsSorting key="role_name">ตำแหน่ง</TableColumn>
+                    <TableColumn allowsSorting key="role_name">บทบาท</TableColumn>
                     <TableColumn key="tools">จัดการ</TableColumn>
                 </TableHeader>
                 <TableBody 
