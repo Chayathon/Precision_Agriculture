@@ -953,7 +953,7 @@ function Dashboard({ params }) {
                   />
                 ) : (
                   <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                    <p className="flex justify-center text-2xl font-bold">ไม่มีข้อมูล</p>
+                    <p className="flex justify-center text-2xl font-bold opacity-40">ไม่มีข้อมูล</p>
                   </Skeleton>
                 )}
             </Card>
@@ -973,7 +973,7 @@ function Dashboard({ params }) {
                   />
                 ) : (
                   <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                    <p className="flex justify-center text-2xl font-bold">ไม่มีข้อมูล</p>
+                    <p className="flex justify-center text-2xl font-bold opacity-40">ไม่มีข้อมูล</p>
                   </Skeleton>
                 )}
             </Card>
@@ -1000,7 +1000,7 @@ function Dashboard({ params }) {
                   </Skeleton>
                 ) : (
                   <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                    <p className="flex justify-center text-4xl font-bold">ไม่มีข้อมูล</p>
+                    <p className="flex justify-center text-4xl font-bold opacity-40">ไม่มีข้อมูล</p>
                   </Skeleton>
                 )}
               </CardBody>
