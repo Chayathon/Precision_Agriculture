@@ -254,39 +254,12 @@ router.post("/forgotPassword", async (req, res) => {
     }
 });
 
-router.post('/checkPassword/:id', async (req, res) => {
-    const { id } = req.params;
-    const { currentPassword } = req.body;
-
-    try {
-        const user = await prisma.user.findUnique({
-            where: { id: Number(id) }
-        });
-
-        if(!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        const isValidPassword = await bcrypt.compare(currentPassword, user.password);
-
-        if(!isValidPassword) {
-            return res.status(401).json({ message: "Current password is invalid" });
-        }
-
-        res.status(200).json({ message: "Current password is valid" });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Server Error");
-    }
-});
-
-router.put('/changePassword/:id', async (req, res) => {
-    const { id } = req.params;
-    const { password } = req.body;
+router.put("/updatePassword", async (req, res) => {
+    const { email, password } = req.body;
     const hashPassword = await bcrypt.hash(password, 10);
 
     try {
-        const updatePassword = await prisma.user.update({
+        const updatedPassword = await prisma.user.update({
             where: {
                 id: Number(id)
             },
@@ -295,7 +268,7 @@ router.put('/changePassword/:id', async (req, res) => {
             },
         });
 
-        if(updatePassword) {
+        if(updatedPassword) {
             res.status(200).json({
                 message: "Password updated successfully"
             });
