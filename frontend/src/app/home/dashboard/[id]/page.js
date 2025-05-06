@@ -467,7 +467,7 @@ function Dashboard({ params }) {
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่าที่วัดได้</p>
                     </Skeleton>
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                       <p className={`text-5xl font-bold ${
@@ -486,7 +486,7 @@ function Dashboard({ params }) {
                   
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่ามาตรฐาน</p>
                       <p
                         className={`text-5xl font-bold ${
                           !factorData?.temperature ? "opacity-40" : ""
@@ -516,7 +516,7 @@ function Dashboard({ params }) {
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่าที่วัดได้</p>
                     </Skeleton>
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                       <p className={`text-5xl font-bold ${
@@ -535,7 +535,7 @@ function Dashboard({ params }) {
                   
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่ามาตรฐาน</p>
                     </Skeleton>
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                       <p
@@ -568,7 +568,7 @@ function Dashboard({ params }) {
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่าที่วัดได้</p>
                     </Skeleton>
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                       <p className={`text-5xl font-bold ${
@@ -587,7 +587,7 @@ function Dashboard({ params }) {
                   
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่ามาตรฐาน</p>
                     </Skeleton>
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                       <p
@@ -619,7 +619,7 @@ function Dashboard({ params }) {
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่าที่วัดได้</p>
                     </Skeleton>
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                       <p className={`text-5xl font-bold ${
@@ -638,7 +638,7 @@ function Dashboard({ params }) {
                   
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl">ค่ามาตรฐาน</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่ามาตรฐาน</p>
                     </Skeleton>
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                       <p
@@ -670,7 +670,7 @@ function Dashboard({ params }) {
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่าที่วัดได้</p>
                     </Skeleton>
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                       <p className={`text-5xl font-bold ${
@@ -689,7 +689,7 @@ function Dashboard({ params }) {
                   
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่ามาตรฐาน</p>
                     </Skeleton>
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                       <p
@@ -729,7 +729,7 @@ function Dashboard({ params }) {
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่าที่วัดได้</p>
                     </Skeleton>
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                       <p className={`text-5xl font-bold ${
@@ -748,7 +748,7 @@ function Dashboard({ params }) {
                   
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่ามาตรฐาน</p>
                     </Skeleton>
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                       <p
@@ -787,7 +787,7 @@ function Dashboard({ params }) {
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่าที่วัดได้</p>
                     </Skeleton>
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                       <p className={`text-5xl font-bold ${
@@ -806,7 +806,7 @@ function Dashboard({ params }) {
                   
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่ามาตรฐาน</p>
                     </Skeleton>
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                       <p
@@ -845,7 +845,7 @@ function Dashboard({ params }) {
                 <div className="flex justify-center items-center gap-12">
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl">ค่าที่วัดได้</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่าที่วัดได้</p>
                     </Skeleton>
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                       <p className={`text-5xl font-bold ${
@@ -864,7 +864,7 @@ function Dashboard({ params }) {
                   
                   <div className="text-center">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                      <p className="text-2xl ">ค่ามาตรฐาน</p>
+                      <p className="text-2xl text-gray-500 dark:text-gray-400">ค่ามาตรฐาน</p>
                     </Skeleton>
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                       <p
