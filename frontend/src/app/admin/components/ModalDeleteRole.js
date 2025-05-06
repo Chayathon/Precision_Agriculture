@@ -63,7 +63,7 @@ function ModalDeleteRole({ isOpen, onOpenChange, id, setRefresh }) {
                     <>
                     <ModalHeader className="flex flex-col gap-1">ลบข้อมูล</ModalHeader>
                     <ModalBody>
-                        <p>ยืนยันที่จะลบตำแหน่ง <b>{roleName}</b> ?</p>
+                        <p>ยืนยันที่จะลบบทบาท <b>{roleName}</b> ?</p>
                     </ModalBody>
                     <ModalFooter>
                         <Button variant="light" onPress={onClose}>
