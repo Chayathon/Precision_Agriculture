@@ -197,8 +197,8 @@ router.post('/resend-verification', async (req, res) => {
     }
 });
 
-router.get("/forgotPassword/:email", async (req, res) => {
-    const { email } = req.params;
+router.get("/forgotPassword", async (req, res) => {
+    const { email } = req.body;
 
     try {
         const user = await prisma.user.findFirst({
@@ -251,6 +251,62 @@ router.get("/forgotPassword/:email", async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');
+    }
+});
+
+router.post('/checkPassword/:id', async (req, res) => {
+    const { id } = req.params;
+    const { currentPassword } = req.body;
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: Number(id) }
+        });
+
+        if(!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const isValidPassword = await bcrypt.compare(currentPassword, user.password);
+
+        if(!isValidPassword) {
+            return res.status(401).json({ message: "Current password is invalid" });
+        }
+
+        res.status(200).json({ message: "Current password is valid" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server Error");
+    }
+});
+
+router.put('/changePassword/:id', async (req, res) => {
+    const { id } = req.params;
+    const { password } = req.body;
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    try {
+        const updatePassword = await prisma.user.update({
+            where: {
+                id: Number(id)
+            },
+            data: {
+                password: hashPassword
+            },
+        });
+
+        if(updatePassword) {
+            res.status(200).json({
+                message: "Password updated successfully"
+            });
+        } else {
+            res.status(401).json({
+                message: "Password update failed"
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server Error");
     }
 });
 
