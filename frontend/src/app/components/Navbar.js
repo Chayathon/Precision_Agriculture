@@ -60,6 +60,8 @@ function UserNavbar() {
 
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
+    const [isVisibleConfirm, setIsVisibleConfirm] = useState(false);
+    const toggleVisibilityConfirm = () => setIsVisibleConfirm(!isVisibleConfirm);
 
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const {isOpen: isOpenPassword, onOpen: onOpenPassword, onOpenChange: onOpenChangePassword} = useDisclosure();
@@ -305,11 +307,6 @@ function UserNavbar() {
 
                 toast.success("แก้ไขข้อมูลเรียบร้อยแล้ว");
                 onOpenChange(false);
-                setRefresh(true);
-
-                setTimeout(() => {
-                    setRefresh(false);
-                }, 1000);
             }
             else {
                 toast.error("แก้ไขข้อมูลล้มเหลว");
@@ -372,6 +369,7 @@ function UserNavbar() {
 
                     toast.success("เปลี่ยนรหัสผ่านเรียบร้อยแล้ว");
                     onOpenChangePassword(false);
+                    setIsChecked(false);
                 } else {
                     toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่");
                 }
@@ -654,6 +652,83 @@ function UserNavbar() {
                                                     disabled={isLoading}
                                                 >
                                                     {isLoading ? 'กำลังแก้ไขข้อมูล...' : 'แก้ไข'}
+                                                </Button>
+                                            </ModalFooter>
+                                        </form>
+                                    </ModalBody>
+                                </>
+                            )}
+                        </ModalContent>
+                    </Modal>
+
+                    <Modal 
+                        isOpen={isOpenPassword} 
+                        onOpenChange={onOpenChangePassword}
+                    >
+                        <ModalContent>
+                            {(onClose) => (
+                                <>
+                                    <ModalHeader className="flex flex-col gap-1">เปลี่ยนรหัสผ่าน</ModalHeader>
+                                    <ModalBody>
+                                        <form onSubmit={handleSubmitPassword}>
+                                            {!isChecked ? (
+                                                <>
+                                                    <Input
+                                                        onChange={(e) => setCurrentPassword(e.target.value)}
+                                                        label="รหัสผ่านปัจจุบัน"
+                                                        endContent={
+                                                            <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
+                                                                {isVisible ? 'ซ่อน' : 'แสดง'}
+                                                            </Button>
+                                                        }
+                                                        type={isVisible ? "text" : "password"}
+                                                        autoFocus
+                                                        isRequired
+                                                    />
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <div className='mb-4'>
+                                                        <Input
+                                                            onChange={(e) => setPassword(e.target.value)}
+                                                            label="รหัสผ่านใหม่"
+                                                            endContent={
+                                                                <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
+                                                                    {isVisible ? 'ซ่อน' : 'แสดง'}
+                                                                </Button>
+                                                            }
+                                                            type={isVisible ? "text" : "password"}
+                                                            autoFocus
+                                                            isRequired
+                                                        />
+                                                    </div>
+                                                    <div className='mt-4'>
+                                                        <Input
+                                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                                            label="ยืนยันรหัสผ่านใหม่"
+                                                            endContent={
+                                                                <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibilityConfirm} aria-label="toggle password visibility">
+                                                                    {isVisibleConfirm ? 'ซ่อน' : 'แสดง'}
+                                                                </Button>
+                                                            }
+                                                            type={isVisibleConfirm ? "text" : "password"}
+                                                            isRequired
+                                                        />
+                                                    </div>
+                                                </>
+                                            )}
+                                            
+                                            <ModalFooter>
+                                                <Button variant="flat" onPress={onClose}>
+                                                    ยกเลิก
+                                                </Button>
+                                                <Button
+                                                    type='submit'
+                                                    color='success'
+                                                    isLoading={isLoading}
+                                                    disabled={isLoading}
+                                                >
+                                                    {isChecked ? 'เปลี่ยนรหัสผ่าน' : 'ยืนยัน'}
                                                 </Button>
                                             </ModalFooter>
                                         </form>
