@@ -56,11 +56,13 @@ function Login() {
                 toast.success("เข้าสู่ระบบสำเร็จ");
                 router.push(data.path);
             } else if (res.status === 400) {
-                toast.warn("ไม่พบชื่อผู้ใช้");
+                toast.warn("ไม่พบชื่อผู้ใช้!");
             } else if (res.status === 401) {
-                toast.warn("รหัสผ่านไม่ถูกต้อง");
+                toast.warn("รหัสผ่านไม่ถูกต้อง!");
             } else if (res.status === 403) {
-                toast.warn("กรุณายืนยันการสมัครสมาชิก ก่อนเข้าใช้งาน");
+                toast.warn("กรุณายืนยันการสมัครสมาชิก ก่อนเข้าใช้งาน", {
+                    autoClose: 60000 * 5
+                });
                 setVerified(false);
                 setEmail(data.email);
             } else {
@@ -92,7 +94,9 @@ function Login() {
             const data = await res.json();
 
             if(res.status === 200) {
-                toast.success("สำเร็จ! กรุณาตรวจสอบอีเมลเพื่อยืนยัน");
+                toast.success("สำเร็จ! กรุณาตรวจสอบอีเมลเพื่อยืนยัน", {
+                    autoClose: 60000 * 5
+                });
             } else if(res.status === 400) {
                 toast.warn("ผู้ใช้นี้ยืนยันอีเมลแล้ว");
             } else if(res.status === 404) {
@@ -152,8 +156,9 @@ function Login() {
                             isLoading={isLoading}
                             disabled={isLoading}
                             aria-label={isLoading ? 'กำลังเข้าสู่ระบบ' : 'เข้าสู่ระบบ'}
+                            endContent={<FaRightToBracket size={18} />}
                         >
-                            {isLoading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'} <FaRightToBracket size={18} />
+                            {isLoading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'}
                         </Button>
                         {!verified && email && (
                             <Button
@@ -161,8 +166,9 @@ function Login() {
                                 className="w-full mt-2"
                                 isLoading={isSending}
                                 disabled={isSending}
+                                endContent={<HiMail size={20} />}
                             >
-                                {isSending ? 'กำลังส่งอีเมล...' : 'ส่งอีเมลยืนยันอีกครั้ง'} <HiMail size={20} />
+                                {isSending ? 'กำลังส่งอีเมล...' : 'ส่งอีเมลยืนยันอีกครั้ง'}
                             </Button>
                         )}
                     </form>

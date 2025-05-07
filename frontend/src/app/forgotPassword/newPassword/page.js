@@ -16,6 +16,8 @@ function NewPassword() {
 
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
+    const [isVisibleConfirm, setIsVisibleConfirm] = useState(false);
+    const toggleVisibilityConfirm = () => setIsVisibleConfirm(!isVisibleConfirm);
 
     useEffect(() => {
         const resetEmail = sessionStorage.getItem('resetEmail');
@@ -84,10 +86,11 @@ function NewPassword() {
                 </CardHeader>
                 <CardBody>
                     <form onSubmit={handleSubmit}>
-                        <div className='my-4'>
+                        <div className='mb-4'>
                             <Input
                                 onChange={(e) => setPassword(e.target.value)}
                                 label="รหัสผ่าน"
+                                variant='faded'
                                 endContent={
                                     <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
                                         {isVisible ? 'ซ่อน' : 'แสดง'}
@@ -102,12 +105,13 @@ function NewPassword() {
                             <Input
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 label="ยืนยันรหัสผ่าน"
+                                variant='faded'
                                 endContent={
-                                    <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                        {isVisible ? 'ซ่อน' : 'แสดง'}
+                                    <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibilityConfirm} aria-label="toggle password visibility">
+                                        {isVisibleConfirm ? 'ซ่อน' : 'แสดง'}
                                     </Button>
                                 }
-                                type={isVisible ? "text" : "password"}
+                                type={isVisibleConfirm ? "text" : "password"}
                                 isRequired
                             />
                         </div>
@@ -118,8 +122,9 @@ function NewPassword() {
                             isLoading={isLoading}
                             disabled={isLoading}
                             aria-label={isLoading ? 'กำลังดำเนินการ...' : 'ยืนยัน'}
+                            endContent={<FaCircleCheck size={16} />}
                         >
-                            {isLoading ? 'กำลังดำเนินการ...' : 'ยืนยัน'} <FaCircleCheck size={16} />
+                            {isLoading ? 'กำลังดำเนินการ...' : 'ยืนยัน'}
                         </Button>
                     </form>
                 </CardBody>

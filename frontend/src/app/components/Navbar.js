@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Select, SelectItem, Badge, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Select, SelectItem, Badge, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure, NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from "@nextui-org/react";
 import { FaBell, FaUserGear , FaDownload, FaRightFromBracket, FaLock } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 import moment from 'moment';
@@ -14,6 +14,7 @@ import { ThemeSwitcher } from './ThemeSwitcher';
 function UserNavbar() {
     const router = useRouter();
     const pathname = usePathname();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const [currentDateTime, setCurrentDateTime] = useState({ date: '', time: '' });
 
@@ -60,6 +61,8 @@ function UserNavbar() {
 
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
+    const [isVisibleConfirm, setIsVisibleConfirm] = useState(false);
+    const toggleVisibilityConfirm = () => setIsVisibleConfirm(!isVisibleConfirm);
 
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const {isOpen: isOpenPassword, onOpen: onOpenPassword, onOpenChange: onOpenChangePassword} = useDisclosure();
@@ -269,7 +272,7 @@ function UserNavbar() {
             }
             fetchData();
         }
-    }, [id, isOpen]);
+    }, [isOpen, id]);
 
     const handleSubmitEdit = async (e) => {
         e.preventDefault();
@@ -427,10 +430,15 @@ function UserNavbar() {
                         "data-[active=true]:after:bg-primary",
                     ],
                 }}
-                isBlurred={false}
+                isMenuOpen={isMenuOpen}
+                onMenuOpenChange={setIsMenuOpen}
                 isBordered
             >
                 <NavbarContent>
+                    <NavbarMenuToggle
+                        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                        className="sm:hidden"
+                    />
                     <NavbarBrand>
                         <div className='flex-col hidden sm:flex'>
                             <div className='text-sm'>{currentDateTime.date}</div>
@@ -440,7 +448,7 @@ function UserNavbar() {
                 </NavbarContent>
 
                 <NavbarContent className="flex gap-4" justify="center">
-                    <NavbarItem isActive={isActiveLink('/home')}>
+                    <NavbarItem isActive={isActiveLink('/home')} className='hidden sm:flex'>
                         <Link href="/home">
                             หน้าแรก
                         </Link>
@@ -448,7 +456,7 @@ function UserNavbar() {
                     <Dropdown>
                         <NavbarItem isActive={isActiveLink('/home/dashboard')}>
                             <DropdownTrigger>
-                                <Button
+                                <Button 
                                     variant="bordered" 
                                     className="capitalize"
                                 >
@@ -465,14 +473,16 @@ function UserNavbar() {
                             onSelectionChange={setSelectedKeys}
                             disallowEmptySelection
                         >
-                            {(item) => (
-                                <DropdownItem key={item.id}>{item.plantname}</DropdownItem>
-                            )}
+                            {plants.map((item, index) => (
+                                <DropdownItem key={item.id}>
+                                    {`${index + 1} - ${item.plantname}`}
+                                </DropdownItem>
+                            ))}
                         </DropdownMenu>
                     </Dropdown>
-                    <NavbarItem isActive={isActiveLink('/home/listPlant')}>
+                    <NavbarItem isActive={isActiveLink('/home/listPlant')} className='hidden sm:flex'>
                         <Link href="/home/listPlant">
-                            ข้อมูลพืช
+                            เพิ่มข้อมูลพืช
                         </Link>
                     </NavbarItem>
                 </NavbarContent>
@@ -482,7 +492,7 @@ function UserNavbar() {
                         <DropdownTrigger className='flex items-center'>
                             <div>
                                 <Badge content={notifications.length} size="sm" color="danger">
-                                    <FaBell className="size-6 cursor-pointer" />
+                                    <FaBell className="size-5 sm:size-6 cursor-pointer" />
                                 </Badge>
                             </div>
                         </DropdownTrigger>
@@ -542,7 +552,7 @@ function UserNavbar() {
                             <DropdownItem key="settings" onPress={onOpen}>
                                 <p className='flex justify-between items-center'>แก้ไขโปรไฟล์<FaUserGear size={18} /></p>
                             </DropdownItem>
-                            <DropdownItem key="changePassword" onPress={onOpenPassword}>
+                            <DropdownItem key="settings" onPress={onOpenPassword}>
                                 <p className='flex justify-between items-center'>เปลี่ยนรหัสผ่าน<FaLock size={18} /></p>
                             </DropdownItem>
                             <DropdownItem key="logout" color="danger" onPress={handleLogout}>
@@ -703,11 +713,11 @@ function UserNavbar() {
                                                             onChange={(e) => setConfirmPassword(e.target.value)}
                                                             label="ยืนยันรหัสผ่านใหม่"
                                                             endContent={
-                                                                <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                                                    {isVisible ? 'ซ่อน' : 'แสดง'}
+                                                                <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibilityConfirm} aria-label="toggle password visibility">
+                                                                    {isVisibleConfirm ? 'ซ่อน' : 'แสดง'}
                                                                 </Button>
                                                             }
-                                                            type={isVisible ? "text" : "password"}
+                                                            type={isVisibleConfirm ? "text" : "password"}
                                                             isRequired
                                                         />
                                                     </div>
@@ -734,6 +744,24 @@ function UserNavbar() {
                         </ModalContent>
                     </Modal>
                 </NavbarContent>
+                <NavbarMenu>
+                    <Link href="/home" className='w-full px-1' size='lg' onClick={() => setIsMenuOpen(false)}>
+                        <NavbarMenuItem
+                            isActive={isActiveLink('/home')}
+                            className={isActiveLink('/home') ? 'text-blue-600' : 'foreground'}
+                        >
+                            หน้าแรก
+                        </NavbarMenuItem>
+                    </Link>
+                    <Link href="/home/listPlant" className='w-full px-1' size='lg' onClick={() => setIsMenuOpen(false)}>
+                        <NavbarMenuItem
+                            isActive={isActiveLink('/home/listPlant')}
+                            className={isActiveLink('/home/listPlant') ? 'text-blue-600' : 'foreground'}
+                        >
+                            เพิ่มข้อมูลพืช
+                        </NavbarMenuItem>
+                    </Link>
+                </NavbarMenu>
             </Navbar>
         </>
     )

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react'
-import { Card, Skeleton } from '@nextui-org/react';
+import { Button, Card, Skeleton } from '@nextui-org/react';
 import axios from 'axios';
 import { DateTime } from 'luxon';
 import moment from 'moment';
@@ -11,6 +11,7 @@ import 'aos/dist/aos.css';
 import GaugeChart from 'react-gauge-chart';
 import WeatherCardHourly from '../components/WeatherCardHourly';
 import WeatherCardDaily from '../components/WeatherCardDaily';
+import { FaDownload } from 'react-icons/fa6';
 
 function Home() {
     const [lat, setLat] = useState(0);
@@ -184,10 +185,27 @@ function Home() {
         }
     };
 
+    const handleDownload = () => {
+        const link = document.createElement("a");
+        link.href = "/apk/kasetapp.apk";
+        link.download = "kasetapp.apk";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <div className="container mx-auto max-w-[1200px]">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 m-4">
-                <Card className="col-span-1 sm:col-span-2 py-4 drop-shadow-xl items-center space-y-1" data-aos="fade-up">
+                <Card className="sm:col-span-2 py-4 drop-shadow-xl items-center space-y-1 px-4" data-aos="fade-up">
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                        <p className='text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2'>กรุณาดาวน์โหลดแอปพลิเคชั่น เพื่อการใช้งานที่ครบถ้วน</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
+                        <Button color='primary' endContent={<FaDownload size={16} />} onPress={handleDownload}>ดาวน์โหลด</Button>
+                    </Skeleton>
+                </Card>
+                <Card className="sm:col-span-2 py-4 drop-shadow-xl items-center space-y-1 px-4" data-aos="fade-up">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                         <p>ข้อมูลสภาพอากาศ ตำบล {localtion}</p>
                     </Skeleton>
@@ -238,7 +256,7 @@ function Home() {
                         </div>
                     </Skeleton>
                 </Card>
-                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl space-y-1" data-aos="fade-up">
+                <Card className="sm:col-span-2 p-4 pb-4 drop-shadow-xl space-y-1" data-aos="fade-up">
                     <Skeleton className="rounded-lg" isLoaded={isLoaded}>
                         <p>พยากรณ์อากาศรายชั่วโมง</p>
                     </Skeleton>
@@ -260,7 +278,7 @@ function Home() {
                         ))}
                     </div>
                 </Card>
-                <Card className="col-span-1 sm:col-span-2 p-4 pb-4 drop-shadow-xl space-y-1" data-aos="fade-up">
+                <Card className="sm:col-span-2 p-4 pb-4 drop-shadow-xl space-y-1" data-aos="fade-up">
                     <Skeleton className="rounded-lg" isLoaded={isLoaded}>
                         <p>พยากรณ์อากาศรายวัน</p>
                     </Skeleton>
