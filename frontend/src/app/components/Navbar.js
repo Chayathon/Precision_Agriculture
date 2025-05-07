@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import Cookies from 'js-cookie';
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Select, SelectItem, Badge, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure } from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Select, SelectItem, Badge, User, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, Input, Textarea, useDisclosure, NavbarMenu, NavbarMenuItem, NavbarMenuToggle } from "@nextui-org/react";
 import { FaBell, FaUserGear , FaDownload, FaRightFromBracket, FaLock } from "react-icons/fa6";
 import { toast } from 'react-toastify';
 import moment from 'moment';
@@ -14,6 +14,7 @@ import { ThemeSwitcher } from './ThemeSwitcher';
 function UserNavbar() {
     const router = useRouter();
     const pathname = usePathname();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const [currentDateTime, setCurrentDateTime] = useState({ date: '', time: '' });
 
@@ -429,10 +430,15 @@ function UserNavbar() {
                         "data-[active=true]:after:bg-primary",
                     ],
                 }}
-                isBlurred={false}
+                isMenuOpen={isMenuOpen}
+                onMenuOpenChange={setIsMenuOpen}
                 isBordered
             >
                 <NavbarContent>
+                    <NavbarMenuToggle
+                        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                        className="sm:hidden"
+                    />
                     <NavbarBrand>
                         <div className='flex-col hidden sm:flex'>
                             <div className='text-sm'>{currentDateTime.date}</div>
@@ -442,7 +448,7 @@ function UserNavbar() {
                 </NavbarContent>
 
                 <NavbarContent className="flex gap-4" justify="center">
-                    <NavbarItem isActive={isActiveLink('/home')}>
+                    <NavbarItem isActive={isActiveLink('/home')} className='hidden sm:flex'>
                         <Link href="/home">
                             หน้าแรก
                         </Link>
@@ -474,7 +480,7 @@ function UserNavbar() {
                             ))}
                         </DropdownMenu>
                     </Dropdown>
-                    <NavbarItem isActive={isActiveLink('/home/listPlant')}>
+                    <NavbarItem isActive={isActiveLink('/home/listPlant')} className='hidden sm:flex'>
                         <Link href="/home/listPlant">
                             เพิ่มข้อมูลพืช
                         </Link>
@@ -486,7 +492,7 @@ function UserNavbar() {
                         <DropdownTrigger className='flex items-center'>
                             <div>
                                 <Badge content={notifications.length} size="sm" color="danger">
-                                    <FaBell className="size-6 cursor-pointer" />
+                                    <FaBell className="size-5 sm:size-6 cursor-pointer" />
                                 </Badge>
                             </div>
                         </DropdownTrigger>
@@ -738,6 +744,24 @@ function UserNavbar() {
                         </ModalContent>
                     </Modal>
                 </NavbarContent>
+                <NavbarMenu>
+                    <Link href="/home" className='w-full px-1' size='lg' onClick={() => setIsMenuOpen(false)}>
+                        <NavbarMenuItem
+                            isActive={isActiveLink('/home')}
+                            className={isActiveLink('/home') ? 'text-blue-600' : 'foreground'}
+                        >
+                            หน้าแรก
+                        </NavbarMenuItem>
+                    </Link>
+                    <Link href="/home/listPlant" className='w-full px-1' size='lg' onClick={() => setIsMenuOpen(false)}>
+                        <NavbarMenuItem
+                            isActive={isActiveLink('/home/listPlant')}
+                            className={isActiveLink('/home/listPlant') ? 'text-blue-600' : 'foreground'}
+                        >
+                            เพิ่มข้อมูลพืช
+                        </NavbarMenuItem>
+                    </Link>
+                </NavbarMenu>
             </Navbar>
         </>
     )
