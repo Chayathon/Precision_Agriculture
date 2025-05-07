@@ -2,12 +2,14 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify'
 import {Card, CardHeader, CardBody, CardFooter, Input, Textarea, Button, Select, SelectItem} from "@nextui-org/react";
 import { FaUserCheck } from 'react-icons/fa6';
 import { ThemeSwitcher } from '../components/ThemeSwitcher';
 
 function Register() {
+    const router = useRouter();
     const [provinces, setProvinces] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [subdistricts, setSubdistricts] = useState([]);
@@ -154,7 +156,7 @@ function Register() {
                 toast.success("สำเร็จ! กรุณาตรวจสอบอีเมลเพื่อยืนยัน", {
                     autoClose: 60000 * 5,
                 });
-                setTimeout(() => router.push('/'));
+                router.push('/');
             } else if (res.status === 400) {
                 toast.warn("อีเมลหรือชื่อผู้ใช้นี้ ได้รับการลงทะเบียนแล้ว", {
                     autoClose: 60000 * 5,
