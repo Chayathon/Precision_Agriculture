@@ -199,7 +199,9 @@ function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 m-4">
                 <Card className="sm:col-span-2 py-4 drop-shadow-xl items-center space-y-1 px-4" data-aos="fade-up">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
-                        <p className='text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-3'>กรุณาดาวน์โหลดแอปพลิเคชั่น เพื่อการใช้งานที่ครบถ้วน</p>
+                        <p className='text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-2'>กรุณาดาวน์โหลดแอปพลิเคชั่น เพื่อการใช้งานที่ครบถ้วน</p>
+                    </Skeleton>
+                    <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                         <Button color='primary' endContent={<FaDownload size={16} />} onPress={handleDownload}>ดาวน์โหลด</Button>
                     </Skeleton>
                 </Card>
