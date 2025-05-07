@@ -18,7 +18,10 @@ const sendOTPEmail = async (email, generateOTP) => {
                 <h1 style="color: #28a745; border-bottom: 2px solid #28a745; padding-bottom: 10px; font-family: 'Kanit', Arial, sans-serif;">Precision Agriculture</h1>
                 <h2 style="color: #333; font-family: 'Kanit', Arial, sans-serif;">One Time Passcode</h2>
                 <p style="color: #555; font-size: 16px; line-height: 1.5; font-family: 'Kanit', Arial, sans-serif;">
-                    กรุณากรอก "รหัสยืนยัน" ด้านล่างในเว็บบราวเซอร์ของคุณเพื่อทำการเปลี่ยนรหัสผ่านใหม่ (ภายใน 5 นาที)
+                    กรุณากรอก "รหัสยืนยัน" ด้านล่างในเว็บบราวเซอร์ของคุณ
+                </p>
+                <p style="color: #555; font-size: 16px; line-height: 1.5; font-family: 'Kanit', Arial, sans-serif;">
+                    เพื่อทำการเปลี่ยนรหัสผ่านใหม่ (ภายใน 5 นาที)
                 </p>
                 <div style="text-align: center; margin: 20px 0;">
                     <h1 style="color: #28a745;">${generateOTP}</h1>
