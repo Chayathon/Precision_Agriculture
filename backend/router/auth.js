@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const keyauth = "lovemymom";
 
+const { generateAndSendOTP } = require("../utils/generate-otp");
 const { sendVerificationEmail } = require("../utils/verify-email");
 const { sendOTPEmail } = require("../utils/otp-email");
 
@@ -197,7 +198,7 @@ router.post('/resend-verification', async (req, res) => {
     }
 });
 
-router.get("/forgotPassword", async (req, res) => {
+router.post("/forgotPassword", async (req, res) => {
     const { email } = req.body;
 
     try {
@@ -211,43 +212,44 @@ router.get("/forgotPassword", async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const generateOTP = Math.floor(100000 + Math.random() * 900000);
-
-        const updatedUser = await prisma.user.update({
-            where: {
-                email: email,
-            },
-            data: {
-                otp: generateOTP,
-            },
-        });
-
-        await sendOTPEmail(email, generateOTP);
+        const { updatedUser, otp } = await generateAndSendOTP(email, prisma, sendOTPEmail);
 
         res.status(200).json({
             message: "Get User by Email, OTP Generated, Send Email",
             resultData: {
                 user: updatedUser,
-                otp: generateOTP,
+                otp: otp,
+            },
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+router.post("/resend-otp", async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await prisma.user.findFirst({
+            where: {
+                email: email,
             },
         });
 
-        // ตั้ง timeout ให้ OTP เป็น null หลัง 5 นาที (300,000 ms)
-        setTimeout(async () => {
-            try {
-                await prisma.user.update({
-                    where: {
-                        email: email,
-                    },
-                    data: {
-                        otp: null,
-                    },
-                });
-                console.log(`OTP for ${email} has been reset to null`);
-            } catch (error) {
-                console.error(`Failed to reset OTP for ${email}:`, error);
-            }
-        }, 5 * 60 * 1000);
+        if(!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const { updatedUser, otp } = await generateAndSendOTP(email, prisma, sendOTPEmail);
+
+        res.status(200).json({
+            message: "Get User by Email, OTP Generated, Resend to Email",
+            resultData: {
+                user: updatedUser,
+                otp: otp,
+            },
+        });
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');

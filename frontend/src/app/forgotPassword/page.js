@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { Card, CardHeader, CardBody, CardFooter, Input, Button, InputOtp } from "@nextui-org/react";
 import { FaCircleCheck } from 'react-icons/fa6';
+import { HiMail } from 'react-icons/hi';
 
 function ForgotPassword() {
     const router = useRouter();
@@ -13,25 +14,40 @@ function ForgotPassword() {
     const [email, setEmail] = useState('');
     const [otp, setOTP] = useState();
     const [inputOTP, setInputOTP] = useState();
-    const [isCheck, setIsCheck] = useState(false);
+    
+    const [isChecked, setIsChecked] = useState(false);
+    const [isInvalid, setIsInvalid] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [isSending, setIsSending] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
 
         try {
-            if (!isCheck) {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/forgotPassword/${email}`);
+            if (!isChecked) {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/forgotPassword`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email
+                    })
+                });
 
                 if(res.status === 200) {
                     const data = await res.json();
                     setOTP(data.resultData.otp);
-                    setIsCheck(true);
+                    setIsChecked(true);
                     
-                    toast.success("ส่ง OTP ไปที่อีเมลของคุณแล้ว");
+                    toast.success("ส่ง OTP ไปที่อีเมลของคุณแล้ว", {
+                        autoClose: 60000 * 5
+                    });
                 } else if(res.status === 404) {
-                    toast.error("ไม่พบที่อยู่อีเมลนี้!");
+                    toast.error("ไม่พบที่อยู่อีเมลนี้!", {
+                        autoClose: 60000 * 5
+                    });
                 }
             } else {
                 if(inputOTP == otp) {
@@ -40,6 +56,7 @@ function ForgotPassword() {
                     router.push('/forgotPassword/newPassword');
                 } else {
                     toast.warn("OTP ไม่ถูกต้อง!");
+                    setIsInvalid(true);
                 }
             }
         } catch (error) {
@@ -47,6 +64,40 @@ function ForgotPassword() {
             toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่");
         } finally {
             setIsLoading(false);
+        }
+    }
+
+    const handleResendOTP = async () => {
+        setIsSending(true);
+
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}/resend-otp`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email
+                })
+            });
+
+            if (res.status === 200) {
+                const data = await res.json();
+                setOTP(data.resultData.otp);
+                toast.success("ส่ง OTP ไปที่อีเมลของคุณแล้ว", {
+                    autoClose: 60000 * 5
+                });
+            } else if (res.status === 404) {
+                toast.error("ไม่พบที่อยู่อีเมลนี้!", {
+                    autoClose: 60000 * 5
+                });
+            }
+        } catch (error) {
+            console.error("Failed to Resend: ", error);
+            toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่");
+        } finally {
+            setIsSending(false);
+            setInputOTP("");
         }
     }
 
@@ -62,14 +113,17 @@ function ForgotPassword() {
                             <Input
                                 onChange={(e) => setEmail(e.target.value)}
                                 type='email'
-                                label='อีเมล'
                                 variant='faded'
+                                label='อีเมล'
                                 autoFocus
                                 isRequired
+                                startContent={
+                                    <HiMail size={20} />
+                                }
                             />
                         </div>
                         <div className='m-2'>
-                            {isCheck && (
+                            {isChecked && (
                                 <>
                                     <p>กรุณากรอก OTP</p>
                                     <InputOtp
@@ -92,8 +146,18 @@ function ForgotPassword() {
                             isLoading={isLoading}
                             disabled={isLoading}
                         >
-                            {isLoading ? 'กำลังดำเนินการ...' : (isCheck ? 'ยืนยัน OTP' : 'ยืนยัน')} <FaCircleCheck size={16} />
+                            {isLoading ? 'กำลังดำเนินการ...' : (isChecked ? 'ยืนยัน OTP' : 'ยืนยัน')} <FaCircleCheck size={16} />
                         </Button>
+                        {isInvalid && (
+                            <Button
+                                onPress={handleResendOTP}
+                                className='w-full mt-2'
+                                isLoading={isSending}
+                                disabled={isSending}
+                            >
+                                {isSending ? 'กำลังส่ง OTP...' : 'ส่ง OTP อีกครั้ง'} <HiMail size={20} />
+                            </Button>
+                        )}
                     </form>
                 </CardBody>
                 <CardFooter>
