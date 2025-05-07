@@ -276,8 +276,9 @@ function ListVariables({ params }) {
               onPress={exportToPDF}
               color='primary'
               disabled={isLoading || !plantData?.length}
+              endContent={<FaFileExport className='size-4' />}
             >
-              <FaFileExport className='size-4' /> PDF
+              PDF
             </Button>
           </div>
         </div>

@@ -286,8 +286,9 @@ function Register() {
                             isLoading={isLoading}
                             disabled={isLoading}
                             aria-label={isLoading ? 'กำลังสมัครสมาชิก' : 'สมัครสมาชิก'}
+                            endContent={<FaUserCheck size={18} />}
                         >
-                            {isLoading ? 'กำลังสมัครสมาชิก' : 'สมัครสมาชิก'} <FaUserCheck size={18} />
+                            {isLoading ? 'กำลังสมัครสมาชิก' : 'สมัครสมาชิก'}
                         </Button>
                     </form>
                 </CardBody>

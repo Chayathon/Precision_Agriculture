@@ -156,8 +156,9 @@ function Login() {
                             isLoading={isLoading}
                             disabled={isLoading}
                             aria-label={isLoading ? 'กำลังเข้าสู่ระบบ' : 'เข้าสู่ระบบ'}
+                            endContent={<FaRightToBracket size={18} />}
                         >
-                            {isLoading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'} <FaRightToBracket size={18} />
+                            {isLoading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'}
                         </Button>
                         {!verified && email && (
                             <Button
@@ -165,8 +166,9 @@ function Login() {
                                 className="w-full mt-2"
                                 isLoading={isSending}
                                 disabled={isSending}
+                                endContent={<HiMail size={20} />}
                             >
-                                {isSending ? 'กำลังส่งอีเมล...' : 'ส่งอีเมลยืนยันอีกครั้ง'} <HiMail size={20} />
+                                {isSending ? 'กำลังส่งอีเมล...' : 'ส่งอีเมลยืนยันอีกครั้ง'}
                             </Button>
                         )}
                     </form>

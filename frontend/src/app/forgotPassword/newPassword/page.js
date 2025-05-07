@@ -122,8 +122,9 @@ function NewPassword() {
                             isLoading={isLoading}
                             disabled={isLoading}
                             aria-label={isLoading ? 'กำลังดำเนินการ...' : 'ยืนยัน'}
+                            endContent={<FaCircleCheck size={16} />}
                         >
-                            {isLoading ? 'กำลังดำเนินการ...' : 'ยืนยัน'} <FaCircleCheck size={16} />
+                            {isLoading ? 'กำลังดำเนินการ...' : 'ยืนยัน'}
                         </Button>
                     </form>
                 </CardBody>

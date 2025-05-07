@@ -197,13 +197,13 @@ function Home() {
     return (
         <div className="container mx-auto max-w-[1200px]">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 m-4">
-                <Card className="sm:col-span-2 py-4 drop-shadow-xl items-center space-y-1" data-aos="fade-up">
+                <Card className="sm:col-span-2 py-4 drop-shadow-xl items-center space-y-1 px-4" data-aos="fade-up">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                         <p className='text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-3'>กรุณาดาวน์โหลดแอปพลิเคชั่น เพื่อการใช้งานที่ครบถ้วน</p>
-                        <Button color='primary' onPress={handleDownload}>ดาวน์โหลด <FaDownload size={18} /></Button>
+                        <Button color='primary' endContent={<FaDownload size={16} />} onPress={handleDownload}>ดาวน์โหลด</Button>
                     </Skeleton>
                 </Card>
-                <Card className="sm:col-span-2 py-4 drop-shadow-xl items-center space-y-1" data-aos="fade-up">
+                <Card className="sm:col-span-2 py-4 drop-shadow-xl items-center space-y-1 px-4" data-aos="fade-up">
                     <Skeleton className="text-center rounded-lg" isLoaded={isLoaded}>
                         <p>ข้อมูลสภาพอากาศ ตำบล {localtion}</p>
                     </Skeleton>

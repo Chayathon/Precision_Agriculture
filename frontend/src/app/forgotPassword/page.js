@@ -14,7 +14,7 @@ function ForgotPassword() {
     const [email, setEmail] = useState('');
     const [otp, setOTP] = useState();
     const [inputOTP, setInputOTP] = useState();
-    
+
     const [isChecked, setIsChecked] = useState(false);
     const [isInvalid, setIsInvalid] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -145,8 +145,9 @@ function ForgotPassword() {
                             className='w-full'
                             isLoading={isLoading}
                             disabled={isLoading}
+                            endContent={<FaCircleCheck size={16} />}
                         >
-                            {isLoading ? 'กำลังดำเนินการ...' : (isChecked ? 'ยืนยัน OTP' : 'ยืนยัน')} <FaCircleCheck size={16} />
+                            {isLoading ? 'กำลังดำเนินการ...' : (isChecked ? 'ยืนยัน OTP' : 'ยืนยัน')}
                         </Button>
                         {isInvalid && (
                             <Button
@@ -154,8 +155,9 @@ function ForgotPassword() {
                                 className='w-full mt-2'
                                 isLoading={isSending}
                                 disabled={isSending}
+                                endContent={<HiMail size={20} />}
                             >
-                                {isSending ? 'กำลังส่ง OTP...' : 'ส่ง OTP อีกครั้ง'} <HiMail size={20} />
+                                {isSending ? 'กำลังส่ง OTP...' : 'ส่ง OTP อีกครั้ง'}
                             </Button>
                         )}
                     </form>

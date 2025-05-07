@@ -907,8 +907,9 @@ function Dashboard({ params }) {
               className="max-md:w-full"
               color="secondary"
               onPress={() => router.push(`/home/listVariables/${id}`)}
+              endContent={<FaTable size={16} />}
             >
-              <FaTable className="size-4" /> ตารางข้อมูล
+              ตารางข้อมูล
             </Button>
           </div>
 
