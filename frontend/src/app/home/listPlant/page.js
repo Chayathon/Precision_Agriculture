@@ -269,7 +269,7 @@ export default function ListPlant() {
                         <TableRow key={item.id}>
                             <TableCell>{convertDate(item.plantedAt)}</TableCell>
                             <TableCell>{item.plantname}</TableCell>
-                            <TableCell className={(!item.latitude || !item.longitude) ? "opacity-50" : ""}>
+                            <TableCell className={(!item.latitude || !item.longitude) ? "text-gray-400" : ""}>
                                 {item.latitude && item.longitude ? (
                                     <Link
                                         href={`https://www.google.com/maps/place/${item.latitude},${item.longitude}`}
