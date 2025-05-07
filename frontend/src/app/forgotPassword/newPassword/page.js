@@ -90,6 +90,7 @@ function NewPassword() {
                             <Input
                                 onChange={(e) => setPassword(e.target.value)}
                                 label="รหัสผ่าน"
+                                variant='faded'
                                 endContent={
                                     <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
                                         {isVisible ? 'ซ่อน' : 'แสดง'}
@@ -104,6 +105,7 @@ function NewPassword() {
                             <Input
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 label="ยืนยันรหัสผ่าน"
+                                variant='faded'
                                 endContent={
                                     <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibilityConfirm} aria-label="toggle password visibility">
                                         {isVisibleConfirm ? 'ซ่อน' : 'แสดง'}
