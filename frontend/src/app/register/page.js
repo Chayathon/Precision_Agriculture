@@ -154,6 +154,7 @@ function Register() {
                 toast.success("สำเร็จ! กรุณาตรวจสอบอีเมลเพื่อยืนยัน", {
                     autoClose: 60000 * 5,
                 });
+                setTimeout(() => router.push('/'), 3000);
             } else if (res.status === 400) {
                 toast.warn("อีเมลหรือชื่อผู้ใช้นี้ ได้รับการลงทะเบียนแล้ว", {
                     autoClose: 60000 * 5,
