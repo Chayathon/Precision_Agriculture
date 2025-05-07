@@ -181,7 +181,7 @@ function Register() {
                 </CardHeader>
                 <CardBody>
                     <form onSubmit={handleSubmit}>
-                        <div className='sm:flex my-4 gap-4'>
+                        <div className='sm:flex mb-4 gap-4'>
                             <Input onChange={(e) => setFirstname(e.target.value)} className='max-sm:my-4' type='text' label='ชื่อจริง' autoFocus isClearable isRequired />
 
                             <Input onChange={(e) => setLastname(e.target.value)} type='text' label='นามสกุล' isClearable isRequired />
