@@ -86,7 +86,7 @@ function NewPassword() {
                 </CardHeader>
                 <CardBody>
                     <form onSubmit={handleSubmit}>
-                        <div className='my-4'>
+                        <div className='mb-4'>
                             <Input
                                 onChange={(e) => setPassword(e.target.value)}
                                 label="รหัสผ่าน"
