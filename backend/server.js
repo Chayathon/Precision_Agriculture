@@ -7,6 +7,10 @@ const port = 4000;
 app.use(express.json());
 app.use(cors());
 
+app.get('/', (req, res) => {
+  res.send('Hello from Express on Vercel!');
+});
+
 app.use('/api', require('./router/auth'));
 app.use('/api', require('./router/address'));
 app.use('/api', require('./router/user'));
