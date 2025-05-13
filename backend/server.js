@@ -19,3 +19,5 @@ app.use('/api', require('./router/factor_nutrient'));
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+module.exports = app;
