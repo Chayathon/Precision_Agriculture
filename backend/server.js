@@ -16,8 +16,8 @@ app.use('/api', require('./router/plant'));
 app.use('/api', require('./router/plant_variable'));
 app.use('/api', require('./router/factor_nutrient'));
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+// app.listen(port, () => {
+//   console.log(`Server running on port ${port}`);
+// });
 
 module.exports = app;
