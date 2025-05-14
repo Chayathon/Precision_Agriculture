@@ -10,6 +10,9 @@ function ToastWrapper() {
         <ToastContainer
             theme={theme === "dark" ? "dark" : "light"}
             autoClose={3000}
+            toastClassName={() =>
+                "font-kanit text-sm !rounded-lg !shadow-md !p-4"
+            }
         />
     );
 };

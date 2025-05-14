@@ -10,9 +10,15 @@ export const metadata = {
       icon: '/icon.png',
     },
     other: {
-        'google-font': (
-            <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&display=swap" rel="stylesheet" />
-        ),
+        link: [
+            {
+                rel: 'preload',
+                href: 'https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&display=swap',
+                as: 'font',
+                type: 'font/woff2',
+                crossOrigin: 'anonymous',
+            },
+        ],
     },
 };
 
