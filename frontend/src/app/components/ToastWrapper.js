@@ -16,8 +16,8 @@ function ToastWrapper() {
     return (
         <ToastContainer
             theme={theme === "dark" ? "dark" : "light"}
-            toastClassName={kanit.className}
-            bodyClassName={kanit.className}
+            className={kanit.className}
+            style={{ fontFamily: 'Kanit, -apple-system, BlinkMacSystemFont, sans-serif' }}
             autoClose={3000}
         />
     );
