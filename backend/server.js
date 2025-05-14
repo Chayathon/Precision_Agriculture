@@ -1,11 +1,11 @@
 const express = require('express');
-// const cors = require('cors');
+const cors = require('cors');
 
 const app = express();
-// const port = 4000;
+const PORT = process.env.PORT || 3000;
 
-// app.use(express.json());
-// app.use(cors());
+app.use(express.json());
+app.use(cors());
 const serverless = require('serverless-http');
 
 app.get('/', (req, res) => {
@@ -21,8 +21,8 @@ app.use('/api', require('./router/plant'));
 app.use('/api', require('./router/plant_variable'));
 app.use('/api', require('./router/factor_nutrient'));
 
-// app.listen(port, () => {
-//   console.log(`Server running on port ${port}`);
-// });
+app.listen(PORT, () => {
+  console.log(`Server running on PORT ${PORT}`);
+});
 
-module.exports.handler = serverless(app);
+module.exports = app;
