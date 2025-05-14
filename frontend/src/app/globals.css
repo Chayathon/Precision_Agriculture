@@ -6,6 +6,6 @@
     @apply transition-colors duration-300;
 }
 
-.Toastify__toast {
+.Toastify__toast-container .Toastify__toast {
     font-family: 'Kanit', sans-serif !important;
 }
