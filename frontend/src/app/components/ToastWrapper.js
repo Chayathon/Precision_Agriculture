@@ -11,7 +11,7 @@ function ToastWrapper() {
             theme={theme === "dark" ? "dark" : "light"}
             autoClose={3000}
             toastStyle={{
-                fontFamily: "'Kanit', sans-serif",
+                fontFamily: "'Kanit', 'Prompt', 'Noto Sans Thai', sans-serif",
             }}
         />
     );
