@@ -7,6 +7,15 @@ app.get('/', (req, res) => {
   res.send('Hello from Render!');
 });
 
+app.use('/api', require('./router/auth'));
+app.use('/api', require('./router/address'));
+app.use('/api', require('./router/user'));
+app.use('/api', require('./router/admin'));
+app.use('/api', require('./router/role'));
+app.use('/api', require('./router/plant'));
+app.use('/api', require('./router/plant_variable'));
+app.use('/api', require('./router/factor_nutrient'));
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
