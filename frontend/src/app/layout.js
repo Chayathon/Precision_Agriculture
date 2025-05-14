@@ -9,22 +9,11 @@ export const metadata = {
     icons: {
       icon: '/icon.png',
     },
-    other: {
-        link: [
-            {
-                rel: 'preload',
-                href: 'https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&display=swap',
-                as: 'font',
-                type: 'font/woff2',
-                crossOrigin: 'anonymous',
-            },
-        ],
-    },
 };
 
 const kanit = Kanit({
-    weight: ["400", "500", "600"],
     subsets: ["latin", "latin-ext", "thai"],
+    weight: ["400", "500", "600"],
     display: "swap",
 });
 
