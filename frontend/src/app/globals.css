@@ -6,10 +6,6 @@
     @apply transition-colors duration-300;
 }
 
-body {
-    font-family: 'Kanit', sans-serif !important;
-}
-
 .Toastify__toast {
     font-family: 'Kanit', sans-serif !important;
 }

@@ -9,6 +9,11 @@ export const metadata = {
     icons: {
       icon: '/icon.png',
     },
+    other: {
+        'google-font': (
+            <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600&display=swap" rel="stylesheet" />
+        ),
+    },
 };
 
 const kanit = Kanit({
