@@ -3,9 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model role {
@@ -15,37 +14,37 @@ model role {
 }
 
 model province {
-  province_id Int        @id
+  province_id Int        @id @db.UnsignedInt
   name_th     String?    @db.VarChar(120)
   name_en     String?    @db.VarChar(120)
   districts   district[]
-  user        user[]
+  users       user[]
 }
 
 model district {
-  district_id  Int           @id
-  province_id  Int
+  district_id  Int           @id @db.UnsignedInt
+  province_id  Int           @db.UnsignedInt
   name_th      String?       @db.VarChar(120)
   name_en      String?       @db.VarChar(120)
   provinceRel  province      @relation(fields: [province_id], references: [province_id])
   subdistricts subdistrict[]
-  user         user[]
+  users        user[]
 
-  @@index([province_id])
+  @@index([province_id], map: "province_id")
 }
 
 model subdistrict {
-  subdistrict_id Int      @id
-  district_id    Int
+  subdistrict_id Int      @id @db.UnsignedInt
+  district_id    Int      @db.UnsignedInt
   name_th        String?  @db.VarChar(120)
   name_en        String?  @db.VarChar(120)
-  lat            Decimal? @db.Decimal(9, 6)
-  long           Decimal? @db.Decimal(9, 6)
-  zipcode        Int?
+  lat            Decimal? @db.Decimal(5, 3)
+  long           Decimal? @db.Decimal(6, 3)
+  zipcode        Int?     @db.UnsignedMediumInt
   districtRel    district @relation(fields: [district_id], references: [district_id])
-  user           user[]
+  users          user[]
 
-  @@index([district_id])
+  @@index([district_id], map: "district_id")
 }
 
 model user {
@@ -55,9 +54,9 @@ model user {
   email             String            @unique
   tel               String
   address           String
-  province          Int
-  district          Int
-  subdistrict       Int
+  province          Int               @db.UnsignedInt
+  district          Int               @db.UnsignedInt
+  subdistrict       Int               @db.UnsignedInt
   username          String
   password          String
   role_id           Int
@@ -71,10 +70,10 @@ model user {
   role              role              @relation(fields: [role_id], references: [id])
   subdistrictRel    subdistrict       @relation(fields: [subdistrict], references: [subdistrict_id])
 
-  @@index([role_id])
-  @@index([province])
-  @@index([district])
-  @@index([subdistrict])
+  @@index([role_id], map: "user_role_id_fkey")
+  @@index([province], map: "user_province_fkey")
+  @@index([district], map: "user_district_fkey")
+  @@index([subdistrict], map: "user_subdistrict_fkey")
 }
 
 model plant_avaliable {
@@ -86,8 +85,7 @@ model plant_avaliable {
   plant     plant[]
   user      user         @relation(fields: [user_id], references: [id])
 
-  @@index([user_id])
-  @@map("plant_available")
+  @@index([user_id], map: "plant_avaliable_user_id_fkey")
 }
 
 model p_other_nutrient {
@@ -97,9 +95,9 @@ model p_other_nutrient {
   nitrogen   Float
   phosphorus Float
   potassium  Float
-  plant      plant @relation(fields: [plant_id], references: [id])
+  plant      plant @relation(fields: [plant_id], references: [id], onDelete: Cascade)
 
-  @@index([plant_id])
+  @@index([plant_id], map: "p_other_nutrient_plant_id_fkey")
 }
 
 model p_other_factor {
@@ -111,27 +109,27 @@ model p_other_factor {
   humidity       Float
   salinity       Float
   lightIntensity Float
-  plant          plant @relation(fields: [plant_id], references: [id])
+  plant          plant @relation(fields: [plant_id], references: [id], onDelete: Cascade)
 
-  @@index([plant_id])
+  @@index([plant_id], map: "p_other_factor_plant_id_fkey")
 }
 
 model plant {
-  id                 Int                @id @default(autoincrement())
-  plantname          String
-  plantedAt          DateTime
-  latitude           Float?
-  longitude          Float?
-  user_id            Int
-  plant_avaliable_id Int
-  p_other_factors    p_other_factor[]
-  p_other_nutrients  p_other_nutrient[]
-  variables          p_variable[]
-  plant_avaliable    plant_avaliable    @relation(fields: [plant_avaliable_id], references: [id])
-  user               user               @relation(fields: [user_id], references: [id])
+  id                Int                @id @default(autoincrement())
+  plantname         String
+  plantedAt         DateTime
+  latitude          Float?
+  longitude         Float?
+  user_id           Int
+  plant_id          Int
+  p_other_factors   p_other_factor[]
+  p_other_nutrients p_other_nutrient[]
+  variables         p_variable[]
+  plant_avaliable   plant_avaliable    @relation(fields: [plant_id], references: [id])
+  user              user               @relation(fields: [user_id], references: [id])
 
-  @@index([plant_avaliable_id])
-  @@index([user_id])
+  @@index([plant_id], map: "plant_plant_id_fkey")
+  @@index([user_id], map: "plant_user_id_fkey")
 }
 
 model p_nutrient {
@@ -141,9 +139,9 @@ model p_nutrient {
   potassium      Float
   plant_id       Int
   age            Int
-  plant_avaiable plant_avaliable @relation(fields: [plant_id], references: [id])
+  plant_avaiable plant_avaliable @relation(fields: [plant_id], references: [id], onDelete: Cascade)
 
-  @@index([plant_id])
+  @@index([plant_id], map: "p_nutrient_plant_id_fkey")
 }
 
 model p_factor {
@@ -155,9 +153,9 @@ model p_factor {
   salinity       Float
   plant_id       Int
   age            Int
-  plant_avaiable plant_avaliable @relation(fields: [plant_id], references: [id])
+  plant_avaiable plant_avaliable @relation(fields: [plant_id], references: [id], onDelete: Cascade)
 
-  @@index([plant_id])
+  @@index([plant_id], map: "p_factor_plant_id_fkey")
 }
 
 model p_variable {
@@ -174,5 +172,5 @@ model p_variable {
   salinity       Float
   plant          plant    @relation(fields: [plant_id], references: [id])
 
-  @@index([plant_id])
+  @@index([plant_id], map: "p_variable_plant_id_fkey")
 }
