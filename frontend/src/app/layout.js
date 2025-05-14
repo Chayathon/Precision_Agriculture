@@ -19,7 +19,7 @@ const kanit = Kanit({
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="en">
+        <html lang="th" suppressHydrationWarning>
             <body
                 className={`${kanit.className} antialiased`}
             >
