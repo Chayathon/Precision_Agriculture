@@ -97,7 +97,7 @@ model p_other_nutrient {
   nitrogen   Float
   phosphorus Float
   potassium  Float
-  plant      plant @relation(fields: [plant_id], references: [id])
+  plant      plant @relation(fields: [plant_id], references: [id], onDelete: Cascade)
 
   @@index([plant_id])
 }
@@ -111,7 +111,7 @@ model p_other_factor {
   humidity       Float
   salinity       Float
   lightIntensity Float
-  plant          plant @relation(fields: [plant_id], references: [id])
+  plant          plant @relation(fields: [plant_id], references: [id], onDelete: Cascade)
 
   @@index([plant_id])
 }
@@ -128,7 +128,7 @@ model plant {
   p_other_nutrients  p_other_nutrient[]
   variables          p_variable[]
   plant_avaliable    plant_avaliable    @relation(fields: [plant_avaliable_id], references: [id])
-  user               user               @relation(fields: [user_id], references: [id])
+  user               user               @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
   @@index([plant_avaliable_id])
   @@index([user_id])
@@ -141,7 +141,7 @@ model p_nutrient {
   potassium      Float
   plant_id       Int
   age            Int
-  plant_avaiable plant_avaliable @relation(fields: [plant_id], references: [id])
+  plant_avaiable plant_avaliable @relation(fields: [plant_id], references: [id], onDelete: Cascade)
 
   @@index([plant_id])
 }
@@ -155,7 +155,7 @@ model p_factor {
   salinity       Float
   plant_id       Int
   age            Int
-  plant_avaiable plant_avaliable @relation(fields: [plant_id], references: [id])
+  plant_avaiable plant_avaliable @relation(fields: [plant_id], references: [id], onDelete: Cascade)
 
   @@index([plant_id])
 }
@@ -172,7 +172,7 @@ model p_variable {
   humidity       Float
   lightIntensity Float
   salinity       Float
-  plant          plant    @relation(fields: [plant_id], references: [id])
+  plant          plant    @relation(fields: [plant_id], references: [id], onDelete: Cascade)
 
   @@index([plant_id])
 }
