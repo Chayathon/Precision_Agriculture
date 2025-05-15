@@ -313,6 +313,35 @@ router.put('/changePassword/:id', async (req, res) => {
 });
 
 router.put("/updatePassword", async (req, res) => {
+    const { email, password } = req.body;
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    try {
+        const updatedPassword = await prisma.user.update({
+            where: {
+                id: Number(id)
+            },
+            data: {
+                password: hashPassword
+            },
+        });
+
+        if(updatedPassword) {
+            res.status(200).json({
+                message: "Password updated successfully"
+            });
+        } else {
+            res.status(401).json({
+                message: "Password update failed"
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server Error");
+    }
+});
+
+router.put("/updatePassword", async (req, res) => {
     const email = req.body.email;
     const password = req.body.password
     const hashPassword = await bcrypt.hash(password, 10);

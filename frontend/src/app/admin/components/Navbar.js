@@ -276,7 +276,6 @@ function AdminNavbar() {
 
                     toast.success("เปลี่ยนรหัสผ่านเรียบร้อยแล้ว");
                     onOpenChangePassword(false);
-                    setIsChecked(false);
                 } else {
                     toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่");
                 }
@@ -285,6 +284,7 @@ function AdminNavbar() {
             console.log(err);
         } finally {
             setIsLoading(false);
+            setIsChecked(false);
         }
     }
 
@@ -384,7 +384,7 @@ function AdminNavbar() {
                         <DropdownItem key="settings" onPress={onOpen}>
                             <p className='flex justify-between items-center'>แก้ไขโปรไฟล์<FaUserGear size={18} /></p>
                         </DropdownItem>
-                        <DropdownItem key="settings" onPress={onOpenPassword}>
+                        <DropdownItem key="change-password" onPress={onOpenPassword}>
                             <p className='flex justify-between items-center'>เปลี่ยนรหัสผ่าน<FaLock size={18} /></p>
                         </DropdownItem>
                         <DropdownItem key="logout" color="danger" onPress={handleLogout}>

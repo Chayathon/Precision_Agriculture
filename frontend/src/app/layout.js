@@ -12,14 +12,14 @@ export const metadata = {
 };
 
 const kanit = Kanit({
+    subsets: ["latin", "latin-ext", "thai"],
     weight: ["400", "500", "600"],
-    subsets: ["latin-ext", "thai"],
     display: "swap",
 });
 
 export default function RootLayout({ children }) {
     return (
-        <html lang="en">
+        <html lang="th" suppressHydrationWarning>
             <body
                 className={`${kanit.className} antialiased`}
             >
