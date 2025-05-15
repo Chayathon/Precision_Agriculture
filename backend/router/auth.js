@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const keyauth = "lovemymom";
 
+const { generateAndSendOTP } = require("../utils/generate-otp");
 const { sendVerificationEmail } = require("../utils/verify-email");
 const { sendOTPEmail } = require("../utils/otp-email");
 
@@ -198,7 +199,7 @@ router.post("/resend-verification", async (req, res) => {
 });
 
 router.post("/forgotPassword", async (req, res) => {
-    const { email } = req.params;
+    const { email } = req.body;
 
     try {
         const user = await prisma.user.findFirst({
@@ -211,46 +212,103 @@ router.post("/forgotPassword", async (req, res) => {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const generateOTP = Math.floor(100000 + Math.random() * 900000);
-
-        const updatedUser = await prisma.user.update({
-            where: {
-                email: email,
-            },
-            data: {
-                otp: generateOTP,
-            },
-        });
-
-        await sendOTPEmail(email, generateOTP);
+        const { updatedUser, otp } = await generateAndSendOTP(email, prisma, sendOTPEmail);
 
         res.status(200).json({
             message: "Get User by Email, OTP Generated, Send Email",
             resultData: {
                 user: updatedUser,
-                otp: generateOTP,
+                otp: otp,
             },
         });
-
-        // ตั้ง timeout ให้ OTP เป็น null หลัง 5 นาที (300,000 ms)
-        setTimeout(async () => {
-            try {
-                await prisma.user.update({
-                    where: {
-                        email: email,
-                    },
-                    data: {
-                        otp: null,
-                    },
-                });
-                console.log(`OTP for ${email} has been reset to null`);
-            } catch (error) {
-                console.error(`Failed to reset OTP for ${email}:`, error);
-            }
-        }, 5 * 60 * 1000);
     } catch (err) {
         console.error(err);
         res.status(500).send('Server Error');
+    }
+});
+
+router.post("/resend-otp", async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await prisma.user.findFirst({
+            where: {
+                email: email,
+            },
+        });
+
+        if(!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const { updatedUser, otp } = await generateAndSendOTP(email, prisma, sendOTPEmail);
+
+        res.status(200).json({
+            message: "Get User by Email, OTP Generated, Resend to Email",
+            resultData: {
+                user: updatedUser,
+                otp: otp,
+            },
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+router.post('/checkPassword/:id', async (req, res) => {
+    const { id } = req.params;
+    const { currentPassword } = req.body;
+
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: Number(id) }
+        });
+
+        if(!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const isValidPassword = await bcrypt.compare(currentPassword, user.password);
+
+        if(!isValidPassword) {
+            return res.status(401).json({ message: "Current password is invalid" });
+        }
+
+        res.status(200).json({ message: "Current password is valid" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server Error");
+    }
+});
+
+router.put('/changePassword/:id', async (req, res) => {
+    const { id } = req.params;
+    const { password } = req.body;
+    const hashPassword = await bcrypt.hash(password, 10);
+
+    try {
+        const updatePassword = await prisma.user.update({
+            where: {
+                id: Number(id)
+            },
+            data: {
+                password: hashPassword
+            },
+        });
+
+        if(updatePassword) {
+            res.status(200).json({
+                message: "Password updated successfully"
+            });
+        } else {
+            res.status(401).json({
+                message: "Password update failed"
+            });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Server Error");
     }
 });
 

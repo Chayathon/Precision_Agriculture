@@ -47,6 +47,8 @@ function AdminNavbar() {
 
     const [isVisible, setIsVisible] = useState(false);
     const toggleVisibility = () => setIsVisible(!isVisible);
+    const [isVisibleConfirm, setIsVisibleConfirm] = useState(false);
+    const toggleVisibilityConfirm = () => setIsVisibleConfirm(!isVisibleConfirm);
 
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const {isOpen: isOpenPassword, onOpen: onOpenPassword, onOpenChange: onOpenChangePassword} = useDisclosure();
@@ -282,6 +284,7 @@ function AdminNavbar() {
             console.log(err);
         } finally {
             setIsLoading(false);
+            setIsChecked(false);
         }
     }
 
@@ -381,7 +384,7 @@ function AdminNavbar() {
                         <DropdownItem key="settings" onPress={onOpen}>
                             <p className='flex justify-between items-center'>แก้ไขโปรไฟล์<FaUserGear size={18} /></p>
                         </DropdownItem>
-                        <DropdownItem key="changePassword" onPress={onOpenPassword}>
+                        <DropdownItem key="change-password" onPress={onOpenPassword}>
                             <p className='flex justify-between items-center'>เปลี่ยนรหัสผ่าน<FaLock size={18} /></p>
                         </DropdownItem>
                         <DropdownItem key="logout" color="danger" onPress={handleLogout}>
@@ -537,11 +540,11 @@ function AdminNavbar() {
                                                         onChange={(e) => setConfirmPassword(e.target.value)}
                                                         label="ยืนยันรหัสผ่านใหม่"
                                                         endContent={
-                                                            <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                                                {isVisible ? 'ซ่อน' : 'แสดง'}
+                                                            <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibilityConfirm} aria-label="toggle password visibility">
+                                                                {isVisibleConfirm ? 'ซ่อน' : 'แสดง'}
                                                             </Button>
                                                         }
-                                                        type={isVisible ? "text" : "password"}
+                                                        type={isVisibleConfirm ? "text" : "password"}
                                                         isRequired
                                                     />
                                                 </div>
