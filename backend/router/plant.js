@@ -152,7 +152,7 @@ router.post('/createPlant', async (req, res) => {
             data: {
                 plantname: plantName,
                 plantedAt: plantDate, // บันทึกวันที่
-                plant_id: Number(plantId),
+                plant_avaliable_id: Number(plantId),
                 user_id: userId, // ใช้ userId ที่ได้รับจาก client
             }
         });
@@ -265,32 +265,17 @@ router.delete('/deletePlantAvaliable/:id', async (req, res) => {
     try {
         const { id } = req.params;
 
-        await prisma.$transaction(async (prisma) => {
-            // ลบข้อมูลใน p_factor
-            await prisma.p_factor.deleteMany({
-                where: {
-                    plant_id: Number(id),
-                },
-            });
-
-            // ลบข้อมูลใน p_nutrient
-            await prisma.p_nutrient.deleteMany({
-                where: {
-                    plant_id: Number(id),
-                },
-            });
-
-            // ลบข้อมูลใน plant_avaliable
-            await prisma.plant_avaliable.delete({
-                where: {
-                    id: Number(id),
-                },
-            });
+        const delPlantAvaliable = await prisma.plant_avaliable.delete({
+            where: {
+                id: Number(id),
+            },
         });
 
-        res.status(200).json({
-            message: 'Plant and related data deleted successfully',
-        });
+        if(delPlantAvaliable) {
+            res.status(200).json({
+                message: 'Plant and related data deleted successfully',
+            });
+        }
     } catch (err) {
         console.log(err);
         res.status(500).send('Server Error');
