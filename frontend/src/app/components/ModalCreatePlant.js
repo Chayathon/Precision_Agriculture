@@ -143,7 +143,7 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                                         ))}
                                     </Select>
                                 </div>
-                                {selectedPlant.plantname === "อื่นๆ" && (
+                                {selectedPlant.id === 1 && (
                                     <div className='mb-3'>
                                         <Input
                                             isRequired
