@@ -9,10 +9,6 @@ export const metadata = {
     icons: {
       icon: '/icon.png',
     },
-    viewport: {
-        width: 'device-width',
-        initialScale: 1,
-    },
 };
 
 const kanit = Kanit({
