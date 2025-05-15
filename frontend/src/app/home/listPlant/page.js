@@ -286,7 +286,7 @@ export default function ListPlant() {
                             <TableCell>
                                 <div className="hidden sm:block">
                                     <ButtonGroup>
-                                        {item.plant_id === 1 && (
+                                        {item.plant_avaliable_id === 1 && (
                                             <>
                                                 <Tooltip content="เพิ่มค่าตัวแปร" color="success">
                                                     <Button onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}} variant="light" size='sm'>
@@ -316,7 +316,7 @@ export default function ListPlant() {
                                             </Button>
                                         </DropdownTrigger>
                                         <DropdownMenu aria-label="ตัวเลือกการจัดการ">
-                                            {item.plant_id === 1 && (
+                                            {item.plant_avaliable_id === 1 && (
                                                 <>
                                                     <DropdownItem
                                                         key="add-variable" 
