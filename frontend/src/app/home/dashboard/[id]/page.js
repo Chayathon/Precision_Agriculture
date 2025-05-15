@@ -147,7 +147,7 @@ function Dashboard({ params }) {
   
         if(res.status === 200) {
           const data = await res.json();
-          setPlantId(data.resultData.plant_id);
+          setPlantId(data.resultData.plant_avaliable_id);
   
           const plantedAt = data.resultData.plantedAt;
           const ageInDays = calculateAge(plantedAt);
@@ -156,7 +156,7 @@ function Dashboard({ params }) {
           setLatitude(data.resultData.latitude);
           setLongitude(data.resultData.longitude);
   
-          data.resultData.plant_id === 1 ? setOtherPlant(true) : setOtherPlant(false);
+          data.resultData.plant_avaliable_id === 1 ? setOtherPlant(true) : setOtherPlant(false);
         }
       } catch (err) {
         console.error("Failed to fetch", err);
