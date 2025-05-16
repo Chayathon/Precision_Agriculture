@@ -287,19 +287,17 @@ export default function ListPlant() {
                                 <div className="hidden sm:block">
                                     <ButtonGroup>
                                         {item.plant_avaliable_id === 1 && (
-                                            <>
-                                                <Tooltip content="เพิ่มค่าตัวแปร" color="success">
-                                                    <Button onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}} variant="light" size='sm'>
-                                                        <CiViewList  className="text-xl text-success-500" />
-                                                    </Button>
-                                                </Tooltip>
-                                                <Tooltip content="แก้ไข" color="warning">
-                                                    <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}} variant="light" size='sm'>
-                                                        <CiEdit className="text-xl text-amber-500" />
-                                                    </Button>
-                                                </Tooltip>
-                                            </>
+                                            <Tooltip content="เพิ่มค่าตัวแปร" color="success">
+                                                <Button onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}} variant="light" size='sm'>
+                                                    <CiViewList  className="text-xl text-success-500" />
+                                                </Button>
+                                            </Tooltip>
                                         )}
+                                        <Tooltip content="แก้ไข" color="warning">
+                                            <Button onPress={() => {setSelectedId(item.id); onOpenUpdate();}} variant="light" size='sm'>
+                                                <CiEdit className="text-xl text-amber-500" />
+                                            </Button>
+                                        </Tooltip>
                                         <Tooltip content="ลบ" color="danger">
                                             <Button onPress={() => {setSelectedId(item.id); onOpenDelete();}} variant="light" size='sm'>
                                                 <HiOutlineTrash className="text-xl text-red-500" />
@@ -317,23 +315,21 @@ export default function ListPlant() {
                                         </DropdownTrigger>
                                         <DropdownMenu aria-label="ตัวเลือกการจัดการ">
                                             {item.plant_avaliable_id === 1 && (
-                                                <>
-                                                    <DropdownItem
-                                                        key="add-variable" 
-                                                        onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}}
-                                                        startContent={<CiViewList className="text-success-500" />}
-                                                    >
-                                                        เพิ่มค่าตัวแปร
-                                                    </DropdownItem>
-                                                    <DropdownItem 
-                                                        key="edit" 
-                                                        onPress={() => {setSelectedId(item.id); onOpenUpdate();}}
-                                                        startContent={<CiEdit className="text-amber-500" />}
-                                                    >
-                                                        แก้ไข
-                                                    </DropdownItem>
-                                                </>
+                                                <DropdownItem
+                                                    key="add-variable" 
+                                                    onPress={() => {setSelectedId(item.id); onOpenPlantVariable();}}
+                                                    startContent={<CiViewList className="text-success-500" />}
+                                                >
+                                                    เพิ่มค่าตัวแปร
+                                                </DropdownItem>
                                             )}
+                                            <DropdownItem 
+                                                key="edit" 
+                                                onPress={() => {setSelectedId(item.id); onOpenUpdate();}}
+                                                startContent={<CiEdit className="text-amber-500" />}
+                                            >
+                                                แก้ไข
+                                            </DropdownItem>
                                             <DropdownItem 
                                                 key="delete" 
                                                 onPress={() => {setSelectedId(item.id); onOpenDelete();}}

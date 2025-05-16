@@ -196,14 +196,20 @@ router.post('/createPlantAvaliable', async (req, res) => {
 });
 
 router.put('/updatePlant/:id', async (req, res) => {
+    const { id } = req.params;
+    const { plantName, plantAt, plantId } = req.body;
+
     try {
-        const { id } = req.params;
+        const plantDate = new Date(plantAt);
+
         const putPlant = await prisma.plant.update({
             where: {
                 id: Number(id)
             },
             data: {
-                plantname: req.body.plantName
+                plantname: plantName,
+                plantedAt: plantDate,
+                plant_avaliable_id: plantId
             },
         });
 

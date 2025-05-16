@@ -134,13 +134,11 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                                     <Select
                                         isRequired
                                         onChange={(e) => handleSelectionChange(e.target.value)}
-                                        value={selectedPlant}
+                                        items={plantAvaliable}
                                         label="พืช"
                                         placeholder="เลือกพืชที่ปลูก"
                                     >
-                                        {plantAvaliable.map((item) => (
-                                            <SelectItem key={item.id} value={item.plantname}>{item.plantname}</SelectItem>
-                                        ))}
+                                        {(item) => <SelectItem key={item.id} value={item.plantname}>{item.plantname}</SelectItem>}
                                     </Select>
                                 </div>
                                 {selectedPlant.id === 1 && (
@@ -158,7 +156,7 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                                         isRequired
                                         defaultValue={today(getLocalTimeZone())}
                                         maxValue={today(getLocalTimeZone())}
-                                        onChange={handleDateChange} // เพิ่มการเรียกฟังก์ชันเมื่อวันที่เปลี่ยน
+                                        onChange={handleDateChange}
                                         label="วันที่ปลูก"
                                     />
                                 </div>
