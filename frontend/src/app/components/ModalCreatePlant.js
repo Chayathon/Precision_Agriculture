@@ -120,46 +120,39 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
     };
 
     return (
-        <Modal
-            isOpen={isOpen}
-            onOpenChange={onOpenChange}
-        >
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
                 {(onClose) => (
                     <>
-                        <ModalHeader className="flex flex-col">เพิ่มข้อมูล</ModalHeader>
+                        <ModalHeader>เพิ่มข้อมูล</ModalHeader>
                         <ModalBody>
                             <form onSubmit={handleSubmit}>
-                                <div className='mb-3'>
-                                    <Select
-                                        isRequired
-                                        onChange={(e) => handleSelectionChange(e.target.value)}
-                                        items={plantAvaliable}
-                                        label="พืช"
-                                        placeholder="เลือกพืชที่ปลูก"
-                                    >
-                                        {(item) => <SelectItem key={item.id} value={item.plantname}>{item.plantname}</SelectItem>}
-                                    </Select>
-                                </div>
+                                <Select
+                                    isRequired
+                                    onChange={(e) => handleSelectionChange(e.target.value)}
+                                    items={plantAvaliable}
+                                    label="พืช"
+                                    placeholder="เลือกพืชที่ปลูก"
+                                >
+                                    {(item) => <SelectItem key={item.id} value={item.plantname}>{item.plantname}</SelectItem>}
+                                </Select>
                                 {selectedPlant.id === 1 && (
-                                    <div className='mb-3'>
-                                        <Input
-                                            isRequired
-                                            label="ระบุพืชที่ปลูก"
-                                            placeholder="กรอกชื่อพืช"
-                                            onChange={(e) => setCustomPlant(e.target.value)}
-                                        />
-                                    </div>
-                                )}
-                                <div className='mt-3'>
-                                    <DatePicker
+                                    <Input
                                         isRequired
-                                        defaultValue={today(getLocalTimeZone())}
-                                        maxValue={today(getLocalTimeZone())}
-                                        onChange={handleDateChange}
-                                        label="วันที่ปลูก"
+                                        label="ระบุพืชที่ปลูก"
+                                        placeholder="กรอกชื่อพืช"
+                                        className='mt-3'
+                                        onChange={(e) => setCustomPlant(e.target.value)}
                                     />
-                                </div>
+                                )}
+                                <DatePicker
+                                    isRequired
+                                    defaultValue={today(getLocalTimeZone())}
+                                    maxValue={today(getLocalTimeZone())}
+                                    onChange={handleDateChange}
+                                    label="วันที่ปลูก"
+                                    className='mt-3'
+                                />
                                 <ModalFooter>
                                     <Button variant="flat" onPress={onClose}>
                                         ยกเลิก

@@ -61,10 +61,10 @@ function ModalCreateFactor({ isOpen, onOpenChange, setRefresh, id }) {
     return (
         <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='lg'>
             <ModalContent>
-                <ModalHeader className="flex flex-col gap-1">เพิ่มค่าตัวแปรที่พืชต้องการ</ModalHeader>
+                <ModalHeader>เพิ่มค่าตัวแปรที่พืชต้องการ</ModalHeader>
                 <ModalBody>
                     <form onSubmit={handleSubmit}>
-                        <div className="flex mb-4 gap-4">
+                        <div className="flex flex-col sm:flex-row mb-3 gap-3">
                             <NumberInput
                                 value={age}
                                 onValueChange={setAge}
@@ -80,7 +80,7 @@ function ModalCreateFactor({ isOpen, onOpenChange, setRefresh, id }) {
                                 isRequired
                             />
                         </div>
-                        <div className="flex mb-4 gap-4">
+                        <div className="flex flex-col sm:flex-row mb-3 gap-3">
                             <Input
                                 onChange={(e) => setTemperature(e.target.value)}
                                 type="text"
@@ -94,7 +94,7 @@ function ModalCreateFactor({ isOpen, onOpenChange, setRefresh, id }) {
                                 isRequired
                             />
                         </div>
-                        <div className="flex my-4 gap-4">
+                        <div className="flex flex-col sm:flex-row gap-3">
                             <Input
                                 onChange={(e) => setSalinity(e.target.value)}
                                 type="text"

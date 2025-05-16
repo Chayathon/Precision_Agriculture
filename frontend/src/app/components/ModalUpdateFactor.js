@@ -79,18 +79,14 @@ function ModalUpdateFactor({ isOpen, onOpenChange, id, setRefresh }) {
 
     return (
         <>
-            <Modal 
-                isOpen={isOpen} 
-                onOpenChange={onOpenChange}
-                placement="top-center"
-            >
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='lg'>
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">แก้ไขข้อมูล</ModalHeader>
+                            <ModalHeader>แก้ไขข้อมูล</ModalHeader>
                             <ModalBody>
                                 <form onSubmit={handleSubmit}>
-                                    <div className="flex mb-4 gap-4">
+                                    <div className="flex flex-col sm:flex-row mb-3 gap-3">
                                         <NumberInput
                                             value={age}
                                             onValueChange={setAge}
@@ -106,7 +102,7 @@ function ModalUpdateFactor({ isOpen, onOpenChange, id, setRefresh }) {
                                             isRequired
                                         />
                                     </div>
-                                    <div className="flex mb-4 gap-4">
+                                    <div className="flex flex-col sm:flex-row mb-3 gap-3">
                                         <Input
                                             onChange={(e) => setTemperature(e.target.value)}
                                             value={temperature}
@@ -122,7 +118,7 @@ function ModalUpdateFactor({ isOpen, onOpenChange, id, setRefresh }) {
                                             isRequired
                                         />
                                     </div>
-                                    <div className="flex my-4 gap-4">
+                                    <div className="flex flex-col sm:flex-row gap-3">
                                         <Input
                                             onChange={(e) => setSalinity(e.target.value)}
                                             value={salinity}

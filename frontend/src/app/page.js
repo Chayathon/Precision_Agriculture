@@ -146,7 +146,7 @@ function Login() {
                                 </Button>
                             }
                             type={isVisible ? "text" : "password"}
-                            className='my-4'
+                            className='my-3'
                             required
                         />
                         <Button

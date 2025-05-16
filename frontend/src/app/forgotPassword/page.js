@@ -109,23 +109,21 @@ function ForgotPassword() {
                 </CardHeader>
                 <CardBody>
                     <form onSubmit={handleSubmit}>
-                        <div className='mb-2'>
-                            <Input
-                                onChange={(e) => setEmail(e.target.value)}
-                                type='email'
-                                variant='faded'
-                                label='อีเมล'
-                                autoFocus
-                                isRequired
-                                startContent={
-                                    <HiMail size={20} />
-                                }
-                            />
-                        </div>
-                        <div className='m-2'>
+                        <Input
+                            onChange={(e) => setEmail(e.target.value)}
+                            type='email'
+                            variant='faded'
+                            label='อีเมล'
+                            autoFocus
+                            isRequired
+                            startContent={
+                                <HiMail size={20} />
+                            }
+                        />
+                        <div className='my-3 mx-2'>
                             {isChecked && (
                                 <>
-                                    <p>กรุณากรอก OTP</p>
+                                    <p className='text-sm'>กรุณากรอก OTP</p>
                                     <InputOtp
                                         isRequired
                                         autoFocus

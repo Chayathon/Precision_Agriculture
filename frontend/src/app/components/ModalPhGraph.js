@@ -177,11 +177,11 @@ function ModalPhGraph({ isOpen, onOpenChange, id }) {
     };
   
     return (
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl" placement="top-center">
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl" placement="center">
         <ModalContent>
           {(onClose) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">กราฟค่าความเป็นกรด-ด่าง</ModalHeader>
+              <ModalHeader>กราฟค่าความเป็นกรด-ด่าง</ModalHeader>
               {plantData &&(
                 <ModalBody>
                   <div className="hidden justify-end mb-4 md:flex">

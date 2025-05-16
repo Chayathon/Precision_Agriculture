@@ -64,17 +64,17 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
             <Modal 
                 isOpen={isOpen} 
                 onOpenChange={onOpenChange}
-                placement="top-center"
+                placement="center"
                 size='5xl'
             >
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">ค่าตัวแปรที่พืชต้องการ</ModalHeader>
+                            <ModalHeader>ค่าตัวแปรที่พืชต้องการ</ModalHeader>
                             <ModalBody>
                                 <Tabs aria-label="Options">
                                     <Tab key="Factor" title="ค่าตัวแปรที่เกี่ยวข้อง">
-                                        <div className="flex justify-between mb-2">
+                                        <div className="flex justify-between mb-3">
                                             <p className='text-2xl font-bold'>{plant}</p>
                                             <Button onPress={() => {onOpenCreateFactor()}} color='success' endContent={<FaPlus />}>เพิ่ม</Button>
                                         </div>
@@ -117,7 +117,7 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
                                         </Table>
                                     </Tab>
                                     <Tab key="Nutrient" title="ค่าสารอาหาร">
-                                        <div className="flex justify-between mb-2">
+                                        <div className="flex justify-between mb-3">
                                         <p className='text-2xl font-bold'>{plant}</p>
                                             <Button onPress={() => {onOpenCreateNutrient()}} color='success' endContent={<FaPlus />}>เพิ่ม</Button>
                                         </div>

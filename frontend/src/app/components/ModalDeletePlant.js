@@ -23,9 +23,9 @@ function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
                 }
             }
 
-            fetchData()
+            fetchData();
         }
-    }, [isOpen, id])
+    }, [isOpen, id]);
 
     const handleSubmit = async () => {
         setIsLoading(true);
@@ -61,7 +61,7 @@ function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                        <ModalHeader className="flex flex-col gap-1">ลบข้อมูล</ModalHeader>
+                        <ModalHeader>ลบข้อมูล</ModalHeader>
                         <ModalBody>
                             <p>ยืนยันที่จะลบพืช <b>{plantName}</b> ?</p>
                         </ModalBody>

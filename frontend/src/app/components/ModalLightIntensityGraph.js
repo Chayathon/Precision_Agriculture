@@ -177,11 +177,11 @@ function ModalLightIntensityGraph({ isOpen, onOpenChange, id }) {
   };
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl" placement="top-center">
+    <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="4xl" placement="center">
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">กราฟค่าความเข้มแสง</ModalHeader>
+            <ModalHeader>กราฟค่าความเข้มแสง</ModalHeader>
             {plantData &&(
               <ModalBody>
                 <div className="hidden justify-end mb-4 md:flex">

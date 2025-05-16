@@ -123,15 +123,11 @@ function ModalUpdatePlant({ isOpen, onOpenChange, id, setRefresh }) {
 
     return (
         <>
-            <Modal 
-                isOpen={isOpen} 
-                onOpenChange={onOpenChange}
-                placement="top-center"
-            >
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">แก้ไขข้อมูล</ModalHeader>
+                            <ModalHeader>แก้ไขข้อมูล</ModalHeader>
                             <ModalBody>
                                 <form onSubmit={handleSubmit}>
                                     <Select
@@ -150,7 +146,7 @@ function ModalUpdatePlant({ isOpen, onOpenChange, id, setRefresh }) {
                                             placeholder="กรอกชื่อพืช"
                                             value={customPlant}
                                             onChange={(e) => setCustomPlant(e.target.value)}
-                                            className='my-3'
+                                            className='mt-3'
                                             isRequired
                                         />
                                     )}

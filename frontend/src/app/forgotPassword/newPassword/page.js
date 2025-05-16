@@ -86,35 +86,32 @@ function NewPassword() {
                 </CardHeader>
                 <CardBody>
                     <form onSubmit={handleSubmit}>
-                        <div className='mb-4'>
-                            <Input
-                                onChange={(e) => setPassword(e.target.value)}
-                                label="รหัสผ่าน"
-                                variant='faded'
-                                endContent={
-                                    <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                        {isVisible ? 'ซ่อน' : 'แสดง'}
-                                    </Button>
-                                }
-                                type={isVisible ? "text" : "password"}
-                                autoFocus
-                                isRequired
-                            />
-                        </div>
-                        <div className='my-4'>
-                            <Input
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                label="ยืนยันรหัสผ่าน"
-                                variant='faded'
-                                endContent={
-                                    <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibilityConfirm} aria-label="toggle password visibility">
-                                        {isVisibleConfirm ? 'ซ่อน' : 'แสดง'}
-                                    </Button>
-                                }
-                                type={isVisibleConfirm ? "text" : "password"}
-                                isRequired
-                            />
-                        </div>
+                        <Input
+                            onChange={(e) => setPassword(e.target.value)}
+                            label="รหัสผ่าน"
+                            variant='faded'
+                            endContent={
+                                <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
+                                    {isVisible ? 'ซ่อน' : 'แสดง'}
+                                </Button>
+                            }
+                            type={isVisible ? "text" : "password"}
+                            autoFocus
+                            isRequired
+                        />
+                        <Input
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            label="ยืนยันรหัสผ่าน"
+                            variant='faded'
+                            className='my-3'
+                            endContent={
+                                <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibilityConfirm} aria-label="toggle password visibility">
+                                    {isVisibleConfirm ? 'ซ่อน' : 'แสดง'}
+                                </Button>
+                            }
+                            type={isVisibleConfirm ? "text" : "password"}
+                            isRequired
+                        />
                         <Button
                             type='submit'
                             color='primary'
