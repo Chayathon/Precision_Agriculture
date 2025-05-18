@@ -256,7 +256,7 @@ function Register() {
                         <div className='my-3'>
                             <Input onChange={(e) => setUsername(e.target.value)} type='text' label='ชื่อผู้ใช้' isClearable isRequired />
                         </div>
-                        <div className='sm:flex my-3 gap-3'>
+                        <div className='sm:flex mt-3 gap-3'>
                             <Input
                                 className='max-sm:my-3'
                                 onChange={(e) => setPassword(e.target.value)}

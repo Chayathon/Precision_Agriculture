@@ -164,136 +164,134 @@ function ModalCreateAdmin({ isOpen, onOpenChange, setRefresh }) {
     }
 
     return (
-        <>
-            <Modal 
-                isOpen={isOpen} 
-                onOpenChange={onOpenChange}
-                size={"2xl"}
-                scrollBehavior='inside'
-            >
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">เพิ่มข้อมูล</ModalHeader>
-                            <ModalBody>
-                                <form onSubmit={handleSubmit}>
-                                <div className='sm:flex mb-4 gap-4'>
-                                        <Input onChange={(e) => setFirstname(e.target.value)} className='max-sm:my-4' type='text' label='ชื่อจริง' isClearable isRequired />
+        <Modal 
+            isOpen={isOpen} 
+            onOpenChange={onOpenChange}
+            size="2xl"
+            scrollBehavior='inside'
+        >
+            <ModalContent>
+                {(onClose) => (
+                    <>
+                        <ModalHeader>เพิ่มข้อมูล</ModalHeader>
+                        <ModalBody>
+                            <form onSubmit={handleSubmit}>
+                                <div className='sm:flex gap-3'>
+                                    <Input onChange={(e) => setFirstname(e.target.value)} className='max-sm:mb-3' type='text' label='ชื่อจริง' isClearable isRequired />
 
-                                        <Input onChange={(e) => setLastname(e.target.value)} type='text' label='นามสกุล' isClearable isRequired />
-                                    </div>
-                                    <div className='sm:flex my-4 gap-4'>
-                                        <Input onChange={(e) => setEmail(e.target.value)} className='max-sm:my-4' type='email' label='อีเมล' isClearable isRequired />
+                                    <Input onChange={(e) => setLastname(e.target.value)} type='text' label='นามสกุล' isClearable isRequired />
+                                </div>
+                                <div className='sm:flex my-3 gap-3'>
+                                    <Input onChange={(e) => setEmail(e.target.value)} className='max-sm:my-3' type='email' label='อีเมล' isClearable isRequired />
 
-                                        <Input onChange={(e) => setTel(e.target.value)} type='text' label='เบอร์โทรศัพท์' maxLength='10' isClearable isRequired />
-                                    </div>
-                                    <div className='my-4'>
-                                        <Textarea
-                                            onChange={(e) => setAddress(prev => ({
-                                                ...prev,
-                                                detail: e.target.value
-                                            }))}
-                                            label='ที่อยู่'
-                                            placeholder='บ้านเลขที่, ซอย, ถนน, หมู่ที่...'
-                                            maxRows={2}
-                                            isClearable
-                                            isRequired
-                                        />
-                                    </div>
-                                    <div className='md:flex my-4 gap-4'>
-                                        <Select
-                                            onChange={(e) => setAddress(prev => ({
-                                                ...prev,
-                                                province: e.target.value
-                                            }))}
-                                            items={provinces}
-                                            label='จังหวัด'
-                                            placeholder='เลือกจังหวัด'
-                                            isRequired
-                                        >
-                                            {(item) => <SelectItem key={item.province_id}>{item.name_th}</SelectItem>}
-                                        </Select>
-                                        
-                                        <Select
-                                            className='max-md:my-4'
-                                            onChange={(e) => setAddress(prev => ({
-                                                ...prev,
-                                                district: e.target.value
-                                            }))}
-                                            items={districts}
-                                            label='เขต/อำเภอ'
-                                            placeholder='เลือกเขต/อำเภอ'
-                                            selectedKeys={address.district ? [address.district] : []}
-                                            isDisabled={!address?.province}
-                                            isRequired
-                                        >
-                                            {(item) => <SelectItem key={item.district_id}>{item.name_th}</SelectItem>}
-                                        </Select>
-                                        
-                                        <Select
-                                            onChange={(e) => setAddress(prev => ({
-                                                ...prev,
-                                                subdistrict: e.target.value
-                                            }))}
-                                            items={subdistricts}
-                                            label='แขวง/ตำบล'
-                                            placeholder='เลือกแขวง/ตำบล'
-                                            selectedKeys={address.subdistrict ? [address.subdistrict] : []}
-                                            isDisabled={!address?.district}
-                                            isRequired
-                                        >
-                                            {(item) => <SelectItem key={item.subdistrict_id}>{item.name_th}</SelectItem>}
-                                        </Select>
-                                    </div>
-                                    <div className='my-4'>
-                                        <Input onChange={(e) => setUsername(e.target.value)} type='text' label='ชื่อผู้ใช้' isClearable isRequired />
-                                    </div>
-                                    <div className='sm:flex my-4 gap-4'>
-                                        <Input
-                                            className='max-sm:my-4'
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            label="รหัสผ่าน"
-                                            endContent={
-                                                <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                                    {isVisible ? 'ซ่อน' : 'แสดง'}
-                                                </Button>
-                                            }
-                                            type={isVisible ? "text" : "password"}
-                                            isRequired
-                                        />
-            
-                                        <Input
-                                            onChange={(e) => setConfirmPassword(e.target.value)}
-                                            label="ยืนยันรหัสผ่าน"
-                                            endContent={
-                                                <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibilityConfirm} aria-label="toggle password visibility">
-                                                    {isVisibleConfirm ? 'ซ่อน' : 'แสดง'}
-                                                </Button>
-                                            }
-                                            type={isVisibleConfirm ? "text" : "password"}
-                                            isRequired
-                                        />
-                                    </div>
-                                    <ModalFooter>
-                                        <Button variant="flat" onPress={onClose}>
-                                            ยกเลิก
-                                        </Button>
-                                        <Button
-                                            type='submit'
-                                            color="success"
-                                            isLoading={isLoading}
-                                            disabled={isLoading}
-                                        >
-                                            {isLoading ? 'กำลังเพิ่มข้อมูล...' : 'เพิ่ม'}
-                                        </Button>
-                                    </ModalFooter>
-                                </form>
-                            </ModalBody>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-        </>
+                                    <Input onChange={(e) => setTel(e.target.value)} type='text' label='เบอร์โทรศัพท์' maxLength='10' isClearable isRequired />
+                                </div>
+                                <div className='my-3'>
+                                    <Textarea
+                                        onChange={(e) => setAddress(prev => ({
+                                            ...prev,
+                                            detail: e.target.value
+                                        }))}
+                                        label='ที่อยู่'
+                                        placeholder='บ้านเลขที่, ซอย, ถนน, หมู่ที่...'
+                                        maxRows={2}
+                                        isClearable
+                                        isRequired
+                                    />
+                                </div>
+                                <div className='md:flex my-3 gap-3'>
+                                    <Select
+                                        onChange={(e) => setAddress(prev => ({
+                                            ...prev,
+                                            province: e.target.value
+                                        }))}
+                                        items={provinces}
+                                        label='จังหวัด'
+                                        placeholder='เลือกจังหวัด'
+                                        isRequired
+                                    >
+                                        {(item) => <SelectItem key={item.province_id}>{item.name_th}</SelectItem>}
+                                    </Select>
+                                    
+                                    <Select
+                                        className='max-md:my-3'
+                                        onChange={(e) => setAddress(prev => ({
+                                            ...prev,
+                                            district: e.target.value
+                                        }))}
+                                        items={districts}
+                                        label='เขต/อำเภอ'
+                                        placeholder='เลือกเขต/อำเภอ'
+                                        selectedKeys={address.district ? [address.district] : []}
+                                        isDisabled={!address?.province}
+                                        isRequired
+                                    >
+                                        {(item) => <SelectItem key={item.district_id}>{item.name_th}</SelectItem>}
+                                    </Select>
+                                    
+                                    <Select
+                                        onChange={(e) => setAddress(prev => ({
+                                            ...prev,
+                                            subdistrict: e.target.value
+                                        }))}
+                                        items={subdistricts}
+                                        label='แขวง/ตำบล'
+                                        placeholder='เลือกแขวง/ตำบล'
+                                        selectedKeys={address.subdistrict ? [address.subdistrict] : []}
+                                        isDisabled={!address?.district}
+                                        isRequired
+                                    >
+                                        {(item) => <SelectItem key={item.subdistrict_id}>{item.name_th}</SelectItem>}
+                                    </Select>
+                                </div>
+                                <div className='my-3'>
+                                    <Input onChange={(e) => setUsername(e.target.value)} type='text' label='ชื่อผู้ใช้' isClearable isRequired />
+                                </div>
+                                <div className='sm:flex mt-3 gap-3'>
+                                    <Input
+                                        className='max-sm:my-3'
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        label="รหัสผ่าน"
+                                        endContent={
+                                            <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
+                                                {isVisible ? 'ซ่อน' : 'แสดง'}
+                                            </Button>
+                                        }
+                                        type={isVisible ? "text" : "password"}
+                                        isRequired
+                                    />
+        
+                                    <Input
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        label="ยืนยันรหัสผ่าน"
+                                        endContent={
+                                            <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibilityConfirm} aria-label="toggle password visibility">
+                                                {isVisibleConfirm ? 'ซ่อน' : 'แสดง'}
+                                            </Button>
+                                        }
+                                        type={isVisibleConfirm ? "text" : "password"}
+                                        isRequired
+                                    />
+                                </div>
+                                <ModalFooter>
+                                    <Button variant="flat" onPress={onClose}>
+                                        ยกเลิก
+                                    </Button>
+                                    <Button
+                                        type='submit'
+                                        color="success"
+                                        isLoading={isLoading}
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? 'กำลังเพิ่มข้อมูล...' : 'เพิ่ม'}
+                                    </Button>
+                                </ModalFooter>
+                            </form>
+                        </ModalBody>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
     )
 }
 

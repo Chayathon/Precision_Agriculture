@@ -40,7 +40,7 @@ function ModalMultiDeleteRole({ isOpen, onOpenChange, selectedKeys, setRefresh, 
             <ModalContent>
             {(onClose) => (
                 <>
-                    <ModalHeader className="flex flex-col gap-1">ลบข้อมูล</ModalHeader>
+                    <ModalHeader>ลบข้อมูล</ModalHeader>
                     <ModalBody>
                         <p>ยืนยันที่จะลบข้อมูล <b>{selectedKeys.length}</b> รายการ</p>
                     </ModalBody>

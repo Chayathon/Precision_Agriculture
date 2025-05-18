@@ -56,11 +56,10 @@ function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
     }
 
     return (
-        <>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                <ModalContent>
-                    {(onClose) => (
-                        <>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <ModalContent>
+                {(onClose) => (
+                    <>
                         <ModalHeader>ลบข้อมูล</ModalHeader>
                         <ModalBody>
                             <p>ยืนยันที่จะลบพืช <b>{plantName}</b> ?</p>
@@ -78,11 +77,10 @@ function ModalDeletePlant({ isOpen, onOpenChange, id, setRefresh }) {
                                 {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
                             </Button>
                         </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-        </>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
     )
 
 }

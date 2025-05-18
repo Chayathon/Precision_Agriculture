@@ -122,62 +122,60 @@ function ModalUpdatePlant({ isOpen, onOpenChange, id, setRefresh }) {
     }
 
     return (
-        <>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader>แก้ไขข้อมูล</ModalHeader>
-                            <ModalBody>
-                                <form onSubmit={handleSubmit}>
-                                    <Select
-                                        isRequired
-                                        onChange={(e) => handleSelectionChange(e.target.value)}
-                                        items={plantAvaliable}
-                                        selectedKeys={String(selectedPlant.id)}
-                                        label="พืช"
-                                    >
-                                        {(item) => <SelectItem key={item.id} value={item.plantname}>{item.plantname}</SelectItem>}
-                                    </Select>
-                                    {selectedPlant.id === 1 && (
-                                        <Input
-                                            autoFocus
-                                            label="ชื่อพืช"
-                                            placeholder="กรอกชื่อพืช"
-                                            value={customPlant}
-                                            onChange={(e) => setCustomPlant(e.target.value)}
-                                            className='mt-3'
-                                            isRequired
-                                        />
-                                    )}
-                                    <DatePicker
-                                        isRequired
-                                        value={plantAt}
-                                        maxValue={today(getLocalTimeZone())}
-                                        onChange={setPlantAt}
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <ModalContent>
+                {(onClose) => (
+                    <>
+                        <ModalHeader>แก้ไขข้อมูล</ModalHeader>
+                        <ModalBody>
+                            <form onSubmit={handleSubmit}>
+                                <Select
+                                    isRequired
+                                    onChange={(e) => handleSelectionChange(e.target.value)}
+                                    items={plantAvaliable}
+                                    selectedKeys={String(selectedPlant.id)}
+                                    label="พืช"
+                                >
+                                    {(item) => <SelectItem key={item.id} value={item.plantname}>{item.plantname}</SelectItem>}
+                                </Select>
+                                {selectedPlant.id === 1 && (
+                                    <Input
+                                        autoFocus
+                                        label="ชื่อพืช"
+                                        placeholder="กรอกชื่อพืช"
+                                        value={customPlant}
+                                        onChange={(e) => setCustomPlant(e.target.value)}
                                         className='mt-3'
-                                        label="วันที่ปลูก"
+                                        isRequired
                                     />
-                                    <ModalFooter>
-                                        <Button variant="flat" onPress={onClose}>
-                                            ยกเลิก
-                                        </Button>
-                                        <Button
-                                            type='submit'
-                                            color='warning'
-                                            isLoading={isLoading}
-                                            disabled={isLoading}
-                                        >
-                                            {isLoading ? 'กำลังแก้ไขข้อมูล...' : 'แก้ไข'}
-                                        </Button>
-                                    </ModalFooter>
-                                </form>
-                            </ModalBody>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-        </>
+                                )}
+                                <DatePicker
+                                    isRequired
+                                    value={plantAt}
+                                    maxValue={today(getLocalTimeZone())}
+                                    onChange={setPlantAt}
+                                    className='mt-3'
+                                    label="วันที่ปลูก"
+                                />
+                                <ModalFooter>
+                                    <Button variant="flat" onPress={onClose}>
+                                        ยกเลิก
+                                    </Button>
+                                    <Button
+                                        type='submit'
+                                        color='warning'
+                                        isLoading={isLoading}
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? 'กำลังแก้ไขข้อมูล...' : 'แก้ไข'}
+                                    </Button>
+                                </ModalFooter>
+                            </form>
+                        </ModalBody>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
     )
 }
 

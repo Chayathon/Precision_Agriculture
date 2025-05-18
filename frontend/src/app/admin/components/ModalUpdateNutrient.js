@@ -74,70 +74,64 @@ function ModalUpdateNutrient({ isOpen, onOpenChange, id, setRefresh }) {
     }
 
     return (
-        <>
-            <Modal 
-                isOpen={isOpen} 
-                onOpenChange={onOpenChange}
-                placement="top-center"
-            >
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">แก้ไขข้อมูล</ModalHeader>
-                            <ModalBody>
-                                <form onSubmit={handleSubmit}>
-                                    <div className="flex mb-4 gap-4">
-                                        <NumberInput
-                                            value={age}
-                                            onValueChange={setAge}
-                                            minValue={0}
-                                            label="อายุตั้งแต่ (วัน) ขึ้นไป"
-                                            isRequired
-                                        />
-                                        <Input
-                                            onChange={(e) => setNitrogen(e.target.value)}
-                                            value={nitrogen}
-                                            type="text"
-                                            label="(N) ไนโตรเจน (mg/kg)"
-                                            isRequired
-                                        />
-                                    </div>
-                                    <div className="flex mb-4 gap-4">
-                                        <Input
-                                            onChange={(e) => setPhosphorus(e.target.value)}
-                                            value={phosphorus}
-                                            type="text"
-                                            label="(P) ฟอสฟอรัส (mg/kg)"
-                                            isRequired
-                                        />
-                                        <Input
-                                            onChange={(e) => setPotassium(e.target.value)}
-                                            value={potassium}
-                                            type="text"
-                                            label="(K) โพแทสเซียม (mg/kg)"
-                                            isRequired
-                                        />
-                                    </div>
-                                    <ModalFooter>
-                                        <Button variant="flat" onPress={onClose}>
-                                            ยกเลิก
-                                        </Button>
-                                        <Button
-                                            type='submit'
-                                            color="warning"
-                                            isLoading={isLoading}
-                                            disabled={isLoading}
-                                        >
-                                            {isLoading ? 'กำลังแก้ไขข้อมูล...' : 'แก้ไข'}
-                                        </Button>
-                                    </ModalFooter>
-                                </form>
-                            </ModalBody>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-        </>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <ModalContent>
+                {(onClose) => (
+                    <>
+                        <ModalHeader>แก้ไขข้อมูล</ModalHeader>
+                        <ModalBody>
+                            <form onSubmit={handleSubmit}>
+                                <div className="flex flex-col sm:flex-row mb-3 gap-3">
+                                    <NumberInput
+                                        value={age}
+                                        onValueChange={setAge}
+                                        minValue={0}
+                                        label="อายุตั้งแต่ (วัน) ขึ้นไป"
+                                        isRequired
+                                    />
+                                    <Input
+                                        onChange={(e) => setNitrogen(e.target.value)}
+                                        value={nitrogen}
+                                        type="text"
+                                        label="(N) ไนโตรเจน (mg/kg)"
+                                        isRequired
+                                    />
+                                </div>
+                                <div className="flex flex-col sm:flex-row gap-3">
+                                    <Input
+                                        onChange={(e) => setPhosphorus(e.target.value)}
+                                        value={phosphorus}
+                                        type="text"
+                                        label="(P) ฟอสฟอรัส (mg/kg)"
+                                        isRequired
+                                    />
+                                    <Input
+                                        onChange={(e) => setPotassium(e.target.value)}
+                                        value={potassium}
+                                        type="text"
+                                        label="(K) โพแทสเซียม (mg/kg)"
+                                        isRequired
+                                    />
+                                </div>
+                                <ModalFooter>
+                                    <Button variant="flat" onPress={onClose}>
+                                        ยกเลิก
+                                    </Button>
+                                    <Button
+                                        type='submit'
+                                        color="warning"
+                                        isLoading={isLoading}
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? 'กำลังแก้ไขข้อมูล...' : 'แก้ไข'}
+                                    </Button>
+                                </ModalFooter>
+                            </form>
+                        </ModalBody>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
     )
 }
 

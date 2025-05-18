@@ -78,82 +78,80 @@ function ModalUpdateFactor({ isOpen, onOpenChange, id, setRefresh }) {
     }
 
     return (
-        <>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='lg'>
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader>แก้ไขข้อมูล</ModalHeader>
-                            <ModalBody>
-                                <form onSubmit={handleSubmit}>
-                                    <div className="flex flex-col sm:flex-row mb-3 gap-3">
-                                        <NumberInput
-                                            value={age}
-                                            onValueChange={setAge}
-                                            minValue={0}
-                                            label="อายุตั้งแต่ (วัน) ขึ้นไป"
-                                            isRequired
-                                        />
-                                        <Input
-                                            onChange={(e) => setPh(e.target.value)}
-                                            value={ph}
-                                            type="text"
-                                            label="ค่าความเป็นกรด-ด่าง (pH)"
-                                            isRequired
-                                        />
-                                    </div>
-                                    <div className="flex flex-col sm:flex-row mb-3 gap-3">
-                                        <Input
-                                            onChange={(e) => setTemperature(e.target.value)}
-                                            value={temperature}
-                                            type="text"
-                                            label="อุณหภูมิ (°C)"
-                                            isRequired
-                                        />
-                                        <Input
-                                            onChange={(e) => setHumidity(e.target.value)}
-                                            value={humidity}
-                                            type="text"
-                                            label="ความชื้น (%)"
-                                            isRequired
-                                        />
-                                    </div>
-                                    <div className="flex flex-col sm:flex-row gap-3">
-                                        <Input
-                                            onChange={(e) => setSalinity(e.target.value)}
-                                            value={salinity}
-                                            type="text"
-                                            label="ค่าการนำไฟฟ้า (µS/cm)"
-                                            isRequired
-                                        />
-                                        <Input
-                                            onChange={(e) => setLightIntensity(e.target.value)}
-                                            value={lightIntensity}
-                                            type="text"
-                                            label="ค่าความเข้มแสง (lux)"
-                                            isRequired
-                                        />
-                                    </div>
-                                    <ModalFooter>
-                                        <Button variant="flat" onPress={onClose}>
-                                            ยกเลิก
-                                        </Button>
-                                        <Button
-                                            type='submit'
-                                            color="warning"
-                                            isLoading={isLoading}
-                                            disabled={isLoading}
-                                        >
-                                            {isLoading ? 'กำลังแก้ไขข้อมูล...' : 'แก้ไข'}
-                                        </Button>
-                                    </ModalFooter>
-                                </form>
-                            </ModalBody>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-        </>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='lg'>
+            <ModalContent>
+                {(onClose) => (
+                    <>
+                        <ModalHeader>แก้ไขข้อมูล</ModalHeader>
+                        <ModalBody>
+                            <form onSubmit={handleSubmit}>
+                                <div className="flex flex-col sm:flex-row mb-3 gap-3">
+                                    <NumberInput
+                                        value={age}
+                                        onValueChange={setAge}
+                                        minValue={0}
+                                        label="อายุตั้งแต่ (วัน) ขึ้นไป"
+                                        isRequired
+                                    />
+                                    <Input
+                                        onChange={(e) => setPh(e.target.value)}
+                                        value={ph}
+                                        type="text"
+                                        label="ค่าความเป็นกรด-ด่าง (pH)"
+                                        isRequired
+                                    />
+                                </div>
+                                <div className="flex flex-col sm:flex-row mb-3 gap-3">
+                                    <Input
+                                        onChange={(e) => setTemperature(e.target.value)}
+                                        value={temperature}
+                                        type="text"
+                                        label="อุณหภูมิ (°C)"
+                                        isRequired
+                                    />
+                                    <Input
+                                        onChange={(e) => setHumidity(e.target.value)}
+                                        value={humidity}
+                                        type="text"
+                                        label="ความชื้น (%)"
+                                        isRequired
+                                    />
+                                </div>
+                                <div className="flex flex-col sm:flex-row gap-3">
+                                    <Input
+                                        onChange={(e) => setSalinity(e.target.value)}
+                                        value={salinity}
+                                        type="text"
+                                        label="ค่าการนำไฟฟ้า (µS/cm)"
+                                        isRequired
+                                    />
+                                    <Input
+                                        onChange={(e) => setLightIntensity(e.target.value)}
+                                        value={lightIntensity}
+                                        type="text"
+                                        label="ค่าความเข้มแสง (lux)"
+                                        isRequired
+                                    />
+                                </div>
+                                <ModalFooter>
+                                    <Button variant="flat" onPress={onClose}>
+                                        ยกเลิก
+                                    </Button>
+                                    <Button
+                                        type='submit'
+                                        color="warning"
+                                        isLoading={isLoading}
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? 'กำลังแก้ไขข้อมูล...' : 'แก้ไข'}
+                                    </Button>
+                                </ModalFooter>
+                            </form>
+                        </ModalBody>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
     )
 }
 

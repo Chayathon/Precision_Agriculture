@@ -66,6 +66,7 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
                 onOpenChange={onOpenChange}
                 placement="center"
                 size='5xl'
+                scrollBehavior='inside'
             >
                 <ModalContent>
                     {(onClose) => (

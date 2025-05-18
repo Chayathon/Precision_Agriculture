@@ -72,44 +72,38 @@ function ModalUpdateRole({ isOpen, onOpenChange, id, setRefresh }) {
     }
 
     return (
-        <>
-            <Modal 
-                isOpen={isOpen} 
-                onOpenChange={onOpenChange}
-                placement="top-center"
-            >
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">แก้ไขข้อมูล</ModalHeader>
-                            <ModalBody>
-                                <form onSubmit={handleSubmit}>
-                                    <Input
-                                        autoFocus
-                                        label="ชื่อพืช"
-                                        value={plantName}
-                                        onChange={(e) => setPlantName(e.target.value)}
-                                    />
-                                    <ModalFooter>
-                                        <Button variant="flat" onPress={onClose}>
-                                            ยกเลิก
-                                        </Button>
-                                        <Button
-                                            type='submit'
-                                            color="warning"
-                                            isLoading={isLoading}
-                                            disabled={isLoading}
-                                        >
-                                            {isLoading ? 'กำลังแก้ไขข้อมูล...' : 'แก้ไข'}
-                                        </Button>
-                                    </ModalFooter>
-                                </form>
-                            </ModalBody>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-        </>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <ModalContent>
+                {(onClose) => (
+                    <>
+                        <ModalHeader>แก้ไขข้อมูล</ModalHeader>
+                        <ModalBody>
+                            <form onSubmit={handleSubmit}>
+                                <Input
+                                    autoFocus
+                                    label="ชื่อพืช"
+                                    value={plantName}
+                                    onChange={(e) => setPlantName(e.target.value)}
+                                />
+                                <ModalFooter>
+                                    <Button variant="flat" onPress={onClose}>
+                                        ยกเลิก
+                                    </Button>
+                                    <Button
+                                        type='submit'
+                                        color="warning"
+                                        isLoading={isLoading}
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? 'กำลังแก้ไขข้อมูล...' : 'แก้ไข'}
+                                    </Button>
+                                </ModalFooter>
+                            </form>
+                        </ModalBody>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
     )
 }
 

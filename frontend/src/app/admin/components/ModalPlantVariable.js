@@ -64,13 +64,14 @@ function ModalPlantVariable({ isOpen, onOpenChange, id }) {
             <Modal 
                 isOpen={isOpen} 
                 onOpenChange={onOpenChange}
-                placement="top-center"
+                placement="center"
                 size='5xl'
+                scrollBehavior='inside'
             >
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">ค่าตัวแปรที่พืชต้องการ</ModalHeader>
+                            <ModalHeader>ค่าตัวแปรที่พืชต้องการ</ModalHeader>
                             <ModalBody>
                                 <Tabs aria-label="Options">
                                     <Tab key="Factor" title="ค่าตัวแปรที่เกี่ยวข้อง">

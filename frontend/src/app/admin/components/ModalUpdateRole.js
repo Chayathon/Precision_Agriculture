@@ -72,16 +72,11 @@ function ModalUpdateRole({ isOpen, onOpenChange, id, setRefresh }) {
     }
 
     return (
-        <>
-            <Modal 
-                isOpen={isOpen} 
-                onOpenChange={onOpenChange}
-                placement="top-center"
-            >
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                        <ModalHeader className="flex flex-col gap-1">เพิ่มข้อมูล</ModalHeader>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <ModalContent>
+                {(onClose) => (
+                    <>
+                        <ModalHeader>แก้ไขข้อมูล</ModalHeader>
                         <ModalBody>
                             <form onSubmit={handleSubmit}>
                                 <Input
@@ -105,11 +100,10 @@ function ModalUpdateRole({ isOpen, onOpenChange, id, setRefresh }) {
                                 </ModalFooter>
                             </form>
                         </ModalBody>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-        </>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
     )
 }
 

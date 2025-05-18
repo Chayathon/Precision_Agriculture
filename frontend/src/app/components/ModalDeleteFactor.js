@@ -3,7 +3,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button } from
 import { toast } from 'react-toastify'
 
 function ModalDeleteFactor({ isOpen, onOpenChange, id, setRefresh }) {
-    const [plantAge, setPlantAge] = useState([]);
+    const [plantAge, setPlantAge] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -52,33 +52,31 @@ function ModalDeleteFactor({ isOpen, onOpenChange, id, setRefresh }) {
     }
 
     return (
-        <>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader>ลบข้อมูล</ModalHeader>
-                            <ModalBody>
-                                <p>ยืนยันที่จะลบข้อมูลที่อายุตั้งแต่ <b>{plantAge}</b> วันขึ้นไป?</p>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button variant="light" onPress={onClose}>
-                                    ยกเลิก
-                                </Button>
-                                <Button
-                                    color="danger"
-                                    onPress={handleSubmit}
-                                    isLoading={isLoading}
-                                    disabled={isLoading}
-                                >
-                                    {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
-                                </Button>
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-        </>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <ModalContent>
+                {(onClose) => (
+                    <>
+                        <ModalHeader>ลบข้อมูล</ModalHeader>
+                        <ModalBody>
+                            <p>ยืนยันที่จะลบข้อมูลที่อายุตั้งแต่ <b>{plantAge}</b> วันขึ้นไป?</p>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button variant="light" onPress={onClose}>
+                                ยกเลิก
+                            </Button>
+                            <Button
+                                color="danger"
+                                onPress={handleSubmit}
+                                isLoading={isLoading}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
+                            </Button>
+                        </ModalFooter>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
     )
 }
 

@@ -55,58 +55,57 @@ function ModalInfoUser({ isOpen, onOpenChange, id }) {
     }
 
     return (
-        <>
-            <Modal 
-                isOpen={isOpen} 
-                onOpenChange={onOpenChange}
-                size='2xl'
-                scrollBehavior='inside'
-            >
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">ข้อมูลพืชที่ปลูกของ {user}</ModalHeader>
-                            <ModalBody>
-                                <Table aria-label="User Plant Info">
-                                    <TableHeader>
-                                        <TableColumn key="plantedAt">วันที่ปลูก</TableColumn>
-                                        <TableColumn key="plantname">พืชที่ปลูก</TableColumn>
-                                        <TableColumn key="place">สถานที่ปลูก</TableColumn>
-                                    </TableHeader>
-                                    <TableBody items={plant} emptyContent="ไม่มีข้อมูล">
-                                        {(item) => (
-                                            <TableRow key={item.id}>
-                                                <TableCell>{convertDate(item.plantedAt)}</TableCell>
-                                                <TableCell>{item.plantname}</TableCell>
-                                                <TableCell className={(!item.latitude || !item.longitude) ? "opacity-50" : ""}>
-                                                    {item.latitude && item.longitude ? (
-                                                        <Link
-                                                            href={`https://www.google.com/maps/place/${item.latitude},${item.longitude}`}
-                                                            className="flex items-center"
-                                                            underline='hover'
-                                                            isExternal
-                                                        >
-                                                            <FaMapLocationDot />&nbsp;Maps
-                                                        </Link>
-                                                    ) : (
-                                                        "ไม่มีข้อมูลสถานที่ปลูก"
-                                                    )}
-                                                </TableCell>
-                                            </TableRow>
-                                        )}
-                                    </TableBody>
-                                </Table>
-                            </ModalBody>
-                            <ModalFooter>
-                                <Button variant="flat" onPress={onClose}>
-                                    ปิด
-                                </Button>
-                            </ModalFooter>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-        </>
+        <Modal 
+            isOpen={isOpen} 
+            onOpenChange={onOpenChange}
+            placement="center"
+            size='2xl'
+            scrollBehavior='inside'
+        >
+            <ModalContent>
+                {(onClose) => (
+                    <>
+                        <ModalHeader>ข้อมูลพืชที่ปลูกของ {user}</ModalHeader>
+                        <ModalBody>
+                            <Table aria-label="User Plant Info">
+                                <TableHeader>
+                                    <TableColumn key="plantedAt">วันที่ปลูก</TableColumn>
+                                    <TableColumn key="plantname">พืชที่ปลูก</TableColumn>
+                                    <TableColumn key="place">สถานที่ปลูก</TableColumn>
+                                </TableHeader>
+                                <TableBody items={plant} emptyContent="ไม่มีข้อมูล">
+                                    {(item) => (
+                                        <TableRow key={item.id}>
+                                            <TableCell>{convertDate(item.plantedAt)}</TableCell>
+                                            <TableCell>{item.plantname}</TableCell>
+                                            <TableCell className={(!item.latitude || !item.longitude) ? "opacity-50" : ""}>
+                                                {item.latitude && item.longitude ? (
+                                                    <Link
+                                                        href={`https://www.google.com/maps/place/${item.latitude},${item.longitude}`}
+                                                        className="flex items-center"
+                                                        underline='hover'
+                                                        isExternal
+                                                    >
+                                                        <FaMapLocationDot />&nbsp;Maps
+                                                    </Link>
+                                                ) : (
+                                                    "ไม่มีข้อมูลสถานที่ปลูก"
+                                                )}
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button variant="flat" onPress={onClose}>
+                                ปิด
+                            </Button>
+                        </ModalFooter>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
     )
 }
 

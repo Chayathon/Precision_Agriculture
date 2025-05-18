@@ -25,7 +25,7 @@ function ModalDeleteUser({ isOpen, onOpenChange, id, setRefresh }) {
 
             fetchData();
         }
-    }, [isOpen, id])
+    }, [isOpen, id]);
 
     const handleDelete = async () => {
         setIsLoading(true);
@@ -56,33 +56,31 @@ function ModalDeleteUser({ isOpen, onOpenChange, id, setRefresh }) {
     }
 
     return (
-        <>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                <ModalContent>
-                {(onClose) => (
-                    <>
-                        <ModalHeader className="flex flex-col gap-1">ลบข้อมูล</ModalHeader>
-                        <ModalBody>
-                            <p>ยืนยันที่จะลบข้อมูล <b>{username}</b> ?</p>
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button variant="flat" onPress={onClose}>
-                                ยกเลิก
-                            </Button>
-                            <Button
-                                color="danger"
-                                onPress={handleDelete}
-                                isLoading={isLoading}
-                                disabled={isLoading}
-                            >
-                                {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
-                            </Button>
-                        </ModalFooter>
-                    </>
-                )}
-                </ModalContent>
-            </Modal>
-        </>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <ModalContent>
+            {(onClose) => (
+                <>
+                    <ModalHeader>ลบข้อมูล</ModalHeader>
+                    <ModalBody>
+                        <p>ยืนยันที่จะลบข้อมูล <b>{username}</b> ?</p>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button variant="flat" onPress={onClose}>
+                            ยกเลิก
+                        </Button>
+                        <Button
+                            color="danger"
+                            onPress={handleDelete}
+                            isLoading={isLoading}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
+                        </Button>
+                    </ModalFooter>
+                </>
+            )}
+            </ModalContent>
+        </Modal>
     )
 }
 

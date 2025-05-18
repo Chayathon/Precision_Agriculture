@@ -38,27 +38,27 @@ function ModalMultiDeletePlant({ isOpen, onOpenChange, selectedKeys, setRefresh,
     return (
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
             <ModalContent>
-            {(onClose) => (
-                <>
-                    <ModalHeader>ลบข้อมูล</ModalHeader>
-                    <ModalBody>
-                        <p>ยืนยันที่จะลบข้อมูล <b>{selectedKeys.length}</b> รายการ</p>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button variant="flat" onPress={onClose}>
-                            ยกเลิก
-                        </Button>
-                        <Button
-                            color="danger"
-                            onPress={handleDelete}
-                            isLoading={isLoading}
-                            disabled={isLoading}
-                        >
-                            {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
-                        </Button>
-                    </ModalFooter>
-                </>
-            )}
+                {(onClose) => (
+                    <>
+                        <ModalHeader>ลบข้อมูล</ModalHeader>
+                        <ModalBody>
+                            <p>ยืนยันที่จะลบข้อมูล <b>{selectedKeys.length}</b> รายการ</p>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button variant="flat" onPress={onClose}>
+                                ยกเลิก
+                            </Button>
+                            <Button
+                                color="danger"
+                                onPress={handleDelete}
+                                isLoading={isLoading}
+                                disabled={isLoading}
+                            >
+                                {isLoading ? 'กำลังลบข้อมูล...' : 'ลบ'}
+                            </Button>
+                        </ModalFooter>
+                    </>
+                )}
             </ModalContent>
         </Modal>
     )

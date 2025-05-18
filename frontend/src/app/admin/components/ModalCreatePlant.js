@@ -64,15 +64,11 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
     }
 
     return (
-        <>
-            <Modal 
-                isOpen={isOpen} 
-                onOpenChange={onOpenChange}
-            >
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                        <ModalHeader className="flex flex-col gap-1">เพิ่มข้อมูล</ModalHeader>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <ModalContent>
+                {(onClose) => (
+                    <>
+                        <ModalHeader>เพิ่มข้อมูล</ModalHeader>
                         <ModalBody>
                             <form onSubmit={handleSubmit}>
                                 <Input
@@ -95,11 +91,10 @@ function ModalCreatePlant({ isOpen, onOpenChange, setRefresh }) {
                                 </ModalFooter>
                             </form>
                         </ModalBody>
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
-        </>
+                    </>
+                )}
+            </ModalContent>
+        </Modal>
     )
 }
 

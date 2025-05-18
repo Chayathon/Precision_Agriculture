@@ -57,52 +57,56 @@ function ModalCreateNutrient({ isOpen, onOpenChange, setRefresh, id }) {
     return (
         <Modal isOpen={isOpen} onOpenChange={onOpenChange} size='lg'>
             <ModalContent>
-                <ModalHeader className="flex flex-col gap-1">เพิ่มค่าสารอาหารที่พืชต้องการ</ModalHeader>
-                <ModalBody>
-                    <form onSubmit={handleSubmit}>
-                        <div className="flex mb-4 gap-4">
-                            <NumberInput
-                                value={age}
-                                onValueChange={setAge}
-                                defaultValue={0}
-                                minValue={0}
-                                label="อายุตั้งแต่ (วัน) ขึ้นไป"
-                                isRequired
-                            />
-                            <Input
-                                onChange={(e) => setNitrogen(e.target.value)}
-                                type="text"
-                                label="(N) ไนโตรเจน (mg/kg)"
-                                isRequired
-                            />
-                        </div>
-                        <div className="flex mb-4 gap-4">
-                            <Input
-                                onChange={(e) => setPhosphorus(e.target.value)}
-                                type="text"
-                                label="(P) ฟอสฟอรัส (mg/kg)"
-                                isRequired
-                            />
-                            <Input
-                                onChange={(e) => setPotassium(e.target.value)}
-                                type="text"
-                                label="(K) โพแทสเซียม (mg/kg)"
-                                isRequired
-                            />
-                        </div>
-                        <ModalFooter>
-                            <Button variant="flat" onPress={onOpenChange}>ยกเลิก</Button>
-                            <Button
-                                type="submit"
-                                color="success"
-                                isLoading={isLoading}
-                                disabled={isLoading}
-                            >
-                                {isLoading ? 'กำลังเพิ่มข้อมูล...' : 'เพิ่ม'}
-                            </Button>
-                        </ModalFooter>
-                    </form>
-                </ModalBody>
+                {(onClose) => (
+                    <>
+                        <ModalHeader>เพิ่มค่าสารอาหารที่พืชต้องการ</ModalHeader>
+                        <ModalBody>
+                            <form onSubmit={handleSubmit}>
+                                <div className="flex flex-col sm:flex-row mb-3 gap-3">
+                                    <NumberInput
+                                        value={age}
+                                        onValueChange={setAge}
+                                        defaultValue={0}
+                                        minValue={0}
+                                        label="อายุตั้งแต่ (วัน) ขึ้นไป"
+                                        isRequired
+                                    />
+                                    <Input
+                                        onChange={(e) => setNitrogen(e.target.value)}
+                                        type="text"
+                                        label="(N) ไนโตรเจน (mg/kg)"
+                                        isRequired
+                                    />
+                                </div>
+                                <div className="flex flex-col sm:flex-row gap-3">
+                                    <Input
+                                        onChange={(e) => setPhosphorus(e.target.value)}
+                                        type="text"
+                                        label="(P) ฟอสฟอรัส (mg/kg)"
+                                        isRequired
+                                    />
+                                    <Input
+                                        onChange={(e) => setPotassium(e.target.value)}
+                                        type="text"
+                                        label="(K) โพแทสเซียม (mg/kg)"
+                                        isRequired
+                                    />
+                                </div>
+                                <ModalFooter>
+                                    <Button variant="flat" onPress={onClose}>ยกเลิก</Button>
+                                    <Button
+                                        type="submit"
+                                        color="success"
+                                        isLoading={isLoading}
+                                        disabled={isLoading}
+                                    >
+                                        {isLoading ? 'กำลังเพิ่มข้อมูล...' : 'เพิ่ม'}
+                                    </Button>
+                                </ModalFooter>
+                            </form>
+                        </ModalBody>
+                    </>
+                )}
             </ModalContent>
         </Modal>
     );
