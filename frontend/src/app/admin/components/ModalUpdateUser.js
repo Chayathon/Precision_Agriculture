@@ -291,26 +291,8 @@ function ModalUpdateUser({ isOpen, onOpenChange, id, setRefresh }) {
                                         {(item) => <SelectItem key={item.id}>{item.role_name}</SelectItem>}
                                     </Select>
                                 </div>
-                                <div className='my-3'>
+                                <div className='mt-3'>
                                     <Input onChange={(e) => setUsername(e.target.value)} type='text' value={username} label='ชื่อผู้ใช้' isClearable isDisabled />
-                                </div>
-                                <div className='sm:flex mt-3 gap-3'>
-                                    <Input
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        value={password}
-                                        label="รหัสผ่าน"
-                                        endContent={
-                                            <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                            {isVisible ? (
-                                                'ซ่อน'
-                                            ) : (
-                                                'แสดง'
-                                            )}
-                                            </Button>
-                                        }
-                                        type={isVisible ? "text" : "password"}
-                                        isDisabled
-                                    />
                                 </div>
                                 <ModalFooter>
                                     <Button variant="flat" onPress={onClose}>
