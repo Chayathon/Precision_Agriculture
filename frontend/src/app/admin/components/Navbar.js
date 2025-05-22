@@ -247,7 +247,7 @@ function AdminNavbar() {
                     form.reset();
 
                     setIsChecked(true);
-                    toast.success("รหัสผ่านปัจจุบันถูกต้อง")
+                    toast.success("รหัสผ่านปัจจุบันถูกต้อง");
                 } else if (res.status === 401) {
                     toast.error("รหัสผ่านปัจจุบันไม่ถูกต้อง!");
                 } else {
@@ -275,6 +275,7 @@ function AdminNavbar() {
                     form.reset();
 
                     toast.success("เปลี่ยนรหัสผ่านเรียบร้อยแล้ว");
+                    setIsChecked(false);
                     onOpenChangePassword(false);
                 } else {
                     toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่");
@@ -284,7 +285,6 @@ function AdminNavbar() {
             console.log(err);
         } finally {
             setIsLoading(false);
-            setIsChecked(false);
         }
     }
 
@@ -335,7 +335,7 @@ function AdminNavbar() {
                 </NavbarBrand>
             </NavbarContent>
 
-            <NavbarContent className="hidden md:flex gap-4" justify="center">
+            <NavbarContent className="hidden md:flex gap-3" justify="center">
                 <NavbarItem isActive={isActiveLink('/admin')}>
                     <Link href="/admin">
                         หน้าแรก
@@ -402,20 +402,20 @@ function AdminNavbar() {
                     <ModalContent>
                         {(onClose) => (
                             <>
-                                <ModalHeader className="flex flex-col gap-1">แก้ไขข้อมูล</ModalHeader>
+                                <ModalHeader>แก้ไขข้อมูล</ModalHeader>
                                 <ModalBody>
                                     <form onSubmit={handleSubmitEdit}>
-                                        <div className='sm:flex  mb-4 gap-4'>
-                                            <Input onChange={(e) => setFirstname(e.target.value)} className='max-sm:my-4' type='text' value={firstname} label='ชื่อจริง' isClearable isRequired />
+                                        <div className='sm:flex gap-3'>
+                                            <Input onChange={(e) => setFirstname(e.target.value)} className='max-sm:mb-3' type='text' value={firstname} label='ชื่อจริง' isClearable isRequired />
 
                                             <Input onChange={(e) => setLastname(e.target.value)} type='text' value={lastname} label='นามสกุล' isClearable isRequired />
                                         </div>
-                                        <div className='sm:flex  my-4 gap-4'>
-                                            <Input onChange={(e) => setEmail(e.target.value)} className='max-sm:my-4' type='email' value={email} label='อีเมล' isClearable isRequired />
+                                        <div className='sm:flex my-3 gap-3'>
+                                            <Input onChange={(e) => setEmail(e.target.value)} className='max-sm:my-3' type='email' value={email} label='อีเมล' isClearable isRequired />
 
                                             <Input onChange={(e) => setTel(e.target.value)} type='text' value={tel} label='เบอร์โทรศัพท์' maxLength='10' isClearable isRequired />
                                         </div>
-                                        <div className='my-4'>
+                                        <div className='my-3'>
                                             <Textarea
                                                 onChange={(e) => setAddress(prev => ({
                                                     ...prev,
@@ -430,7 +430,7 @@ function AdminNavbar() {
                                                 isRequired
                                             />
                                         </div>
-                                        <div className='md:flex my-4 gap-4'>
+                                        <div className='md:flex my-3 gap-3'>
                                             <Select
                                                 onChange={(e) => setAddress(prev => ({
                                                     ...prev,
@@ -446,7 +446,7 @@ function AdminNavbar() {
                                             </Select>
                                             
                                             <Select
-                                                className='max-md:my-4'
+                                                className='max-md:my-3'
                                                 onChange={(e) => setAddress(prev => ({
                                                     ...prev,
                                                     district: e.target.value
@@ -476,7 +476,7 @@ function AdminNavbar() {
                                                 {(item) => <SelectItem key={item.subdistrict_id}>{item.name_th}</SelectItem>}
                                             </Select>
                                         </div>
-                                        <div className='mt-4'>
+                                        <div className='mt-3'>
                                             <Input onChange={(e) => setUsername(e.target.value)} type='text' value={username} label='ชื่อผู้ใช้' isClearable isDisabled />
                                         </div>
                                         <ModalFooter>
@@ -501,53 +501,49 @@ function AdminNavbar() {
                     <ModalContent>
                         {(onClose) => (
                             <>
-                                <ModalHeader className="flex flex-col gap-1">เปลี่ยนรหัสผ่าน</ModalHeader>
+                                <ModalHeader>เปลี่ยนรหัสผ่าน</ModalHeader>
                                 <ModalBody>
                                     <form onSubmit={handleSubmitPassword}>
                                         {!isChecked ? (
+                                            <Input
+                                                onChange={(e) => setCurrentPassword(e.target.value)}
+                                                label="รหัสผ่านปัจจุบัน"
+                                                endContent={
+                                                    <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
+                                                        {isVisible ? 'ซ่อน' : 'แสดง'}
+                                                    </Button>
+                                                }
+                                                type={isVisible ? "text" : "password"}
+                                                autoFocus
+                                                isRequired
+                                            />
+                                        ) : (
                                             <>
                                                 <Input
-                                                    onChange={(e) => setCurrentPassword(e.target.value)}
-                                                    label="รหัสผ่านปัจจุบัน"
+                                                    onChange={(e) => setPassword(e.target.value)}
+                                                    label="รหัสผ่านใหม่"
                                                     endContent={
                                                         <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
                                                             {isVisible ? 'ซ่อน' : 'แสดง'}
                                                         </Button>
                                                     }
                                                     type={isVisible ? "text" : "password"}
+                                                    className='mb-3'
                                                     autoFocus
                                                     isRequired
                                                 />
-                                            </>
-                                        ) : (
-                                            <>
-                                                <div className='mb-4'>
-                                                    <Input
-                                                        onChange={(e) => setPassword(e.target.value)}
-                                                        label="รหัสผ่านใหม่"
-                                                        endContent={
-                                                            <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                                                {isVisible ? 'ซ่อน' : 'แสดง'}
-                                                            </Button>
-                                                        }
-                                                        type={isVisible ? "text" : "password"}
-                                                        autoFocus
-                                                        isRequired
-                                                    />
-                                                </div>
-                                                <div className='mt-4'>
-                                                    <Input
-                                                        onChange={(e) => setConfirmPassword(e.target.value)}
-                                                        label="ยืนยันรหัสผ่านใหม่"
-                                                        endContent={
-                                                            <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibilityConfirm} aria-label="toggle password visibility">
-                                                                {isVisibleConfirm ? 'ซ่อน' : 'แสดง'}
-                                                            </Button>
-                                                        }
-                                                        type={isVisibleConfirm ? "text" : "password"}
-                                                        isRequired
-                                                    />
-                                                </div>
+                                                <Input
+                                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                                    label="ยืนยันรหัสผ่านใหม่"
+                                                    endContent={
+                                                        <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibilityConfirm} aria-label="toggle password visibility">
+                                                            {isVisibleConfirm ? 'ซ่อน' : 'แสดง'}
+                                                        </Button>
+                                                    }
+                                                    type={isVisibleConfirm ? "text" : "password"}
+                                                    className='mt-3'
+                                                    isRequired
+                                                />
                                             </>
                                         )}
                                         

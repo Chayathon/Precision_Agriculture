@@ -341,7 +341,7 @@ function UserNavbar() {
                     form.reset();
 
                     setIsChecked(true);
-                    toast.success("รหัสผ่านปัจจุบันถูกต้อง")
+                    toast.success("รหัสผ่านปัจจุบันถูกต้อง");
                 } else if (res.status === 401) {
                     toast.error("รหัสผ่านปัจจุบันไม่ถูกต้อง!");
                 } else {
@@ -369,6 +369,7 @@ function UserNavbar() {
                     form.reset();
 
                     toast.success("เปลี่ยนรหัสผ่านเรียบร้อยแล้ว");
+                    setIsChecked(false);
                     onOpenChangePassword(false);
                 } else {
                     toast.error("เกิดข้อผิดพลาด กรุณาลองใหม่");
@@ -378,7 +379,6 @@ function UserNavbar() {
             console.log(err);
         } finally {
             setIsLoading(false);
-            setIsChecked(false);
         }
     }
 
@@ -447,7 +447,7 @@ function UserNavbar() {
                     </NavbarBrand>
                 </NavbarContent>
 
-                <NavbarContent className="flex gap-4" justify="center">
+                <NavbarContent className="flex gap-3" justify="center">
                     <NavbarItem isActive={isActiveLink('/home')} className='hidden sm:flex'>
                         <Link href="/home">
                             หน้าแรก
@@ -570,20 +570,20 @@ function UserNavbar() {
                         <ModalContent>
                             {(onClose) => (
                                 <>
-                                    <ModalHeader className="flex flex-col gap-1">แก้ไขข้อมูล</ModalHeader>
+                                    <ModalHeader>แก้ไขข้อมูล</ModalHeader>
                                     <ModalBody>
                                         <form onSubmit={handleSubmitEdit}>
-                                            <div className='sm:flex mb-4 gap-4'>
-                                                <Input onChange={(e) => setFirstname(e.target.value)} className='max-sm:my-4' type='text' value={firstname} label='ชื่อจริง' isClearable isRequired />
+                                            <div className='sm:flex gap-3'>
+                                                <Input onChange={(e) => setFirstname(e.target.value)} className='max-sm:mb-3' type='text' value={firstname} label='ชื่อจริง' isClearable isRequired />
 
                                                 <Input onChange={(e) => setLastname(e.target.value)} type='text' value={lastname} label='นามสกุล' isClearable isRequired />
                                             </div>
-                                            <div className='sm:flex my-4 gap-4'>
-                                                <Input onChange={(e) => setEmail(e.target.value)} className='max-sm:my-4' type='email' value={email} label='อีเมล' isClearable isRequired />
+                                            <div className='sm:flex my-3 gap-3'>
+                                                <Input onChange={(e) => setEmail(e.target.value)} className='max-sm:my-3' type='email' value={email} label='อีเมล' isClearable isRequired />
 
                                                 <Input onChange={(e) => setTel(e.target.value)} type='text' value={tel} label='เบอร์โทรศัพท์' maxLength='10' isClearable isRequired />
                                             </div>
-                                            <div className='my-4'>
+                                            <div className='my-3'>
                                                 <Textarea
                                                     onChange={(e) => setAddress(prev => ({
                                                         ...prev,
@@ -598,7 +598,7 @@ function UserNavbar() {
                                                     isRequired
                                                 />
                                             </div>
-                                            <div className='md:flex my-4 gap-4'>
+                                            <div className='md:flex my-3 gap-3'>
                                                 <Select
                                                     onChange={(e) => setAddress(prev => ({
                                                         ...prev,
@@ -614,7 +614,7 @@ function UserNavbar() {
                                                 </Select>
                                                 
                                                 <Select
-                                                    className='max-md:my-4'
+                                                    className='max-md:my-3'
                                                     onChange={(e) => setAddress(prev => ({
                                                         ...prev,
                                                         district: e.target.value
@@ -644,7 +644,7 @@ function UserNavbar() {
                                                     {(item) => <SelectItem key={item.subdistrict_id}>{item.name_th}</SelectItem>}
                                                 </Select>
                                             </div>
-                                            <div className='mt-4'>
+                                            <div className='mt-3'>
                                                 <Input onChange={(e) => setUsername(e.target.value)} type='text' value={username} label='ชื่อผู้ใช้' isClearable isDisabled />
                                             </div>
                                             <ModalFooter>
@@ -674,53 +674,49 @@ function UserNavbar() {
                         <ModalContent>
                             {(onClose) => (
                                 <>
-                                    <ModalHeader className="flex flex-col gap-1">เปลี่ยนรหัสผ่าน</ModalHeader>
+                                    <ModalHeader>เปลี่ยนรหัสผ่าน</ModalHeader>
                                     <ModalBody>
                                         <form onSubmit={handleSubmitPassword}>
                                             {!isChecked ? (
+                                                <Input
+                                                    onChange={(e) => setCurrentPassword(e.target.value)}
+                                                    label="รหัสผ่านปัจจุบัน"
+                                                    endContent={
+                                                        <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
+                                                            {isVisible ? 'ซ่อน' : 'แสดง'}
+                                                        </Button>
+                                                    }
+                                                    type={isVisible ? "text" : "password"}
+                                                    autoFocus
+                                                    isRequired
+                                                />
+                                            ) : (
                                                 <>
                                                     <Input
-                                                        onChange={(e) => setCurrentPassword(e.target.value)}
-                                                        label="รหัสผ่านปัจจุบัน"
+                                                        onChange={(e) => setPassword(e.target.value)}
+                                                        label="รหัสผ่านใหม่"
                                                         endContent={
                                                             <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
                                                                 {isVisible ? 'ซ่อน' : 'แสดง'}
                                                             </Button>
                                                         }
                                                         type={isVisible ? "text" : "password"}
+                                                        className='mb-3'
                                                         autoFocus
                                                         isRequired
                                                     />
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <div className='mb-4'>
-                                                        <Input
-                                                            onChange={(e) => setPassword(e.target.value)}
-                                                            label="รหัสผ่านใหม่"
-                                                            endContent={
-                                                                <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibility} aria-label="toggle password visibility">
-                                                                    {isVisible ? 'ซ่อน' : 'แสดง'}
-                                                                </Button>
-                                                            }
-                                                            type={isVisible ? "text" : "password"}
-                                                            autoFocus
-                                                            isRequired
-                                                        />
-                                                    </div>
-                                                    <div className='mt-4'>
-                                                        <Input
-                                                            onChange={(e) => setConfirmPassword(e.target.value)}
-                                                            label="ยืนยันรหัสผ่านใหม่"
-                                                            endContent={
-                                                                <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibilityConfirm} aria-label="toggle password visibility">
-                                                                    {isVisibleConfirm ? 'ซ่อน' : 'แสดง'}
-                                                                </Button>
-                                                            }
-                                                            type={isVisibleConfirm ? "text" : "password"}
-                                                            isRequired
-                                                        />
-                                                    </div>
+                                                    <Input
+                                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                                        label="ยืนยันรหัสผ่านใหม่"
+                                                        endContent={
+                                                            <Button type="button" size="sm" className='bg-gray-300 dark:bg-gray-500' onPress={toggleVisibilityConfirm} aria-label="toggle password visibility">
+                                                                {isVisibleConfirm ? 'ซ่อน' : 'แสดง'}
+                                                            </Button>
+                                                        }
+                                                        type={isVisibleConfirm ? "text" : "password"}
+                                                        className='mt-3'
+                                                        isRequired
+                                                    />
                                                 </>
                                             )}
                                             
